@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "types": ["@nuxt/types", "@nuxtjs/device"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "~~/*": ["./*"],
+      "@@/*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"],
+  "vueCompilerOptions": { "experimentalDisableTemplateSupport": true }
+}
