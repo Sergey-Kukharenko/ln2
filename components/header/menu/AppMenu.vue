@@ -1,7 +1,7 @@
 <template>
   <div class="menu">
     <div v-for="item in list" :key="item.title" class="menu__item" :class="{ 'has-sub-level': item.hasSubLevel }">
-      <div class="content" @click="openBySlug(item)">
+      <div class="content" :class="{ 'color-pink': item.color }" @click="openBySlug(item)">
         <div class="content__figure">
           <svg-icon :name="item.icon" v-bind="item.style" class="content__icon" />
         </div>
@@ -59,6 +59,10 @@ export default {
     },
 
     openBySlug(item) {
+      if (item.to) {
+        this.$router.push(item.to);
+      }
+
       if (!item.prefix && !item.slug) {
         return;
       }
@@ -89,7 +93,7 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 0 -18px;
+  margin: 0 -12px;
 
   &__item {
     cursor: default;
@@ -126,10 +130,14 @@ export default {
   justify-content: flex-start;
   position: relative;
   background: #ffffff;
-  padding: 8px 16px 13px;
+  padding: 8px 10px 13px;
   border-radius: 12px 12px 0 0;
   z-index: 2;
   cursor: pointer;
+
+  &.color-pink {
+    color: #f63866;
+  }
 
   &__icon {
     display: block;
@@ -143,7 +151,7 @@ export default {
     justify-content: center;
     width: 20px;
     height: 20px;
-    margin-right: 8px;
+    margin-right: 6px;
   }
 
   &__text {

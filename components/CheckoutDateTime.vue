@@ -31,7 +31,7 @@
                 {{ item.label }}
               </app-radio>
             </div>
-            <div>{{ item.price || 'Free delivery' }}</div>
+            <div>{{ showDeliveryPrice(item) }}</div>
           </div>
         </template>
       </app-select>
@@ -113,7 +113,7 @@ export default {
     dayList() {
       const date = new Date();
       date.setDate(date.getDate() + 2);
-      let dayCount = 7;
+      let dayCount = 19;
       const result = [];
       while (dayCount--) {
         result.push({
@@ -170,6 +170,16 @@ export default {
   },
 
   methods: {
+    showDeliveryPrice(item) {
+      const price = item.delivery_amount;
+
+      if (!price) {
+        return 'Free delivery';
+      }
+
+      return `£ ${price}`;
+    },
+
     getDateLabelStyle(title) {
       if (this.dateList[this.dateList.length - 1].title !== title) {
         return {};
@@ -210,27 +220,31 @@ export default {
       return item.label;
     },
 
-    onClickTimeItem(item, close, setLabel) {
+    async onClickTimeItem(item, close, setLabel) {
       if (!item) {
         return;
       }
 
       this.time = item.id;
-      const price = item.price || 'free delivery';
-
+      const price = this.getDeliveryAmoutText(item.delivery_amount);
+      await this.setInterval({ time: item.label });
       setLabel(`${item.label}, ${price}`);
-      this.setInterval({ time: item.label });
       close();
     },
 
-    onTabClick(index) {
+    getDeliveryAmoutText(price) {
+      return price ? `£ ${price}` : 'Free delivery';
+    },
+
+    async onTabClick(index) {
       if (this.dateList[index].type === 'select') {
         this.$refs.dateModal.open();
       } else {
         this.daySelectIndex = null;
+        this.$refs.dateTab.active = index;
         const date = this.formatDate(this.dateList[index].label);
 
-        this.setInterval({ date });
+        await this.setInterval({ date });
       }
     },
 
@@ -315,26 +329,30 @@ export default {
     },
 
     async setInterval(payload) {
-      await this.$store.dispatch('checkout/setCheckoutInterval', {
-        time: payload.time,
-        date: payload?.date || this.checkoutIntervalDate || this.initializedDate
+      const data = await this.$store.dispatch('checkout/fetchCheckoutIntervals', {
+        intervals_date: this.preparePayloadDate(payload?.date)
       });
 
-      if (!payload?.date || !this.timeList?.[0]?.label) {
-        return;
+      const firstInterval = data?.[0];
+
+      await this.$store.dispatch('checkout/setCheckoutInterval', {
+        date: this.preparePayloadDate(payload?.date),
+        time: payload?.time || firstInterval.label
+      });
+
+      if (!payload?.time) {
+        const newTimeItem = this.timeList?.[0] ?? firstInterval?.label;
+        const price = this.getDeliveryAmoutText(newTimeItem?.delivery_amount);
+
+        this.$refs.timeSelect.setLabel(`${newTimeItem?.label}, ${price}`);
+        this.time = newTimeItem?.id;
       }
 
-      await this.$store.dispatch('checkout/setCheckoutInterval', {
-        date: payload.date || this.checkoutIntervalDate || this.initializedDate,
-        time: this.timeList[0].label
-      });
-
-      const newTime = this.timeList[0].label;
-
-      this.$refs.timeSelect.setLabel(newTime);
-      this.time = this.timeList.find((t) => t.label === newTime)?.id;
-
       this.$store.dispatch('checkout/fetchCheckout');
+    },
+
+    preparePayloadDate(payloadDate) {
+      return payloadDate || this.checkoutIntervalDate || this.initializedDate;
     }
   }
 };

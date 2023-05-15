@@ -23,17 +23,17 @@
         </basket-button>
       </template>
     </app-input> -->
-    <div class="order__title">Order details</div>
-    <template v-if="checkoutPositions.length">
+    <div class="order__title">Order items</div>
+    <template v-if="checkoutItems.length">
       <div class="order__row" style="margin-top: 16px">
         <div class="order__text-grey order__row-gap" @click="toggleItems">
-          <div>{{ checkoutPositions.length }} items</div>
+          <div>{{ itemsCount }}</div>
           <svg-icon class="order__icon-chevron" name="chevron" />
         </div>
         <div class="order__text-price">£ {{ checkoutCost.positionsCost }}</div>
       </div>
       <div class="goods" :class="{ active: itemsVisibility }">
-        <div v-for="(item, idx) in checkoutPositions" :key="idx" class="goods__item">
+        <div v-for="(item, idx) in checkoutItems" :key="idx" class="goods__item">
           <div class="goods__item-picture">
             <img
               :src="useSizedImage({ name: item.image.filename })"
@@ -43,13 +43,13 @@
           </div>
           <div class="goods__item-title">
             {{ item.offer_title }}
-            <small>Bouquet size: {{ item.title }}</small>
+            <small>{{ useGetPositionSizeText(item.title, item.is_bouquet) }}</small>
           </div>
         </div>
       </div>
     </template>
     <div v-if="checkoutCost.sale" class="order__row" style="margin-top: 8px">
-      <div class="order__text-grey">Sale</div>
+      <div class="order__text-grey">Discount</div>
       <div class="order__text-sale">- £ {{ checkoutCost.sale }}</div>
     </div>
     <div class="order__row" style="margin-top: 8px">
@@ -74,7 +74,7 @@
 import { mapGetters } from 'vuex';
 // import AppInput from '~/components/shared/AppInput';
 
-import { useSizedImage } from '~/helpers';
+import { useSizedImage, useGetPositionSizeText } from '~/helpers';
 
 export default {
   name: 'CheckoutOrder',
@@ -91,13 +91,21 @@ export default {
 
   computed: {
     ...mapGetters({
+      checkoutPositionsCount: 'checkout/getCount',
       checkoutCost: 'checkout/checkoutCost',
-      checkoutPositions: 'checkout/checkoutPositions'
-    })
+      checkoutItems: 'checkout/checkoutSplittedPositions'
+    }),
+
+    itemsCount() {
+      return this.checkoutPositionsCount > 1
+        ? `${this.checkoutPositionsCount} items`
+        : `${this.checkoutPositionsCount} item`;
+    }
   },
 
   methods: {
     useSizedImage,
+    useGetPositionSizeText,
 
     toggleItems() {
       this.itemsVisibility = !this.itemsVisibility;

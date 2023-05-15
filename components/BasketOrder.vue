@@ -1,18 +1,17 @@
 <template>
   <div class="order">
-    <div class="order__title">Order details</div>
     <div class="order__row" style="margin-top: 16px">
-      <div class="order__text-grey">{{ count }} bouquets</div>
-      <div class="order__text-price">£ {{ price }}</div>
+      <div class="order__text-grey">{{ itemsCount }}</div>
+      <div class="order__text-price">£ {{ cost }}</div>
     </div>
-    <div class="order__row" style="margin-top: 6px; display: none">
-      <div class="order__text-grey">Sale</div>
-      <div class="order__text-sale">- £ 8</div>
+    <div v-if="isSale" class="order__row" style="margin-top: 6px">
+      <div class="order__text-grey">Discount</div>
+      <div class="order__text-sale">- £ {{ sale }}</div>
     </div>
     <div class="order__delim" style="margin-top: 16px"></div>
-    <div class="order__row" style="margin-top: 18px">
+    <div class="order__row" style="margin-top: 16px">
       <div class="order__text-medium">Summary</div>
-      <div class="order__text-summary">£ {{ price }}</div>
+      <div class="order__text-summary">£ {{ total }}</div>
     </div>
     <!--Временно скрыт-->
     <div class="order__cashback-desktop" style="display: none">
@@ -38,6 +37,7 @@
       <!--        <svg-icon v-if="step === $options.CODE" class="back__icon" name="arrow-green" @click="goToForm" />-->
       <!--        {{ authTitle }}-->
       <!--      </div>-->
+      <div class="order__title">Your details</div>
       <form class="form" autocomplete="off" novalidate @submit.prevent="onSubmit">
         <app-input
           v-model="form.name.value"
@@ -143,11 +143,18 @@ export default {
 
   computed: {
     ...mapGetters({
-      price: 'cart/getPrice',
-      count: 'cart/getUniqueCount',
+      cost: 'cart/getCost',
+      total: 'cart/getTotal',
+      sale: 'cart/getDiscount',
+      isSale: 'cart/isDiscountExist',
+      count: 'cart/getCount',
       recipient: 'user/getRecipient',
       isAuthorized: 'auth/isAuthorized'
     }),
+
+    itemsCount() {
+      return this.count > 1 ? `${this.count} items` : `${this.count} item`;
+    },
 
     isFormInvalid() {
       return this.form.name.errorMsg && this.form.phone.errorMsg;
@@ -278,6 +285,7 @@ export default {
         this.form.errorMsg = VALIDATE_MESSAGES.wrong;
       }
 
+      await this.$store.dispatch('order/createOrder');
       await this.$router.push({ name: 'checkout' });
     }
   }
@@ -362,20 +370,20 @@ export default {
   &__title {
     display: flex;
     align-items: center;
-    font-family: $golos-bold;
-    color: #000000;
+    color: $color-dark-grey;
+    font-size: 20px;
+    line-height: 24px;
 
     @include gt-md {
-      font-size: 20px;
-      line-height: 24px;
-      margin: 12px 0 24px 0;
+      font-family: $golos-bold;
+      margin: 24px 0 8px 0;
       cursor: pointer;
     }
 
     @include lt-lg {
-      font-size: 16px;
-      line-height: 20px;
-      margin: 12px 0;
+      font-family: $Literata;
+      font-weight: 700;
+      margin: 32px 0 2px;
     }
   }
 

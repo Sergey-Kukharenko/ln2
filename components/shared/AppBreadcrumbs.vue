@@ -1,10 +1,20 @@
 <template>
   <div v-if="breadCrumbs" class="layout layout--horizontal">
-    <div class="breadcrumbs">
-      <NuxtLink v-for="item in breadCrumbs" :key="item.text" :to="item.path" class="breadcrumbs__item">
-        <svg-icon name="arrow-left" class="breadcrumbs__icon" />
-        {{ item.text }}
-      </NuxtLink>
+    <div class="container">
+      <div class="breadcrumbs">
+        <NuxtLink v-for="item in breadCrumbs" :key="item.text" :to="item.path" class="breadcrumbs__item">
+          <svg-icon name="arrow-left" class="breadcrumbs__icon" />
+          {{ item.text }}
+        </NuxtLink>
+      </div>
+      <a
+        v-if="isDeviceProductIdPage"
+        target="_blank"
+        href="https://www.trustpilot.com/review/myflowers.co.uk?utm_medium=trustbox&utm_source=MicroStar"
+        class="trustpilot-link"
+      >
+        <svg-icon name="trustpilot" class="trustpilot-icon" />
+      </a>
     </div>
   </div>
 </template>
@@ -18,6 +28,10 @@ export default {
   computed: {
     breadCrumbs() {
       return useBreadCrumbs(this.$route);
+    },
+
+    isDeviceProductIdPage() {
+      return this.$device.isMobileOrTablet && this.$route.name === 'product-id';
     }
   }
 };
@@ -101,5 +115,20 @@ export default {
       margin: 0 4px 0 9px;
     }
   }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trustpilot-link {
+  margin: 11px 10px 11px 0;
+}
+
+.trustpilot-icon {
+  width: 179px;
+  height: 18px;
 }
 </style>

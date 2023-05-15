@@ -10,7 +10,8 @@ const STRIPE = {
     ],
     successURL: `${process.env.host}:${process.env.port}/order`,
     cancelURL: `${process.env.host}:${process.env.port}/`
-  }
+  },
+  redirectDelay: process.env.stripeTimeoutPayT
 };
 
 // PAYPAL
@@ -49,4 +50,11 @@ const PAYPAL = {
   }
 };
 
-export { STRIPE, PAYPAL };
+// PAYMENT STATUS MAP
+const PAYMENT_STATUS_MAP = Object.freeze({
+  payment: 'PAYMENT',
+  paid: 'PAID',
+  failPaid: 'FAIL_PAID'
+});
+
+export { STRIPE, PAYPAL, PAYMENT_STATUS_MAP };

@@ -1,15 +1,23 @@
 import Vue from 'vue';
 import { AUTH_WITHOUT_SMS_COOKIE } from '~/constants';
 
+const isDev = process.env.NODE_ENV !== 'production';
+const DOMAIN = process.env.DOMAIN;
+
 export const state = () => ({
   httpEndpointsCallStackMap: {}
 });
 
 export const actions = {
   async nuxtServerInit({ dispatch, state, commit }, { $cookies }) {
-    const { token: newToken, exp_data: expData } = await dispatch('auth/fetchToken');
+    // const { token: newToken, exp_data: expData } = await dispatch('auth/fetchToken');
+    const newToken = '1';
     $cookies.set('token', newToken, {
-      expires: new Date(expData)
+      expires: new Date(),
+      path: '/',
+      ...(!isDev && {
+        domain: `.${DOMAIN}`
+      })
     });
 
     const { token } = state.auth;

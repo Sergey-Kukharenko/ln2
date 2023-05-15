@@ -12,7 +12,15 @@ export default {
       type: String,
       default: 'green',
       validate(value) {
-        ['green', 'grey', 'white'].includes(value);
+        return ['green', 'grey', 'white', 'turquoise'].includes(value);
+      }
+    },
+
+    advancedStylesTheme: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['gift'].includes(value);
       }
     },
 
@@ -51,21 +59,25 @@ export default {
       default: false
     }
   },
+
   emits: ['click'],
+
   computed: {
     classes() {
       return {
         [`basket-button--size-${this.size}`]: true,
         [`basket-button--align-${this.align}`]: true,
         [`basket-button--theme-${this.theme}`]: true,
+        [`basket-button--advanced-theme-${this.advancedStylesTheme}`]: this.advancedStylesTheme,
         'basket-button--width-stretch': this.stretch,
         'basket-button--icon-only': this.iconOnly,
         'basket-button--disabled': this.disabled,
 
-        'size-not-change': this.sizeNotChange
+        'basket-button--size-not-change': this.sizeNotChange
       };
     }
   },
+
   methods: {
     onClick() {
       if (!this.disabled) this.$emit('click');
@@ -113,6 +125,17 @@ export default {
     font-weight: 600;
   }
 
+  &--theme-turquoise {
+    color: #000;
+    background: #ebfaf0;
+  }
+
+  &--advanced-theme-gift {
+    flex-shrink: 0;
+    height: 36px;
+    border-radius: 12.8571px;
+  }
+
   &--size-x-small {
     font-family: $golos-bold;
     height: 32px;
@@ -124,12 +147,23 @@ export default {
 
   &--size-small {
     min-width: 102px;
-    height: 36px;
     padding: 0 8px;
-    border-radius: 12px;
+
     font-size: 14px;
     line-height: 20px;
     justify-content: center;
+
+    @include gt-md {
+      height: 36px;
+      border-radius: 12px;
+    }
+
+    @include lt-lg {
+      height: 28px;
+      font-size: 12px;
+      line-height: 20px;
+      border-radius: 8px;
+    }
 
     &.basket-button--icon-only {
       min-width: initial;
@@ -137,16 +171,26 @@ export default {
       padding: 0;
       justify-content: center;
 
-      @include lt-lg {
-        width: 28px;
+      &:not(&.basket-button--advanced-theme-gift) {
+        @include lt-lg {
+          width: 28px;
+        }
       }
     }
 
-    &:not(.size-not-change) {
+    &.basket-button--size-not-change {
       @include lt-lg {
-        height: 28px;
-        font-size: 12px;
-        line-height: 20px;
+        height: 36px;
+      }
+    }
+
+    &.basket-button--advanced-theme-gift {
+      @include lt-lg {
+        height: 36px;
+      }
+
+      @include lt-lg {
+        border-radius: 12.8571px;
       }
     }
   }

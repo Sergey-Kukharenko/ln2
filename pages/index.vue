@@ -1,6 +1,6 @@
 <template>
   <main>
-    <app-location-informer v-if="$device.isMobileOrTablet" />
+    <app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />
     <app-promotions />
     <app-popular-categories />
 
@@ -19,7 +19,7 @@
     <app-section-sm v-if="isPickBouquet" :section="pickBouquet" name="pick-bouquet" theme="custom" />
 
     <!--Временно скрыт-->
-    <!--<app-discount /> -->
+    <!--<app-discount :info="discount" />-->
 
     <app-faq />
     <app-info />
@@ -31,6 +31,7 @@
 import { hydrateWhenIdle } from 'vue-lazy-hydration';
 
 import { mapGetters } from 'vuex';
+import dataFormSubscribeInfo from '~/data/form-subscribe-info';
 import { useArrayNotEmpty } from '~/helpers';
 import gtmClear from '~/mixins/gtmClear.vue';
 
@@ -38,12 +39,19 @@ export default {
   name: 'IndexPage',
 
   components: {
+    AppTrustbox: () => import('~/components/ui/AppTrustbox.vue'),
     AppNotice: hydrateWhenIdle(() => import('@/components/shared/AppNotice')),
     AppSection: hydrateWhenIdle(() => import('@/components/shared/AppSection')),
     AppSectionSm: hydrateWhenIdle(() => import('@/components/shared/AppSectionSm'))
   },
 
   mixins: [gtmClear],
+
+  data() {
+    return {
+      discount: dataFormSubscribeInfo.discount
+    };
+  },
 
   async fetch() {
     await this.$store.dispatch('pages/home/fetchMainPageServerSide');
@@ -61,7 +69,6 @@ export default {
     }),
 
     isBestBouquets() {
-      console.log(this.bestBouquets);
       return useArrayNotEmpty(this.bestBouquets?.list);
     },
 
@@ -101,6 +108,10 @@ main {
   @include lt-md {
     display: flex;
     flex-direction: column;
+
+    .trustbox {
+      margin: 12px auto 0;
+    }
 
     .promotion {
       order: 0;

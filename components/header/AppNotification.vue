@@ -1,34 +1,44 @@
 <template>
-  <div :class="classNames">
+  <div class="notification" :class="classNames">
     <div class="layout layout--horizontal-dt">
       <div class="notification__title">
         {{ notification.title }}
       </div>
+      <!--Временно скрыт-->
+      <!--<svg-icon v-if="$device.isMobileOrTablet" name="close" />-->
     </div>
   </div>
 </template>
 
 <script>
-import { useClassName } from '@/helpers';
 import dataNotification from '@/data/notification';
 
 export default {
   name: 'AppNotification',
 
+  props: {
+    theme: {
+      type: String,
+      default: 'pink',
+      validate(value) {
+        return ['green', 'pink'].includes(value);
+      }
+    }
+  },
+
   data() {
     return {
       notification: {
         title: dataNotification.title
-      },
-
-      options: {
-        theme: dataNotification.theme
       }
     };
   },
+
   computed: {
     classNames() {
-      return useClassName(this.options, 'notification');
+      return {
+        [`notification--${this.theme}`]: this.theme
+      };
     }
   }
 };
@@ -36,6 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 .notification {
+  position: relative;
   background: $color-red;
 
   &__title {
@@ -53,7 +64,7 @@ export default {
     }
 
     @include lt-sm {
-      max-width: 230px;
+      max-width: 200px;
       font-weight: 500;
       font-size: 13px;
       line-height: 16px;
@@ -62,10 +73,22 @@ export default {
       box-sizing: border-box;
     }
   }
+
+  .icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 8px;
+    bottom: 0;
+    margin: auto;
+  }
 }
 
 .notification--pink {
-  background: $color-red;
+  background: $color-link-pink;
 }
 
 .notification--green {

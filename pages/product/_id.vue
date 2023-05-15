@@ -31,7 +31,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { useObjectNotEmpty } from '~/helpers';
+import { useObjectNotEmpty, useSizedImage } from '~/helpers';
 
 import AppFormOffers from '~/components/product/AppFormOffers';
 import AppService from '~/components/product/AppService';
@@ -60,7 +60,7 @@ export default {
 
   middleware: ['not-found'],
 
-  async asyncData({ route, $axios }) {
+  async asyncData({ req, route, $axios }) {
     const path = route.fullPath;
     const data = {
       seo: {},
@@ -73,6 +73,7 @@ export default {
       data.seo = response.seo;
       data.title = response.title;
       data.description = response.description;
+      data.seo.fullUrl = `https://myflowers.co.uk${path}`;
 
       data.id = response.id;
       data.real_id = response.real_id;
@@ -100,6 +101,51 @@ export default {
           hid: 'description',
           name: 'description',
           content: this.seo.description
+        },
+
+        {
+          property: 'og:title',
+          content: this.seo.title
+        },
+        {
+          property: 'og:description',
+          content: this.seo.description
+        },
+        {
+          property: 'og:url',
+          content: this.seo.fullUrl
+        },
+        {
+          property: 'og:image',
+          content: useSizedImage({ name: this.images[0].filename, width: 120, height: 120 })
+        },
+        {
+          property: 'product:brand',
+          content: 'myflowers'
+        },
+        {
+          property: 'product:availability',
+          content: 'in stock'
+        },
+        {
+          property: 'product:condition',
+          content: 'new'
+        },
+        {
+          property: 'product:price:amount',
+          content: this.price
+        },
+        {
+          property: 'product:price:currency',
+          content: 'GBP'
+        },
+        {
+          property: 'product:retailer_item_id',
+          content: this.real_id
+        },
+        {
+          property: 'product:item_group_id',
+          content: this.category_name
         }
       ]
     };
@@ -178,13 +224,23 @@ export default {
     onSetProductOffer({ title, price }) {
       this.gtmClearItemEvent();
       this.gtmViewItemEvent(this.title, this.real_id, price, this.category_name, title);
-    }
+    },
+
+    useSizedImage
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .detail-page {
+  @include gt-sm {
+    padding-top: 20px;
+  }
+
+  @include lt-md {
+    padding-top: 0;
+  }
+
   &__row {
     @include gt-sm {
       display: flex;

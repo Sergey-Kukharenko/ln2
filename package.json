@@ -1,5 +1,5 @@
 {
-  "name": "ln2",
+  "name": "london_front",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -29,6 +29,7 @@
     "node-sass": "^7.0.1",
     "nuxt": "^2.15.8",
     "nuxt-facebook-pixel-module": "^1.6.0",
+    "nuxt-trustbox-module": "1.0.0",
     "swiper": "^5.3.6",
     "v-click-outside": "^3.2.0",
     "v-mask": "^2.3.0",

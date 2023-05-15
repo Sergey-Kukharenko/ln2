@@ -112,7 +112,7 @@ export default {
       type: String,
       default: 'off',
       validate(val) {
-        return ['on', 'off'].includes(val);
+        return ['on', 'off', 'chrome-off'].includes(val);
       }
     }
   },
@@ -208,6 +208,13 @@ export default {
   &--size-medium {
     .app-input__field {
       height: 36px;
+      padding: 0 12px;
+    }
+  }
+
+  &--size-x-medium {
+    .app-input__field {
+      height: 44px;
       padding: 0 12px;
     }
   }

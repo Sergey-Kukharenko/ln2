@@ -36,6 +36,14 @@ export default {
 
   methods: {
     handleClick(idx, item) {
+      if (item.to) {
+        this.closeMenu();
+
+        this.$nextTick().then(() => {
+          this.$router.push(item.to);
+        });
+      }
+
       if (!item.prefix && !item.slug) {
         this.$emit('selectItem', idx);
 

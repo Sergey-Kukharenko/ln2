@@ -38,7 +38,10 @@ export default {
 
     theme: {
       type: String,
-      default: ''
+      default: '',
+      validate(value) {
+        return ['custom'].includes(value);
+      }
     },
 
     name: {
@@ -58,9 +61,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.section {
-  margin-top: 0;
-}
-</style>

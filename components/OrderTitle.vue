@@ -15,16 +15,42 @@ export default {
     isPaid: {
       type: Boolean,
       default: false
+    },
+
+    isFailed: {
+      type: Boolean,
+      default: false
+    },
+
+    inProcess: {
+      type: Boolean,
+      default: false
     }
   },
 
   computed: {
     orderTitle() {
-      return this.isPaid ? ORDER_STATUS_TEXT.paid.title : ORDER_STATUS_TEXT.notPaid.title;
+      if (this.isFailed) {
+        return ORDER_STATUS_TEXT.failed.title;
+      }
+
+      return this.isPaid
+        ? ORDER_STATUS_TEXT.paid.title
+        : this.inProcess
+        ? ORDER_STATUS_TEXT.inProcess.title
+        : ORDER_STATUS_TEXT.notPaid.title;
     },
 
     linkText() {
-      return this.isPaid ? ORDER_STATUS_TEXT.paid.text : ORDER_STATUS_TEXT.notPaid.text;
+      if (this.isFailed) {
+        return ORDER_STATUS_TEXT.failed.text;
+      }
+
+      return this.isPaid
+        ? ORDER_STATUS_TEXT.paid.text
+        : this.inProcess
+        ? ORDER_STATUS_TEXT.inProcess.text
+        : ORDER_STATUS_TEXT.notPaid.text;
     }
   }
 };

@@ -92,7 +92,9 @@ const NO_SCROLL_CLASS_NAME = 'noscroll';
 
 const ORDER_STATUS_TEXT = {
   paid: { title: 'The order is paid', text: 'Expect delivery' },
-  notPaid: { title: 'The order is awaiting payment', text: 'Please pay for the order' }
+  inProcess: { title: 'Processing the payment', text: 'Please wait' },
+  notPaid: { title: 'The order is awaiting payment', text: 'Please pay for the order' },
+  failed: { title: 'Transaction failed', text: 'Please try again, or use a different payment method' }
 };
 
 const MAIN_PAGE_CONTENT_PARAMS = {
@@ -134,6 +136,14 @@ const SEARCH_INPUT_PLACEHOLDER = {
   search: 'Search your address'
 };
 
+const RELOAD_ORDER_DELAY = {
+  1: 3000,
+  2: 5000,
+  3: 7000,
+  4: 15000,
+  5: 30000
+};
+
 const OUR_COOKIE = 'our-cookie';
 const AUTH_WITHOUT_SMS_COOKIE = 'auth-without-sms';
 
@@ -162,6 +172,7 @@ export {
   ADDRESS_MANUALLY_TEXT,
   ADDRESS_SEARCH_TEXT,
   SEARCH_INPUT_PLACEHOLDER,
+  RELOAD_ORDER_DELAY,
   OUR_COOKIE,
   AUTH_WITHOUT_SMS_COOKIE
 };

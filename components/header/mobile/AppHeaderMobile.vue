@@ -11,9 +11,10 @@
             <!--</nuxt-link>-->
           </div>
         </div>
-        <div class="content__layout content__layout--md">
-          <app-mobile-location />
-        </div>
+        <!--Временно скрыт-->
+        <!--<div class="content__layout content__layout--md">-->
+        <!--<app-mobile-location />-->
+        <!--</div>-->
         <div class="content__layout">
           <app-header-mobile-menu />
         </div>
@@ -49,7 +50,7 @@ import AppLogo from '~/components/header/AppLogo';
 import AppCall from '~/components/header/AppCall';
 import AppCart from '~/components/header/AppCart';
 import AppMobileProfile from '~/components/header/mobile/AppMobileProfile';
-import AppMobileLocation from '~/components/header/mobile/AppMobileLocation';
+// import AppMobileLocation from '~/components/header/mobile/AppMobileLocation';
 import AppHeaderMobileMenu from '~/components/header/mobile/AppHeaderMobileMenu';
 import AppHeaderMobileNav from '~/components/header/mobile/AppHeaderMobileNav';
 import AppHeaderCheckoutOrder from '~/components/header-checkout/AppHeaderCheckoutOrder';
@@ -61,7 +62,7 @@ export default {
     AppHeaderCheckoutOrder,
     AppHeaderMobileNav,
     AppHeaderMobileMenu,
-    AppMobileLocation,
+    // AppMobileLocation,
     AppMobileProfile,
     AppCart,
     AppCall,
@@ -116,7 +117,7 @@ header {
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 4;
+    z-index: 6;
     height: 50px;
     padding: 0 16px;
     background: #fff;

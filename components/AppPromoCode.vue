@@ -56,29 +56,29 @@ export default {
   methods: {
     ...mapActions({
       setPromoCode: 'cart/setPromoCode',
-      fetchCart: 'cart/fetchCart',
-
-      setSuccess() {
-        this.note = 'Promocode succesfully applied';
-        this.error = '';
-      },
-
-      setError() {
-        this.note = '';
-        this.error = 'Promocode has expired';
-      },
-
-      clear() {
-        this.success = false;
-        this.note = '';
-        this.error = '';
-      },
-
-      async setAndUpdate() {
-        this.setSuccess();
-        await this.fetchCart();
-      }
+      fetchCart: 'cart/fetchCart'
     }),
+
+    setSuccess() {
+      this.note = 'Promocode succesfully applied';
+      this.error = '';
+    },
+
+    setError() {
+      this.note = '';
+      this.error = 'Promocode has expired';
+    },
+
+    clear() {
+      this.success = false;
+      this.note = '';
+      this.error = '';
+    },
+
+    async setAndUpdate() {
+      this.setSuccess();
+      await this.fetchCart();
+    },
 
     async submitHandler() {
       if (!this.promoCode) {

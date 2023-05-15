@@ -18,7 +18,7 @@ main_run () {
     ${COMMAND_GIT} pull
     rm yarn.lock
     ${COMMAND_YARN} install
-    ${COMMAND_YARN} generate
+    ${COMMAND_YARN} build
     ${COMMAND_YARN} pm2:restart    
 }
 

@@ -4,7 +4,7 @@
       <svg-icon :name="getImg" class="cart__icon" />
       <app-counter v-if="isCartExist" :count="count" class="cart__counter" />
     </figure>
-    <div class="cart__figcaption">{{ isPrice }}</div>
+    <div class="cart__figcaption">{{ isTotal }}</div>
   </nuxt-link>
 </template>
 
@@ -28,7 +28,7 @@ export default {
     ...mapGetters({
       count: 'cart/getCount',
       isCartExist: 'cart/isCartExist',
-      price: 'cart/getPrice'
+      total: 'cart/getTotal'
     }),
 
     getImg() {
@@ -39,8 +39,8 @@ export default {
       return this.isCartExist ? '/basket' : '';
     },
 
-    isPrice() {
-      return this.isCartExist ? this.price : 'Basket';
+    isTotal() {
+      return this.isCartExist ? this.total : 'Basket';
     },
 
     classNames() {

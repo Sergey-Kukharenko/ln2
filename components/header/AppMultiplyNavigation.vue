@@ -6,7 +6,9 @@
           <app-logo />
         </div>
         <div class="multiply-navigation-list__item">
-          <app-location />
+          <app-trustbox />
+          <!--Временно скрыт-->
+          <!--<app-location />-->
         </div>
         <div class="multiply-navigation-list__item">
           <app-informer />
@@ -21,16 +23,18 @@
 
 <script>
 import AppLogo from '@/components/header/AppLogo';
-import AppLocation from '@/components/header/location/AppLocation';
+// import AppLocation from '@/components/header/location/AppLocation';
 import AppInformer from '@/components/header/AppInformer';
 import AppNavigationUser from '@/components/header/AppNavigationUser';
+import AppTrustbox from '~/components/ui/AppTrustbox.vue';
 
 export default {
   name: 'AppMenu',
 
   components: {
+    AppTrustbox,
     AppLogo,
-    AppLocation,
+    // AppLocation,
     AppInformer,
     AppNavigationUser
   }

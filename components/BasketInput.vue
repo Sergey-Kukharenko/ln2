@@ -48,6 +48,22 @@ export default {
       }
     },
 
+    theme: {
+      type: String,
+      default: 'grey',
+      validate(value) {
+        ['green', 'grey', 'turquoise'].includes(value);
+      }
+    },
+
+    advancedStylesTheme: {
+      type: String,
+      default: '',
+      validate(value) {
+        ['gift'].includes(value);
+      }
+    },
+
     placeholder: {
       type: String,
       default: ''
@@ -78,6 +94,8 @@ export default {
     classes() {
       return {
         [`basket-input--size-${this.size}`]: true,
+        [`basket-input--theme-${this.theme}`]: true,
+        [`basket-input--advanced-theme-${this.advancedStylesTheme}`]: this.advancedStylesTheme,
         [`basket-input--align-${this.align}`]: true,
         'basket-input--error': !!this.errors.length
       };
@@ -179,6 +197,38 @@ export default {
   &--size-medium {
     height: 36px;
     padding: 0 12px;
+  }
+
+  &--theme-grey {
+    background: $bg-grey;
+    color: $color-dark-grey;
+  }
+
+  &--theme-green {
+    background: $color-green;
+    color: #fff;
+  }
+
+  &--theme-turquoise {
+    color: #000;
+    background: #ebfaf0;
+  }
+
+  &--advanced-theme-gift {
+    height: 36px;
+    border-radius: 12.8571px;
+
+    @include gt-sm {
+      width: 72px;
+      font-size: 20px;
+      line-height: 26px;
+    }
+
+    @include lt-md {
+      width: auto;
+      font-size: 16px;
+      line-height: 26px;
+    }
   }
 
   &--size-large {

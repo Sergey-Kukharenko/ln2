@@ -23,14 +23,17 @@ const [, FILTER] = CATEGORY_PRODUCT_TYPES;
 
 export default {
   name: 'FilterPage',
+
   components: {
     AppNotice: hydrateWhenIdle(() => import('@/components/shared/AppNotice'))
   },
 
+  middleware: ['redirect'],
+
   data() {
     return {
       categoryProducts: dataCategoryProducts,
-      title: dataCategoryProducts.main.title
+      title: dataCategoryProducts?.main?.title ?? ''
     };
   },
 
@@ -47,12 +50,12 @@ export default {
 
   head() {
     return {
-      title: this.categorySeo.title,
+      title: this.categorySeo?.title,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.categorySeo.description
+          content: this.categorySeo?.description ?? ''
         }
       ]
     };

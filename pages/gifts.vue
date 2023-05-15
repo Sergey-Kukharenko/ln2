@@ -1,42 +1,90 @@
 <template>
   <div class="layout gifts">
-    <h2 class="gifts__title">{{ giftsTitle }}</h2>
+    <div class="gifts__container">
+      <div class="gifts__container-header">
+        <h2 class="gifts__container-title">{{ title }}</h2>
+        <nuxt-link v-if="$device.isMobileOrTablet" to="/basket" class="gifts__container-close">
+          {{ changeableText }}
+        </nuxt-link>
+      </div>
 
-    <div class="gifts__list">
-      <app-card-gift v-for="(gift, idx) in giftsList" :key="idx" :gift="gift" />
+      <app-list-gifts v-slot="slotProps" :list="list">
+        <app-card-gift :gift="{ ...slotProps }" />
+      </app-list-gifts>
     </div>
+    <nuxt-link to="/basket">
+      <app-button theme="green" class="gifts__button">{{ changeableText }}</app-button>
+    </nuxt-link>
   </div>
 </template>
 
 <script>
-import dataGifts from '~/data/gifts';
-import AppCardGift from '~/components/AppCardGift.vue';
-
+import { mapActions, mapGetters } from 'vuex';
+import AppListGifts from '~/components/gifts/AppListGifts.vue';
+import AppCardGift from '~/components/gifts/AppCardGift.vue';
+import AppButton from '~/components/shared/AppButton.vue';
 export default {
   name: 'GiftsPage',
 
   components: {
-    AppCardGift
+    AppListGifts,
+    AppCardGift,
+    AppButton
   },
 
-  layout: 'empty',
+  layout: (ctx) => (ctx.$device.isMobileOrTablet ? 'empty' : 'default'),
 
-  data() {
+  async fetch() {
+    await this.fetchGifts();
+  },
+
+  head() {
     return {
-      giftsTitle: dataGifts.main.title,
-      giftsList: dataGifts.list
+      title: this.seo?.title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.seo?.description
+        }
+      ]
     };
+  },
+
+  computed: {
+    ...mapGetters({
+      seo: 'gifts/getSeoGifts',
+      title: 'gifts/getTitleGifts',
+      list: 'gifts/getListGifts',
+      isBasketHasGifts: 'gifts/isBasketHasGifts'
+    }),
+
+    changeableText() {
+      return this.isBasketHasGifts ? 'Continue' : 'Skip';
+    }
+  },
+
+  methods: {
+    ...mapActions({ fetchGifts: 'gifts/fetchGifts' })
   }
 };
 </script>
 
 <style scoped lang="scss">
 .gifts {
-  &__title {
+  &__container-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &__container-title {
     font-family: $Literata;
     font-style: normal;
     letter-spacing: -0.01em;
     color: $color-dark-grey;
+    margin: 0;
 
     @include gt-sm {
       font-weight: 600;
@@ -51,17 +99,28 @@ export default {
     }
   }
 
-  &__list {
-    display: grid;
+  &__container-close {
+    @include lt-sm {
+      font-family: $golos-medium;
+      font-size: 14px;
+      line-height: 18px;
+      color: $color-green;
+    }
+  }
+
+  &__button {
+    position: sticky;
+    margin: auto;
+    z-index: 4;
 
     @include gt-sm {
-      grid-gap: 12px;
-      grid-template-columns: repeat(auto-fill, minmax(24%, 1fr));
+      width: 400px;
+      bottom: 27px;
     }
 
     @include lt-sm {
-      grid-gap: 8px;
-      grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+      width: calc(100% - 28px);
+      bottom: 12px;
     }
   }
 }

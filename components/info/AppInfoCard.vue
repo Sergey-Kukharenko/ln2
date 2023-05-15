@@ -34,7 +34,7 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        ['extended'].includes(value);
+        return ['extended'].includes(value);
       }
     }
   },

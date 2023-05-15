@@ -129,7 +129,7 @@ export default {
       };
 
       this.addToCart(payload);
-      this.$router.push({ name: 'basket' });
+      this.$router.push({ name: 'gifts' });
 
       this.gtmClearItemEvent();
       this.gtmAddToCartEvent();

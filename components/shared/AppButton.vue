@@ -15,7 +15,7 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['grey', 'green-whitely', 'grey-whitely', 'yellow', 'yellow-whitely'].includes(value);
+        return ['grey', 'green-whitely', 'grey-whitely', 'yellow', 'yellow-whitely', 'turquoise'].includes(value);
       }
     },
 
@@ -192,6 +192,22 @@ export default {
 
       &:active:not(:disabled) {
         box-shadow: 0 0 0 $bg-grey;
+      }
+    }
+  }
+
+  &--turquoise {
+    color: #000;
+    background: #ebfaf0;
+
+    @include gt-sm {
+      &:hover:not(:disabled) {
+        box-shadow: 2px 4px 7px darken(#ebfaf0, 10%);
+        cursor: pointer;
+      }
+
+      &:active:not(:disabled) {
+        box-shadow: 0 0 0 #ebfaf0;
       }
     }
   }

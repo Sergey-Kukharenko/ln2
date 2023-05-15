@@ -1,14 +1,14 @@
 <template>
   <div class="product-list">
     <basket-product
-      v-for="product in cart"
+      v-for="(product, idx) in cart"
       :id="product.offer_id"
-      :key="concatKeys(product.offer_id, product.title)"
+      :key="idx"
       :slug="product.offer_slug"
       :title="product.offer_title"
       :price="product.price"
       :size="product.title"
-      :qty="collection[concatKeys(product.offer_id, product.title)]"
+      :qty="product.quantity"
       :image="product.image"
       :is-liked="product.like"
       :real-id="product.offer_real_id"
@@ -25,15 +25,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      cart: 'cart/getUniqueArray',
-      collection: 'cart/getUniqueCollection'
+      cart: 'cart/getCart'
     })
-  },
-
-  methods: {
-    concatKeys(offerId, title) {
-      return `${offerId}|${title}`;
-    }
   }
 };
 </script>

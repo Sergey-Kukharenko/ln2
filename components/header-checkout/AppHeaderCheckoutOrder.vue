@@ -25,7 +25,7 @@ export default {
   name: 'AppHeaderCheckoutOrder',
 
   computed: {
-    ...mapGetters({ price: 'checkout/checkoutCost', positions: 'checkout/checkoutPositions' }),
+    ...mapGetters({ price: 'checkout/checkoutCost', positions: 'checkout/checkoutSplittedPositions' }),
 
     mappedPositionImages() {
       const positionCount = this.positions.length >= 2 ? 2 : 1;

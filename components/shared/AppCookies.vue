@@ -1,23 +1,21 @@
 <template>
-  <div class="cookies">
+  <div class="cookies" @click="setCookie">
     <div class="layout layout--horizontal">
       <div class="cookies-container">
         <div class="card">
-          <div class="figure">
+          <div class="figure" @click.stop>
             <img src="/images/cookies/cookies.png" class="figure__image" alt="cookies" />
           </div>
           <div class="figcaption">
             <div class="figcaption-container">
-              <div class="figcaption-container__title">Our cookie usage</div>
-              <div class="figcaption-container__text">
-                By clicking ACCEPT, you agree with our
-                <a href="/files/cookies-policy.pdf" target="_blank" class="link">Cookie Policy</a> and
-                <a href="/files/privacy-policy.pdf" target="_blank" class="link">Privacy Policy</a>
+              <div class="figcaption-container__title" @click.stop>Our cookie usage</div>
+              <div class="figcaption-container__text" @click.stop>
+                Using our site means you agree with our
+                <a href="/files/cookie-policy.pdf" target="_blank" class="link">Cookie Policy</a> and
+                <a href="/files/privacy-policy.pdf" target="_blank" class="link">Privacy Policy</a> (Click to read).
               </div>
             </div>
-            <app-button theme="yellow-whitely" size="x-lg" class="cookies-button" @click="setCookies"
-              >Accept</app-button
-            >
+            <app-button theme="yellow-whitely" size="x-lg" class="cookies-button">Close</app-button>
           </div>
         </div>
       </div>
@@ -34,8 +32,8 @@ export default {
   components: { AppButton },
 
   methods: {
-    setCookies() {
-      this.$emit('setCookies');
+    setCookie() {
+      this.$emit('setCookie');
     }
   }
 };

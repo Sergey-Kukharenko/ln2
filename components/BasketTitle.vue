@@ -16,12 +16,14 @@
         </div>
       </div>
     </div>
+    <app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />
   </div>
 </template>
 
 <script>
 export default {
   name: 'BasketTitle',
+  components: { AppTrustbox: () => import('~/components/ui/AppTrustbox.vue') },
   data() {
     return {
       reviews: 13074,
@@ -53,8 +55,11 @@ export default {
   &__label {
     font-family: $Literata;
     font-weight: 700;
-    font-size: 24px;
-    line-height: 32px;
+
+    @include gt-md {
+      font-size: 24px;
+      line-height: 32px;
+    }
 
     @include lt-lg {
       font-size: 20px;
@@ -120,6 +125,16 @@ export default {
   &__icon-star {
     width: 20px;
     height: 20px;
+  }
+}
+
+.trustbox {
+  @include gt-sm {
+    display: none;
+  }
+
+  @include lt-md {
+    margin: 0 auto 13px;
   }
 }
 </style>

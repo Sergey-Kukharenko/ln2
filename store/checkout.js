@@ -1,4 +1,6 @@
-import { setState } from '@/helpers';
+import { setState, useFixedSumByKey } from '@/helpers';
+
+const checkIntervalsForDisable = (intervals) => intervals.filter((interval) => !interval.disabled);
 
 export const state = () => ({
   checkout: null,
@@ -44,7 +46,8 @@ export const actions = {
   async fetchCheckoutIntervals({ commit }, params) {
     try {
       const { data } = await this.$axios.$get('/intervals/get-free-intervals-for-date/', { params });
-      commit('setState', { checkoutIntervals: data });
+      commit('setState', { checkoutIntervals: checkIntervalsForDisable(data) });
+      return checkIntervalsForDisable(data);
     } catch (err) {
       console.error(err);
     }
@@ -76,13 +79,7 @@ export const actions = {
 
   async setCheckoutInterval({ commit }, interval) {
     try {
-      const { data } = await this.$axios.$post('/order/interval/', interval);
-
-      if (interval?.time) {
-        return;
-      }
-
-      commit('setState', { checkoutIntervals: data });
+      await this.$axios.$post('/order/interval/', interval);
     } catch (err) {
       console.error(err);
     }
@@ -98,17 +95,19 @@ export const actions = {
 };
 
 export const getters = {
+  getCount: (state) => Number(useFixedSumByKey(state.checkout?.positions, 'quantity')),
   getCheckout: (state) => state.checkout,
-  getCheckoutIntervals: (state) => state.checkoutIntervals?.filter((interval) => !interval.disabled) || [],
+  getCheckoutIntervals: (state) => state.checkoutIntervals || [],
   isPaidOrder: (state) => state.isPaid,
   getPaymentMethod: (state) => state.paymentMethod,
-  checkoutPositions: (state) => state.checkout?.positions || [],
+  checkoutSplittedPositions: (state) =>
+    state.checkout?.positions.flatMap((e) => Array(e.quantity).fill({ ...e, quantity: 1 })) || [],
   checkoutCost: (state) => ({
     positionsCost: state.checkout?.positions_cost ?? 0,
     deliveryAmount: +state.checkout?.delivery_amount ? `£ ${state.checkout?.delivery_amount}` : 'Free',
-    totalSum: state.checkout?.total_sum ?? 0,
+    totalSum: state.checkout?.total_cost ?? 0,
     cashback: +state.checkout?.cashback ?? 0,
-    sale: +state.checkout?.sale ?? 0
+    sale: +state.checkout?.promo_code?.discount ? state.checkout?.promo_code?.discount : 0
   }),
   isClarified: (state) => state.checkout?.clarify_address
 };

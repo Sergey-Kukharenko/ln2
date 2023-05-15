@@ -26,7 +26,7 @@ const useSortArrayBy = (array, value, prop) => {
 };
 
 const useBreadCrumbs = (route) => {
-  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'about', 'delivery'];
+  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'about', 'delivery', 'gifts'];
   const ArrayOfReplacementPaths = ['product'];
   const replacePath = (array, path, newPath) => (array.includes(path) ? newPath : path);
 
@@ -97,8 +97,8 @@ const useArrayUniqueByKey = (arr, props = []) => [
 
 const useValueFromObject = (o, path) => path.split('.').reduce((o = {}, key) => o[key], o);
 
-const useFixedSumByKey = (arr, pathToValue, fixedNumber) =>
-  arr.reduce((acc, val) => acc + Number(useValueFromObject(val, pathToValue)), 0).toFixed(fixedNumber);
+const useFixedSumByKey = (arr, pathToValue, fixedNumber = 0) =>
+  arr.length && arr.reduce((acc, val) => acc + Number(useValueFromObject(val, pathToValue)), 0).toFixed(fixedNumber);
 
 const useSizedImage = ({ name, width = 60, height = 60 }) => {
   const size = width && height ? `${height}x${width}` : 'original';
@@ -130,12 +130,19 @@ const setState = (state, payload) => {
   });
 };
 
+const joinArgs = (...args) => args.join('|');
+
 const useScrollLockToggle = (value) =>
   value
     ? document.body.classList.add(NO_SCROLL_CLASS_NAME)
     : document.body.classList.contains(NO_SCROLL_CLASS_NAME)
     ? document.body.classList.remove(NO_SCROLL_CLASS_NAME)
     : document.body.classList.remove(NO_SCROLL_CLASS_NAME);
+
+const useGetPositionSizeText = (title = '', isBouquet = false) => {
+  const sizePreffix = isBouquet ? 'Bouquet size: ' : '';
+  return `${sizePreffix}${title}`;
+};
 
 export {
   useClassName,
@@ -159,5 +166,7 @@ export {
   useGeneratedNumsArray,
   useDebounce,
   setState,
-  useScrollLockToggle
+  useScrollLockToggle,
+  joinArgs,
+  useGetPositionSizeText
 };

@@ -7,12 +7,13 @@
     <Nuxt />
     <app-footer />
     <transition name="slide-fade">
-      <app-cookies v-if="isShowAppCookies" @setCookies="onSetCookies" />
+      <app-cookies v-if="isShowAppCookie" @setCookie="onSetCookie" />
     </transition>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import AppHeader from '@/components/header/AppHeader';
 import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile';
 import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs';
@@ -32,10 +33,10 @@ export default {
     AppNotification
   },
 
-  data() {
-    return {
-      isShowAppCookies: false
-    };
+  middleware: 'cookie',
+
+  computed: {
+    ...mapGetters({ isShowAppCookie: 'cookie/getCookie' })
   },
 
   created() {
@@ -43,13 +44,15 @@ export default {
       return;
     }
 
-    this.isShowAppCookies = !this.$cookies.get(OUR_COOKIE);
+    const payload = !this.$cookies.get(OUR_COOKIE);
+    payload && this.addCookie(payload);
   },
 
   methods: {
-    onSetCookies() {
-      this.$cookies.set(OUR_COOKIE, true);
-      this.isShowAppCookies = false;
+    ...mapActions({ addCookie: 'cookie/addCookie' }),
+
+    onSetCookie() {
+      this.addCookie(false);
     }
   }
 };

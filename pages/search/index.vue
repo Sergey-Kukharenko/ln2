@@ -10,6 +10,6 @@ import AppSearchBox from '~/components/header/search/AppSearchBox';
 export default {
   name: 'IndexPage',
   components: { AppSearchBox },
-  layout: 'custom'
+  layout: 'empty'
 };
 </script>

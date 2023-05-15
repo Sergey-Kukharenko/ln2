@@ -28,7 +28,6 @@
       <checkout-payment-button
         :price="checkoutPrice"
         :order-id="checkout?.id"
-        :positions="checkoutItems"
         :ready-to-pay="readyToPay"
         @submit="submitCheckout"
       />
@@ -58,28 +57,26 @@ export default {
     };
   },
 
-  async fetch({ store }) {
-    try {
-      await store.dispatch('checkout/fetchCheckout');
-    } catch (error) {
-      console.error(error);
-    }
-  },
-
   computed: {
     ...mapGetters({
       checkout: 'checkout/getCheckout',
-      checkoutItems: 'checkout/checkoutPositions',
       checkoutPrice: 'checkout/checkoutCost',
       isClarified: 'checkout/isClarified',
+      cart: 'cart/getCart'
+    }),
 
-      cart: 'cart/getUniqueArray',
-      collection: 'cart/getUniqueCollection',
-      orderDetails: 'order/getOrder'
-    })
+    isStatusPayment() {
+      return this.checkout?.status === 'PAYMENT';
+    }
   },
 
-  mounted() {
+  async mounted() {
+    await this.fetchCheckout();
+
+    if (this.isStatusPayment && this.checkout?.id) {
+      await this.$router.push({ name: 'order-id', params: { id: this.checkout.id } });
+    }
+
     this.readyToPay = false;
 
     this.gtmClearItemEvent();
@@ -91,10 +88,20 @@ export default {
       setCheckoutToPay: 'checkout/setCheckoutToPay'
     }),
 
+    async fetchCheckout() {
+      try {
+        await this.$store.dispatch('checkout/fetchCheckout');
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     async submitCheckout() {
       const { success } = await this.setCheckoutToPay();
 
       this.readyToPay = success;
+
+      await this.$store.dispatch('cart/fetchCart');
     },
 
     gtmBeginCheckoutEvent() {
@@ -105,7 +112,7 @@ export default {
         item_brand: 'myflowers',
         item_category: item.category_name,
         item_variant: item.title,
-        quantity: this.collection[`${item.offer_id}|${item.title}`]
+        quantity: item.quantity
       }));
 
       this.$gtm.push({

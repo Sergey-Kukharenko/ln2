@@ -3,8 +3,7 @@
     <section class="basket-container__layout basket-container__wrapper">
       <div class="basket-container__main">
         <basket-product-list />
-        <!--Временно скрыт-->
-        <!--<app-promo-code />-->
+        <app-promo-code />
       </div>
       <basket-order />
     </section>
@@ -93,7 +92,7 @@ export default {
   }
 
   &__promotions {
-    margin-bottom: 40px;
+    margin: 40px 0;
   }
 }
 </style>

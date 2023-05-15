@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       categoryProducts: dataCategoryProducts,
-      title: dataCategoryProducts.main.title
+      title: dataCategoryProducts?.main?.title ?? ''
     };
   },
 
@@ -47,12 +47,12 @@ export default {
 
   head() {
     return {
-      title: this.categorySeo.title,
+      title: this.categorySeo?.title,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.categorySeo.description
+          content: this.categorySeo?.description ?? ''
         }
       ]
     };

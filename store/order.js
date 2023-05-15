@@ -1,4 +1,4 @@
-import { setState, useArrayUniqueByKey, useCollectionUniqueByKey } from '@/helpers';
+import { setState, useFixedSumByKey } from '@/helpers';
 
 export const state = () => ({
   order: null
@@ -16,12 +16,21 @@ export const actions = {
     } catch (err) {
       console.error(err);
     }
+  },
+
+  async createOrder(_) {
+    try {
+      await this.$axios.$post(`/order/`);
+    } catch (err) {
+      console.error(err);
+    }
   }
 };
 
 export const getters = {
+  getCount: (state) => Number(useFixedSumByKey(state.order?.positions, 'quantity')),
   getOrder: (state) => state.order,
-  getUniqueCollection: (state) => useCollectionUniqueByKey(state.order.positions, ['offer_id', 'title']),
-  getUniqueArray: (state) => useArrayUniqueByKey(state.order.positions, ['offer_id', 'title']),
-  getUniqueCount: (state, getter) => getter.getUniqueArray?.length
+  orderPositions: (state) => state.order?.positions || [],
+  orderSplittedPositions: (state) =>
+    state.order?.positions.flatMap((e) => Array(e.quantity).fill({ ...e, quantity: 1 })) || []
 };

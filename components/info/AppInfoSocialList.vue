@@ -1,6 +1,6 @@
 <template>
   <div class="social-list">
-    <a v-for="(item, idx) in list" :key="idx" class="social-list__item">
+    <a v-for="(item, idx) in list" :key="idx" :href="item.url" target="_blank" class="social-list__item">
       <svg-icon :name="item.icon" />
     </a>
   </div>

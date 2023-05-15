@@ -10,6 +10,7 @@ export default {
     basePureUrl: process.env.BASE_PURE_URL,
     baseUrl: process.env.BASE_URL,
     host: process.env.HOST,
+    domain: process.env.DOMAIN,
     port: process.env.PORT,
     fileUrl: process.env.FILE_URL,
     fileCategoriesUrl: process.env.FILE_CATEGORIES_URL,
@@ -18,7 +19,11 @@ export default {
     paypalClientId: process.env.PAYPAL_CLIENT_ID,
     woosmapPublicKey: process.env.WOOSMAP_PUBLIC_KEY,
     idealPostcodesAutocompleteUrl: process.env.IDEAL_POSTCODES_AUTOCOMPLETE_URL,
-    idealPostcodesKey: process.env.IDEAL_POSTCODES_KEY
+    idealPostcodesKey: process.env.IDEAL_POSTCODES_KEY,
+    trustpilotTemplateId: process.env.TRUSTPILOT_TEMPLATE_ID,
+    stripeTimeoutPayT: process.env.STRIPE_TIMEOUT_PAYT,
+    AWIN_URL: process.env.AWIN_URL,
+    AWIN_ID: process.env.AWIN_ID
   },
 
   publicRuntimeConfig: {
@@ -49,6 +54,12 @@ export default {
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200;0,7..72,300;0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;0,7..72,800;0,7..72,900;1,7..72,200;1,7..72,300;1,7..72,400;1,7..72,500;1,7..72,600;1,7..72,700;1,7..72,800;1,7..72,900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet'
+      }
+    ],
+    script: [
+      {
+        src: `${process.env.DWIN_URL}${process.env.AWIN_ID}.js`,
+        defer: 'defer'
       }
     ]
   },
@@ -115,6 +126,13 @@ export default {
         /* module options */
         pixelId: process.env.FACEBOOK_PIXEL_ID,
         autoPageView: true
+      }
+    ],
+    [
+      'nuxt-trustbox-module',
+      {
+        businessunitId: process.env.TRUSTPILOT_BUSINESSUNIT_ID,
+        businessunitName: process.env.TRUSTPILOT_BUSINESSUNIT_NAME
       }
     ]
   ],

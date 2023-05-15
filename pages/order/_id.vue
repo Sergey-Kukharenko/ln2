@@ -2,7 +2,7 @@
   <main class="order">
     <section class="order__wrapper">
       <div class="order__main">
-        <order-title :is-paid="isPaid" />
+        <order-title :is-paid="isPaid" :is-failed="isFailed" :in-process="isPaymentInProcess" />
         <order-panel
           title="Order Details"
           :icon="detailsIcon"
@@ -23,9 +23,14 @@
               {{ deliveryAmount }}
             </div>
           </order-panel>
-          <order-panel v-if="orderItems.length" class="order-composition" title="Order composition" icon="flower-box">
+          <order-panel
+            v-if="orderSplittedItems.length"
+            class="order-composition"
+            title="Order composition"
+            icon="flower-box"
+          >
             <div class="order-items">
-              <div v-for="(item, index) in orderItems" :key="index" class="order-items__item item">
+              <div v-for="(item, index) in orderSplittedItems" :key="index" class="order-items__item item">
                 <div class="item__picture">
                   <img
                     :src="useSizedImage({ name: item.image.filename })"
@@ -33,10 +38,13 @@
                     :alt="item.image.alt_text"
                   />
                 </div>
-                <div class="item__text">{{ item.title }}</div>
+                <div class="item__text">{{ item.offer_title }}</div>
               </div>
             </div>
           </order-panel>
+          <div v-if="isWhatsappButtonVisible" class="order-whatsapp">
+            <order-whatsapp-button />
+          </div>
           <div class="order-total">
             <div class="order-total__item">Total</div>
             <div class="order-total__item">£ {{ totalSum }}</div>
@@ -82,16 +90,15 @@
             </div> -->
           </template>
         </order-panel>
-        <order-panel v-else title="Payment" icon="money-circle-outline">
-          <p>By Card Online</p>
-        </order-panel>
         <order-payment-button
-          v-if="!isPaid"
+          v-if="isPaymentButtonVisible"
           :payment-method="paymentMethod"
-          :positions="orderItems"
           :order-id="orderId"
           :fast-delivery-key="fastDeliveryKey"
         />
+        <order-panel v-else title="Payment" icon="money-circle-outline">
+          <p>By Card Online</p>
+        </order-panel>
         <!-- <div v-if="isPaid" class="payment__promo">
           <order-promo />
         </div> -->
@@ -119,9 +126,10 @@ import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 import { useSizedImage } from '~/helpers';
 
 import paymentMethodsData from '~/data/payment-methods';
-import gtmClear from '~/mixins/gtmClear.vue';
+import gtmClear from '~/mixins/gtmClear';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import { AUTH_WITHOUT_SMS_COOKIE } from '~/constants';
+import { RELOAD_ORDER_DELAY, AUTH_WITHOUT_SMS_COOKIE } from '~/constants';
+import { PAYMENT_STATUS_MAP } from '~/constants/payment';
 
 const [STRIPE_METHOD] = paymentMethodsData;
 
@@ -132,7 +140,8 @@ export default {
     OrderDetail,
     AppSelect,
     AppRadio,
-    AppModal
+    AppModal,
+    OrderWhatsappButton: () => import('~/components/OrderWhatsappButton')
   },
 
   mixins: [gtmClear],
@@ -145,7 +154,7 @@ export default {
 
       paymentMethod: { ...STRIPE_METHOD },
       currModal: '',
-      isDetailVisible: false,
+      isDetailVisible: true,
       isModalVisible: false
     };
   },
@@ -155,8 +164,8 @@ export default {
   computed: {
     ...mapGetters({
       orderDetails: 'order/getOrder',
-      orderCart: 'order/getUniqueArray',
-      orderCollection: 'order/getUniqueCollection'
+      orderSplittedItems: 'order/orderSplittedPositions',
+      orderItems: 'order/orderPositions'
     }),
 
     detailsIcon() {
@@ -183,16 +192,20 @@ export default {
       return +this.orderDetails?.delivery_amount ? `£ ${this.orderDetails?.delivery_amount}` : 'Free';
     },
 
-    orderItems() {
-      return this.orderDetails?.positions || [];
+    totalSum() {
+      return this.orderDetails?.total_cost ?? 0;
     },
 
-    totalSum() {
-      return this.orderDetails?.total_sum ?? 0;
+    isFailed() {
+      return !!(this.orderDetails?.status === PAYMENT_STATUS_MAP.failPaid);
     },
 
     isPaid() {
-      return !!this.orderDetails?.is_paid;
+      return !!(this.orderDetails?.status === PAYMENT_STATUS_MAP.paid);
+    },
+
+    isAwaitingPayment() {
+      return !!(this.orderDetails?.status === PAYMENT_STATUS_MAP.payment);
     },
 
     orderId() {
@@ -201,22 +214,61 @@ export default {
 
     fastDeliveryKey() {
       return this.orderDetails?.fast_delivery ? this.orderDetails?.fast_delivery_stripe_key : '';
+    },
+
+    isPaymentInProcess() {
+      return Boolean(this.$route.query.payment_intent && !this.isPaid);
+    },
+
+    isPaymentButtonVisible() {
+      return (!this.isPaid && !this.isPaymentInProcess) || this.isFailed;
+    },
+
+    isWhatsappButtonVisible() {
+      return (this.isAwaitingPayment || this.isFailed) && !this.isPaymentInProcess && !this.isPaid;
     }
   },
 
   async mounted() {
-    await Promise.all([
-      this.$store.dispatch('order/fetchOrder', this.$route.params.id),
-      this.$store.dispatch('cart/fetchCart'),
-      this.$store.dispatch('user/fetchUser')
-    ]);
+    await this.initData();
+
+    if (!this.orderId) {
+      this.$router.push({ name: 'index' });
+
+      return;
+    }
 
     this.initPaymentMethod();
+
+    // if (!this.isPaymentInProcess) {
+    //   return;
+    // }
 
     if (this.isPaid) {
       this.gtmClearItemEvent();
       this.gtmPurchaseEvent();
+
+      this.addAwinImage();
+      this.addAwinScript();
     }
+
+    let step = 1;
+
+    const tick = async () => {
+      step += 1;
+
+      if (this.isPaid || !RELOAD_ORDER_DELAY[step]) {
+        clearTimeout(timerId);
+
+        return;
+      }
+
+      await this.initData();
+
+      setTimeout(tick, RELOAD_ORDER_DELAY[step]);
+    };
+
+    const timerId = setTimeout(tick, RELOAD_ORDER_DELAY[step]);
   },
 
   beforeDestroy() {
@@ -227,6 +279,61 @@ export default {
 
   methods: {
     useSizedImage,
+
+    async initData() {
+      await this.$store.dispatch('order/fetchOrder', this.$route.params.id);
+
+      if (!this.isPaid) {
+        return;
+      }
+
+      this.gtmClearItemEvent();
+      this.gtmPurchaseEvent();
+    },
+
+    addAwinImage() {
+      const img = document.createElement('img');
+      const url = `${process.env.AWIN_URL}sread.img`;
+      const params = new URLSearchParams({
+        tt: 'ns',
+        tv: '2',
+        merchant: process.env.AWIN_ID,
+        amount: this.orderDetails.total_cost,
+        cr: this.orderDetails.currency,
+        ref: this.orderDetails.id,
+        parts: `DEFAULT:${this.orderDetails.total_cost}`,
+        vc: '',
+        ch: 'aw',
+        testmode: '0'
+      });
+
+      img.src = decodeURIComponent(`${url}?${params}`);
+      img.style.cssText = `width: 0; height: 0; border: 0;`;
+      const body = document.body;
+      body.appendChild(img);
+    },
+
+    addAwinScript() {
+      const head = document.getElementsByTagName('head')[0];
+      const script = document.createElement('script');
+
+      script.innerHTML = `
+        var AWIN = {
+          Tracking: {
+            Sale: {
+              amount: "${this.orderDetails.total_cost}",
+              orderRef: "${this.orderDetails.id}",
+              parts: "DEFAULT: ${this.orderDetails.total_cost}",
+              voucher: "",
+              currency: "${this.orderDetails.currency}",
+              test: "0",
+              channel: "aw"
+            }
+          }
+        };
+        `;
+      head.appendChild(script);
+    },
 
     onClickPaymentSystem({ label, logo, name }, close, setLabel) {
       setLabel(label);
@@ -273,14 +380,14 @@ export default {
     },
 
     gtmPurchaseEvent() {
-      const items = this.orderCart.map((item) => ({
+      const items = this.orderItems.map((item) => ({
         item_name: item.offer_title,
         item_id: item.offer_real_id,
         price: item.price,
         item_brand: 'myflowers',
         item_category: item.base_category_name,
         item_variant: item.title,
-        quantity: this.orderCollection[`${item.offer_id}|${item.title}`]
+        quantity: item.quantity
       }));
 
       this.$gtm.push({
@@ -350,6 +457,17 @@ export default {
 
     @include lt-lg {
       gap: 16px;
+    }
+
+    .order-whatsapp {
+      @include gt-sm {
+        display: none;
+      }
+
+      @include lt-md {
+        border-top: 1px solid #eaeaea;
+        padding-top: 16px;
+      }
     }
 
     .order-total {

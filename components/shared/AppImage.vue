@@ -14,7 +14,7 @@
       @error="onError"
     />
     <svg-icon v-if="isError" class="app-image__no-image" name="no-image" />
-    <div v-if="isLoading" v-loading="true" class="app-image__loader" />
+    <div v-if="isLoading" class="app-image__loader" />
   </figure>
 </template>
 
@@ -152,8 +152,9 @@ export default {
 
   &__img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     opacity: 1;
-    backdrop-filter: blur(0);
     transition: opacity 0.25s ease;
 
     &.loading {

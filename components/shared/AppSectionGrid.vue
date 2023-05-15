@@ -4,7 +4,7 @@
       <slot v-bind="{ ...slide }"></slot>
     </div>
 
-    <div v-if="theme" class="grid__item">
+    <div v-if="isCustomTheme" class="grid__item">
       <app-card-show-more :prefix="prefix" :slug="slug" :rest="restOfSlides" />
     </div>
   </div>
@@ -15,7 +15,9 @@ import AppCardShowMore from '~/components/shared/AppCardShowMore';
 
 export default {
   name: 'AppSectionGrid',
+
   components: { AppCardShowMore },
+
   props: {
     slides: {
       type: Array,
@@ -24,7 +26,10 @@ export default {
 
     theme: {
       type: String,
-      default: ''
+      default: '',
+      validate(value) {
+        return ['custom'].includes(value);
+      }
     },
 
     stretch: {
@@ -57,6 +62,10 @@ export default {
       };
     },
 
+    isCustomTheme() {
+      return this.theme === 'custom';
+    },
+
     restOfSlides() {
       return this.total - this.slides.length;
     }
@@ -85,10 +94,6 @@ export default {
   &--custom {
     .grid__item {
       @include lt-md {
-        // &:nth-last-child(2) {
-        //   display: none;
-        // }
-
         &:last-child {
           grid-column: span 2;
           margin-top: 8px;

@@ -5,7 +5,7 @@
       <div v-if="orderItems.length" class="panel__items items">
         <div class="items__top">
           <div class="items__top-column" @click="toggleItems">
-            {{ orderItems.length }} items <svg-icon name="arrow-grey" class="items__icon" />
+            {{ itemsCount }} <svg-icon name="arrow-grey" class="items__icon" />
           </div>
           <div class="items__top-column items__price">£ {{ orderCost.positionsCost }}</div>
         </div>
@@ -18,13 +18,16 @@
                 :alt="item.image.alt_text"
               />
             </div>
-            <div class="goods__item-title">{{ item.title }}</div>
+            <div class="goods__item-title">
+              {{ item.offer_title }}
+              <small>{{ useGetPositionSizeText(item.title, item.is_bouquet) }}</small>
+            </div>
           </div>
         </div>
       </div>
       <div class="panel__discount">
         <div v-if="orderCost.sale" class="panel__discount-item">
-          Sale <span class="sale">- £ {{ orderCost.sale }}</span>
+          Discount <span class="sale">- £ {{ orderCost.sale }}</span>
         </div>
         <div class="panel__discount-item">
           Delivery <span class="delivery">{{ orderCost.deliveryAmount }}</span>
@@ -36,9 +39,10 @@
         </div>
         <div v-if="orderCost.cashback" class="panel__total-item cashback">
           Cashback
-          <span class="cashback__price"
-            ><svg-icon class="cashback__icon" name="coins" />£ {{ orderCost.cashback }}</span
-          >
+          <span class="cashback__price">
+            <svg-icon class="cashback__icon" name="coins" />
+            £ {{ orderCost.cashback }}
+          </span>
         </div>
       </div>
       <!-- <div class="panel__bottom"> -->
@@ -58,10 +62,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import AppButton from '@/components/shared/AppButton';
 import OrderCancel from '@/components/OrderCancel';
 
-import { useSizedImage } from '~/helpers';
+import { useSizedImage, useGetPositionSizeText } from '~/helpers';
 
 export default {
   name: 'OrderDetail',
@@ -77,25 +83,30 @@ export default {
   },
 
   computed: {
-    orderItems() {
-      return this.$store.getters['order/getOrder']?.positions ?? [];
+    ...mapGetters({
+      orderPositionsCount: 'order/getCount',
+      getOrder: 'order/getOrder',
+      orderItems: 'order/orderSplittedPositions'
+    }),
+
+    itemsCount() {
+      return this.orderPositionsCount > 1 ? `${this.orderPositionsCount} items` : `${this.orderPositionsCount} item`;
     },
 
     orderCost() {
       return {
-        positionsCost: this.$store.getters['order/getOrder']?.positions_cost ?? 0,
-        deliveryAmount: +this.$store.getters['order/getOrder']?.delivery_amount
-          ? `£ ${this.$store.getters['order/getOrder']?.delivery_amount}`
-          : 'Free',
-        totalSum: this.$store.getters['order/getOrder']?.total_sum ?? 0,
-        cashback: +this.$store.getters['order/getOrder']?.cashback ?? 0,
-        sale: +this.$store.getters['order/getOrder']?.sale ?? 0
+        positionsCost: this.getOrder?.positions_cost ?? 0,
+        deliveryAmount: +this.getOrder?.delivery_amount ? `£ ${this.getOrder?.delivery_amount}` : 'Free',
+        totalSum: this.getOrder?.total_cost ?? 0,
+        cashback: +this.getOrder?.cashback ?? 0,
+        sale: +this.getOrder?.promo_code?.discount ? this.getOrder?.promo_code?.discount : 0
       };
     }
   },
 
   methods: {
     useSizedImage,
+    useGetPositionSizeText,
 
     toggleItems() {
       this.itemsVisibility = !this.itemsVisibility;
@@ -318,6 +329,11 @@ export default {
             color: $color-dark-grey;
 
             max-width: 200px;
+
+            small {
+              display: block;
+              color: $color-grey;
+            }
           }
         }
       }

@@ -21,7 +21,7 @@
 
       <app-input
         v-model="form.phone.value"
-        placeholder="Your phone"
+        placeholder="Recipient phone"
         pattern="[0-9]*"
         name="search"
         type=""

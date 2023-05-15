@@ -13,17 +13,17 @@
 }
 
 @font-face {
-  font-family: 'Golos-Black';
-  src: url('../fonts/Golos-Text_Black.woff2') format('woff2'), url('../fonts/Golos-Text_Black.woff') format('woff');
-  font-weight: 900;
-  font-style: normal;
-}
-
-@font-face {
   font-family: 'Golos-DemiBold';
   src: url('../fonts/Golos-Text_DemiBold.woff2') format('woff2'),
     url('../fonts/Golos-Text_DemiBold.woff') format('woff');
   font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Golos-Bold';
+  src: url('../fonts/Golos-Text_Bold.woff2') format('woff2'), url('../fonts/Golos-Text_Bold.woff') format('woff');
+  font-weight: 700;
   font-style: normal;
 }
 

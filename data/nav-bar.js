@@ -6,6 +6,7 @@ const desktopNavbar = [
       width: 20,
       height: 20
     },
+    color: '',
     hasSubLevel: true
   },
   {
@@ -26,6 +27,7 @@ const desktopNavbar = [
       width: 17.33,
       height: 16.67
     },
+    color: '',
     hasSubLevel: true
   },
   {
@@ -35,6 +37,7 @@ const desktopNavbar = [
       width: 16,
       height: 16
     },
+    color: '',
     hasSubLevel: true
   },
   {
@@ -44,7 +47,18 @@ const desktopNavbar = [
       width: 10.31,
       height: 16
     },
+    color: '',
     hasSubLevel: true
+  },
+  {
+    title: 'Gifts',
+    icon: 'gift',
+    style: {
+      width: 16,
+      height: 16
+    },
+    to: '/gifts',
+    hasSubLevel: false
   },
   {
     title: 'Sales',
@@ -53,6 +67,7 @@ const desktopNavbar = [
       width: 14,
       height: 14
     },
+    color: 'pink',
     hasSubLevel: true
   }
 ];
@@ -94,6 +109,13 @@ const mobileNavbar = [
     title: 'Roses',
     icon: 'rose',
     hasSubLevel: true
+  },
+  {
+    title: 'Gifts',
+    type: 'gifts',
+    icon: 'gift',
+    hasSubLevel: false,
+    to: '/gifts'
   },
   {
     type: 'sales',

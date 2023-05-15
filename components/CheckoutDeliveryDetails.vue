@@ -5,7 +5,7 @@
         <div class="delivery-details__search-box" :class="{ active: isSuggestionsExist }">
           <app-input
             :value="addressForm.address1"
-            autocomplete="off"
+            autocomplete="chrome-off"
             :placeholder="searchInputPlaceholder"
             size="x-large"
             class="delivery-details__address-input"
@@ -56,6 +56,7 @@
           <div v-if="isFullAddressFormVisible" class="delivery-details__extra-fields">
             <app-input
               :value="addressForm.address2"
+              autocomplete="chrome-off"
               placeholder="Address line 2"
               size="x-large"
               class="delivery-details__address-input"
@@ -74,6 +75,7 @@
             </app-input>
             <app-input
               :value="addressForm.postalCode"
+              autocomplete="chrome-off"
               placeholder="Postcode"
               size="x-large"
               class="delivery-details__address-input"
@@ -92,6 +94,7 @@
             </app-input>
             <app-input
               :value="addressForm.comment"
+              autocomplete="chrome-off"
               placeholder="Comment for courier"
               size="x-large"
               class="delivery-details__address-input"

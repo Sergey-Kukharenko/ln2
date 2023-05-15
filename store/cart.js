@@ -1,7 +1,12 @@
-import { setState, useArrayUniqueByKey, useCollectionUniqueByKey, useFixedSumByKey } from '~/helpers';
+import { setState, useFixedSumByKey } from '~/helpers';
 
 export const state = () => ({
-  cart: [],
+  cart: {
+    positions: [],
+    promo_code: { code: '', discount: '' },
+    position_cost: '',
+    total_cost: ''
+  },
   pending: false
 });
 
@@ -17,21 +22,21 @@ export const actions = {
   async fetchCart({ commit }) {
     try {
       const { data } = await this.$axios.$get('/basket/');
-      commit('setCart', data.positions);
+      commit('setCart', data);
     } catch (e) {
       console.error(e);
     }
   },
 
   async addToCart({ state, commit }, { productId, positionSlug }) {
-    const isCartEmpty = !state.cart.length;
+    const isCartEmpty = !state.cart.positions.length;
 
     try {
       if (isCartEmpty) {
         commit('setState', { pending: true });
       }
       const { data } = await this.$axios.$post(`/basket/${productId}/${positionSlug}`);
-      commit('setCart', data.positions);
+      commit('setCart', data);
     } catch (e) {
       console.error(e);
     } finally {
@@ -42,7 +47,7 @@ export const actions = {
   async removeFromCart({ commit }, { productId, positionSlug }) {
     try {
       const { data } = await this.$axios.$delete(`/basket/${productId}/${positionSlug}`);
-      commit('setCart', data.positions);
+      commit('setCart', data);
     } catch (e) {
       console.error(e);
     }
@@ -58,11 +63,12 @@ export const actions = {
 };
 
 export const getters = {
-  getCount: (state) => state.cart?.length,
-  isCartExist: (state) => !!state.cart?.length,
+  getCount: (state) => Number(useFixedSumByKey(state.cart?.positions, 'quantity')),
+  getCart: (state) => state.cart?.positions,
+  isCartExist: (state) => !!state.cart?.positions?.length,
   cartPending: (state) => state.pending,
-  getPrice: (state) => useFixedSumByKey(state.cart, 'price', 2),
-  getUniqueCollection: (state) => useCollectionUniqueByKey(state.cart, ['offer_id', 'title']),
-  getUniqueArray: (state) => useArrayUniqueByKey(state.cart, ['offer_id', 'title']),
-  getUniqueCount: (state, getter) => getter.getUniqueArray?.length
+  getCost: (state) => state.cart.position_cost,
+  getTotal: (state) => state.cart.total_cost,
+  getDiscount: (state) => Number(state.cart.promo_code.discount),
+  isDiscountExist: (state) => Number(state.cart.promo_code.discount) > 0
 };

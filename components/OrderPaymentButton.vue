@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="payment__wrapper">
-      <div v-if="isMounted" class="payment__button">
+      <div class="payment__button">
         <!-- <template v-if="isPaypalPaymentMethod">
           <paypal-checkout
             env="sandbox"
@@ -15,16 +15,10 @@
           </paypal-checkout>
         </template> -->
         <template v-if="isStripePaymentMethod">
-          <stripe-checkout
-            ref="checkoutRef"
-            mode="payment"
-            :pk="$options.STRIPE.publicKey"
-            :line-items="stripeMappedProductItems"
-            :success-url="stripeRedirectLinks.successURL"
-            :cancel-url="stripeRedirectLinks.cancelURL"
-            @loading="(v) => (loading = v)"
-          />
-          <app-button theme="green" stretch="full" @click="payByStripe">Go to payment</app-button>
+          <app-button theme="green" stretch="full" :class="{ disabled: loading }" @click="payByStripe">
+            <span v-if="!loading">Go to payment</span>
+            <app-loading-dots v-else />
+          </app-button>
         </template>
       </div>
     </div>
@@ -33,25 +27,16 @@
 
 <script>
 import AppButton from '~/components/shared/AppButton';
-
-import {
-  STRIPE
-  // PAYPAL
-} from '~/constants/payment';
-import { useObjectUniqueByKey } from '~/helpers';
 import paymentMethodsData from '~/data/payment-methods';
 
-const [
-  STRIPE_METHOD
-  // PAYPAL_METHOD
-] = paymentMethodsData;
+const [STRIPE_METHOD] = paymentMethodsData;
 
 export default {
   name: 'OrderPaymentButton',
 
   components: {
     AppButton,
-    StripeCheckout: () => import('@vue-stripe/vue-stripe').then(({ StripeCheckout }) => StripeCheckout)
+    AppLoadingDots: () => import('@/components/shared/AppLoadingDots')
     // PaypalCheckout: () => import('vue-paypal-checkout')
   },
 
@@ -59,11 +44,6 @@ export default {
     paymentMethod: {
       type: Object,
       default: () => STRIPE_METHOD
-    },
-
-    positions: {
-      type: Array,
-      default: () => []
     },
 
     orderId: {
@@ -79,61 +59,24 @@ export default {
 
   data() {
     return {
-      isMounted: false
+      loading: false
     };
   },
 
-  STRIPE,
-  // PAYPAL,
-
   computed: {
-    // isPaypalPaymentMethod() {
-    //   return this.paymentMethod.name === PAYPAL_METHOD.name;
-    // },
-
     isStripePaymentMethod() {
       return this.paymentMethod.name === STRIPE_METHOD.name;
-    },
-
-    stripeMappedProductItems() {
-      const externalPositionKeys = this.positions.map((p) => ({
-        external_key: p.external_keys.stripe
-      }));
-      const uniquePositions = useObjectUniqueByKey(externalPositionKeys, 'external_key');
-      const mappedItems = Object.keys(uniquePositions).map((key) => ({
-        price: key,
-        quantity: uniquePositions[key]
-      }));
-
-      if (this.fastDeliveryKey) {
-        mappedItems.push({
-          price: this.fastDeliveryKey,
-          quantity: 1
-        });
-      }
-
-      return mappedItems;
-    },
-
-    pathToStripe() {
-      return `${process.env.baseUrl}/payment/${this.orderId}/stripe`;
-    },
-
-    stripeRedirectLinks() {
-      return {
-        successURL: `${this.pathToStripe}/success/`,
-        cancelURL: `${this.pathToStripe}/cancel/`
-      };
     }
   },
 
-  mounted() {
-    this.isMounted = true;
+  beforeDestroy() {
+    this.loading = false;
   },
 
   methods: {
     payByStripe() {
-      this.$refs.checkoutRef.redirectToCheckout();
+      this.loading = true;
+      this.$router.push({ name: 'payment-stripe' });
     },
 
     paypalPaymentCompleted(response) {
@@ -148,5 +91,9 @@ export default {
   position: relative;
   z-index: 1;
   width: 100%;
+
+  .disabled {
+    pointer-events: none;
+  }
 }
 </style>

@@ -39,20 +39,20 @@ const SOMETHING_IMPORTANT = {
         text: 'support@myflowers.co.uk'
       },
       title: 'Email',
-      text: 'If you hesitate to call, write, we will be happy to answer'
+      text: 'If you hesitate to call - write us, we will be happy to answer'
     },
     {
       social: [
         {
-          url: '',
+          url: 'https://www.facebook.com/MyFlowersUK/?mibextid=ZbWKwL',
           icon: 'social-facebook'
         },
+        // {
+        //   url: '',
+        //   icon: 'social-twitter'
+        // },
         {
-          url: '',
-          icon: 'social-twitter'
-        },
-        {
-          url: '',
+          url: 'https://instagram.com/myflowers.co.uk?igshid=YmMyMTA2M2Y=',
           icon: 'social-instagram'
         }
       ],

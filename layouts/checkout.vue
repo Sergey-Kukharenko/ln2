@@ -4,20 +4,20 @@
     <app-header-checkout v-else />
     <Nuxt />
     <footer>
-      <app-footer-bottom class="layout" />
+      <checkout-footer-bottom class="layout" />
     </footer>
   </div>
 </template>
 <script>
 import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile';
 import AppHeaderCheckout from '~/components/header-checkout/AppHeaderCheckout';
-import AppFooterBottom from '~/components/footer/AppFooterBottom';
+import CheckoutFooterBottom from '~/components/CheckoutFooterBottom';
 
 export default {
   name: 'CheckoutLayout',
 
   components: {
-    AppFooterBottom,
+    CheckoutFooterBottom,
     AppHeaderMobile,
     AppHeaderCheckout
   },
