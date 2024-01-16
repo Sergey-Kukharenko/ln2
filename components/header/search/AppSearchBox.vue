@@ -53,7 +53,6 @@ import vClickOutside from 'v-click-outside';
 import AppSection from './AppSection';
 // import AppList from './AppList';
 import siteData from '@/data/site-data';
-import AppButton from '~/components/shared/AppButton';
 import AppSectionGrid from '~/components/shared/AppSectionGrid.vue';
 import AppCard from '~/components/shared/AppCard.vue';
 import AppNotFound from '~/components/header/search/AppNotFound';
@@ -70,7 +69,7 @@ export default {
     AppSection,
     AppNotFound,
     // AppList,
-    AppButton,
+    AppButton: () => import('~/components/shared/AppButton'),
     AppSectionGrid,
     AppCard
   },

@@ -1,16 +1,14 @@
 <template>
-  <div v-if="faq.email" class="faq layout">
-    <div class="faq-mobile-title">Answers to popular questions</div>
+  <div class="faq layout">
+    <div class="faq-mobile-title">Frequently Asked Questions</div>
     <div class="faq__row">
       <div class="faq__col head-info">
-        <div class="head-info__title">Answers to popular questions</div>
+        <div class="head-info__title">Frequently Asked Questions</div>
 
-        <div class="head-info__text">
-          Didn't find the answer to your question? Contact our customer service at the email below.
-        </div>
+        <div class="head-info__text">Didn't find the answer to your question? Write to our care service</div>
         <app-email-button :max-width="'fit-content'" :email="faq.email" is-gray />
       </div>
-      <div v-if="isFaqList" class="faq__col content">
+      <div class="faq__col content">
         <div
           v-for="(item, index) in faq.answers"
           :key="item.id"
@@ -31,8 +29,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 import AppEmailButton from '@/components/shared/AppEmailButton';
 
 export default {
@@ -42,18 +38,17 @@ export default {
     AppEmailButton
   },
 
+  props: {
+    faq: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+
   data() {
     return {
       activeElementsIndex: []
     };
-  },
-
-  computed: {
-    ...mapGetters({ faq: 'pages/home/getFaq' }),
-
-    isFaqList() {
-      return this.faq?.answers?.length;
-    }
   },
 
   methods: {
@@ -77,22 +72,6 @@ export default {
   @include gt-sm {
     padding-top: 52px;
     padding-bottom: 30px;
-
-    &-mobile-title {
-      display: none;
-    }
-  }
-
-  @include lt-md {
-    &-mobile-title {
-      font-family: $golos-bold;
-      font-weight: 600;
-      font-size: 20px;
-      line-height: 24px;
-      letter-spacing: 0.03px;
-      color: $color-dark-grey;
-      margin-bottom: 12px;
-    }
   }
 
   &__row {
@@ -156,11 +135,11 @@ export default {
         height: 40px;
         background: #f7f7f7;
         border-radius: 16px;
+      }
 
-        &-icon {
-          width: 18px;
-          height: 18px;
-        }
+      &__email-icon {
+        width: 18px;
+        height: 18px;
       }
     }
 
@@ -212,39 +191,39 @@ export default {
           justify-content: space-between;
           cursor: pointer;
           flex: 1;
+        }
 
-          &-text {
-            font-family: $golos-bold;
-            font-style: normal;
-            font-weight: 600;
-            color: $color-dark-grey;
-            flex: 1;
+        &__top-text {
+          font-family: $golos-bold;
+          font-style: normal;
+          font-weight: 600;
+          color: $color-dark-grey;
+          flex: 1;
 
-            @include gt-sm {
-              font-size: 24px;
-              line-height: 28px;
-              letter-spacing: 0.01em;
-            }
-
-            @include lt-md {
-              font-size: 14px;
-              line-height: 20px;
-            }
+          @include gt-sm {
+            font-size: 24px;
+            line-height: 28px;
+            letter-spacing: 0.01em;
           }
 
-          &-icon {
-            opacity: 0.3;
-            transition: transform 0.25s ease-in;
+          @include lt-md {
+            font-size: 14px;
+            line-height: 20px;
+          }
+        }
 
-            @include gt-sm {
-              width: 24px;
-              height: 24px;
-            }
+        &__top-icon {
+          opacity: 0.3;
+          transition: transform 0.25s ease-in;
 
-            @include lt-md {
-              width: 16px;
-              height: 16px;
-            }
+          @include gt-sm {
+            width: 24px;
+            height: 24px;
+          }
+
+          @include lt-md {
+            width: 16px;
+            height: 16px;
           }
         }
 
@@ -269,6 +248,20 @@ export default {
         }
       }
     }
+  }
+}
+
+.faq-mobile-title {
+  display: none;
+
+  @include lt-md {
+    font-family: $golos-bold;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.03px;
+    color: $color-dark-grey;
+    margin-bottom: 12px;
   }
 }
 </style>

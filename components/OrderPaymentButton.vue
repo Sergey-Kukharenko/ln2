@@ -27,9 +27,8 @@
 
 <script>
 import AppButton from '~/components/shared/AppButton';
-import paymentMethodsData from '~/data/payment-methods';
 
-const [STRIPE_METHOD] = paymentMethodsData;
+import { STRIPE_PAYMENT_METHOD } from '~/data/payment-methods';
 
 export default {
   name: 'OrderPaymentButton',
@@ -41,19 +40,14 @@ export default {
   },
 
   props: {
-    paymentMethod: {
-      type: Object,
-      default: () => STRIPE_METHOD
-    },
-
     orderId: {
       type: String,
       default: ''
     },
 
-    fastDeliveryKey: {
-      type: String,
-      default: ''
+    paymentMethod: {
+      type: Object,
+      default: () => STRIPE_PAYMENT_METHOD
     }
   },
 
@@ -65,7 +59,7 @@ export default {
 
   computed: {
     isStripePaymentMethod() {
-      return this.paymentMethod.name === STRIPE_METHOD.name;
+      return this.paymentMethod.name === STRIPE_PAYMENT_METHOD.name;
     }
   },
 
@@ -76,6 +70,7 @@ export default {
   methods: {
     payByStripe() {
       this.loading = true;
+      this.$emit('clear-time-id');
       this.$router.push({ name: 'payment-stripe' });
     },
 

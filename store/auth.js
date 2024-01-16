@@ -1,5 +1,5 @@
 import { setState } from '@/helpers';
-import { AUTH_REG_STEPS, AUTH_REG_TYPES, AUTH_WITHOUT_SMS_COOKIE } from '~/constants/index';
+import { AUTH_REG_STEPS, AUTH_REG_TYPES, AUTH_WITHOUT_SMS_COOKIE, TOKEN_REFRESH_ENDPOINT } from '~/constants/index';
 
 export const state = () => ({
   steps: {
@@ -34,23 +34,31 @@ export const mutations = {
 export const actions = {
   async fetchToken({ commit }) {
     try {
-      const res = await this.$axios.$get('/session/');
-      const { token } = res;
+      const { token, exp_data: expData } = await this.$http.$get(TOKEN_REFRESH_ENDPOINT);
+
+      const isDev = process.env.NODE_ENV !== 'production';
+
       commit('setToken', token);
 
-      return res;
+      this.$cookies.set(process.env.sessionTokenField, token, {
+        expires: new Date(expData),
+        path: '/',
+        ...(!isDev && {
+          domain: `.myflowers.co.uk`
+        })
+      });
     } catch (err) {
       console.error(err);
     }
   },
 
   // getOtp(_, payload) {
-  // return this.$axios.post('/auth', payload)
+  // return this.$http.post('/auth', payload)
   // },
 
   async login(_, payload) {
     try {
-      const { success } = await this.$axios.$post('/user/login/', payload);
+      const { success } = await this.$http.$post('/v1/user/login/', payload);
 
       return success;
     } catch (err) {
@@ -60,7 +68,7 @@ export const actions = {
 
   async loginWithoutCode({ commit }, payload) {
     try {
-      const response = await this.$axios.$post('/order/guest/assign/', payload);
+      const response = await this.$http.$post('/v1/order/guest/assign/', payload);
       commit('setState', { authStatus: true });
       this.$cookies.set(AUTH_WITHOUT_SMS_COOKIE, true);
       return response;
@@ -71,7 +79,7 @@ export const actions = {
 
   async sendOtp(_, payload) {
     try {
-      const otpRes = await this.$axios.$post('/auth/check-verification-code/', payload);
+      const otpRes = await this.$http.$post('/v1/auth/check-verification-code/', payload);
 
       return otpRes;
     } catch (err) {
@@ -81,7 +89,7 @@ export const actions = {
 
   async logout({ commit }) {
     try {
-      await this.$axios.$get('/user/logout/');
+      await this.$http.$get('/v1/user/logout/');
       commit('setState', { authStatus: false });
     } catch (err) {
       console.error(err);
@@ -94,6 +102,5 @@ export const getters = {
   codeType: (state) => state.steps.codeType || AUTH_REG_TYPES[0],
   receiver: (state) => state.receiver,
   phoneMask: (state) => (state.steps.codeType === AUTH_REG_TYPES[0] ? state.receiver.replace(/\d/g, '#') : ''),
-
   isAuthorized: (state) => state.authStatus
 };

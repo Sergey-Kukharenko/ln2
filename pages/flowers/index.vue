@@ -15,9 +15,11 @@
 
 <script>
 import dataCategoryProducts from '~/data/category-products';
+import CategoryProductList from '~/components/CategoryProductList.vue';
 
 export default {
   name: 'CategoryPage',
+  components: { CategoryProductList },
 
   data() {
     return {
@@ -56,28 +58,28 @@ export default {
         @include lt-md {
           height: 40px;
         }
+      }
 
-        &-title {
-          font-family: $Literata;
-          font-style: normal;
-          letter-spacing: -0.01em;
-          margin: 0;
+      &__header-title {
+        font-family: $Literata;
+        font-style: normal;
+        letter-spacing: -0.01em;
+        margin: 0;
 
-          @include gt-sm {
-            font-weight: 600;
-            font-size: 32px;
-            line-height: 40px;
-            color: #000000;
-            margin-bottom: 24px;
-          }
+        @include gt-sm {
+          font-weight: 600;
+          font-size: 32px;
+          line-height: 40px;
+          color: #000000;
+          margin-bottom: 24px;
+        }
 
-          @include lt-md {
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            color: $color-dark-grey;
-            margin-bottom: 12px;
-          }
+        @include lt-md {
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 24px;
+          color: $color-dark-grey;
+          margin-bottom: 12px;
         }
       }
 
@@ -102,16 +104,16 @@ export default {
         @include lt-md {
           display: none;
         }
+      }
 
-        &-title {
-          font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 20px;
-          letter-spacing: -0.01em;
-          color: #7c7c7c;
-        }
+      &__header-title {
+        font-family: $golos-regular;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: -0.01em;
+        color: #7c7c7c;
       }
 
       &__header-bottom .active-filters {

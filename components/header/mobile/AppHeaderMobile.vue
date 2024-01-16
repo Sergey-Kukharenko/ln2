@@ -1,6 +1,6 @@
 <template>
   <header>
-    <app-drawer>
+    <app-drawer v-if="!isCheckout">
       <div :class="classNames">
         <div class="content__layout content__layout--md">
           <div class="content__row nested-group">
@@ -27,16 +27,13 @@
       </div>
     </app-drawer>
 
-    <app-header-checkout-order v-if="isCheckout" />
-    <template v-else>
-      <app-logo />
-      <!--Временно скрыт-->
-      <!--<nuxt-link to="/search" class="search">-->
-      <!--  <svg-icon name="search" class="search__icon" />-->
-      <!--</nuxt-link>-->
-      <app-call />
-      <app-cart />
-    </template>
+    <app-logo />
+    <!--Временно скрыт-->
+    <!--<nuxt-link to="/search" class="search">-->
+    <!--  <svg-icon name="search" class="search__icon" />-->
+    <!--</nuxt-link>-->
+    <app-call />
+    <app-cart />
   </header>
 </template>
 
@@ -53,13 +50,11 @@ import AppMobileProfile from '~/components/header/mobile/AppMobileProfile';
 // import AppMobileLocation from '~/components/header/mobile/AppMobileLocation';
 import AppHeaderMobileMenu from '~/components/header/mobile/AppHeaderMobileMenu';
 import AppHeaderMobileNav from '~/components/header/mobile/AppHeaderMobileNav';
-import AppHeaderCheckoutOrder from '~/components/header-checkout/AppHeaderCheckoutOrder';
 
 export default {
   name: 'AppHeaderMobile',
 
   components: {
-    AppHeaderCheckoutOrder,
     AppHeaderMobileNav,
     AppHeaderMobileMenu,
     // AppMobileLocation,
@@ -117,7 +112,7 @@ header {
     align-items: center;
     position: sticky;
     top: 0;
-    z-index: 6;
+    z-index: 9;
     height: 50px;
     padding: 0 16px;
     background: #fff;

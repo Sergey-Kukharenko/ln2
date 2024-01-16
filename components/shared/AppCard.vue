@@ -12,30 +12,40 @@
         <div class="header">
           <!--Временно скрыт-->
           <!-- <app-badge theme="red" size="xs" class="header__badge"> - 30% </app-badge> -->
-          <app-like-icon :like="like" class="header__like" @click="toggleLike" />
+          <!-- <app-like-icon :like="like" class="header__like" @click="toggleLike" />-->
         </div>
-        <nuxt-link :to="{ name: 'product-id', params: { id: slide.slug } }" class="figure absolute-grow">
+        <app-card-link :slug="getProductSlug" :is-product-page="isProductPage">
           <app-image
-            :path="useSizedImage({ name: slide.img, width: imgSize, height: imgSize })"
+            :key="getProductImage"
+            :path="getProductImage"
             :alt="slide.title"
-            lazy
+            :lazy="lazyImage"
             class="absolute-center figure__img"
           />
-        </nuxt-link>
+        </app-card-link>
+
+        <app-card-tags v-if="slide.type_name">
+          <app-card-tag>{{ slide.type_name }}</app-card-tag>
+        </app-card-tags>
       </div>
       <div class="card__body">
         <!--Временно скрыт-->
-        <!-- <div class="rating"> -->
-        <!-- <div :class="ratingClassName">{{ showStatus }}</div> -->
-        <!-- <svg-icon name="star" class="rating__icon" /> -->
-        <!-- <div class="rating__reviews">{{ slide.reviews }}</div> -->
-        <!-- </div> -->
+        <!--<div class="rating">-->
+        <!--  <div :class="ratingClassName">{{ showStatus }}</div>-->
+        <!--  <svg-icon name="star" class="rating__icon" />-->
+        <!--  <div class="rating__reviews">{{ slide.reviews }}</div>-->
+        <!--</div>-->
+
         <div class="title">
           {{ slide.title }}
         </div>
+
+        <!-- Временно скрыт -->
+        <app-card-colors-list v-if="isConstructor" :list="getColorsList" @set-color-item="onSetColorItem" />
+
         <div class="content">
           <div class="price">
-            <div class="price__current">£ {{ slide.price }}</div>
+            <div class="price__current"><span v-if="hasFrom" class="price__from">From </span> £ {{ slide.price }}</div>
             <div v-if="slide.sale" class="group">
               <div class="price__old">£ {{ slide.price }}</div>
               <div class="group__badge">
@@ -59,26 +69,34 @@
 import { mapActions } from 'vuex';
 
 // import AppBadge from './AppBadge.vue';
+// import AppLikeIcon from '~/components/shared/AppLikeIcon';
 import AppButton from './AppButton';
+import AppCardLink from './AppCardLink';
 import { useSizedImage, useToggleClassName } from '~/helpers';
-import AppLikeIcon from '~/components/shared/AppLikeIcon';
 
 import { PRODUCT_CARD_IMAGE_SIZE } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtmClear from '~/mixins/gtmClear.vue';
+import gtm from '~/mixins/gtm.vue';
 import AppImage from '~/components/shared/AppImage.vue';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import AppCardTags from '~/components/shared/AppCardTags.vue';
+import AppCardTag from '~/components/shared/AppCardTag.vue';
 
 export default {
   name: 'AppCard',
 
   components: {
+    AppCardTag,
+    AppCardTags,
+    AppCardColorsList: () => import('~/components/shared/AppCardColorsList.vue'),
     AppImage,
-    AppLikeIcon,
+    // AppLikeIcon,
     // AppBadge,
-    AppButton
+    AppButton,
+    AppCardLink
   },
 
-  mixins: [gtmClear],
+  mixins: [gtm],
 
   props: {
     slide: {
@@ -92,12 +110,27 @@ export default {
       validate(value) {
         return ['sm'].includes(value);
       }
+    },
+    lazyImage: {
+      type: Boolean,
+      default: true
+    },
+
+    hasFrom: {
+      type: Boolean,
+      default: false
+    },
+
+    isConstructor: {
+      type: Boolean,
+      default: false
     }
   },
 
   data() {
     return {
-      like: this.slide.like
+      like: this.slide.like,
+      selectedProduct: null
     };
   },
 
@@ -133,6 +166,28 @@ export default {
           threshold: 0.5
         }
       };
+    },
+
+    isProductPage() {
+      return this.$route.name === 'product-id';
+    },
+
+    getColorsList() {
+      return this.slide?.colors?.length ? this.slide.colors : [];
+    },
+
+    getProductImage() {
+      const options = {
+        realId: this.isConstructor ? this.selectedProduct?.offer_id : this.slide.real_id,
+        sizeName: IMG_SIZES_MAP.size60,
+        imgName: this.isConstructor ? this.selectedProduct?.offer_image : this.slide.img
+      };
+
+      return useSizedImage(options);
+    },
+
+    getProductSlug() {
+      return this.isConstructor ? this.selectedProduct?.offer_slug : this.slide.slug;
     }
   },
 
@@ -144,6 +199,10 @@ export default {
     }),
 
     useSizedImage,
+
+    onSetColorItem({ item }) {
+      this.selectedProduct = item;
+    },
 
     visibilityChanged(isVisible) {
       isVisible && this.gtmSetItemListEvent();
@@ -157,16 +216,18 @@ export default {
     },
 
     onAddToCart() {
-      const payload = {
-        productId: this.slide.id,
-        positionSlug: this.slide.position_name
-      };
+      // Временно отключил добавление в корзину
+      // const payload = {
+      //   productId: this.slide.id,
+      //   positionSlug: this.slide.position_name
+      // };
 
-      this.addToCart(payload);
-      this.$router.push({ name: 'gifts' });
+      // this.addToCart(payload);
+
+      this.$router.push({ name: 'product-id', params: { id: this.getProductSlug } });
 
       this.gtmClearItemEvent();
-      this.gtmAddToCartEvent();
+      this.dataLayerSetOriginalUrl();
     },
 
     gtmSelectItemEvent() {
@@ -193,25 +254,6 @@ export default {
       this.gtmSelectItemEvent();
     },
 
-    gtmAddToCartEvent() {
-      const item = {
-        item_name: this.slide.title,
-        item_id: this.slide.real_id,
-        item_brand: 'myflowers',
-        item_category: this.slide.category_name,
-        item_variant: this.slide.position_name,
-        quantity: 1,
-        price: this.slide.price
-      };
-
-      this.$gtm.push({
-        event: GTM_EVENTS_MAP.addToCart,
-        ecommerce: {
-          items: [item]
-        }
-      });
-    },
-
     gtmSetItemListEvent() {
       const item = {
         item_name: this.slide.title,
@@ -230,7 +272,9 @@ export default {
         }
       });
     }
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 
@@ -448,7 +492,6 @@ export default {
   color: $color-dark-grey;
 
   @include gt-sm {
-    min-height: 40px;
     font-family: $golos-bold;
     font-size: 16px;
     line-height: 20px;
@@ -622,6 +665,26 @@ export default {
 
     &:after {
       background: #db1838;
+    }
+  }
+
+  &__from {
+    color: $color-white-grey;
+
+    @include gt-sm {
+      font-family: $golos-medium;
+      font-size: 16px;
+      line-height: 20px;
+      letter-spacing: 0;
+      margin-right: 4px;
+    }
+
+    @include lt-md {
+      font-family: $golos-regular;
+      font-size: 11px;
+      line-height: 14px;
+      letter-spacing: -0.11px;
+      margin-right: 2px;
     }
   }
 

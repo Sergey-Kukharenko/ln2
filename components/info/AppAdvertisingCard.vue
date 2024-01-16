@@ -1,13 +1,11 @@
 <template>
-  <div class="card" :style="styles">
+  <nuxt-link class="card" :style="styles" :to="$options.ALL_CATEGORIES_BUTTON.path">
     <div class="card__content">
       <div class="card__content-title">{{ title }}</div>
       <div class="card__content-text">{{ text }}</div>
     </div>
-    <nuxt-link :to="$options.ALL_CATEGORIES_BUTTON.path" class="card__button">
-      <app-button theme="green-white">{{ $options.ALL_CATEGORIES_BUTTON.text }}</app-button>
-    </nuxt-link>
-  </div>
+    <app-button theme="green-white" class="card__button">{{ $options.ALL_CATEGORIES_BUTTON.text }}</app-button>
+  </nuxt-link>
 </template>
 
 <script>
@@ -85,42 +83,42 @@ export default {
     @include lt-md {
       gap: 12px;
     }
+  }
 
-    &-title {
-      font-family: $golos-medium;
-      font-style: normal;
-      font-weight: 600;
-      color: $color-dark-grey;
+  &__content-title {
+    font-family: $golos-medium;
+    font-style: normal;
+    font-weight: 600;
+    color: $color-dark-grey;
 
-      @include gt-sm {
-        font-size: 24px;
-        line-height: 28px;
-        letter-spacing: 0.01em;
-      }
-
-      @include lt-md {
-        font-size: 16px;
-        line-height: 20px;
-      }
+    @include gt-sm {
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: 0.01em;
     }
 
-    &-text {
-      font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
+    @include lt-md {
+      font-size: 16px;
       line-height: 20px;
-      letter-spacing: -0.01em;
-      color: $color-dark-grey;
+    }
+  }
 
-      @include gt-sm {
-        font-size: 18px;
-        max-width: 177px;
-      }
+  &__content-text {
+    font-family: $golos-regular;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    color: $color-dark-grey;
 
-      @include lt-md {
-        font-size: 14px;
-        max-width: 138px;
-      }
+    @include gt-sm {
+      font-size: 18px;
+      max-width: 177px;
+    }
+
+    @include lt-md {
+      font-size: 14px;
+      max-width: 138px;
     }
   }
 

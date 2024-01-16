@@ -10,7 +10,7 @@ export default {
 
   methods: {
     pathToImg(imageObj) {
-      return `${process.env.basePureUrl}${imageObj[this.getDevice]}`;
+      return `${process.env.imgCDN}${imageObj[this.getDevice]}`;
     }
   }
 };

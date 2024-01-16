@@ -1,4 +1,6 @@
-import { NO_SCROLL_CLASS_NAME } from '~/constants';
+import { format } from 'date-fns';
+import { NO_SCROLL_CLASS_NAME, FIXED_TIMEZONE } from '../constants';
+import { IMG_SIZES_MAP } from '../constants/image-sizes';
 
 const useClassName = (obj, clsNm) => {
   const clsNmObj = Object.entries(obj).reduce(
@@ -26,8 +28,8 @@ const useSortArrayBy = (array, value, prop) => {
 };
 
 const useBreadCrumbs = (route) => {
-  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'about', 'delivery', 'gifts'];
-  const ArrayOfReplacementPaths = ['product'];
+  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'delivery', 'gifts'];
+  const replacementPathList = ['product', 'articles'];
   const replacePath = (array, path, newPath) => (array.includes(path) ? newPath : path);
 
   if (unusedRoutes.includes(route.name)) {
@@ -41,7 +43,7 @@ const useBreadCrumbs = (route) => {
           text: 'main'
         })
       : array.push({
-          path: array[idx - 1].path + (idx > 1 ? '/' : '') + replacePath(ArrayOfReplacementPaths, path, ''),
+          path: array[idx - 1].path + (idx > 1 ? '/' : '') + replacePath(replacementPathList, path, ''),
           text: path
         });
 
@@ -58,9 +60,12 @@ const useStringSwappedValues = (str, mapKeys) => {
   return strResult;
 };
 
-const useObjectNotEmpty = (obj) => {
-  return typeof obj === 'object' && obj !== null && !Array.isArray(obj) && Object.keys(obj).length > 0;
-};
+const useObjectNotEmpty = (obj) =>
+  typeof obj === 'object' &&
+  obj !== null &&
+  !Array.isArray(obj) &&
+  Object.keys(obj).length > 0 &&
+  Object.values(obj).some((x) => x !== null && x !== '');
 
 const useArrayNotEmpty = (arr) => {
   return arr && arr.length;
@@ -100,9 +105,18 @@ const useValueFromObject = (o, path) => path.split('.').reduce((o = {}, key) => 
 const useFixedSumByKey = (arr, pathToValue, fixedNumber = 0) =>
   arr.length && arr.reduce((acc, val) => acc + Number(useValueFromObject(val, pathToValue)), 0).toFixed(fixedNumber);
 
-const useSizedImage = ({ name, width = 60, height = 60 }) => {
-  const size = width && height ? `${height}x${width}` : 'original';
-  return `${process.env.fileUrl}/${size}/${name}`;
+const useSizedImage = ({ realId, sizeName = IMG_SIZES_MAP.min, imgName, env = null }) => {
+  let imgPath;
+
+  if (env) {
+    imgPath = env.imgCDN ? `${env.imgCDN}/${env.fileUrl}` : `${env.baseUrl}/${env.fileUrl}`;
+  } else {
+    imgPath = process.env.imgCDN
+      ? `${process.env.imgCDN}/${process.env.fileUrl}`
+      : `${process.env.baseUrl}/${process.env.fileUrl}`;
+  }
+
+  return `${imgPath}/id${realId}/${sizeName}/${imgName}`;
 };
 
 const usePaginationTotalPages = ({ total, limit }) => Math.ceil(total / limit);
@@ -139,9 +153,38 @@ const useScrollLockToggle = (value) =>
     ? document.body.classList.remove(NO_SCROLL_CLASS_NAME)
     : document.body.classList.remove(NO_SCROLL_CLASS_NAME);
 
+const useGetDateByTimeZone = (date) => {
+  return new Date(new Date(date).toLocaleString('en-US', { timeZone: FIXED_TIMEZONE }));
+};
+
+const useFormattedDateForBackend = (date) => {
+  let formattedDate = date;
+
+  if (typeof date === 'string') {
+    formattedDate = useGetDateByTimeZone(date);
+  }
+
+  return format(formattedDate, 'yyyy-MM-dd');
+};
+
+const useIncrementDateForBackend = (date) => {
+  const currDate = useGetDateByTimeZone(date);
+  currDate.setDate(currDate.getDate() + 1);
+
+  return format(currDate, 'yyyy-MM-dd');
+};
+
 const useGetPositionSizeText = (title = '', isBouquet = false) => {
   const sizePreffix = isBouquet ? 'Bouquet size: ' : '';
   return `${sizePreffix}${title}`;
+};
+
+const useDeepCopyObject = (obj) => {
+  try {
+    return JSON.parse(JSON.stringify(obj));
+  } catch (error) {
+    return {};
+  }
 };
 
 export {
@@ -167,6 +210,10 @@ export {
   useDebounce,
   setState,
   useScrollLockToggle,
+  useFormattedDateForBackend,
+  useIncrementDateForBackend,
   joinArgs,
-  useGetPositionSizeText
+  useGetPositionSizeText,
+  useDeepCopyObject,
+  useGetDateByTimeZone
 };

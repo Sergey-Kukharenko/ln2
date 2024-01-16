@@ -6,22 +6,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
-import AppSection from '~/components/shared/AppSection';
 import { useArrayNotEmpty } from '~/helpers';
 
 export default {
   name: 'FavoritesPage',
 
   components: {
-    AppSection
+    AppFavoritesEmpty: () => import('~/components/AppFavoritesEmpty.vue'),
+    AppSection: () => import('~/components/shared/AppSection.vue')
   },
 
+  layout: 'empty',
+
   computed: {
-    ...mapGetters({
-      favorites: 'favorites/getFavorites'
-    }),
+    ...mapState('favorites', ['favorites']),
 
     isFavorites() {
       return useArrayNotEmpty(this.favorites?.list);

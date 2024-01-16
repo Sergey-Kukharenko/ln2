@@ -1,6 +1,9 @@
 <template>
   <section class="checkout-pane" :class="classes">
     <div class="checkout-pane__title">
+      <div v-show="!!number" class="checkout-pane__number">
+        {{ number }}
+      </div>
       <slot name="title">{{ title }}</slot>
     </div>
     <slot />
@@ -15,9 +18,15 @@ export default {
       type: String,
       default: ''
     },
+
     delim: {
       type: Boolean,
       default: false
+    },
+
+    number: {
+      type: Number,
+      default: () => 0
     }
   },
   computed: {
@@ -32,38 +41,57 @@ export default {
 
 <style lang="scss" scoped>
 .checkout-pane {
+  box-sizing: border-box;
   width: 100%;
   font-family: $golos-regular;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.01em;
   color: #010810;
+  background: #ffffff;
 
   @include gt-md {
-    padding-bottom: 38px;
+    padding: 16px;
   }
 
   @include lt-lg {
-    padding-bottom: 16px;
+    padding: 16px 12px;
   }
 
   &--delim {
-    margin-bottom: 40px;
-
-    @include gt-md {
-      border-bottom: 1.5px solid #eaeaea;
-    }
+    margin-bottom: 8px;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
 
     @include lt-lg {
-      border-bottom: 1px solid #eaeaea;
-      margin-bottom: 16px;
+      border: 0;
+      border-radius: 20px;
+      margin-bottom: 4px;
     }
+  }
+
+  &__number {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid $color-dark-green;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-dark-green;
+
+    font-family: $golos-regular;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15.6px;
   }
 
   &__title {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 8px;
 
     font-family: $Literata;
     font-style: normal;

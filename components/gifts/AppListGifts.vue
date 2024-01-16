@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <div class="list-gifts">
-      <div v-for="(item, idx) in list" :key="idx">
-        <slot v-bind="{ ...item }"></slot>
-      </div>
+  <div class="list-gifts">
+    <div v-for="(item, idx) in list" :key="idx">
+      <slot v-bind="{ ...item }"></slot>
     </div>
   </div>
 </template>

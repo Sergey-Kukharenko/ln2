@@ -18,10 +18,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchCategory({ commit }, { slug, params, isConcated = false }) {
+  async fetchCategory({ commit }, { type, slug, params, isConcated = false }) {
     try {
-      const category = await this.$axios.$get(`/category/${slug}/`, { params });
-
+      const category = await this.$http.$get(`/v1/${type}/${slug}/`, { params });
       if (!isConcated) {
         commit('setState', { category });
 
@@ -34,25 +33,15 @@ export const actions = {
     }
   },
 
-  async fetchFilter({ commit }, { slug, params, isConcated = false }) {
-    try {
-      const filter = await this.$axios.$get(`/filter/${slug}/`, { params });
-      if (!isConcated) {
-        commit('setState', { category: filter });
-
-        return;
-      }
-
-      commit('setProductList', filter);
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
   async fetchCategories({ commit }, params) {
     try {
-      const res = await this.$axios.$get(`/categories/`, { params });
-      commit('setState', { categories: res });
+      const categories = await this.$httpSSRCache({
+        scope: 'layout',
+        field: 'categories',
+        url: '/v1/categories/',
+        payload: { params }
+      });
+      commit('setState', { categories });
     } catch (err) {
       console.error(err);
     }
@@ -60,7 +49,6 @@ export const actions = {
 };
 
 export const getters = {
-  getCategorySeo: (state) => state.category.seo,
   getCategory: (state) => state.category,
   getCategories: (state) => state.categories
 };

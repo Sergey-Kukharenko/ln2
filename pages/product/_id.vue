@@ -2,7 +2,7 @@
   <div class="layout layout-dt detail-page">
     <div class="detail-page__row">
       <div class="detail-page__col">
-        <app-gallery :slides="images" />
+        <app-gallery :slides="sliderImages" :type-name="type_name" />
 
         <div class="additional-group" style="display: none">
           <div v-if="sale" class="additional-group__item">
@@ -14,9 +14,12 @@
         </div>
       </div>
       <div class="detail-page__col">
-        <h1 class="detail-page__title">{{ title }}</h1>
-        <app-form-offers :product="getProduct" @setProductOffer="onSetProductOffer" />
-        <app-service :description="description" />
+        <h1 class="detail-page__title">{{ getProductTitle }}</h1>
+        <app-form-offers v-if="!isListsPage" :product="getProduct" @setProductOffer="onSetProductOffer" />
+        <keep-alive v-else>
+          <app-form-lists :product="cardProductSettings" />
+        </keep-alive>
+        <app-service :description="getProductDescription" />
       </div>
     </div>
 
@@ -26,66 +29,75 @@
     <div class="detail-page__section">
       <app-popular-categories-items v-if="isPopularCategoriesItems" :popular="popularCategoriesItems" />
     </div>
+    <app-seo v-if="seoHtml" :html="seoHtml" :faq="faq" />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { useObjectNotEmpty, useSizedImage } from '~/helpers';
 
 import AppFormOffers from '~/components/product/AppFormOffers';
+import AppFormLists from '~/components/card-product/AppFormLists';
 import AppService from '~/components/product/AppService';
 import AppSection from '~/components/shared/AppSection.vue';
 import AppPopularCategoriesItems from '~/components/card-product/AppPopularCategoriesItems';
 import AppGallery from '~/components/ui/AppGallery';
 import AppBadge from '~/components/shared/AppBadge';
 import AppBadgeRateReviews from '~/components/shared/AppBadgeRateReviews';
+import { CONSTRUCTOR_HEIGHT_COOKIE, CONSTRUCTOR_PACKAGE_COOKIE } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtmClear from '~/mixins/gtmClear.vue';
+import gtm from '~/mixins/gtm.vue';
+import AppSeo from '~/components/seo/AppSeo.vue';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 
 export default {
   name: 'IdPage',
 
   components: {
+    AppSeo,
     AppGallery,
     AppService,
     AppFormOffers,
     AppSection,
     AppPopularCategoriesItems,
     AppBadgeRateReviews,
-    AppBadge
+    AppBadge,
+    AppFormLists
   },
 
-  mixins: [gtmClear],
+  mixins: [gtm],
 
   middleware: ['not-found'],
 
-  async asyncData({ req, route, $axios }) {
+  async asyncData({ req, route, $http, store }) {
     const path = route.fullPath;
-    const data = {
+    let data = {
       seo: {},
       title: '',
       description: ''
     };
 
     try {
-      const { data: response } = await $axios.$get(`${path}`);
-      data.seo = response.seo;
-      data.title = response.title;
-      data.description = response.description;
-      data.seo.fullUrl = `https://myflowers.co.uk${path}`;
+      const { data: response } = await $http.$get(`v1${path}`);
 
-      data.id = response.id;
-      data.real_id = response.real_id;
-      data.category_name = response.category_name;
-      data.images = response.images;
-      data.positions = response.positions;
-      data.price = response.price;
-      data.like = response.like;
-      data.rating = +response.rating;
-      data.reviews = response.reviews;
+      if (response?.settings) {
+        store.commit('pages/card-product/setProductSettings', response);
+      }
+
+      data.seo.fullUrl = `https://myflowers.co.uk${path}`;
       data.sale = response.sale;
-      data.position_name = response.position_name;
+      data = {
+        ...data,
+        ...response,
+        ...(!response?.settings && {
+          images: response?.images.map((item) => ({ ...item, real_id: response.real_id }))
+        }),
+        rating: parseFloat(data?.rating ?? 0),
+        seoHtml: response.seo.bottom_text
+      };
+
+      return data;
     } catch (error) {
       console.error(error);
     }
@@ -117,7 +129,11 @@ export default {
         },
         {
           property: 'og:image',
-          content: useSizedImage({ name: this.images[0].filename, width: 120, height: 120 })
+          content: useSizedImage({
+            realId: this.real_id,
+            sizeName: IMG_SIZES_MAP.size10,
+            imgName: this.images?.[0].filename
+          })
         },
         {
           property: 'product:brand',
@@ -152,11 +168,46 @@ export default {
   },
 
   computed: {
+    ...mapState('pages/card-product', [
+      'cardProductSettings',
+      'cardConstructorActiveColor',
+      'cardConstructorActiveCount',
+      'cardConstructorActiveType'
+    ]),
+
     ...mapGetters({
       // similarBouquets: 'pages/card-product/getSimilarBouquets',
       recentlyViewed: 'pages/card-product/getRecentlyViewed',
       popularCategoriesItems: 'pages/card-product/getPopularCategoriesItems'
     }),
+
+    isListsPage() {
+      return !!this.cardProductSettings?.colors?.length;
+    },
+
+    getProductDescription() {
+      return this.isListsPage ? this.cardProductSettings?.description : this.description;
+    },
+
+    getProductTitle() {
+      return this.isListsPage ? this.cardProductSettings?.title : this.title;
+    },
+
+    constructorSliderImages() {
+      const currentPosition =
+        this.cardProductSettings?.prices?.[this.cardConstructorActiveCount]?.[this.cardConstructorActiveColor]
+          ?.heights?.[this.cardConstructorActiveType];
+      return currentPosition?.images?.map((image) => ({ ...image, real_id: this.constructorRealId }));
+    },
+
+    sliderImages() {
+      return this.isListsPage ? this.constructorSliderImages : this.images;
+    },
+
+    constructorRealId() {
+      return this.cardProductSettings?.prices?.[this.cardConstructorActiveCount]?.[this.cardConstructorActiveColor]
+        ?.real_id;
+    },
 
     // isSimilarBouquets() {
     //   return useObjectNotEmpty(this.similarBouquets);
@@ -180,6 +231,9 @@ export default {
       const like = this.like;
       const categoryName = this.category_name;
 
+      const seoHtml = this.seoHtml;
+      const faq = this.faq;
+
       return {
         title,
         id,
@@ -188,7 +242,9 @@ export default {
         positions,
         price,
         like,
-        categoryName
+        categoryName,
+        seoHtml,
+        faq
       };
     }
   },
@@ -197,7 +253,14 @@ export default {
     this.fetchCardProductPage();
 
     this.gtmClearItemEvent();
+    this.dataLayerSetOriginalUrl();
     this.gtmViewItemEvent(this.title, this.real_id, this.price, this.category_name, this.position_name);
+  },
+
+  beforeDestroy() {
+    this.$store.commit('pages/card-product/setField', { name: 'cardProductSettings', value: {} });
+    this.$cookies.remove(CONSTRUCTOR_HEIGHT_COOKIE);
+    this.$cookies.remove(CONSTRUCTOR_PACKAGE_COOKIE);
   },
 
   methods: {
@@ -227,7 +290,9 @@ export default {
     },
 
     useSizedImage
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 
@@ -239,6 +304,7 @@ export default {
 
   @include lt-md {
     padding-top: 0;
+    overflow: hidden;
   }
 
   &__row {

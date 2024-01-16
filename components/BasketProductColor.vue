@@ -8,10 +8,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: '',
-      validate(value) {
-        return ['', 'Bright Mix'].includes(value);
-      }
+      default: ''
     }
   }
 };
@@ -24,7 +21,7 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #7c7c7c;
+  color: $color-white-grey;
 
   @include lt-lg {
     font-size: 12px;

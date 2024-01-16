@@ -2,15 +2,15 @@
   <div v-if="isInfo" class="info layout">
     <div class="info__head">
       <h1 class="info__head-title">
-        {{ info.head.title }}
+        {{ infoDetails.head.title }}
       </h1>
       <div class="info__head-list">
         <div class="info__head-list--title">
-          {{ info.head.text }}
+          {{ infoDetails.head.text }}
         </div>
         <div v-if="isListExist" class="info__head-list--items items">
           <ul class="items__list list">
-            <li v-for="item in info.head?.list.items" :key="item" class="list__item">
+            <li v-for="item in infoDetails.head?.list.items" :key="item" class="list__item">
               {{ item }}
             </li>
           </ul>
@@ -19,7 +19,7 @@
     </div>
     <div class="info__grid">
       <div
-        v-for="(item, index) in info.grid"
+        v-for="(item, index) in infoDetails.grid"
         :key="index"
         class="info__grid-item item"
         :class="{ active: item.is_active }"
@@ -40,27 +40,37 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { useObjectNotEmpty } from '~/helpers';
+import { useObjectNotEmpty, useDeepCopyObject } from '~/helpers';
 
 export default {
   name: 'AppInfo',
 
-  computed: {
-    ...mapGetters({ info: 'pages/home/getInfo' }),
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    }
+  },
 
+  data() {
+    return {
+      infoDetails: useDeepCopyObject(this.info)
+    };
+  },
+
+  computed: {
     isInfo() {
       return useObjectNotEmpty(this.info);
     },
 
     isListExist() {
-      return !!this.info.head?.list?.length;
+      return !!this.infoDetails.head?.list?.length;
     }
   },
 
   methods: {
     toggleGridItem(index, status) {
-      this.info.grid[index].is_active = !status;
+      this.infoDetails.grid[index].is_active = !status;
     }
   }
 };
@@ -94,48 +104,46 @@ ul {
     padding-bottom: 0;
   }
 
-  &__head {
-    &-title {
-      font-style: normal;
-      color: $color-dark-grey;
-      letter-spacing: 0;
+  &__head-title {
+    font-style: normal;
+    color: $color-dark-grey;
+    letter-spacing: 0;
 
-      @include gt-sm {
-        font-family: $Literata;
-        font-weight: 700;
-        font-size: 28px;
-        line-height: 32px;
+    @include gt-sm {
+      font-family: $Literata;
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 32px;
 
-        margin-bottom: 32px;
-      }
-
-      @include lt-md {
-        font-family: $golos-bold;
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 24px;
-        letter-spacing: 0.03px;
-
-        margin-bottom: 16px;
-      }
+      margin-bottom: 32px;
     }
 
-    &-list {
-      font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
-      color: $color-dark-grey;
+    @include lt-md {
+      font-family: $golos-bold;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: 0.03px;
 
-      @include gt-sm {
-        font-size: 16px;
-        line-height: 24px;
-      }
+      margin-bottom: 16px;
+    }
+  }
 
-      @include lt-md {
-        font-size: 11px;
-        line-height: 16px;
-        letter-spacing: -0.01em;
-      }
+  &__head-list {
+    font-family: $golos-regular;
+    font-style: normal;
+    font-weight: 400;
+    color: $color-dark-grey;
+
+    @include gt-sm {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    @include lt-md {
+      font-size: 11px;
+      line-height: 16px;
+      letter-spacing: -0.01em;
     }
   }
 
@@ -198,18 +206,18 @@ ul {
 
           margin-bottom: 8px;
         }
+      }
 
-        &-icon {
-          @include gt-sm {
-            display: none;
-          }
+      &__title-icon {
+        @include gt-sm {
+          display: none;
+        }
 
-          @include lt-md {
-            width: 16px;
-            height: 16px;
-            opacity: 0.3;
-            transition: transform 0.25s ease-in;
-          }
+        @include lt-md {
+          width: 16px;
+          height: 16px;
+          opacity: 0.3;
+          transition: transform 0.25s ease-in;
         }
       }
 

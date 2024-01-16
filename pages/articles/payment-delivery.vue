@@ -12,7 +12,7 @@
     <app-info-hero :items="$options.HERO_ITEMS" />
     <delivery-payment />
     <div class="split-line layout" />
-    <app-info-something :content="$options.SOMETHING_IMPORTANT" />
+    <app-info-something :content="$options.SOMETHING_IMPORTANT" has-step />
     <!--Временно скрыт-->
     <!--<div class="split-line layout" />-->
     <!--<delivery-ad />-->
@@ -26,11 +26,13 @@ import AppInfoHero from '~/components/info/AppInfoHero';
 
 import { PROMO, TEXT_INFO, HERO_ITEMS, SOMETHING_IMPORTANT } from '~/data/delivery';
 import AppInfoSomething from '~/components/info/AppInfoSomething';
+import DeliveryPayment from '~/components/DeliveryPayment.vue';
 
 export default {
   name: 'DeliveryPage',
 
   components: {
+    DeliveryPayment,
     AppInfoSomething,
     // AppInfoBanner,
     AppInfoTextSection,
@@ -53,11 +55,11 @@ export default {
   @include gt-sm {
     gap: 56px;
     padding-bottom: 56px;
+    margin-top: -7px;
   }
 
   @include lt-md {
     gap: 20px;
-    padding-bottom: 20px;
   }
 
   .split-line {

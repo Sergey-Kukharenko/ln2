@@ -31,7 +31,7 @@ const SOMETHING_IMPORTANT = {
         text: '+44 20 4577 0088'
       },
       title: 'Contact phone number',
-      text: 'We accept and deliver orders by phone around the clock and seven days a week'
+      text: 'We offer round-the-clock services, 7 days a week, and accept orders via phone. You can contact us at +44 20 4577 0088'
     },
     {
       link: {
@@ -39,7 +39,7 @@ const SOMETHING_IMPORTANT = {
         text: 'support@myflowers.co.uk'
       },
       title: 'Email',
-      text: 'If you hesitate to call - write us, we will be happy to answer'
+      text: 'However, you can also contact us via email by sending us a message or query at support@myflowers.co.uk.'
     },
     {
       social: [
@@ -56,8 +56,8 @@ const SOMETHING_IMPORTANT = {
           icon: 'social-instagram'
         }
       ],
-      title: 'We are in social networks',
-      text: 'Follow all the news on social networks, there are a lot of interesting things there'
+      title: 'Our Social Media',
+      text: 'You can follow us on Facebook and Instagram. Be sure to keep an eye out for MyFlowers discounts and promo deals.'
     }
   ]
 };

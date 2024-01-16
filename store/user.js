@@ -53,7 +53,7 @@ export const actions = {
 
   async fetchUser({ commit }) {
     try {
-      const userData = await this.$axios.$get('/user/');
+      const userData = await this.$http.$get('/v1/user/');
       const { auth: isAuth = false, ...userProps } = userData;
 
       if (isAuth) {
@@ -63,6 +63,28 @@ export const actions = {
     } catch (err) {
       console.error(err);
     }
+  },
+
+  async fetchUserSubscribe() {
+    try {
+      const { data } = await this.$http.$get('/v1/user/subscribe/');
+
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  sendUserSubscribe(_, payload) {
+    try {
+      return this.$http.$post(`/v1/user/subscribe/`, payload);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  unsubscribeFromSMS(_, payload) {
+    return this.$http.$post(`/v1/subscriptions/sms/unsubscribe/`, payload);
   }
 };
 

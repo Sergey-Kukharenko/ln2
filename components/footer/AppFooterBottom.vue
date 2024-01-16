@@ -61,9 +61,5 @@ export default {
     text-align: right;
     margin-left: 10px;
   }
-
-  @include lt-md {
-    margin-top: 32px;
-  }
 }
 </style>

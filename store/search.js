@@ -17,7 +17,7 @@ export const actions = {
   async fetchByQuery({ state, commit }, query) {
     try {
       commit('setLoading', true);
-      const products = await this.$axios.$get('/offers-search', {
+      const products = await this.$http.$get('/v1/offers-search', {
         params: {
           q: query,
           page: 1,

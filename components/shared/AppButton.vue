@@ -15,7 +15,9 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['grey', 'green-whitely', 'grey-whitely', 'yellow', 'yellow-whitely', 'turquoise'].includes(value);
+        return ['grey', 'green-whitely', 'grey-whitely', 'ghost', 'yellow', 'yellow-whitely', 'turquoise'].includes(
+          value
+        );
       }
     },
 
@@ -23,7 +25,7 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['xs', 'sm', 'md', 'pre-lg', 'lg'].includes(value);
+        return ['xs', 'sm', 'md', 'pre-lg', 'pre-x-lg', 'lg'].includes(value);
       }
     },
 
@@ -153,6 +155,37 @@ export default {
       &:active:not(:disabled) {
         box-shadow: 0 0 0 $bg-grey;
       }
+    }
+  }
+
+  &--ghost {
+    font-family: $golos-medium;
+    font-weight: 500;
+    color: $color-dark-green;
+    min-height: 48px;
+    border: 1px solid $color-dark-green;
+    background: transparent;
+
+    @include gt-sm {
+      font-size: 14px;
+      line-height: 24px;
+
+      &:hover:not(:disabled) {
+        background: $bg-grey;
+        box-shadow: 2px 4px 7px darken($bg-grey, 10%);
+        cursor: pointer;
+      }
+
+      &:active:not(:disabled) {
+        box-shadow: 0 0 0 $bg-grey;
+      }
+    }
+
+    @include lt-md {
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0em;
+      text-align: left;
     }
   }
 
@@ -312,6 +345,23 @@ export default {
       @include lt-md {
         display: none;
       }
+    }
+  }
+
+  &--pre-x-lg {
+    @include gt-sm {
+      min-width: 180px;
+      min-height: 52px;
+      padding: 14px 16px;
+      font-size: 16px;
+    }
+
+    @include lt-md {
+      min-width: 100px;
+      font-size: 14px;
+      line-height: 24px;
+      min-height: 36px;
+      padding: 6px 0;
     }
   }
 

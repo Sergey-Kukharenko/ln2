@@ -9,16 +9,14 @@
 </template>
 
 <script>
-import AppHeader from '@/components/header/AppHeader';
-import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile';
 import AppFooter from '@/components/footer/AppFooter';
 import AppNotification from '~/components/header/AppNotification';
 export default {
   name: 'CustomLayout',
 
   components: {
-    AppHeaderMobile,
-    AppHeader,
+    AppHeader: () => import('@/components/header/AppHeader'),
+    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile'),
     AppFooter,
     AppNotification
   }

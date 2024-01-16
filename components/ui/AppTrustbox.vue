@@ -1,16 +1,22 @@
 <template>
-  <client-only>
-    <trustbox :template-id="trustpilotTemplateId" />
-  </client-only>
+  <app-fake-trustpilot />
+  <!--  Временно скрыт-->
+  <!--  <client-only>-->
+  <!--    <trustbox :template-id="trustpilotTemplateId" />-->
+  <!--  </client-only>-->
 </template>
 
 <script>
+import AppFakeTrustpilot from '~/components/fake-trustpilot/AppFakeTrustpilot.vue';
+
 export default {
   name: 'AppTrustbox',
+  components: { AppFakeTrustpilot },
 
   data() {
     return {
-      trustpilotTemplateId: process.env.trustpilotTemplateId
+      trustpilotTemplateId: process.env.trustpilotTemplateId,
+      rate: 5
     };
   }
 };

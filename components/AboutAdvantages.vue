@@ -1,6 +1,6 @@
 <template>
   <div class="advantages layout">
-    <div class="advantages__title">Advantages</div>
+    <div class="advantages__title">Why Choose Us?</div>
     <div class="advantages__items">
       <div v-for="(item, index) in $options.ADVANTAGES" :key="index" class="advantages__item item">
         <div class="item__pic" :style="{ background: item.color }">
@@ -60,6 +60,9 @@ export default {
 
   &__items {
     display: flex;
+    @include gt-sm {
+      gap: 16px;
+    }
 
     @include lt-md {
       flex-direction: column;

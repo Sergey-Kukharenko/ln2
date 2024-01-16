@@ -180,23 +180,23 @@ export default {
             display: flex;
             flex-direction: column;
             gap: 2.55px;
+          }
 
-            &-count {
-              font-family: $golos-regular;
-              font-style: normal;
-              font-weight: 400;
-              letter-spacing: -0.01em;
-              color: $color-dark-grey;
+          &__reviews-count {
+            font-family: $golos-regular;
+            font-style: normal;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            color: $color-dark-grey;
 
-              @include gt-sm {
-                font-size: 14px;
-                line-height: 20px;
-              }
+            @include gt-sm {
+              font-size: 14px;
+              line-height: 20px;
+            }
 
-              @include lt-md {
-                font-size: 11px;
-                line-height: 16px;
-              }
+            @include lt-md {
+              font-size: 11px;
+              line-height: 16px;
             }
           }
         }

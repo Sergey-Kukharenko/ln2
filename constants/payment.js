@@ -14,47 +14,21 @@ const STRIPE = {
   redirectDelay: process.env.stripeTimeoutPayT
 };
 
-// PAYPAL
-const PAYPAL = {
-  credentials: {
-    sandbox: process.env.paypalClientId,
-    production: ''
-  },
-  experienceOptions: {
-    input_fields: {
-      no_shipping: 1
-    }
-  },
-  currency: 'GBP',
-  amount: '10',
-  myItems: [
-    {
-      name: 'hat',
-      description: 'Brown hat.',
-      quantity: '1',
-      price: '5'
-    },
-    {
-      name: 'handbag',
-      description: 'Black handbag.',
-      quantity: '1',
-      price: '5'
-    }
-  ],
-  styles: {
-    label: 'checkout',
-    size: 'responsive',
-    shape: 'pill',
-    color: 'silver',
-    height: 40
-  }
-};
-
 // PAYMENT STATUS MAP
 const PAYMENT_STATUS_MAP = Object.freeze({
+  basket: 'BASKET',
+  order: 'ORDER',
   payment: 'PAYMENT',
   paid: 'PAID',
   failPaid: 'FAIL_PAID'
 });
 
-export { STRIPE, PAYPAL, PAYMENT_STATUS_MAP };
+const PAYMENT_ERROR_MESSAGE = 'Your payment has failed.\n Please, choose another payment method.';
+const ORDER_ALREADY_PAID = {
+  message: 'Order already paid',
+  text: 'Sorry, this order has already been paid for.\n If you have any questions or need assistance, please contact our customer support'
+};
+
+const STRIPE_ERROR_CODE = 'card_declined';
+
+export { STRIPE, PAYMENT_STATUS_MAP, PAYMENT_ERROR_MESSAGE, STRIPE_ERROR_CODE, ORDER_ALREADY_PAID };

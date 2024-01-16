@@ -12,24 +12,26 @@
       </div>
     </div>
 
-    <div class="detail-page__about about">
-      <h2 class="about__title">
-        {{ reviews.title }}
-      </h2>
-      <div class="about__row">
-        <div class="about__reviews">
-          <app-reviews :reviews="reviews.list" />
-        </div>
-        <div class="about__rating">
-          <app-rating v-if="rating.count" :rating="rating" />
+    <div style="display: none">
+      <div class="detail-page__about about">
+        <h2 class="about__title">
+          {{ reviews.title }}
+        </h2>
+        <div class="about__row">
+          <div class="about__reviews">
+            <app-reviews :reviews="reviews.list" />
+          </div>
+          <div class="about__rating">
+            <app-rating v-if="rating.count" :rating="rating" />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="detail-page__section">similar</div>
-    <div class="detail-page__section">recently</div>
-    <div class="detail-page__section">
-      <app-popular-categories-items :popular="popular" />
+      <div class="detail-page__section">similar</div>
+      <div class="detail-page__section">recently</div>
+      <div class="detail-page__section">
+        <app-popular-categories-items :popular="popular" />
+      </div>
     </div>
   </div>
 </template>
@@ -97,6 +99,10 @@ export default {
 
 <style lang="scss" scoped>
 .detail-page {
+  @include lt-md {
+    overflow: hidden;
+  }
+
   &__row {
     @include gt-sm {
       display: flex;

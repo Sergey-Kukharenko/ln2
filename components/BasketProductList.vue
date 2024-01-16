@@ -19,9 +19,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import BasketProduct from '~/components/BasketProduct.vue';
 
 export default {
   name: 'BasketProductList',
+  components: { BasketProduct },
 
   computed: {
     ...mapGetters({

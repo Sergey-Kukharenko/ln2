@@ -1,7 +1,7 @@
 <template>
-  <div class="detail">
-    <div class="detail__panel panel">
-      <div class="detail__title">Order details</div>
+  <div class="order-details">
+    <div class="order-details__panel panel">
+      <div class="order-details__title">Order details</div>
       <div v-if="orderItems.length" class="panel__items items">
         <div class="items__top">
           <div class="items__top-column" @click="toggleItems">
@@ -13,7 +13,13 @@
           <div v-for="(item, idx) in orderItems" :key="idx" class="goods__item">
             <div class="goods__item-picture">
               <img
-                :src="useSizedImage({ name: item.image.filename })"
+                :src="
+                  useSizedImage({
+                    realId: item.offer_real_id,
+                    sizeName: $options.IMG_SIZES_MAP.size10,
+                    imgName: item.image.filename
+                  })
+                "
                 class="goods__item-picture--img"
                 :alt="item.image.alt_text"
               />
@@ -49,8 +55,8 @@
       <!-- <a href="#" class="panel__bottom-link" @click="cancelOrder">Cancel the order</a> -->
       <!-- </div> -->
     </div>
-    <div class="detail__info">
-      <div class="detail__info-content info">
+    <div class="order-details__info">
+      <div class="order-details__info-content info">
         <div class="info__column">
           <svg-icon name="user-outline" class="info__icon" />
         </div>
@@ -62,18 +68,25 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 
 import AppButton from '@/components/shared/AppButton';
 import OrderCancel from '@/components/OrderCancel';
 
-import { useSizedImage, useGetPositionSizeText } from '~/helpers';
+import { useSizedImage, useFixedSumByKey, useGetPositionSizeText } from '~/helpers';
 
 export default {
-  name: 'OrderDetail',
+  name: 'OrderDetails',
 
   components: {
     AppButton
+  },
+
+  props: {
+    orderDetails: {
+      type: Object,
+      default: () => ({})
+    }
   },
 
   data() {
@@ -83,23 +96,22 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      orderPositionsCount: 'order/getCount',
-      getOrder: 'order/getOrder',
-      orderItems: 'order/orderSplittedPositions'
-    }),
+    orderItems() {
+      return this.orderDetails?.positions || [];
+    },
 
     itemsCount() {
-      return this.orderPositionsCount > 1 ? `${this.orderPositionsCount} items` : `${this.orderPositionsCount} item`;
+      const orderPositionsCount = Number(useFixedSumByKey(this.orderItems, 'quantity'));
+      return orderPositionsCount > 1 ? `${orderPositionsCount} items` : `${orderPositionsCount} item`;
     },
 
     orderCost() {
       return {
-        positionsCost: this.getOrder?.positions_cost ?? 0,
-        deliveryAmount: +this.getOrder?.delivery_amount ? `£ ${this.getOrder?.delivery_amount}` : 'Free',
-        totalSum: this.getOrder?.total_cost ?? 0,
-        cashback: +this.getOrder?.cashback ?? 0,
-        sale: +this.getOrder?.promo_code?.discount ? this.getOrder?.promo_code?.discount : 0
+        positionsCost: this.orderDetails?.positions_cost ?? 0,
+        deliveryAmount: +this.orderDetails?.delivery_amount ? `£ ${this.orderDetails?.delivery_amount}` : 'Free',
+        totalSum: this.orderDetails?.total_cost ?? 0,
+        cashback: +this.orderDetails?.cashback ?? 0,
+        sale: +this.orderDetails?.promo_code?.discount ? this.orderDetails?.promo_code?.discount : 0
       };
     }
   },
@@ -115,12 +127,14 @@ export default {
     cancelOrder() {
       this.$emit('cancel', OrderCancel.name);
     }
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 
 <style lang="scss" scoped>
-.detail {
+.order-details {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -177,21 +191,12 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 8px;
-
       font-weight: 400;
       letter-spacing: -0.01em;
       color: #7c7c7c;
-
       padding-bottom: 16px;
       margin-bottom: 16px;
-
       border-bottom: 1px solid #eaeaea;
-
-      &-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
 
       .sale {
         font-weight: 500;
@@ -200,20 +205,19 @@ export default {
       }
     }
 
+    &__discount-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     &__total {
       display: flex;
       flex-direction: column;
       gap: 10px;
-
       font-weight: 400;
       letter-spacing: -0.01em;
       color: #7c7c7c;
-
-      &-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
 
       .total {
         color: $color-dark-grey;
@@ -243,21 +247,27 @@ export default {
       }
     }
 
+    &__total-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     &__bottom {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 44px;
       margin-top: 24px;
+    }
 
-      &-link {
-        font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 24px;
-        color: #db1838;
-      }
+    &__bottom-link {
+      font-family: $golos-regular;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #db1838;
     }
 
     .items {
@@ -271,11 +281,11 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+      }
 
-        &-column {
-          display: flex;
-          align-items: center;
-        }
+      &__top-column {
+        display: flex;
+        align-items: center;
       }
 
       &__price {
@@ -307,33 +317,32 @@ export default {
           display: flex;
           align-items: center;
           gap: 8px;
+        }
 
-          &-picture {
-            width: 48px;
-            height: 48px;
+        &__item-picture {
+          width: 48px;
+          height: 48px;
 
-            &--img {
-              width: 100%;
-              height: 100%;
-              border-radius: 12px;
-            }
+          &--img {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
           }
+        }
 
-          &-title {
-            font-family: $golos-regular;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 20px;
-            letter-spacing: -0.01em;
-            color: $color-dark-grey;
+        &__item-title {
+          font-family: $golos-regular;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          letter-spacing: -0.01em;
+          color: $color-dark-grey;
+          max-width: 200px;
 
-            max-width: 200px;
-
-            small {
-              display: block;
-              color: $color-grey;
-            }
+          small {
+            display: block;
+            color: $color-grey;
           }
         }
       }

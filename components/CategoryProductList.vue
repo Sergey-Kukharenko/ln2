@@ -1,11 +1,19 @@
 <template>
   <div class="products">
-    <app-grid v-slot="slotProps" :slides="productsList">
-      <app-card :slide="{ ...slotProps }" />
+    <app-grid v-slot="slotProps" :slides="productList">
+      <app-card :key="slotProps.img" :slide="{ ...slotProps }" :lazy-image="false" />
     </app-grid>
     <div class="products__pagination">
       <div class="products__pagination-nav">
-        <app-pagination :options="pagination" :loading="loading" has-show-more-btn @load-data="fetchProducts" />
+        <app-pagination
+          v-if="paginatorVisibility"
+          :options="pagination"
+          :total-pages="totalPages"
+          :loading="loading"
+          :visibility="paginatorVisibility"
+          has-show-more-btn
+          @paginate="fetchProducts"
+        />
       </div>
     </div>
   </div>
@@ -17,8 +25,9 @@ import AppGrid from '@/components/shared/AppGrid.vue';
 import AppCard from '@/components/shared/AppCard.vue';
 
 import { PAGINATION, CATEGORY_PRODUCT_TYPES } from '~/constants';
+import { usePaginationTotalPages } from '~/helpers';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtmClear from '~/mixins/gtmClear.vue';
+import gtm from '~/mixins/gtm';
 
 const [CATEGORY] = CATEGORY_PRODUCT_TYPES;
 
@@ -31,7 +40,7 @@ export default {
     AppPagination
   },
 
-  mixins: [gtmClear],
+  mixins: [gtm],
 
   props: {
     type: {
@@ -45,6 +54,16 @@ export default {
     categoryTitle: {
       type: String,
       default: ''
+    },
+
+    productList: {
+      type: Array,
+      default: () => []
+    },
+
+    pagination: {
+      type: Object,
+      default: () => ({})
     }
   },
 
@@ -55,12 +74,12 @@ export default {
   },
 
   computed: {
-    productsList() {
-      return this.$store.getters['category/getCategory']?.list ?? [];
+    totalPages() {
+      return usePaginationTotalPages({ total: this.pagination?.total, limit: this.pagination?.limit });
     },
 
-    pagination() {
-      return this.$store.getters['category/getCategory']?.pagination;
+    paginatorVisibility() {
+      return this.totalPages > 1;
     }
   },
 
@@ -75,7 +94,7 @@ export default {
   },
 
   methods: {
-    async fetchProducts({ page, isShowMore = false }) {
+    async fetchProducts({ page, isShowMore = false, paginationButton = false }) {
       if (Number.isNaN(parseInt(page))) {
         return;
       }
@@ -83,6 +102,8 @@ export default {
       this.loading = true;
 
       const payload = {
+        type: this.type.toLocaleLowerCase(),
+        isConcated: isShowMore,
         slug: this.$route.params.slug,
         params: {
           page,
@@ -90,16 +111,21 @@ export default {
         }
       };
 
-      await this.$store.dispatch(`category/fetch${this.type}`, {
-        ...payload,
-        isConcated: isShowMore
-      });
+      await this.$store.dispatch(`category/fetchCategory`, payload);
 
       this.loading = false;
+
+      if (paginationButton) {
+        this.scrollToTop();
+      }
+    },
+
+    scrollToTop() {
+      window.scrollTo({ top: 0 });
     },
 
     gtmItemListEvent() {
-      const items = this.productsList.map((item) => ({
+      const items = this.productList.map((item) => ({
         item_name: item.title,
         item_id: item.real_id,
         item_brand: 'myflowers',
@@ -119,6 +145,7 @@ export default {
 
     gtmMultipleEvents() {
       this.gtmClearItemEvent();
+      this.dataLayerSetOriginalUrl();
       this.gtmItemListEvent();
     }
   }
@@ -142,11 +169,11 @@ export default {
   &__pagination {
     @include gt-sm {
       margin-top: 40px;
-
-      &-nav {
-        margin-top: 12px;
-      }
     }
+  }
+
+  &__pagination-nav {
+    margin-top: 12px;
   }
 }
 </style>

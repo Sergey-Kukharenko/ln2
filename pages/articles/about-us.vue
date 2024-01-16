@@ -29,11 +29,15 @@ import AppInfoTextSection from '~/components/info/AppInfoTextSection';
 // import AppInfoHero from '~/components/info/AppInfoHero';
 
 import { PROMO, TEXT_INFO, HERO_ITEMS } from '~/data/about';
+import AboutAdvantages from '~/components/AboutAdvantages.vue';
+import AboutSomething from '~/components/AboutSomething.vue';
 
 export default {
   name: 'AboutPage',
 
   components: {
+    AboutSomething,
+    AboutAdvantages,
     // AppInfoBanner,
     AppInfoTextSection
     // AppInfoHero
@@ -69,7 +73,7 @@ export default {
     background: #cccccc;
 
     @include lt-md {
-      width: calc(100% - 40px);
+      width: calc(100% - 32px);
     }
   }
 }

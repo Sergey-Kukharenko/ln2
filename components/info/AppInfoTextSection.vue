@@ -25,19 +25,13 @@ export default {
 
 <style lang="scss" scoped>
 .row {
+  width: 100%;
   display: flex;
-
-  @include gt-sm {
-    gap: 134px;
-  }
+  justify-content: space-between;
 
   @include lt-md {
-    gap: 20px;
     flex-direction: column;
-  }
-
-  & > div {
-    flex: 1;
+    gap: 24px;
   }
 
   .info-text {
@@ -45,7 +39,7 @@ export default {
 
     @include gt-sm {
       gap: 51px;
-      max-width: 419px;
+      width: 436px;
     }
 
     @include lt-md {
@@ -55,7 +49,7 @@ export default {
     .item {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       flex: 1;
       border-top: 1px solid $color-dark-grey;
 
@@ -64,23 +58,22 @@ export default {
       }
 
       @include lt-md {
-        padding-top: 4px;
+        padding-top: 8px;
       }
 
       &__title {
-        font-family: $golos-medium;
-        font-style: normal;
-        font-weight: 600;
+        font-family: $Literata;
+        font-weight: 700;
         color: $color-dark-grey;
+        line-height: 120%;
 
         @include gt-sm {
-          font-size: 46px;
-          line-height: 40px;
+          font-size: 24px;
         }
 
         @include lt-md {
-          font-size: 28px;
-          line-height: 32px;
+          font-size: 20px;
+          letter-spacing: -0.2px;
         }
       }
 
@@ -104,8 +97,8 @@ export default {
 
     @include gt-sm {
       width: 528px;
-      font-size: 48px;
-      line-height: 56px;
+      font-size: 24px;
+      line-height: 120%;
     }
 
     @include lt-md {

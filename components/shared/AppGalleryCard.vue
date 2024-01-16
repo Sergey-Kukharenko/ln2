@@ -1,7 +1,8 @@
 <template>
   <div class="card">
     <img
-      :src="useSizedImage({ name: slide.filename, width: 1056, height: 1056 })"
+      :key="slide.real_id"
+      :src="useSizedImage({ realId: slide.real_id, sizeName: $options.IMG_SIZES_MAP.max, imgName: slide.filename })"
       :alt="slide.alt_text"
       class="card__img"
     />
@@ -10,6 +11,7 @@
 
 <script>
 import { useSizedImage } from '~/helpers';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 
 export default {
   name: 'AppGalleryCard',
@@ -23,7 +25,9 @@ export default {
 
   methods: {
     useSizedImage
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 

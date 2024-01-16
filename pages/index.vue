@@ -1,80 +1,114 @@
 <template>
   <main>
     <app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />
-    <app-promotions />
-    <app-popular-categories />
+    <app-promotions :promotions="$options.PROMOTIONS" />
+    <app-popular-categories :popular-categories="$options.POPULAR_CATEGORIES" />
+    <app-section :section="$options.CONSTRUCTOR_BLOCK" name="constructor" theme="constructor" is-constructor has-from />
+    <app-section-sm :section="$options.RECIPIENT" use-without-image-size name="recipient" />
 
-    <app-section v-if="isBestBouquets" :section="bestBouquets" name="best-sellers" />
-    <app-section-sm v-if="isRecipient" :section="recipient" use-without-image-size name="recipient" />
-    <app-section v-if="isSpecialOffers" :section="specialOffers" theme="custom" name="special-offers" />
-
+    <app-section
+      v-if="isSpecialOffers"
+      :section="getDataByDevice(specialOffers)"
+      theme="custom"
+      name="special-offers"
+    />
     <!--Временно скрыт-->
     <!--<app-reviews />-->
 
-    <app-section v-if="isUnderPounds" :section="underPounds" theme="custom" name="under-pounds" />
-    <app-shop-by-price />
-    <app-section v-if="isBaseRoses" :section="baseRoses" theme="custom" name="base-roses" />
-    <app-section v-if="isTrendyBouquets" :section="trendyBouquets" theme="custom" name="trendy-bouquets" />
-    <app-benefits />
-    <app-section-sm v-if="isPickBouquet" :section="pickBouquet" name="pick-bouquet" theme="custom" />
+    <app-section v-if="isUnderPounds" :section="getDataByDevice(underPounds)" theme="custom" name="under-pounds" />
+    <app-shop-by-price :shop-by-price="$options.SHOP_BY_PRICE" />
+    <app-section v-if="isBaseRoses" :section="getDataByDevice(baseRoses)" theme="custom" name="base-roses" />
+    <app-section v-if="isNewBouquets" :section="getDataByDevice(newBouquets)" theme="custom" name="new-bouquets" />
+    <app-section
+      v-if="isTrendyBouquets"
+      :section="getDataByDevice(trendyBouquets)"
+      theme="custom"
+      name="trendy-bouquets"
+    />
+
+    <app-benefits :benefits="$options.BENEFITS" />
+    <app-section-sm :section="$options.PICK_BOUQUET" name="pick-bouquet" theme="custom" />
 
     <!--Временно скрыт-->
-    <!--<app-discount :info="discount" />-->
+    <!--<app-discount /> -->
 
-    <app-faq />
-    <app-info />
+    <app-faq :faq="$options.FAQ" />
+    <app-info :info="$options.INFO" />
     <app-notice v-if="$device.isMobileOrTablet" />
+    <app-seo :html="$options.INFO.seo.bottom_text" has-layout page-theme="home" />
   </main>
 </template>
 
 <script>
-import { hydrateWhenIdle } from 'vue-lazy-hydration';
+import { mapState } from 'vuex';
+import { useArrayNotEmpty, useDeepCopyObject } from '~/helpers';
+import gtm from '~/mixins/gtm.vue';
+import AppSeo from '~/components/seo/AppSeo.vue';
 
-import { mapGetters } from 'vuex';
-import dataFormSubscribeInfo from '~/data/form-subscribe-info';
-import { useArrayNotEmpty } from '~/helpers';
-import gtmClear from '~/mixins/gtmClear.vue';
+import promotions from '~/mocks/promotions';
+import popularCategories from '~/mocks/popular-categories';
+import constructorBlock from '~/mocks/constructor-block';
+import recipient from '~/mocks/recipient';
+import shopByPrice from '~/mocks/shop-by-price';
+import benefits from '~/mocks/benefits';
+import pickBouquet from '~/mocks/pick-bouquet';
+import faq from '~/mocks/faq';
+import info from '~/mocks/info';
+import AppPromotions from '~/components/AppPromotions.vue';
+import AppPopularCategories from '~/components/AppPopularCategories.vue';
+import AppShopByPrice from '~/components/AppShopByPrice.vue';
+import AppBenefits from '~/components/AppBenefits.vue';
+import AppFaq from '~/components/AppFaq.vue';
+import AppInfo from '~/components/AppInfo.vue';
 
 export default {
   name: 'IndexPage',
 
   components: {
+    AppInfo,
+    AppFaq,
+    AppBenefits,
+    AppShopByPrice,
+    AppPopularCategories,
+    AppPromotions,
+    AppSeo,
     AppTrustbox: () => import('~/components/ui/AppTrustbox.vue'),
-    AppNotice: hydrateWhenIdle(() => import('@/components/shared/AppNotice')),
-    AppSection: hydrateWhenIdle(() => import('@/components/shared/AppSection')),
-    AppSectionSm: hydrateWhenIdle(() => import('@/components/shared/AppSectionSm'))
+    AppNotice: () => import('@/components/shared/AppNotice'),
+    AppSection: () => import('@/components/shared/AppSection'),
+    AppSectionSm: () => import('@/components/shared/AppSectionSm')
   },
 
-  mixins: [gtmClear],
+  mixins: [gtm],
 
-  data() {
-    return {
-      discount: dataFormSubscribeInfo.discount
-    };
-  },
+  PROMOTIONS: promotions,
+  POPULAR_CATEGORIES: popularCategories,
+  CONSTRUCTOR_BLOCK: constructorBlock,
+  RECIPIENT: recipient,
+  SHOP_BY_PRICE: shopByPrice,
+  BENEFITS: benefits,
+  PICK_BOUQUET: pickBouquet,
+  FAQ: faq,
+  INFO: info,
 
   async fetch() {
     await this.$store.dispatch('pages/home/fetchMainPageServerSide');
   },
 
+  head() {
+    return {
+      title: this.seoTitle,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.seoDescription
+        }
+      ]
+    };
+  },
+
   computed: {
-    ...mapGetters({
-      bestBouquets: 'pages/home/getBestBouquets',
-      recipient: 'pages/home/getRecipient',
-      specialOffers: 'pages/home/getSpecialOffers',
-      underPounds: 'pages/home/getUnderPounds',
-      baseRoses: 'pages/home/getBaseRoses',
-      trendyBouquets: 'pages/home/getTrendyBouquets',
-      pickBouquet: 'pages/home/getPickBouquet'
-    }),
-
-    isBestBouquets() {
-      return useArrayNotEmpty(this.bestBouquets?.list);
-    },
-
-    isRecipient() {
-      return useArrayNotEmpty(this.recipient?.list);
-    },
+    ...mapState('pages/home', ['specialOffers', 'underPounds', 'baseRoses', 'newBouquets', 'trendyBouquets']),
 
     isSpecialOffers() {
       return useArrayNotEmpty(this.specialOffers?.list);
@@ -88,17 +122,39 @@ export default {
       return useArrayNotEmpty(this.baseRoses?.list);
     },
 
+    isNewBouquets() {
+      return useArrayNotEmpty(this.newBouquets?.list);
+    },
+
     isTrendyBouquets() {
       return useArrayNotEmpty(this.trendyBouquets?.list);
     },
 
-    isPickBouquet() {
-      return useArrayNotEmpty(this.pickBouquet?.list);
+    seoTitle() {
+      return info.seo?.title;
+    },
+
+    seoDescription() {
+      return info.seo?.description;
     }
   },
 
-  async mounted() {
-    await this.$store.dispatch('pages/home/fetchMainPageClientSide');
+  methods: {
+    getDataByDevice(obj) {
+      const copyObj = useDeepCopyObject(obj);
+      const PAGE_LIMIT = 7;
+      const list = copyObj?.list || [];
+      const isAvalible = this.$device.isMobileOrTablet && list.length === PAGE_LIMIT;
+
+      if (isAvalible) {
+        list.pop();
+      }
+
+      return {
+        ...copyObj,
+        list
+      };
+    }
   }
 };
 </script>
@@ -110,7 +166,7 @@ main {
     flex-direction: column;
 
     .trustbox {
-      margin: 12px auto 0;
+      margin: 12px auto;
     }
 
     .promotion {
@@ -141,8 +197,12 @@ main {
       order: 6;
     }
 
-    .trendy-bouquets {
+    .new-bouquets {
       order: 7;
+    }
+
+    .trendy-bouquets {
+      order: 8;
     }
 
     .recipient,
@@ -152,8 +212,9 @@ main {
     .pick-bouquet,
     .discount,
     .faq,
-    .info {
-      order: 8;
+    .info,
+    .seo {
+      order: 9;
     }
   }
 

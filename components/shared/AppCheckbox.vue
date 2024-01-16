@@ -1,5 +1,5 @@
 <template>
-  <div class="app-checkbox" @click="$emit('change', checkboxState.value)">
+  <div class="app-checkbox" :class="classes" @click="$emit('change', checkboxState.value)">
     <svg-icon class="app-checkbox__icon" :name="checkboxState.icon" />
     <slot />
   </div>
@@ -20,14 +20,37 @@ export default {
       require: true,
       default: ''
     },
+
     name: {
       type: [String, Number],
       require: true,
       default: ''
+    },
+
+    size: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['', 'md', 'lg'].includes(value);
+      }
+    },
+
+    align: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['', 'start', 'center'].includes(value);
+      }
     }
   },
 
   computed: {
+    classes() {
+      return {
+        [`app-checkbox--size-${this.size}`]: this.size,
+        [`app-checkbox--align-${this.align}`]: this.align
+      };
+    },
     // TODO: логику управления состоянием нужно доработать, добавить Boolean value.
 
     checkboxState() {
@@ -62,6 +85,41 @@ export default {
     width: 20px;
     height: 20px;
     margin-right: 10px;
+  }
+
+  &--align-start {
+    align-items: flex-start;
+  }
+
+  &--align-center {
+    align-items: center;
+  }
+
+  &--size-md {
+    & .app-checkbox__icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+  }
+
+  &--size-lg {
+    line-height: 130%;
+
+    @include gt-sm {
+      letter-spacing: -0.14px;
+    }
+
+    @include lt-md {
+      font-size: 12px;
+      letter-spacing: -0.24px;
+    }
+
+    & .app-checkbox__icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
   }
 }
 </style>

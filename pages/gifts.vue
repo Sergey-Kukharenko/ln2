@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import AppListGifts from '~/components/gifts/AppListGifts.vue';
 import AppCardGift from '~/components/gifts/AppCardGift.vue';
 import AppButton from '~/components/shared/AppButton.vue';
@@ -52,12 +52,23 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      seo: 'gifts/getSeoGifts',
-      title: 'gifts/getTitleGifts',
-      list: 'gifts/getListGifts',
-      isBasketHasGifts: 'gifts/isBasketHasGifts'
-    }),
+    ...mapState('gifts', ['gifts']),
+
+    seo() {
+      return this.gifts?.seo;
+    },
+
+    title() {
+      return this.gifts?.main?.title;
+    },
+
+    list() {
+      return this.gifts?.list;
+    },
+
+    isBasketHasGifts() {
+      return this.gifts?.is_basket_has_gift;
+    },
 
     changeableText() {
       return this.isBasketHasGifts ? 'Continue' : 'Skip';

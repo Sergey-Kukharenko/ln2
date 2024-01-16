@@ -3,6 +3,9 @@
     <swiper ref="swiperTop" class="swiper swiper--gallery" :options="swiperOption">
       <swiper-slide v-for="(slide, idx) in slides" :key="idx">
         <app-gallery-card :slide="slide" />
+        <app-card-tags v-if="typeName" size="large">
+          <app-card-tag>{{ typeName }}</app-card-tag>
+        </app-card-tags>
       </swiper-slide>
 
       <template v-if="swiperOption.navigation">
@@ -21,7 +24,9 @@
       <swiper-slide v-for="(slide, idx) in slides" :key="idx">
         <div class="thumbs-item">
           <img
-            :src="useSizedImage({ name: slide.filename, width: imgSize, height: imgSize })"
+            :src="
+              useSizedImage({ realId: slide.real_id, sizeName: $options.IMG_SIZES_MAP.size10, imgName: slide.filename })
+            "
             :alt="slide.alt_text"
             class="thumbs-item__img"
           />
@@ -34,9 +39,14 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import { useSizedImage } from '~/helpers';
+import 'swiper/css/swiper.css';
 
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 import AppGalleryCard from '@/components/shared/AppGalleryCard.vue';
+
+import { useSizedImage } from '~/helpers';
+import AppCardTag from '~/components/shared/AppCardTag.vue';
+import AppCardTags from '~/components/shared/AppCardTags.vue';
 
 const THUMBS_LOOP_LIMIT = 4;
 const THUMBS_CONTAINER_WIDTH = 276;
@@ -44,6 +54,8 @@ const THUMB_ITEM_WIDTH = 66;
 
 export default {
   components: {
+    AppCardTags,
+    AppCardTag,
     Swiper,
     SwiperSlide,
     AppGalleryCard
@@ -53,6 +65,11 @@ export default {
     slides: {
       type: Array,
       default: () => []
+    },
+
+    typeName: {
+      type: String,
+      default: ''
     }
   },
 
@@ -83,13 +100,10 @@ export default {
       swiperOptionThumbs: {
         loop: true,
         centeredSlides: false,
-        spaceBetween: 4,
-        slidesPerView: 4,
+        slidesPerView: this.slides.length,
         touchRatio: 0.2,
         slideToClickedSlide: true
-      },
-
-      imgSize: 120
+      }
     };
   },
 
@@ -99,10 +113,7 @@ export default {
     },
 
     thumbContainerWidth() {
-      const width =
-        (this.slides.length < THUMBS_LOOP_LIMIT
-          ? THUMBS_CONTAINER_WIDTH - (THUMBS_LOOP_LIMIT - this.slides.length) * THUMB_ITEM_WIDTH
-          : THUMBS_CONTAINER_WIDTH) + 'px';
+      const width = THUMBS_CONTAINER_WIDTH - (THUMBS_LOOP_LIMIT - this.slides.length) * THUMB_ITEM_WIDTH + 'px';
 
       return {
         width
@@ -121,7 +132,9 @@ export default {
 
   methods: {
     useSizedImage
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 
@@ -156,7 +169,7 @@ export default {
 
   &__border {
     opacity: 0;
-    border: 2px solid $color-green;
+    border: 3px solid $color-green;
     border-radius: 12px;
   }
 }
@@ -166,7 +179,7 @@ export default {
 
   &.swiper-thumbs {
     @include gt-xs {
-      margin: 12px auto 0 -4px;
+      margin: 12px auto 0 -2px;
     }
 
     @include xs {
@@ -195,7 +208,13 @@ export default {
   }
 }
 
-.swiper-slide-active .thumbs-item__border {
-  opacity: 1;
+.swiper-slide-active {
+  & .thumbs-item__border {
+    opacity: 1;
+  }
+
+  & .thumbs-item__img {
+    border-radius: 8px;
+  }
 }
 </style>

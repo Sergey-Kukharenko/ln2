@@ -1,22 +1,14 @@
 <template>
   <app-input
     v-model="promoCode"
-    size="x-large"
+    size="xx-large"
     placeholder="Promotion code"
     :success="success"
     :error="error"
-    :note="note"
     class="promo-code"
   >
     <template #right>
-      <basket-button
-        size="small"
-        theme="green"
-        :disabled="isDisabled"
-        align="center"
-        size-not-change
-        @click="submitHandler"
-      >
+      <basket-button size="small" theme="green" :disabled="isDisabled" align="center" not-change @click="submitHandler">
         Apply
       </basket-button>
     </template>
@@ -26,24 +18,25 @@
 <script>
 import { mapActions } from 'vuex';
 import AppInput from '~/components/shared/AppInput.vue';
+import BasketButton from '~/components/BasketButton.vue';
 
 export default {
   name: 'AppPromoCode',
-  components: { AppInput },
+
+  components: { BasketButton, AppInput },
 
   data() {
     return {
       limit: 3,
-      promoCode: '',
-      success: false,
+      promoCode: this.getPromoCode(),
       error: '',
-      note: ''
+      success: ''
     };
   },
 
   computed: {
     isDisabled() {
-      return this.promoCode.length < this.limit;
+      return this.promoCode?.length < this.limit;
     }
   },
 
@@ -55,29 +48,32 @@ export default {
 
   methods: {
     ...mapActions({
-      setPromoCode: 'cart/setPromoCode',
-      fetchCart: 'cart/fetchCart'
+      setPromoCode: 'checkout/setPromoCode',
+      fetchCheckout: 'checkout/fetchCheckout'
     }),
 
+    getPromoCode() {
+      return this.$store.getters['checkout/checkoutPromocode'];
+    },
+
     setSuccess() {
-      this.note = 'Promocode succesfully applied';
+      this.success = 'Promocode succesfully applied';
       this.error = '';
     },
 
-    setError() {
-      this.note = '';
-      this.error = 'Promocode has expired';
+    setError(message) {
+      this.success = '';
+      this.error = message;
     },
 
     clear() {
-      this.success = false;
-      this.note = '';
+      this.success = '';
       this.error = '';
     },
 
     async setAndUpdate() {
       this.setSuccess();
-      await this.fetchCart();
+      await this.fetchCheckout();
     },
 
     async submitHandler() {
@@ -86,11 +82,9 @@ export default {
       }
 
       const payload = { promo_code: this.promoCode };
-      const { success } = await this.setPromoCode(payload);
+      const { success, message } = await this.setPromoCode(payload);
 
-      this.success = success;
-
-      success ? await this.setAndUpdate() : this.setError();
+      success ? await this.setAndUpdate() : this.setError(message);
     }
   }
 };
@@ -98,17 +92,22 @@ export default {
 
 <style lang="scss">
 .promo-code {
-  & .app-input__field {
+  &.app-input--size-xx-large .app-input__field {
     background: #f7f7f7;
 
-    & input {
-      color: #7c7c7c;
+    @include gt-sm {
+      height: 56px;
+    }
+
+    @include lt-md {
+      height: 52px;
     }
   }
 
   & .basket-button {
-    letter-spacing: -0.01em;
+    letter-spacing: -0.14px;
     margin-right: -8px;
+    border-radius: 12px;
   }
 
   & .basket-button.basket-button--disabled {

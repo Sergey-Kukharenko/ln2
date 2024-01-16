@@ -4,9 +4,9 @@
       {{ section.title }}
     </div>
     <div class="section__list list">
-      <a v-for="(item, idx) in section.list" :key="idx" class="list__item">
+      <nuxt-link v-for="(item, idx) in section.list" :key="idx" :to="`/${item.url}`" class="list__item">
         {{ item.name }}
-      </a>
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -100,6 +100,12 @@ export default {
           //   text-align: right;
           // }
         }
+      }
+    }
+
+    .section__title {
+      &:after {
+        transform: rotate(-180deg);
       }
     }
   }

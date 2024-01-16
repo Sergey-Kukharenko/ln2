@@ -6,8 +6,11 @@
 </template>
 
 <script>
+import BasketSwitch from '~/components/BasketSwitch.vue';
+
 export default {
   name: 'BasketProductLeaves',
+  components: { BasketSwitch },
   model: {
     prop: 'value',
     event: 'change'

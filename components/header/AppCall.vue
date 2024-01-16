@@ -5,7 +5,7 @@
     <figure v-else class="figure">
       <svg-icon name="whatsapp" class="figure__icon" />
       <figcaption class="figure__text">
-        {{ call.phone }}
+        {{ call.title }}
       </figcaption>
     </figure>
   </a>
@@ -18,8 +18,8 @@ export default {
   computed: {
     call() {
       return {
-        phone: this.$store.getters['layout/getPhone']?.phone,
-        whatsapp: this.$store.getters['layout/getPhone']?.whatsapp
+        title: this.$store.getters['layout/getCall']?.title,
+        whatsapp: this.$store.getters['layout/getCall']?.whatsapp
       };
     }
   }

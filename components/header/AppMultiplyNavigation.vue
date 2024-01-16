@@ -58,6 +58,7 @@ export default {
   @include gt-sm {
     display: flex;
     align-items: center;
+    justify-content: space-between; //Временно добавлен
     flex-wrap: wrap;
     margin: 0 -16px;
   }
@@ -89,11 +90,16 @@ export default {
       }
     }
 
-    &:last-child {
-      @include gt-sm {
-        margin-left: auto;
-      }
+    &:nth-child(3) {
+      margin: 0 78px 0 auto;
     }
+
+    //Временно скрыт
+    //&:last-child {
+    //  @include gt-sm {
+    //    margin-left: auto;
+    //  }
+    //}
   }
 }
 </style>

@@ -11,7 +11,8 @@ export default {
   methods: {
     validateNumber(e) {
       const keyCode = e.keyCode ? e.keyCode : e.which;
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46 && keyCode !== 43) {
+      const matchCountryCode = this.form.phone.value === this.countryCode;
+      if ((keyCode < 48 || (keyCode === 48 && matchCountryCode) || keyCode > 57) && keyCode !== 46 && keyCode !== 43) {
         e.preventDefault();
       }
     },

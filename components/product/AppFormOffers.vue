@@ -23,11 +23,12 @@
         <div class="group-buttons__item">
           <app-button theme="green" :stretch="changeableStretch" @click="onAddToCart">Send now</app-button>
         </div>
-        <div class="group-buttons__item">
-          <app-button theme="grey" @click="toggleLike">
-            <app-like-icon :like="like" theme="outline" size="not-change" />
-          </app-button>
-        </div>
+        <!--Временно скрыт-->
+        <!--<div class="group-buttons__item">-->
+        <!--  <app-button theme="grey" @click="toggleLike">-->
+        <!--  <app-like-icon :like="like" theme="outline" size="not-change" />-->
+        <!--  </app-button>-->
+        <!--</div>-->
       </div>
     </div>
   </div>
@@ -40,22 +41,23 @@ import AppButton from '@/components/shared/AppButton';
 import AppBadges from '@/components/shared/AppBadges';
 import AppOfferDetail from '@/components/product/AppOfferDetail';
 // import ToastCardDeals from '@/components/toast-cards/ToastCardDeals';
-import AppLikeIcon from '~/components/shared/AppLikeIcon';
-import gtmClear from '~/mixins/gtmClear.vue';
+// import AppLikeIcon from '~/components/shared/AppLikeIcon';
+import gtm from '~/mixins/gtm.vue';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 
 export default {
   name: 'AppFormOffers',
 
   components: {
-    AppLikeIcon,
+    // Временно скрыт
+    // AppLikeIcon,
     AppOfferDetail,
     AppOffers,
     AppBadges,
     AppButton
   },
 
-  mixins: [gtmClear],
+  mixins: [gtm],
 
   props: {
     product: {
@@ -132,6 +134,7 @@ export default {
       this.$router.push({ name: 'gifts' });
 
       this.gtmClearItemEvent();
+      this.dataLayerSetOriginalUrl();
       this.gtmAddToCartEvent();
     },
 

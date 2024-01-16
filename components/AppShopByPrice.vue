@@ -1,11 +1,11 @@
 <template>
-  <section v-if="isShopByPrice" class="layout shop-by-price">
+  <section class="layout shop-by-price">
     <h2 class="shop-by-price__title">
-      {{ getShopByPrice.title }}
+      {{ shopByPrice.title }}
     </h2>
 
     <div class="list">
-      <div v-for="(item, idx) in getShopByPrice.list" :key="idx" class="list__item">
+      <div v-for="(item, idx) in shopByPrice.list" :key="idx" class="list__item">
         <nuxt-link :to="{ name: `${item.prefix}-slug`, params: { slug: item.slug } }" class="card">
           <div class="card__figure">{{ item.type }}</div>
           <div class="card__group">
@@ -26,17 +26,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { useObjectNotEmpty } from '~/helpers';
-
 export default {
   name: 'AppShopByPrice',
 
-  computed: {
-    ...mapGetters('pages/home', ['getShopByPrice']),
-
-    isShopByPrice() {
-      return useObjectNotEmpty(this.getShopByPrice);
+  props: {
+    shopByPrice: {
+      type: Object,
+      default: () => ({})
     }
   }
 };

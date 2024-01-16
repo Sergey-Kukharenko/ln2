@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isBenefits" class="benefits">
+  <section class="benefits">
     <div class="layout">
       <div class="benefits__title">Our benefits</div>
       <div class="benefits__tabs">
@@ -20,10 +20,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import AppBenefitsTabs from '~/components/AppBenefitsTabs.vue';
 
 export default {
   name: 'AppBenefits',
+  components: {
+    AppBenefitsTabs,
+    AppBenefitsSlider: () => import('~/components/AppBenefitsSlider.vue'),
+    AppBenefitsCard: () => import('~/components/AppBenefitsCard.vue')
+  },
+
+  props: {
+    benefits: {
+      type: Array,
+      default: () => []
+    }
+  },
 
   data() {
     return {
@@ -32,12 +44,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ benefits: 'pages/home/getBenefits' }),
-
-    isBenefits() {
-      return this.benefits.length;
-    },
-
     benefitsTabs() {
       return this.benefits.map((tab) => tab.title);
     }

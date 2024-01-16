@@ -1,16 +1,13 @@
 <template>
   <div class="card" :class="className" :style="{ background: bgColor }">
-    <div v-if="number" class="card__number">{{ number }}</div>
+    <div v-if="number" class="card__number" :class="{ 'has-step': hasStep }">
+      <span v-if="hasStep" class="card__number-step">Step</span>
+      <span>{{ number }}</span>
+    </div>
     <div class="card__content">
-      <div>
-        <slot name="link" />
-      </div>
-      <div>
-        <slot name="title" />
-      </div>
-      <div>
-        <slot name="text" />
-      </div>
+      <slot name="link" />
+      <slot name="title" />
+      <slot name="text" />
     </div>
   </div>
 </template>
@@ -36,6 +33,11 @@ export default {
       validate(value) {
         return ['extended'].includes(value);
       }
+    },
+
+    hasStep: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -53,6 +55,7 @@ export default {
 .card {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   padding: 24px;
   box-sizing: border-box;
   border-radius: 24px;
@@ -61,7 +64,6 @@ export default {
 
   @include gt-sm {
     gap: 24px;
-    min-height: 250px;
   }
 
   @include lt-md {
@@ -73,27 +75,25 @@ export default {
     align-items: center;
     justify-content: center;
     background: #ffffff;
-    border-radius: 50%;
-
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.14px;
     color: $color-dark-grey;
     user-select: none;
+    font-size: 14px;
+    line-height: 20px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
 
-    @include gt-sm {
-      width: 26px;
-      height: 26px;
-      font-size: 14px;
-      line-height: 20px;
-    }
+    &.has-step {
+      width: auto;
+      height: auto;
+      padding: 3px 9px;
+      border-radius: 16px;
 
-    @include lt-md {
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
-      line-height: 16px;
+      & span:first-child {
+        margin-right: 3px;
+      }
     }
   }
 
@@ -102,10 +102,12 @@ export default {
     flex-direction: column;
 
     @include gt-sm {
-      gap: 26px;
+      gap: 16px;
     }
 
     @include lt-md {
+      flex: 1;
+      justify-content: space-between;
       gap: 12px;
     }
   }

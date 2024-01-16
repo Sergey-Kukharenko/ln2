@@ -56,7 +56,10 @@ export default {
 .order-panel {
   display: flex;
   justify-content: center;
-  gap: 17px;
+
+  @include gt-sm {
+    gap: 17px;
+  }
 
   @include lt-md {
     gap: 16px;
@@ -69,6 +72,8 @@ export default {
   }
 
   &--wrapper {
+    position: relative;
+    z-index: 2;
     border: 1.5px solid #eaeaea;
     border-radius: 16px;
     padding: 20px 24px 16px 24px;
@@ -80,7 +85,6 @@ export default {
     }
 
     .detail-separator {
-      display: block;
       height: 1px;
       background: #eaeaea;
       margin-top: 8px;
@@ -95,7 +99,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     font-family: $golos-medium;
     font-style: normal;
     font-weight: 600;
@@ -153,16 +156,16 @@ export default {
       justify-content: flex-end;
       background: #ffffff;
     }
+  }
 
-    &-icon {
-      width: 16.5px;
-      fill: #000;
-      filter: brightness(0);
-      transition: transform 0.2s ease-in;
+  &__toggle-icon {
+    width: 16.5px;
+    fill: #000;
+    filter: brightness(0);
+    transition: transform 0.2s ease-in;
 
-      @include lt-md {
-        width: 10.5px;
-      }
+    @include lt-md {
+      width: 10.5px;
     }
   }
 }

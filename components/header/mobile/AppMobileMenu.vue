@@ -11,14 +11,15 @@
         <span class="count__number">{{ item.count }}</span>
       </div>
     </div>
-    <div class="list__item" @click="goToFavorite">
-      <div class="group-content">
-        <div class="figure">
-          <svg-icon name="mom" class="figure__icon" />
-        </div>
-        <div class="figcaption">Favorite</div>
-      </div>
-    </div>
+    <!--Временно скрыт-->
+    <!--<div class="list__item" @click="goToFavorite">-->
+    <!--  <div class="group-content">-->
+    <!--    <div class="figure">-->
+    <!--      <svg-icon name="mom" class="figure__icon" />-->
+    <!--    </div>-->
+    <!--    <div class="figcaption">Favorite</div>-->
+    <!--  </div>-->
+    <!--</div>-->
   </div>
 </template>
 <script>
@@ -81,6 +82,7 @@ export default {
 .group-content {
   display: flex;
   align-items: center;
+  color: $color-dark-grey;
 }
 
 .figure {

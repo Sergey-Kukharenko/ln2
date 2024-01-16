@@ -165,7 +165,7 @@ export default [
             mobile: '/images/service/mobile/3.webp'
           },
           alt: '3',
-          title: 'Delivery in 2 hours from the order moment'
+          title: 'Delivery in 3 hours from the order moment'
         }
       ],
       description: ''
@@ -360,73 +360,177 @@ export default [
     like: false,
     type_of_page: 'lists_page',
     type_of_flowers: 'roses',
+    tooltip: {
+      icon: 'circle-question-mark',
+      content: [
+        {
+          title: 'Short length',
+          description: 'rose with a small bud. Such bouquet will be smaller in size'
+        },
+        {
+          title: 'Premium Rose',
+          description:
+            '- the best varieties of Holland Roses. With a large bud, such bouquet will be twice as much as a bouquet of Kenyan Rose'
+        }
+      ]
+    },
 
-    choose_color: [
+    colors: [
       {
         id: 0,
-        img: 'https://images.unsplash.com/photo-1596438503462-50dedbfd6f1f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Ym91cXVldCUyMG9mJTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
-        name: 'Pink & White 0'
+        image:
+          'https://images.unsplash.com/photo-1596438503462-50dedbfd6f1f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Ym91cXVldCUyMG9mJTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
+        title: 'Pink & White 0'
       },
       {
         id: 1,
-        img: 'https://images.unsplash.com/photo-1596438459194-f275f413d6ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8Ym91cXVldCUyMG9mJTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
-        name: 'Pink & White 1'
+        image:
+          'https://images.unsplash.com/photo-1596438459194-f275f413d6ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8Ym91cXVldCUyMG9mJTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
+        title: 'Pink & White 1'
       },
       {
         id: 2,
-        img: 'https://images.unsplash.com/photo-1561729098-cbab0f7a9f7c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Ym91cXVldCUyMG9mJTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
-        name: 'Pink & White 2'
+        image:
+          'https://images.unsplash.com/photo-1561729098-cbab0f7a9f7c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Ym91cXVldCUyMG9mJTIwZmxvd2Vyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=100&q=60',
+        title: 'Pink & White 2'
       },
       {
         id: 3,
-        img: 'https://images.unsplash.com/photo-1591886960571-74d43a9d4166?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        name: 'Pink & White 3'
+        image:
+          'https://images.unsplash.com/photo-1591886960571-74d43a9d4166?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
+        title: 'Pink & White 3'
       },
       {
         id: 4,
-        img: 'https://images.unsplash.com/photo-1599733594230-6b823276abcc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        name: 'Pink & White 4'
+        image:
+          'https://images.unsplash.com/photo-1599733594230-6b823276abcc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
+        title: 'Pink & White 4'
       },
       {
         id: 5,
-        img: 'https://images.unsplash.com/photo-1494336956603-39a3641efa1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjR8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        name: 'Pink & White 5'
+        image:
+          'https://images.unsplash.com/photo-1494336956603-39a3641efa1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjR8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
+        title: 'Pink & White 5'
       }
     ],
-    choose_package: [
+    heights: [
+      {
+        title: 'Short Kenya',
+        type: 'short',
+        number: '0',
+        unit: 'ft',
+        icon: 'short-bouquet'
+      },
+      {
+        title: 'Long and premium',
+        type: 'long',
+        number: '2',
+        unit: 'ft',
+        icon: 'long-bouquet',
+        recommended: false
+      }
+    ],
+    packages: [
       {
         id: 0,
-        img: 'https://images.unsplash.com/photo-1571086803179-00ab0eaa6e02?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjh8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        description: true,
-        name: 'Tape',
+        title: 'Tape',
+        image: '/images/card-product/choose-package/1.jpg',
         price: '0'
       },
       {
         id: 1,
-        img: 'https://images.unsplash.com/photo-1561128290-005859246e58?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjN8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        description: true,
-        name: 'Felt',
+        title: 'Natural craft',
+        image: '/images/card-product/choose-package/1.jpg',
         price: '4'
       },
       {
         id: 2,
-        img: 'https://images.unsplash.com/photo-1613508636209-cd13d894e15b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjl8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        description: true,
-        name: 'Craft',
-        price: '8'
-      },
-      {
-        sale: {
-          status: true,
-          icon_path: '/icons/fire.png'
-        },
-        id: 3,
-        img: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzd8fGJvdXF1ZXQlMjBvZiUyMGZsb3dlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=100&q=60',
-        description: true,
-        name: 'Matte',
-        price: '9'
+        title: 'Colour paper',
+        image: '/images/card-product/choose-package/1.jpg',
+        price: '9',
+        recommended: true
       }
     ],
+
+    prices: {
+      25: {
+        mix: {
+          product_id: 111,
+          uri: '/product/25-pink-roses/',
+          images: ['dddd.webp', 'dddd2.webp'],
+
+          heights: {
+            short: {
+              price: 10
+            },
+            mid: {
+              price: 20
+            },
+            long: {
+              price: 30
+            }
+          }
+        }
+      },
+      35: {
+        mix: {
+          product_id: 111,
+          uri: '/product/25-pink-roses/',
+          images: ['dddd.webp', 'dddd2.webp'],
+
+          heights: {
+            short: {
+              price: 20
+            },
+            mid: {
+              price: 30
+            },
+            long: {
+              price: 40
+            }
+          }
+        }
+      },
+      51: {
+        mix: {
+          product_id: 111,
+          uri: '/product/25-pink-roses/',
+          images: ['dddd.webp', 'dddd2.webp'],
+
+          heights: {
+            short: {
+              price: 30
+            },
+            mid: {
+              price: 40
+            },
+            long: {
+              price: 50
+            }
+          }
+        }
+      },
+      101: {
+        mix: {
+          product_id: 111,
+          uri: '/product/25-pink-roses/',
+          images: ['dddd.webp', 'dddd2.webp'],
+
+          heights: {
+            short: {
+              price: 40
+            },
+            mid: {
+              price: 50
+            },
+            long: {
+              price: 60
+            }
+          }
+        }
+      }
+    },
+
     service: {
       list: [
         {
@@ -451,7 +555,7 @@ export default [
             mobile: '/images/service/mobile/3.webp'
           },
           alt: '3',
-          title: 'Delivery in 2 hours from the order moment'
+          title: 'Delivery in 3 hours from the order moment'
         }
       ],
       description: ''

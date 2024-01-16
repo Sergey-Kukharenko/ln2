@@ -37,10 +37,14 @@
 
 <script>
 import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader';
+import BasketInput from '~/components/BasketInput.vue';
+import BasketButton from '~/components/BasketButton.vue';
 
 export default {
   name: 'BasketProductCount',
   components: {
+    BasketButton,
+    BasketInput,
     AppSpinnerLoader
   },
   props: {
@@ -56,7 +60,7 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['gift'].includes(value);
+        return ['', 'gift'].includes(value);
       }
     },
 

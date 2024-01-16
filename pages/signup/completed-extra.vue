@@ -42,34 +42,33 @@ export default {
       flex-direction: column;
       gap: 16px;
       padding-top: 12px;
+    }
 
-      &-title {
-        font-family: $golos-bold;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 24px;
-        line-height: 28px;
-        letter-spacing: 0.01em;
-        color: #ffffff;
-      }
+    &__info-title {
+      font-family: $golos-bold;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+    }
 
-      &-text {
-        font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #eaeaea;
-      }
+    &__info-text {
+      font-family: $golos-regular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #eaeaea;
     }
 
     &__btn {
       position: absolute;
       bottom: 4px;
-      width: 100%;
+      width: 90%;
       right: 50%;
       transform: translate(50%, -50%);
-      width: 90%;
     }
   }
 }

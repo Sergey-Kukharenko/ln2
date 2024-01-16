@@ -42,11 +42,13 @@ import { mapGetters } from 'vuex';
 import AppFooterSection from '@/components/footer/AppFooterSection';
 import AppFooterFeedback from '@/components/footer/AppFooterFeedback';
 import AppEmailButton from '@/components/shared/AppEmailButton';
+import AppBestOffer from '~/components/AppBestOffer.vue';
 
 export default {
   name: 'AppFooterContainer',
 
   components: {
+    AppBestOffer,
     AppFooterSection,
     AppFooterFeedback,
     AppEmailButton
@@ -111,6 +113,7 @@ export default {
     @include gt-sm {
       display: none;
     }
+
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -121,11 +124,11 @@ export default {
     &__logo {
       display: flex;
       justify-content: center;
+    }
 
-      &-icon {
-        width: 116.16px;
-        height: 25.89px;
-      }
+    &__logo-icon {
+      width: 116.16px;
+      height: 25.89px;
     }
 
     &__text {
@@ -171,21 +174,21 @@ export default {
       display: none;
     }
   }
+}
 
-  &-feedback {
-    @include gt-sm {
-      flex-basis: 252px;
-    }
+.group-feedback {
+  @include gt-sm {
+    flex-basis: 252px;
+  }
 
-    @include sm {
-      max-width: 252px;
-      margin: 16px auto 0;
-    }
+  @include sm {
+    max-width: 252px;
+    margin: 16px auto 0;
+  }
 
-    &__email-form {
-      @include lt-md {
-        display: none;
-      }
+  &__email-form {
+    @include lt-md {
+      display: none;
     }
   }
 }
@@ -205,6 +208,10 @@ export default {
 
   @include xs {
     display: block;
+  }
+
+  &__item:not(:first-child) {
+    display: none;
   }
 }
 </style>

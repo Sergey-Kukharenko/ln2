@@ -14,22 +14,19 @@
     <div class="service__container container">
       <div class="container__text">{{ description }}</div>
 
-      <div v-show="isShowMore" class="container__text">
-        i'am hidden text ... <br />
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking at
-        its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
-        opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing
-        packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum'
-        will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by
-        accident, sometimes on purpose (injected humour and the like).
+      <div class="container__text">
+        <div class="container__title">Substitution</div>
+        {{ substitutionText }}
       </div>
 
-      <a class="container__link" style="display: none" @click="toggle()">{{ toggleText }}</a>
+      <a class="container__link" @click="toggle()">{{ toggleText }}</a>
     </div>
   </div>
 </template>
 
 <script>
+import { SUBSTITUTION_TEXT, SUBSTITUTION_TEXT_COUNT } from '~/constants';
+
 export default {
   name: 'AppService',
 
@@ -50,7 +47,7 @@ export default {
               mobile: '/images/service/mobile/1.webp'
             },
             alt: '1',
-            title: 'Free London Delivery with hand-to-hand service'
+            title: 'Free UK Delivery with hand-to-hand service'
           },
           {
             img: {
@@ -66,7 +63,7 @@ export default {
               mobile: '/images/service/mobile/3.webp'
             },
             alt: '3',
-            title: 'Delivery in 2 hours from the moment you order'
+            title: 'Delivery in 3 hours from the moment you order'
           }
         ]
       },
@@ -78,6 +75,11 @@ export default {
   computed: {
     getImg() {
       return this.$device.isMobileOrTablet ? 'mobile' : 'desktop';
+    },
+
+    substitutionText() {
+      const offset = this.$device.isMobileOrTablet ? SUBSTITUTION_TEXT_COUNT.mobile : SUBSTITUTION_TEXT_COUNT.desktop;
+      return this.isShowMore ? SUBSTITUTION_TEXT : SUBSTITUTION_TEXT.substring(0, offset);
     }
   },
 
@@ -98,10 +100,6 @@ export default {
 }
 
 .container {
-  @include lt-md {
-    display: none;
-  }
-
   &__text,
   &__link {
     font-family: $golos-regular;
@@ -109,7 +107,26 @@ export default {
     line-height: 24px;
   }
 
+  &__title {
+    font-family: $golos-medium;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: $color-dark-grey;
+
+    @include gt-sm {
+      margin-top: 28px;
+    }
+
+    @include lt-md {
+      margin-top: 32px;
+    }
+  }
+
   &__text {
+    white-space: pre-line;
+
     &:not(:first-child) {
       margin-top: 10px;
     }

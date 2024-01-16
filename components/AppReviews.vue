@@ -191,81 +191,81 @@ export default {
           height: 32px;
           padding-bottom: 21px;
         }
+      }
 
-        &-social {
-          display: flex;
-          align-items: center;
-          height: 100%;
+      &__top-social {
+        display: flex;
+        align-items: center;
+        height: 100%;
 
-          @include gt-sm {
-            padding-right: 16px;
-          }
-
-          @include lt-md {
-            padding-right: 8px;
-          }
+        @include gt-sm {
+          padding-right: 16px;
         }
 
-        &-icon {
-          @include gt-sm {
-            width: 35px;
-            height: 35px;
-          }
+        @include lt-md {
+          padding-right: 8px;
+        }
+      }
 
-          @include lt-md {
-            width: 32px;
-            height: 32px;
-          }
+      &__top-icon {
+        @include gt-sm {
+          width: 35px;
+          height: 35px;
         }
 
-        &-rating {
-          display: flex;
-          align-items: center;
-          height: 100%;
+        @include lt-md {
+          width: 32px;
+          height: 32px;
+        }
+      }
 
-          font-family: $Literata;
-          font-style: normal;
-          font-weight: 700;
+      &__top-rating {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        font-family: $Literata;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 40px;
+        color: #000000;
+
+        @include gt-sm {
           font-size: 40px;
-          color: #000000;
-
-          @include gt-sm {
-            font-size: 40px;
-            line-height: 40px;
-            padding-right: 12px;
-          }
-
-          @include lt-md {
-            font-size: 28px;
-            line-height: 32px;
-            padding-right: 16px;
-          }
+          line-height: 40px;
+          padding-right: 12px;
         }
 
-        &-garanty {
-          display: flex;
-          align-items: center;
-          font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 16px;
-          color: #7e8895;
+        @include lt-md {
+          font-size: 28px;
+          line-height: 32px;
+          padding-right: 16px;
+        }
+      }
 
-          border-left: 1px solid #dde0e6;
+      &__top-garanty {
+        display: flex;
+        align-items: center;
+        font-family: $golos-regular;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        color: #7e8895;
 
-          @include gt-sm {
-            height: 40px;
-            font-size: 11px;
-            letter-spacing: -0.01em;
-            padding-left: 12px;
-          }
+        border-left: 1px solid #dde0e6;
 
-          @include lt-md {
-            height: 32px;
-            font-size: 12px;
-            letter-spacing: 0.01em;
-            padding-left: 16px;
-          }
+        @include gt-sm {
+          height: 40px;
+          font-size: 11px;
+          letter-spacing: -0.01em;
+          padding-left: 12px;
+        }
+
+        @include lt-md {
+          height: 32px;
+          font-size: 12px;
+          letter-spacing: 0.01em;
+          padding-left: 16px;
         }
       }
 
@@ -319,38 +319,40 @@ export default {
             width: 68px;
           }
 
-          .arrows__btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            pointer-events: none;
+          .arrows {
+            &__btn {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 50%;
+              pointer-events: none;
 
-            @include gt-sm {
-              cursor: pointer;
-              width: 40px;
-              height: 40px;
-            }
+              @include gt-sm {
+                cursor: pointer;
+                width: 40px;
+                height: 40px;
+              }
 
-            @include lt-md {
-              width: 32px;
-              height: 32px;
-            }
+              @include lt-md {
+                width: 32px;
+                height: 32px;
+              }
 
-            &.left {
-              transform: rotate(180deg);
-            }
+              &.left {
+                transform: rotate(180deg);
+              }
 
-            &.active {
-              pointer-events: all;
-              background-color: #ffffff;
+              &.active {
+                pointer-events: all;
+                background-color: #ffffff;
 
-              & .icon {
-                color: $color-dark-grey;
+                & .icon {
+                  color: $color-dark-grey;
+                }
               }
             }
 
-            &-icon {
+            &__btn-icon {
               color: $color-white-grey;
 
               @include gt-sm {

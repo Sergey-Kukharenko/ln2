@@ -26,11 +26,13 @@
 
 import { PROMO, TEXT_INFO, SOMETHING_IMPORTANT } from '~/data/contact-us';
 import AppInfoSomething from '~/components/info/AppInfoSomething';
+import DeliveryAd from '~/components/DeliveryAd.vue';
 
 export default {
   name: 'ContactPage',
 
   components: {
+    DeliveryAd,
     AppInfoSomething
     // AppInfoBanner,
     // AppInfoTextSection

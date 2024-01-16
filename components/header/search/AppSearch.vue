@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import AppModal from '~/components/shared/AppModal.vue';
 import AppSearchBox from '~/components/header/search/AppSearchBox';
 
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
@@ -22,7 +21,7 @@ export default {
 
   components: {
     AppSearchBox,
-    AppModal
+    AppModal: () => import('~/components/shared/AppModal.vue')
   },
 
   data() {

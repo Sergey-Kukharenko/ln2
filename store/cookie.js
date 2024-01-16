@@ -12,7 +12,9 @@ export const mutations = {
 
 export const actions = {
   addCookie({ commit }, payload) {
-    this.$cookies.set(OUR_COOKIE, true);
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    this.$cookies.set(OUR_COOKIE, true, { expires: date });
     commit('setCookie', payload);
   }
 };

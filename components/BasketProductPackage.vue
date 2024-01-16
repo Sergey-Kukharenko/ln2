@@ -8,10 +8,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: '',
-      validate(value) {
-        return ['', 'Craft'].includes(value);
-      }
+      default: ''
     }
   }
 };

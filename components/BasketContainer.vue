@@ -3,52 +3,51 @@
     <section class="basket-container__layout basket-container__wrapper">
       <div class="basket-container__main">
         <basket-product-list />
-        <app-promo-code />
       </div>
       <basket-order />
     </section>
     <section class="basket-container__promotions">
-      <app-promotions has-title />
+      <app-promotions :promotions="$options.PROMOTIONS" has-title />
     </section>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import promotions from '~/mocks/promotions';
+import BasketProductList from '~/components/BasketProductList.vue';
+import BasketOrder from '~/components/BasketOrder.vue';
+import AppPromotions from '~/components/AppPromotions.vue';
 // import ToastCardDeals from '~/components/toast-cards/ToastCardDeals';
 
 export default {
   name: 'BasketContainer',
+  components: { AppPromotions, BasketOrder, BasketProductList },
 
-  mounted() {
-    this.fetchPromotions();
+  PROMOTIONS: promotions
 
-    // Временно скрыт
-    // const content = {
-    //   component: ToastCardDeals,
-    //   props: {
-    //     img: {
-    //       src: 'https://via.placeholder.com/252x300',
-    //       size: { width: 32, height: 32 }
-    //     },
-    //     text: 'Postcard added to the order'
-    //   }
-    // };
-    //
-    // const options = {
-    //   timeout: 3000,
-    //   icon: false,
-    //   closeButton: false,
-    //   position: 'bottom-left',
-    //   class: ['toast', 'toast--width-large', 'toast--theme-yellow', 'toast--height-small']
-    // };
-    //
-    // this.$toast(content, options);
-  },
-
-  methods: {
-    ...mapActions({ fetchPromotions: 'pages/home/fetchPromotions' })
-  }
+  // Временно скрыт
+  // mounted() {
+  // const content = {
+  //   component: ToastCardDeals,
+  //   props: {
+  //     img: {
+  //       src: 'https://via.placeholder.com/252x300',
+  //       size: { width: 32, height: 32 }
+  //     },
+  //     text: 'Postcard added to the order'
+  //   }
+  // };
+  //
+  // const options = {
+  //   timeout: 3000,
+  //   icon: false,
+  //   closeButton: false,
+  //   position: 'bottom-left',
+  //   class: ['toast', 'toast--width-large', 'toast--theme-yellow', 'toast--height-small']
+  // };
+  //
+  // this.$toast(content, options);
+  // }
 };
 </script>
 

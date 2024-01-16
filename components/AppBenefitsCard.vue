@@ -155,30 +155,30 @@ export default {
       position: absolute;
       width: 100%;
       bottom: 0;
-      width: 100%;
       max-width: 366px;
 
-      .like__button {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8.67px;
-        background: #ffffff;
-        border-radius: 12px;
-        box-sizing: border-box;
-        padding: 8px 16px;
+      .like {
+        &__button {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8.67px;
+          background: #ffffff;
+          border-radius: 12px;
+          box-sizing: border-box;
+          padding: 8px 16px;
+          font-family: $golos-regular;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          letter-spacing: -0.01em;
+          color: $color-dark-grey;
+          user-select: none;
+          cursor: pointer;
+        }
 
-        font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        letter-spacing: -0.01em;
-        color: $color-dark-grey;
-        user-select: none;
-        cursor: pointer;
-
-        &-icon {
+        &__button-icon {
           width: 14.67px;
           height: 13.23px;
         }
@@ -208,11 +208,11 @@ export default {
             cursor: pointer;
             user-select: none;
           }
+        }
 
-          &-icon {
-            width: 13.33px;
-            height: 12.96px;
-          }
+        &__btn-icon {
+          width: 13.33px;
+          height: 12.96px;
         }
       }
     }

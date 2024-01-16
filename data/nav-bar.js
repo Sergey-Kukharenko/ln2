@@ -6,7 +6,6 @@ const desktopNavbar = [
       width: 20,
       height: 20
     },
-    color: '',
     hasSubLevel: true
   },
   {
@@ -27,7 +26,6 @@ const desktopNavbar = [
       width: 17.33,
       height: 16.67
     },
-    color: '',
     hasSubLevel: true
   },
   {
@@ -37,7 +35,6 @@ const desktopNavbar = [
       width: 16,
       height: 16
     },
-    color: '',
     hasSubLevel: true
   },
   {
@@ -47,7 +44,6 @@ const desktopNavbar = [
       width: 10.31,
       height: 16
     },
-    color: '',
     hasSubLevel: true
   },
   {
@@ -57,8 +53,7 @@ const desktopNavbar = [
       width: 16,
       height: 16
     },
-    to: '/gifts',
-    hasSubLevel: false
+    hasSubLevel: true
   },
   {
     title: 'Sales',
@@ -69,6 +64,16 @@ const desktopNavbar = [
     },
     color: 'pink',
     hasSubLevel: true
+  },
+  {
+    title: 'Letterbox',
+    icon: 'envelope',
+    style: {
+      width: 16,
+      height: 16
+    },
+    hasSubLevel: false,
+    to: '/category/letterbox-flowers'
   }
 ];
 
@@ -114,14 +119,20 @@ const mobileNavbar = [
     title: 'Gifts',
     type: 'gifts',
     icon: 'gift',
-    hasSubLevel: false,
-    to: '/gifts'
+    hasSubLevel: true
   },
   {
     type: 'sales',
     title: 'Sales',
     icon: 'percent-sale',
     hasSubLevel: true
+  },
+  {
+    type: 'letterbox',
+    title: 'Letterbox',
+    icon: 'envelope',
+    hasSubLevel: false,
+    to: '/category/letterbox-flowers'
   }
 ];
 

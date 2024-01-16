@@ -1,12 +1,13 @@
 <template>
-  <div class="default-layout">
-    <app-notification />
+  <div :class="classNames">
+    <app-notification v-if="isDefaultRoute" />
     <app-header-mobile v-if="$device.isMobileOrTablet" />
     <app-header v-else />
-    <app-breadcrumbs />
+    <app-breadcrumbs v-if="isDefaultRoute" />
     <Nuxt />
-    <app-footer />
-    <transition name="slide-fade">
+    <app-footer v-if="!isBasket" />
+    <app-footer-bottom v-else />
+    <transition v-if="isDefaultRoute" name="slide-fade">
       <app-cookies v-if="isShowAppCookie" @setCookie="onSetCookie" />
     </transition>
   </div>
@@ -14,10 +15,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import AppHeader from '@/components/header/AppHeader';
-import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile';
 import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs';
-import AppFooter from '@/components/footer/AppFooter';
 import AppNotification from '~/components/header/AppNotification';
 import { OUR_COOKIE } from '~/constants';
 
@@ -26,17 +24,40 @@ export default {
 
   components: {
     AppCookies: () => import('@/components/shared/AppCookies'),
-    AppHeaderMobile,
-    AppHeader,
+    AppHeader: () => import('@/components/header/AppHeader'),
+    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile'),
+    AppFooterBottom: () => import('@/components/footer/AppFooterBottom'),
+    AppFooter: () => import('@/components/footer/AppFooter'),
     AppBreadcrumbs,
-    AppFooter,
     AppNotification
   },
 
-  middleware: 'cookie',
+  middleware: ['cookie'],
+
+  data() {
+    return {
+      routeNames: ['basket', 'preorder-id', 'order-id']
+    };
+  },
 
   computed: {
-    ...mapGetters({ isShowAppCookie: 'cookie/getCookie' })
+    ...mapGetters({ isShowAppCookie: 'cookie/getCookie' }),
+
+    getRouteName() {
+      return this.$route.name;
+    },
+
+    isBasket() {
+      return this.getRouteName === 'basket';
+    },
+
+    isDefaultRoute() {
+      return !this.routeNames.includes(this.getRouteName);
+    },
+
+    classNames() {
+      return this.isDefaultRoute ? 'default-layout' : [`${this.getRouteName}-layout`];
+    }
   },
 
   created() {
@@ -79,6 +100,23 @@ export default {
 
     & footer {
       order: 3;
+    }
+  }
+}
+
+.basket-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  & .footer-bottom {
+    @include gt-sm {
+      margin-top: auto;
+    }
+
+    @include lt-md {
+      padding-left: 16px;
+      padding-right: 16px;
     }
   }
 }

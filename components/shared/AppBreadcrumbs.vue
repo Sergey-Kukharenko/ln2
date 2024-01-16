@@ -7,14 +7,7 @@
           {{ item.text }}
         </NuxtLink>
       </div>
-      <a
-        v-if="isDeviceProductIdPage"
-        target="_blank"
-        href="https://www.trustpilot.com/review/myflowers.co.uk?utm_medium=trustbox&utm_source=MicroStar"
-        class="trustpilot-link"
-      >
-        <svg-icon name="trustpilot" class="trustpilot-icon" />
-      </a>
+      <app-fake-trustpilot v-if="isDeviceProductIdPage" hide-text />
     </div>
   </div>
 </template>
@@ -24,6 +17,7 @@ import { useBreadCrumbs } from '@/helpers';
 
 export default {
   name: 'AppBreadcrumbs',
+  components: { AppFakeTrustpilot: () => import('~/components/fake-trustpilot/AppFakeTrustpilot.vue') },
 
   computed: {
     breadCrumbs() {
@@ -121,14 +115,5 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.trustpilot-link {
-  margin: 11px 10px 11px 0;
-}
-
-.trustpilot-icon {
-  width: 179px;
-  height: 18px;
 }
 </style>

@@ -12,13 +12,16 @@
 </template>
 
 <script>
-import AppNotFound from '~/components/AppNotFound.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 
 export default {
   name: 'ErrorLayout',
 
-  components: { AppButton, AppNotFound },
+  components: {
+    AppSomethingWentWrong: () => import('~/components/AppSomethingWentWrong.vue'),
+    AppNotFound: () => import('~/components/AppNotFound.vue'),
+    AppButton
+  },
 
   layout: 'custom',
 

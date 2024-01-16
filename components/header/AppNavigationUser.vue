@@ -1,8 +1,9 @@
 <template>
   <nav class="navigation-user">
-    <div class="navigation-user__item">
-      <app-favorite />
-    </div>
+    <!--Временно скрыт-->
+    <!--<div class="navigation-user__item">-->
+    <!--  <app-favorite />-->
+    <!--</div>-->
     <div class="navigation-user__item">
       <app-cart />
     </div>
@@ -16,7 +17,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import AppFavorite from '@/components/header/AppFavorite';
+// import AppFavorite from '@/components/header/AppFavorite';
 import AppCart from '@/components/header/AppCart.vue';
 import AppProfile from '@/components/header/profile/AppProfile.vue';
 
@@ -24,7 +25,7 @@ export default {
   name: 'AppNavigationUser',
 
   components: {
-    AppFavorite,
+    // AppFavorite,
     AppCart,
     AppProfile
   },

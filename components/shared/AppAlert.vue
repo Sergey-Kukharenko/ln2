@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<styles lang="scss" scoped>
+<style lang="scss" scoped>
 .alert {
   display: flex;
   gap: 10px;
@@ -53,11 +53,11 @@ export default {
     @include lt-md {
       display: none;
     }
+  }
 
-    &-icon {
-      width: 24px;
-      height: 24px;
-    }
+  &__status-icon {
+    width: 24px;
+    height: 24px;
   }
 
   &__content {
@@ -71,4 +71,4 @@ export default {
     line-height: 16px;
   }
 }
-</styles>
+</style>

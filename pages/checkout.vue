@@ -1,86 +1,117 @@
 <template>
   <main class="checkout">
-    <div class="checkout__recipient">
-      <checkout-recipient />
-      <!-- @set-self-recipient="setSelfRecipient" -->
+    <div class="checkout__title">
+      <checkout-title :title="currStep.title" />
     </div>
-    <div class="checkout__delivery-details">
-      <checkout-delivery-details :is-clarified="isClarified" />
-    </div>
-    <div class="checkout__date-time">
-      <transition>
-        <checkout-date-time v-show="!isClarified" />
-      </transition>
-    </div>
-    <div class="checkout__payment-methods">
-      <checkout-payment-methods />
-    </div>
-    <div class="checkout__gift-card">
-      <checkout-gift-card />
-    </div>
-    <div class="checkout__order">
-      <checkout-order />
-    </div>
-    <div class="checkout__email">
-      <checkout-email />
-    </div>
-    <div class="checkout__submit">
-      <checkout-payment-button
-        :price="checkoutPrice"
+    <div class="checkout__container">
+      <checkout-delivery-details
+        v-show="isDetailsStep"
+        :is-clarified="isClarified"
+        :today-date="todayDate"
+        :curr-checkout-step="currCheckoutStep"
+      />
+      <checkout-final-details
+        v-show="isFinalStep"
+        :available-payment-methods="filteredAvailablePaymentMethods"
+        :payment-method="paymentMethod"
         :order-id="checkout?.id"
-        :ready-to-pay="readyToPay"
-        @submit="submitCheckout"
+        :price="checkoutPrice"
+        @addPayment="onAddPayment"
       />
     </div>
   </main>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
+
+import CheckoutTitle from '~/components/checkout/CheckoutTitle';
 
 import authManager from '~/mixins/authManager';
-
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtmClear from '~/mixins/gtmClear';
+import gtm from '~/mixins/gtm.vue';
+import * as paymentMethods from '~/data/payment-methods';
 
 export default {
   name: 'CheckoutPage',
 
-  mixins: [authManager, gtmClear],
+  components: {
+    CheckoutTitle,
+    CheckoutDeliveryDetails: () => import('~/components/checkout/CheckoutDeliveryDetails'),
+    CheckoutFinalDetails: () => import('~/components/checkout/CheckoutFinalDetails')
+  },
+
+  mixins: [authManager, gtm],
+
+  beforeRouteLeave(to, from, next) {
+    const isStepChange = to.name === 'basket' && this.currCheckoutStep === 2;
+
+    if (isStepChange) {
+      next(false);
+      this.$store.dispatch('checkout/setCheckoutStep', 1);
+
+      return;
+    }
+
+    next();
+  },
 
   layout: 'checkout',
 
   data() {
     return {
-      readyToPay: false,
-      tab: false
+      tab: false,
+      availablePaymentMethods: Object.values(this.$options.PAYMENT_METHODS)
     };
   },
 
+  PAYMENT_METHODS: paymentMethods,
+
+  async fetch({ store }) {
+    try {
+      await store.dispatch('checkout/fetchCheckout');
+      await store.dispatch('checkout/fetchIntervals');
+      await store.dispatch('payment/getClientIdPayPal');
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
   computed: {
+    ...mapState('checkout', ['checkoutSteps', 'currCheckoutStep']),
+
     ...mapGetters({
       checkout: 'checkout/getCheckout',
       checkoutPrice: 'checkout/checkoutCost',
       isClarified: 'checkout/isClarified',
-      cart: 'cart/getCart'
+      cart: 'cart/getCart',
+      todayDate: 'checkout/getTodayDate',
+      paymentMethod: 'payment/getPaymentMethod',
+      isDetailsStep: 'checkout/isDetailsStep',
+      isFinalStep: 'checkout/isFinalStep'
     }),
 
     isStatusPayment() {
       return this.checkout?.status === 'PAYMENT';
+    },
+
+    filteredAvailablePaymentMethods() {
+      return this.availablePaymentMethods.filter((p) => p.available);
+    },
+
+    currStep() {
+      return this.checkoutSteps?.find((s) => s.id === this.currCheckoutStep);
     }
   },
 
-  async mounted() {
-    await this.fetchCheckout();
-
-    if (this.isStatusPayment && this.checkout?.id) {
-      await this.$router.push({ name: 'order-id', params: { id: this.checkout.id } });
-    }
-
-    this.readyToPay = false;
-
+  mounted() {
     this.gtmClearItemEvent();
+    this.dataLayerSetOriginalUrl();
     this.gtmBeginCheckoutEvent();
+  },
+
+  beforeDestroy() {
+    this.$store.dispatch('checkout/setCheckoutStep', 1);
   },
 
   methods: {
@@ -88,20 +119,14 @@ export default {
       setCheckoutToPay: 'checkout/setCheckoutToPay'
     }),
 
-    async fetchCheckout() {
-      try {
-        await this.$store.dispatch('checkout/fetchCheckout');
-      } catch (error) {
-        console.error(error);
-      }
+    initOrder() {
+      this.$fetch();
     },
 
     async submitCheckout() {
-      const { success } = await this.setCheckoutToPay();
+      await this.setCheckoutToPay();
 
-      this.readyToPay = success;
-
-      await this.$store.dispatch('cart/fetchCart');
+      this.$store.commit('cart/setCart', null);
     },
 
     gtmBeginCheckoutEvent() {
@@ -121,6 +146,15 @@ export default {
           items
         }
       });
+    },
+
+    onAddPayment(paymentName) {
+      const paymentMethodIndex = this.availablePaymentMethods.findIndex((p) => p.title === paymentName);
+
+      if (paymentMethodIndex === -1) {
+        return;
+      }
+      this.availablePaymentMethods[paymentMethodIndex].available = true;
     }
   }
 };
@@ -128,20 +162,16 @@ export default {
 
 <style lang="scss" scoped>
 .checkout {
-  display: grid;
-  grid-template-columns: 1fr 344px;
-  grid-template-rows: auto;
-  column-gap: 24px;
-  max-width: 1080px;
+  display: flex;
+  flex-direction: column;
+  max-width: 526px;
 
   @include gt-md {
-    margin: 38px auto 44px;
+    margin: 0px auto 44px;
   }
 
   @include lt-lg {
-    display: block;
-    padding: 0 16px;
-    margin: 16px auto 44px;
+    padding: 0 8px 32px 8px;
   }
 
   .v-enter-active {
@@ -164,36 +194,12 @@ export default {
     }
   }
 
-  &__recipient {
-    grid-area: 1 / 1 / 2 / 2;
+  &__title {
+    margin: 32px 0 0 0;
   }
 
-  &__delivery-details {
-    grid-area: 2 / 1 / 3 / 2;
-  }
-
-  &__date-time {
-    grid-area: 3 / 1 / 4 / 2;
-  }
-
-  &__payment-methods {
-    grid-area: 4 / 1 / 5 / 2;
-  }
-
-  &__gift-card {
-    grid-area: 5 / 1 / 6 / 2;
-  }
-
-  &__order {
-    grid-area: 1 / 2 / 8 / 3;
-  }
-
-  &__email {
-    grid-area: 6 / 1 / 7 / 2;
-  }
-
-  &__submit {
-    margin-bottom: 30px;
+  &__container {
+    margin-top: 24px;
   }
 }
 </style>

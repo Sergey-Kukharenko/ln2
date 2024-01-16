@@ -44,7 +44,7 @@ export default {
 
     pathToImage() {
       return this.useWithoutImageSize
-        ? `${process.env.basePureUrl}${this.slide.img}`
+        ? `${process.env.imgCDN}${this.slide.img}`
         : `${process.env.fileCategoriesUrl}/${this.slide.img}`;
     }
   }

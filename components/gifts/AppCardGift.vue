@@ -2,7 +2,7 @@
   <div class="card-gift">
     <nuxt-link :to="{ name: 'product-id', params: { id: gift.slug } }" class="card-gift__figure">
       <app-image
-        :path="useSizedImage({ name: gift.img, width: imgSize, height: imgSize })"
+        :path="useSizedImage({ realId: gift.real_id, sizeName: imgSize, imgName: gift.img })"
         :alt="gift.title"
         lazy
         class="card-gift__figure-image"
@@ -30,9 +30,9 @@
 import { mapActions, mapGetters } from 'vuex';
 import AppButton from '~/components/shared/AppButton.vue';
 import BasketProductCount from '~/components/BasketProductCount.vue';
-import { PRODUCT_CARD_IMAGE_SIZE } from '~/constants';
 import { useSizedImage } from '~/helpers';
 import AppImage from '~/components/shared/AppImage.vue';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 
 export default {
   name: 'AppCardGift',
@@ -79,7 +79,7 @@ export default {
     },
 
     imgSize() {
-      return this.$device.isMobileOrTablet ? PRODUCT_CARD_IMAGE_SIZE.mobile : PRODUCT_CARD_IMAGE_SIZE.desktop;
+      return this.$device.isMobileOrTablet ? IMG_SIZES_MAP.size30 : IMG_SIZES_MAP.size60;
     }
   },
 
@@ -100,7 +100,9 @@ export default {
       await this.addToCart(payload);
       await this.fetchGifts();
     }
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 

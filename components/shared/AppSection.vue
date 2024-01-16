@@ -4,13 +4,13 @@
       <app-section-header :theme="theme" :header-props="sectionHeaderProps" />
       <app-section-grid
         v-slot="slotProps"
-        :slides="section.list"
+        :slides="getSlides"
         :theme="theme"
-        :prefix="section.main.prefix"
-        :slug="section.main.slug"
-        :total="section.pagination.total"
+        :prefix="section?.main?.prefix ?? ''"
+        :slug="section?.main?.slug ?? ''"
+        :total="section?.pagination?.total"
       >
-        <app-card :slide="{ ...slotProps }" />
+        <app-card :slide="{ ...slotProps }" :has-from="hasFrom" :is-constructor="isConstructor" />
       </app-section-grid>
     </section>
   </div>
@@ -20,6 +20,8 @@
 import AppSectionHeader from '~/components/shared/AppSectionHeader.vue';
 import AppSectionGrid from '~/components/shared/AppSectionGrid.vue';
 import AppCard from '~/components/shared/AppCard.vue';
+
+import { CONSTRUCTOR_BLOCK_TITLE } from '~/constants';
 
 export default {
   name: 'AppSpecialOffers',
@@ -31,8 +33,13 @@ export default {
   },
 
   props: {
+    isConstructor: {
+      type: Boolean,
+      default: false
+    },
+
     section: {
-      type: Object,
+      type: [Object, Array],
       default: () => ({})
     },
 
@@ -40,13 +47,18 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['custom'].includes(value);
+        return ['custom', 'constructor'].includes(value);
       }
     },
 
     name: {
       type: String,
       default: ''
+    },
+
+    hasFrom: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -56,8 +68,27 @@ export default {
     },
 
     sectionHeaderProps() {
-      return { ...this.section?.main, ...this.section?.pagination };
+      const sectionMain = this.isConstructor ? { title: CONSTRUCTOR_BLOCK_TITLE } : this.section?.main;
+      return { ...sectionMain, ...this.section?.pagination };
+    },
+
+    getSlides() {
+      return this.isConstructor ? this.section : this.section?.list;
     }
   }
 };
 </script>
+
+<style lang="scss">
+.constructor {
+  background: #ecffed;
+
+  @include gt-sm {
+    border-radius: 32px;
+  }
+
+  @include lt-lg {
+    border-radius: 24px;
+  }
+}
+</style>

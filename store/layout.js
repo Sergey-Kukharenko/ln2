@@ -1,3 +1,5 @@
+import { useObjectNotEmpty } from '~/helpers';
+
 export const state = () => ({
   navigation: {},
   navBar: [],
@@ -21,7 +23,11 @@ export const actions = {
 
   async fetchNavigation({ commit }) {
     try {
-      const navigation = await this.$axios.$get(`/navigation/`);
+      const navigation = await this.$httpSSRCache({
+        scope: 'layout',
+        field: 'navigation',
+        url: '/v1/navigation/'
+      });
       commit('setField', { name: 'navigation', value: navigation });
     } catch (e) {
       console.error(e);
@@ -30,7 +36,7 @@ export const actions = {
 
   async fetchNavBar({ commit }, suffix) {
     try {
-      const navBar = await this.$axios.$get(`/nav-bar${suffix}/`);
+      const navBar = await this.$http.$get(`/v1/nav-bar${suffix}/`);
       commit('setField', { name: 'navBar', value: navBar });
     } catch (e) {
       console.error(e);
@@ -39,7 +45,11 @@ export const actions = {
 
   async fetchFooter({ commit }) {
     try {
-      const footer = await this.$axios.$get('/footer/');
+      const footer = await this.$httpSSRCache({
+        scope: 'layout',
+        field: 'footer',
+        url: '/v1/footer/'
+      });
       commit('setField', { name: 'footer', value: footer });
     } catch (e) {
       console.error(e);
@@ -48,8 +58,8 @@ export const actions = {
 };
 
 export const getters = {
-  getNavigation: (state) => state.navigation,
+  getNavigation: (state) => (useObjectNotEmpty(state.navigation) ? state.navigation : { main: [], other: [] }),
   getNavBar: (state) => state.navBar,
   getFooter: (state) => state.footer,
-  getPhone: (state) => state.navigation.call
+  getCall: (state) => state.navigation?.call
 };

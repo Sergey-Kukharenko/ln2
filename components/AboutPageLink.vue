@@ -70,7 +70,6 @@ export default {
     align-items: center;
     flex: 1;
     gap: 12px;
-
     font-family: $Literata;
     font-style: normal;
     font-weight: 700;
@@ -79,25 +78,23 @@ export default {
     letter-spacing: -0.01em;
     color: $color-dark-grey;
     text-transform: capitalize;
+  }
 
-    &-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  &__content-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 50%;
+  }
 
-      width: 40px;
-      height: 40px;
-      background: #ffffff;
-      border-radius: 50%;
-    }
-
-    &-icon {
-      width: 25.6px;
-      height: 25.6px;
-      transform: rotate(180deg);
-      //cursor: pointer;
-      user-select: none;
-    }
+  &__content-icon {
+    width: 25.6px;
+    height: 25.6px;
+    transform: rotate(180deg);
+    user-select: none;
   }
 
   &__images {

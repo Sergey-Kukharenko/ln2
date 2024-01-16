@@ -129,6 +129,7 @@ export default {
   align-items: center;
   justify-content: flex-start;
   position: relative;
+  color: $color-dark-grey;
   background: #ffffff;
   padding: 8px 10px 13px;
   border-radius: 12px 12px 0 0;

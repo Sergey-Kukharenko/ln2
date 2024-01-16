@@ -1,110 +1,295 @@
 <template>
   <div class="form">
-    <h1 class="form__title">{{ product.title }}</h1>
-
     <div class="section">
       <div class="section__item item">
         <div class="item__header">
           <div class="item__header-number">1.</div>
-          <div class="item__header-text">Choose {{ product.type_of_flowers }} color:</div>
-          <div class="item__header-content">{{ itemColor.name }}</div>
+          <div class="item__header-text">Choose roses colour:</div>
+          <div class="item__header-content">{{ itemColor?.title }}</div>
         </div>
         <div class="item__body">
-          <app-list :list="product.choose_color" @setItem="onSetColor" />
+          <app-list :list="product.colors" :active-color="product.flowerColor" @setItem="onSetColor" />
         </div>
       </div>
+
+      <!--Временно скрыт-->
+      <!--      <div class="section__item item">-->
+      <!--        <div class="item__header">-->
+      <!--          <div class="item__header-number">2.</div>-->
+      <!--          <div class="item__header-text">Number of {{ product.type_of_flowers }}:</div>-->
+      <!--          <div class="item__header-content item__header-content&#45;&#45;wrapping">-->
+      <!--            <app-counter :count.sync="count" />-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
       <div class="section__item item">
         <div class="item__header">
           <div class="item__header-number">2.</div>
-          <div class="item__header-text">Number of {{ product.type_of_flowers }}:</div>
-          <div class="item__header-content item__header-content--wrapping">
-            <app-counter :count.sync="count" />
-          </div>
+          <div class="item__header-text item__header-text--tooltip">Type of roses</div>
+          <!-- <div class="item__header-content" style="display: none">{{ itemFlowersHeight.number }} ft</div> -->
+          <app-tooltip :icon="tooltip.icon" :content="tooltip.content" />
+        </div>
+        <div class="item__body">
+          <app-list-types :list="product.heights" @setItem="onSetFlowersHeight" />
         </div>
       </div>
 
-      <div class="section__item item">
+      <div class="section__item section__item--desktop-row item">
         <div class="item__header">
           <div class="item__header-number">3.</div>
-          <div class="item__header-text">Choose package:</div>
-          <div class="item__header-content">{{ itemPackage.name }}</div>
+          <div class="item__header-text">Number of roses:</div>
+          <!-- <div class="item__header-content item__header-content--mobile-only">{{ itemNumberOfRoses }}</div> -->
         </div>
         <div class="item__body">
-          <app-list :list="product.choose_package" @setItem="onSetPackage" />
+          <app-list-numbers
+            :key="product.flowerCount"
+            :list="product.prices"
+            :active-number="product.flowerCount"
+            @setNumber="onSetNumberOfRoses"
+          />
         </div>
       </div>
+
+      <!-- <div class="section__item item">
+        <div class="item__header">
+          <div class="item__header-number">4.</div>
+          <div class="item__header-text">Choose package:</div>
+          <div class="item__header-content">{{ itemPackage.title }}</div>
+        </div>
+        <div class="item__body">
+          <app-list :list="product.packages" theme="advanced" @setItem="onSetPackage" />
+        </div>
+      </div> -->
     </div>
 
     <div class="form__footer">
-      <div class="form__footer-price">
+      <div class="form__footer-price notranslate">
         <div class="price">
-          <div class="price__current">{{ product.currency }}{{ product.price.current }}</div>
-          <div class="price__old">{{ product.currency }}{{ product.price.old }}</div>
+          <div class="price__current">£{{ currentProductPrice }}</div>
+          <!-- Временно скрыт -->
+          <!-- <div class="price__old">{{ product.currency }}{{ product.price.old }}</div> -->
         </div>
-        <app-badges :badges="product.badges" />
+        <!-- Временно скрыт -->
+        <!-- <app-badges :badges="product.badges" /> -->
       </div>
 
       <div class="group-buttons">
         <div class="group-buttons__item">
-          <app-button theme="green" stretch="fix" @click="addToCart"> Send now </app-button>
+          <app-button theme="green" :stretch="buttonSize" @click="addToCart"> Send now </app-button>
         </div>
-        <div class="group-buttons__item">
+        <!-- Временно скрыт -->
+        <!-- <div class="group-buttons__item">
           <app-button theme="grey" @click="toggleLike">
             <svg-icon name="heart-outline" :class="classNames" />
           </app-button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex';
 import { useToggleClassName } from '@/helpers';
 import AppList from '@/components/card-product/AppList';
-import AppCounter from '@/components/card-product/AppCounter';
-import AppBadges from '@/components/shared/AppBadges';
+// import AppCounter from '@/components/card-product/AppCounter';
+// import AppBadges from '@/components/shared/AppBadges';
 import AppButton from '@/components/shared/AppButton';
+import AppListNumbers from '~/components/card-product/AppListNumbers.vue';
+import AppListTypes from '~/components/card-product/AppListTypes.vue';
+import gtm from '~/mixins/gtm.vue';
+import AppTooltip from '~/components/card-product/AppTooltip.vue';
+
+import { CONSTRUCTOR_HEIGHT_COOKIE, CONSTRUCTOR_PACKAGE_COOKIE } from '~/constants';
 
 export default {
   name: 'AppFormLists',
 
   components: {
+    AppTooltip,
+    AppListTypes,
+    AppListNumbers,
     AppList,
-    AppCounter,
-    AppBadges,
+    // AppCounter,
+    // AppBadges,
     AppButton
   },
+
+  mixins: [gtm],
 
   props: {
     product: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     }
   },
 
   data() {
     return {
-      itemColor: this.product?.choose_color?.[0],
-      itemPackage: this.product?.choose_package?.[0],
+      itemColor: null,
+      itemFlowersHeight: this.getFlowersHeight(),
+      itemNumberOfRoses: null,
+      itemPackage: this.getFlowersPackage(),
       count: this.product?.count,
-      like: this.product.like
+      like: this.product?.like,
+
+      tooltip: this.product?.tooltip
     };
   },
 
   computed: {
     classNames() {
       return useToggleClassName(this.like, 'like', 'active');
+    },
+
+    currentProductPrice() {
+      const packagePrice = this.itemPackage.price;
+      const heightsPrice = this.currentProductVariant?.heights?.[this.itemFlowersHeight.id]?.price;
+      return parseFloat(packagePrice + heightsPrice).toFixed(2);
+    },
+
+    currentProductVariant() {
+      return this.product.prices?.[this.itemNumberOfRoses]?.[this.itemColor.id];
+    },
+
+    buttonSize() {
+      return this.$device.isMobile ? 'full' : 'fix';
     }
   },
 
+  mounted() {
+    this.initProductColor();
+    this.initProductCount();
+  },
+
   methods: {
-    onSetColor(payload) {
+    ...mapMutations({
+      setField: 'pages/card-product/setField'
+    }),
+
+    ...mapActions({
+      addToCartConstructor: 'cart/addToCartConstructor',
+      fetchCardProduct: 'pages/card-product/fetchCardProduct',
+      addToFavorites: 'favorites/addToFavorites',
+      removeFromFavorites: 'favorites/removeFromFavorites'
+    }),
+
+    getFlowersPackage() {
+      const packageCookieId = this.$cookies.get(CONSTRUCTOR_PACKAGE_COOKIE);
+      const isFLowersPackageExist = !!packageCookieId;
+      const [firstPackage] = this.product?.packages;
+
+      if (!isFLowersPackageExist) {
+        this.$cookies.set(CONSTRUCTOR_PACKAGE_COOKIE, firstPackage?.id);
+
+        return firstPackage;
+      }
+
+      const idx = this.product?.packages.findIndex((el) => el.id === packageCookieId);
+
+      return idx !== -1 ? this.product?.packages?.[idx] : firstPackage;
+    },
+
+    getFlowersHeight() {
+      const heightCookieId = this.$cookies.get(CONSTRUCTOR_HEIGHT_COOKIE);
+      const isFLowersHeightExist = !!heightCookieId;
+      const [firstHeight] = this.product?.heights;
+
+      if (!isFLowersHeightExist) {
+        this.$cookies.set(CONSTRUCTOR_HEIGHT_COOKIE, firstHeight?.id);
+
+        this.setField({ name: 'cardConstructorActiveType', value: firstHeight?.id });
+
+        return firstHeight;
+      }
+
+      const idx = this.product?.heights.findIndex((el) => el.id === heightCookieId);
+      const result = idx !== -1 ? this.product?.heights?.[idx] : firstHeight;
+
+      this.setField({ name: 'cardConstructorActiveType', value: result?.id });
+      return result;
+    },
+
+    initProductColor() {
+      try {
+        const { colors = [] } = this.product;
+        const isNotExistFlowerColor = !this.product?.flowerColor;
+
+        if (isNotExistFlowerColor) {
+          const [firstColor] = colors;
+          this.itemColor = firstColor;
+          this.setField({ name: 'cardConstructorActiveColor', value: firstColor.id });
+
+          return;
+        }
+
+        const idx = colors.findIndex((c) => c.id === this.product.flowerColor);
+        const activeIdx = idx === -1 ? 0 : idx;
+        const color = colors[activeIdx];
+
+        this.itemColor = color;
+        this.setField({ name: 'cardConstructorActiveColor', value: color.id });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    initProductCount() {
+      try {
+        const pricesKeys = Object.keys(this.product?.prices);
+        const [priceKey] = pricesKeys;
+        const isNotExistFlowerCount = !this.product?.flowerCount;
+
+        if (isNotExistFlowerCount) {
+          this.itemNumberOfRoses = priceKey;
+          this.setField({ name: 'cardConstructorActiveColor', value: priceKey });
+
+          return;
+        }
+
+        const idx = pricesKeys.map(Number).indexOf(this.product.flowerCount);
+        const activeIdx = idx === -1 ? 0 : idx;
+        const itemKey = pricesKeys[activeIdx];
+
+        this.itemNumberOfRoses = itemKey;
+        this.setField({ name: 'cardConstructorActiveCount', value: itemKey });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async goToProductByConstructor() {
+      const path = this.currentProductVariant.uri;
+
+      history.pushState(null, null, '/');
+      history.pushState(null, null, path);
+      await this.fetchCardProduct(path);
+    },
+
+    async onSetColor(payload) {
       this.itemColor = payload;
+      this.setField({ name: 'cardConstructorActiveColor', value: payload?.id });
+      await this.$nextTick();
+      this.goToProductByConstructor();
+    },
+
+    onSetFlowersHeight(payload) {
+      this.itemFlowersHeight = payload;
+      this.setField({ name: 'cardConstructorActiveType', value: payload?.id });
+      this.$cookies.set(CONSTRUCTOR_HEIGHT_COOKIE, payload?.id);
+    },
+
+    async onSetNumberOfRoses(payload) {
+      this.itemNumberOfRoses = payload;
+      this.setField({ name: 'cardConstructorActiveCount', value: payload });
+      await this.$nextTick();
+      this.goToProductByConstructor();
     },
 
     onSetPackage(payload) {
       this.itemPackage = payload;
+      this.$cookies.set(CONSTRUCTOR_PACKAGE_COOKIE, payload?.id);
     },
 
     toggleLike() {
@@ -112,12 +297,16 @@ export default {
     },
 
     addToCart() {
-      console.log({
-        color: this.itemColor.name,
-        count: this.count,
-        package: this.itemPackage.name,
-        like: this.like
-      });
+      const payload = {
+        offer_id: this.currentProductVariant?.offer_id,
+        constructor: {
+          package: this.itemPackage.id,
+          height: this.itemFlowersHeight.id
+        }
+      };
+
+      this.addToCartConstructor(payload);
+      this.$router.push({ name: 'gifts' });
     }
   }
 };
@@ -169,7 +358,7 @@ export default {
 
   &__item {
     @include gt-sm {
-      margin: 16px 0;
+      margin: 18px 0;
     }
 
     @include lt-md {
@@ -177,6 +366,12 @@ export default {
 
       &:last-child {
         margin-bottom: 8px;
+      }
+    }
+
+    &--desktop-row {
+      @include gt-sm {
+        display: flex;
       }
     }
   }
@@ -207,6 +402,10 @@ export default {
 
   &__header-text {
     margin: 0 9px 0 7px;
+
+    &--tooltip {
+      margin: 0 4px 0 7px;
+    }
   }
 
   &__header-content {
@@ -217,6 +416,18 @@ export default {
     }
 
     &--wrapping {
+      @include lt-md {
+        display: flex;
+        width: 100%;
+        margin: 11px 0 6px 0;
+      }
+    }
+
+    &--mobile-only {
+      @include gt-sm {
+        display: none;
+      }
+
       @include lt-md {
         display: flex;
         width: 100%;
@@ -309,9 +520,8 @@ export default {
 }
 
 .group-buttons {
-  display: flex;
-
   @include lt-md {
+    width: 100%;
     margin: 8px 0;
   }
 

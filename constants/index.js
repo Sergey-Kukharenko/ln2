@@ -1,3 +1,5 @@
+const MAIN_PAGE_LIMIT = 7;
+
 const LIST_ITEM_VIEW_COUNT = 5;
 
 const FILTER_TYPES = {
@@ -64,7 +66,7 @@ const CHECKOUT_FORM_KEYS = {
 const INFO_BUTTONS = [
   {
     text: 'contacts',
-    images: ['/images/info/avatar-female.webp', '/images/info/avatar-male.webp']
+    images: ['/images/info/avatar-female.web', '/images/info/avatar-male.web']
   },
   {
     text: 'delivery',
@@ -78,7 +80,7 @@ const INFO_BUTTONS = [
 
 const REVIEW_CARD_SYMBOLS_COUNT = 70;
 
-const CHECKOUT_INPUT_DELAY = 500;
+const CHECKOUT_INPUT_DELAY = 600;
 
 const PAGINATION = {
   limit: 12,
@@ -91,10 +93,26 @@ const CATEGORY_PRODUCT_TYPES = ['Category', 'Filter'];
 const NO_SCROLL_CLASS_NAME = 'noscroll';
 
 const ORDER_STATUS_TEXT = {
-  paid: { title: 'The order is paid', text: 'Expect delivery' },
-  inProcess: { title: 'Processing the payment', text: 'Please wait' },
-  notPaid: { title: 'The order is awaiting payment', text: 'Please pay for the order' },
-  failed: { title: 'Transaction failed', text: 'Please try again, or use a different payment method' }
+  paid: {
+    getTitle(orderId) {
+      return `The order #${orderId} is paid`;
+    },
+    text: 'Expect delivery'
+  },
+  inProcess: {
+    title: 'Processing the payment',
+    text: 'Please wait'
+  },
+  notPaid: {
+    getTitle(orderId) {
+      return `The order #${orderId} is awaiting payment`;
+    },
+    text: 'Please pay for the order'
+  },
+  failed: {
+    title: 'Transaction failed',
+    text: 'Please try again, or use a different payment method'
+  }
 };
 
 const MAIN_PAGE_CONTENT_PARAMS = {
@@ -118,7 +136,7 @@ const MAIN_PAGE_CONTENT_PARAMS = {
 
 const ALL_CATEGORIES_BUTTON = {
   path: '/category/all-flowers/',
-  text: 'Go to catalog'
+  text: 'Go to the catalog'
 };
 
 const PRODUCT_CARD_IMAGE_SIZE = {
@@ -133,7 +151,7 @@ const ADDRESS_SEARCH_TEXT = 'Search for an address';
 
 const SEARCH_INPUT_PLACEHOLDER = {
   manual: 'Address line 1',
-  search: 'Search your address'
+  search: 'Search your postcode or address'
 };
 
 const RELOAD_ORDER_DELAY = {
@@ -146,6 +164,130 @@ const RELOAD_ORDER_DELAY = {
 
 const OUR_COOKIE = 'our-cookie';
 const AUTH_WITHOUT_SMS_COOKIE = 'auth-without-sms';
+const PAYMENT_METHOD_COOKIE = 'payment-method';
+
+const MONTH_LIST = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const CHECKOUT_INTERVAL_TAB_NAMES = {
+  0: 'today',
+  1: 'tomorrow',
+  2: 'anotherDay'
+};
+
+const SUBSCRIBE_MESSAGES = {
+  success: {
+    subscribe: 'Successfully subscribed',
+    unsubscribe: 'Successfully unsubscribed'
+  },
+  error: {
+    exists: 'Mail already exists',
+    empty: 'Enter your email'
+  }
+};
+
+const SUBSCRIBE_ACTION_TYPES = {
+  subscribe: 'subscribe',
+  unsubscribe: 'unsubscribe'
+};
+
+const SUBSCRIBE_VARIANTS = {
+  email: 'email_subscription',
+  sms: 'sms_subscription',
+  push: 'push_subscription'
+};
+
+const MONTH_DAY_COUNT = {
+  1: 31,
+  2: 28,
+  3: 31,
+  4: 30,
+  5: 31,
+  6: 30,
+  7: 31,
+  8: 31,
+  9: 30,
+  10: 31,
+  11: 30,
+  12: 31
+};
+
+const FIXED_TIMEZONE = 'Europe/London';
+
+const TODAY_DATE_COOKIE = 'today-date';
+
+const APPLE_PAY = 'applepay';
+const GOOGLE_PAY = 'googlepay';
+const LINK_PAY = 'link';
+
+const CONSTRUCTOR_TOOLTIP = {
+  icon: 'dark-circle-question-mark',
+  content: [
+    {
+      title: 'Short length',
+      description: 'rose with a small bud. Such bouquet will be smaller in size'
+    },
+    {
+      title: 'Premium Rose',
+      description:
+        '- the best varieties of Holland Roses. With a large bud, such bouquet will be twice as much as a bouquet of Kenyan Rose'
+    }
+  ]
+};
+
+const TOKEN_REFRESH_ENDPOINT = '/v1/session/';
+
+const CONSTRUCTOR_HEIGHT_COOKIE = 'constructor-type';
+const CONSTRUCTOR_PACKAGE_COOKIE = 'constructor-package';
+
+const BONUS = 'bonus-receive';
+const EMAIL_DELAY = 2000;
+
+const BASKET_TOOLTIP = {
+  icon: 'dark-circle-question-mark',
+  content: [
+    {
+      title: '',
+      description: 'You can enter \npromo code\n in the checkout'
+    }
+  ]
+};
+
+const CHECKOUT_STEPS = [
+  { id: 1, title: 'Delivery details' },
+  { id: 2, title: 'Final details' }
+];
+
+const CHECKOUT_STEP_COOKIE = 'checkout-step';
+
+const CONSTRUCTOR_BLOCK_TITLE = 'Personalise your rose bouquet with your choice of roses, colour and stem quantity';
+
+const STRIPE_MOBILE_STATUS_DELAY = 1000;
+
+const PRODUCTION_HOST = 'myflowers.co.uk';
+
+const ONE_DIGIT_DAY_MONTH_LIMIT = 10;
+
+const SUBSCRIBE_INVALID_EMAIL = 'The email must be a valid email address.';
+
+const INTERVAL_DAYS_RANGE_OFFSET = 7 * 7;
+
+const EMPTY_CART_MAP = {
+  positions: [],
+  promo_code: { code: '', discount: '' },
+  position_cost: '',
+  total_cost: ''
+};
+
+const EMPTY_GIFT_MAP = {
+  seo: {},
+  main: {},
+  list: [],
+  is_basket_has_gift: false
+};
+
+const SUBSTITUTION_TEXT = `Our Bouquets are subject to availability. In the event of any supply difficulties, we reserve the right to substitute with a product of equivalent value and/or quality without notice. Where possible we may contact you to agree a suitable substitution.\n
+The images of the Bouquets on our online shop are for illustrative purposes only. Although we have made every effort to display the colours accurately, we cannot guarantee that your computer's display of the colours accurately reflects the colour of the Bouquets. The colour of your Bouquet may vary slightly from those images.`;
+const SUBSTITUTION_TEXT_COUNT = { desktop: 251, mobile: 94 };
 
 export {
   LIST_ITEM_VIEW_COUNT,
@@ -174,5 +316,37 @@ export {
   SEARCH_INPUT_PLACEHOLDER,
   RELOAD_ORDER_DELAY,
   OUR_COOKIE,
-  AUTH_WITHOUT_SMS_COOKIE
+  AUTH_WITHOUT_SMS_COOKIE,
+  MONTH_LIST,
+  CHECKOUT_INTERVAL_TAB_NAMES,
+  SUBSCRIBE_MESSAGES,
+  SUBSCRIBE_ACTION_TYPES,
+  MONTH_DAY_COUNT,
+  TODAY_DATE_COOKIE,
+  FIXED_TIMEZONE,
+  PAYMENT_METHOD_COOKIE,
+  APPLE_PAY,
+  GOOGLE_PAY,
+  LINK_PAY,
+  CONSTRUCTOR_TOOLTIP,
+  TOKEN_REFRESH_ENDPOINT,
+  CONSTRUCTOR_HEIGHT_COOKIE,
+  CONSTRUCTOR_PACKAGE_COOKIE,
+  SUBSCRIBE_VARIANTS,
+  BONUS,
+  EMAIL_DELAY,
+  BASKET_TOOLTIP,
+  CONSTRUCTOR_BLOCK_TITLE,
+  STRIPE_MOBILE_STATUS_DELAY,
+  CHECKOUT_STEPS,
+  CHECKOUT_STEP_COOKIE,
+  ONE_DIGIT_DAY_MONTH_LIMIT,
+  PRODUCTION_HOST,
+  SUBSCRIBE_INVALID_EMAIL,
+  INTERVAL_DAYS_RANGE_OFFSET,
+  MAIN_PAGE_LIMIT,
+  EMPTY_CART_MAP,
+  EMPTY_GIFT_MAP,
+  SUBSTITUTION_TEXT,
+  SUBSTITUTION_TEXT_COUNT
 };

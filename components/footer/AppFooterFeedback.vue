@@ -86,33 +86,33 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 4px;
+  }
 
-    &-phone {
-      font-family: $golos-medium;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 24px;
-      line-height: 28px;
-      letter-spacing: 0.01em;
-      color: $color-dark-grey;
+  &__item-phone {
+    font-family: $golos-medium;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.01em;
+    color: $color-dark-grey;
+  }
+
+  &__item-text {
+    font-family: $golos-regular;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: #7c7c7c;
+
+    @include gt-sm {
+      font-size: 14px;
+      line-height: 20px;
     }
 
-    &-text {
-      font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      color: #7c7c7c;
-
-      @include gt-sm {
-        font-size: 14px;
-        line-height: 20px;
-      }
-
-      @include lt-sm {
-        font-size: 12px;
-        line-height: 16px;
-      }
+    @include lt-sm {
+      font-size: 12px;
+      line-height: 16px;
     }
   }
 

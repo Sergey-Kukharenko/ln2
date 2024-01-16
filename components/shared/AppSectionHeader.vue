@@ -1,5 +1,5 @@
 <template>
-  <h2 class="title">
+  <h2 :class="classNames">
     <span class="title__text">{{ headerProps.title }}</span>
     <span v-if="headerProps.total && theme" class="title__number">{{ headerProps.total }}</span>
   </h2>
@@ -19,6 +19,13 @@ export default {
       type: String,
       default: ''
     }
+  },
+
+  computed: {
+    classNames() {
+      const theme = this.theme ? `title--${this.theme}` : '';
+      return ['title', theme];
+    }
   }
 };
 </script>
@@ -35,6 +42,24 @@ export default {
   &__number {
     color: $color-grey;
     margin-left: 8px;
+  }
+
+  &--constructor {
+    text-align: center;
+
+    @include gt-sm {
+      max-width: 735px;
+      margin: 0 auto 32px auto;
+    }
+
+    @include lt-lg {
+      max-width: 80%;
+      margin: 0 auto 16px auto;
+    }
+
+    .title__text {
+      color: #06ad5d;
+    }
   }
 }
 </style>

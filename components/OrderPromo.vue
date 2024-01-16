@@ -119,12 +119,6 @@ export default {
         display: flex;
         align-items: center;
         gap: 4px;
-
-        &-icon {
-          width: 16px;
-          height: 16px;
-        }
-
         font-family: $golos-regular;
         font-style: normal;
         font-weight: 400;
@@ -132,6 +126,11 @@ export default {
         line-height: 20px;
         letter-spacing: -0.01em;
         color: $color-dark-grey;
+      }
+
+      &__item-icon {
+        width: 16px;
+        height: 16px;
       }
     }
 
@@ -163,17 +162,17 @@ export default {
         background: #1f2226;
         border-radius: 6px;
         user-select: none;
+      }
 
-        &-icon {
-          &.apple {
-            width: 16px;
-            height: 19px;
-          }
+      &__item-icon {
+        &.apple {
+          width: 16px;
+          height: 19px;
+        }
 
-          &.google {
-            width: 16px;
-            height: 18px;
-          }
+        &.google {
+          width: 16px;
+          height: 18px;
         }
       }
     }

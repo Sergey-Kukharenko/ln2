@@ -1,7 +1,7 @@
 <template>
   <div class="payment layout">
     <figure class="payment__picture">
-      <img :src="`/images/info/payment.webp`" class="payment__image" alt="payment" />
+      <img src="/images/info/payment.webp" class="payment__image" alt="payment" />
     </figure>
     <div class="payment__content content">
       <div v-for="(item, index) in $options.PAYMENT" :key="index" class="content__item">
@@ -10,11 +10,11 @@
       </div>
       <div class="payment__variants">
         <div v-for="(variant, index) in $options.DATA_PAYMENT" :key="index" class="payment__variant">
-          <svg-icon :name="variant.name" class="payment__variant-icon" />
+          <img :src="variant.path" alt="" class="payment__variant-icon" />
         </div>
       </div>
       <nuxt-link :to="$options.ALL_CATEGORIES_BUTTON.path" class="payment__button">
-        <app-button theme="green" size="full">{{ $options.ALL_CATEGORIES_BUTTON.text }}</app-button>
+        <app-button theme="green" size="pre-x-lg" stretch="full">{{ $options.ALL_CATEGORIES_BUTTON.text }}</app-button>
       </nuxt-link>
     </div>
   </div>
@@ -24,7 +24,7 @@
 import AppButton from '@/components/shared/AppButton';
 
 import { PAYMENT } from '~/data/delivery';
-import DATA_PAYMENT from '@/data/payment';
+import { DATA_PAYMENT } from '@/data/delivery';
 import { ALL_CATEGORIES_BUTTON } from '~/constants';
 
 export default {
@@ -48,64 +48,83 @@ export default {
 
 <style lang="scss" scoped>
 .payment {
+  width: 100%;
   display: flex;
-
-  @include gt-sm {
-    max-width: 80%;
-  }
+  align-items: center;
+  justify-content: space-between;
 
   @include lt-md {
     flex-direction: column;
+    margin-bottom: 6px;
   }
 
-  & > div {
-    flex: 1;
+  &__picture {
+    @include lt-md {
+      margin-top: 6px;
+    }
   }
 
   &__image {
-    border-radius: 24px;
+    display: block;
     width: 100%;
+    border-radius: 24px;
   }
 
   .content {
     @include gt-sm {
-      padding-left: 117px;
+      max-width: 526px;
     }
 
     &__item {
-      margin-top: 24px;
-
-      &-title {
-        font-family: $golos-medium;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 24px;
-        color: $color-dark-grey;
-        margin-bottom: 8px;
-      }
-
-      &-text {
-        font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        letter-spacing: -0.01em;
-        color: $color-dark-grey;
-
+      &:not(:first-child) {
         @include gt-sm {
-          max-width: 321px;
+          margin-top: 24px;
         }
+      }
+    }
+
+    &__item-title {
+      font-family: $golos-medium;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      color: $color-dark-grey;
+      margin-bottom: 8px;
+
+      @include lt-md {
+        margin: 24px 0 8px 0;
+      }
+    }
+
+    &__item-text {
+      font-family: $golos-regular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: $color-dark-grey;
+
+      @include gt-sm {
+        max-width: 321px;
       }
     }
   }
 
   &__variants {
-    margin-top: 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
+
+    @include gt-sm {
+      margin-top: 16px;
+      gap: 8px;
+    }
+
+    @include lt-md {
+      margin-top: 12px;
+      gap: 9px;
+    }
   }
 
   &__variant {
@@ -114,21 +133,30 @@ export default {
     align-items: center;
     background: #f7f7f7;
     border-radius: 4px;
-    width: 50px;
-    height: 32px;
-    padding: 0 6px;
+    overflow: hidden;
 
-    &-icon {
-      height: 20px;
+    @include gt-sm {
+      width: 48px;
+      height: 32px;
     }
+
+    @include lt-md {
+      width: 50px;
+      height: 32px;
+    }
+  }
+
+  &__variant-icon {
+    display: block;
+    width: 100%;
   }
 
   &__button {
     display: block;
 
     @include gt-sm {
-      width: 250px;
-      padding-top: 46px;
+      width: 410px;
+      padding-top: 26px;
     }
 
     @include lt-md {

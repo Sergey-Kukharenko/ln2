@@ -106,25 +106,6 @@ export default {
         border: none;
       }
 
-      &-title {
-        position: sticky;
-        top: 0;
-
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-
-        font-family: $golos-medium;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 20px;
-        color: #000000;
-        background-color: #ffffff;
-        padding: 20px 0 6px 0;
-      }
-
       .item {
         display: flex;
         flex-direction: row;
@@ -146,6 +127,25 @@ export default {
           border-bottom: 1.5px solid #dde0e6;
         }
       }
+    }
+
+    &__scroll-title {
+      position: sticky;
+      top: 0;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      font-family: $golos-medium;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #000000;
+      background-color: #ffffff;
+      padding: 20px 0 6px 0;
     }
   }
 }

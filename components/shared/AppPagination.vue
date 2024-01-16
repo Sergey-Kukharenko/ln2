@@ -1,5 +1,5 @@
 <template>
-  <div v-if="paginatorVisibility" class="pagination">
+  <div class="pagination">
     <div class="pagination__container">
       <app-button v-if="showMoreBtnVisibility" theme="grey-whitely" stretch="full" @click="fetchMore">
         Show more
@@ -10,7 +10,7 @@
           :key="index"
           class="pagination__items-item"
           :class="{ active: options.page === item }"
-          @click="$emit('load-data', { page: item })"
+          @click="$emit('paginate', { page: item, paginationButton: true })"
         >
           {{ item }}
         </div>
@@ -24,7 +24,7 @@
 
 <script>
 import { PAGINATION } from '~/constants';
-import { usePaginationTotalPages, useGeneratedNumsArray } from '~/helpers';
+import { useGeneratedNumsArray } from '~/helpers';
 
 export default {
   name: 'AppPagination',
@@ -38,6 +38,16 @@ export default {
     options: {
       type: Object,
       default: () => ({})
+    },
+
+    totalPages: {
+      type: [String, Number],
+      default: 0
+    },
+
+    visibility: {
+      type: Boolean,
+      default: false
     },
 
     hasShowMoreBtn: {
@@ -56,16 +66,8 @@ export default {
       return this.$device.isMobileOrTablet && this.loading;
     },
 
-    totalPages() {
-      return usePaginationTotalPages({ total: this.options.total, limit: this.options.limit });
-    },
-
     showMoreBtnVisibility() {
       return this.hasShowMoreBtn && this.options.page < this.totalPages;
-    },
-
-    paginatorVisibility() {
-      return this.totalPages > 1;
     },
 
     paginator() {
@@ -110,24 +112,25 @@ export default {
         return;
       }
 
-      this.$emit('load-data', {
+      this.$emit('paginate', {
         page: this.options.page + 1,
         isShowMore: true
       });
     },
 
     initInfinitePagination() {
-      if (!this.paginatorVisibility || !this.$device.isMobileOrTablet) {
+      if (!this.visibility || !this.$device.isMobileOrTablet) {
         return;
       }
 
       this.$nextTick().then(() => {
         const options = {
-          rootMargin: '0px',
+          rootMargin: '40px',
           threshold: 1.0
         };
 
         const callback = (entries, observer) => {
+          console.log('entries', entries);
           if (entries[0].isIntersecting) {
             this.fetchMore();
           }
@@ -186,7 +189,7 @@ export default {
   .observer {
     display: flex;
     justify-content: center;
-    padding-top: 24px;
+    margin-top: 24px;
   }
 }
 </style>

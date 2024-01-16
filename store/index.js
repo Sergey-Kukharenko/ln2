@@ -1,44 +1,28 @@
 import Vue from 'vue';
 import { AUTH_WITHOUT_SMS_COOKIE } from '~/constants';
 
-const isDev = process.env.NODE_ENV !== 'production';
-const DOMAIN = process.env.DOMAIN;
-
 export const state = () => ({
   httpEndpointsCallStackMap: {}
 });
 
 export const actions = {
   async nuxtServerInit({ dispatch, state, commit }, { $cookies }) {
-    // const { token: newToken, exp_data: expData } = await dispatch('auth/fetchToken');
-    const newToken = '1';
-    $cookies.set('token', newToken, {
-      expires: new Date(),
-      path: '/',
-      ...(!isDev && {
-        domain: `.${DOMAIN}`
-      })
-    });
+    try {
+      await dispatch('auth/fetchToken');
 
-    const { token } = state.auth;
+      await Promise.allSettled([
+        dispatch('cart/fetchCart'),
+        dispatch('favorites/fetchFavorites'),
+        dispatch('layout/fetchLayout')
+      ]);
 
-    if (token || newToken) {
-      try {
-        await Promise.allSettled([
-          dispatch('user/fetchUser'),
-          dispatch('cart/fetchCart'),
-          dispatch('favorites/fetchFavorites'),
-          dispatch('layout/fetchLayout')
-        ]);
-      } catch (e) {
-        console.error(e);
+      const authWithoutSmsResponse = $cookies.get(AUTH_WITHOUT_SMS_COOKIE);
+
+      if (authWithoutSmsResponse) {
+        commit('auth/setState', { authStatus: true });
       }
-    }
-
-    const authWithoutSmsResponse = $cookies.get(AUTH_WITHOUT_SMS_COOKIE);
-
-    if (authWithoutSmsResponse) {
-      commit('auth/setState', { authStatus: true });
+    } catch (e) {
+      console.error(e);
     }
   }
 };

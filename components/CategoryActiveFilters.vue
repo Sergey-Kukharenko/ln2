@@ -78,12 +78,13 @@ export default {
     @include lt-md {
       font-size: 11px;
     }
-
-    &-icon {
-      width: 10px;
-      height: 10px;
-    }
   }
+
+  &__item-icon {
+    width: 10px;
+    height: 10px;
+  }
+
   &__clear {
     @include lt-md {
       display: none;
@@ -105,11 +106,11 @@ export default {
       padding: 0 12px;
       font-size: 14px;
     }
+  }
 
-    &-icon {
-      width: 11px;
-      height: 11px;
-    }
+  &__clear-icon {
+    width: 11px;
+    height: 11px;
   }
 }
 </style>

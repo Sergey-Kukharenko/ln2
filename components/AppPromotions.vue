@@ -1,37 +1,34 @@
 <template>
-  <div v-if="isPromotions" class="promotion">
+  <div class="promotion">
     <div v-if="hasTitle" class="layout layout--horizontal promotion-title">Why people choose us</div>
     <div class="layout promotion-list">
-      <a v-for="(promotion, idx) in promotions" :key="idx" class="promotion-list__item">
+      <div v-for="(promotion, idx) in promotions" :key="idx" class="promotion-list__item">
         <div class="promotion-list__text">
           <div v-for="(item, index) in promotion.text" :key="index">{{ item }}</div>
         </div>
         <figure class="promotion-list__figure">
           <img :src="getImagePath(promotion.img[getImg])" class="promotion-list__image" :alt="promotion.text" />
         </figure>
-      </a>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   props: {
     hasTitle: {
       type: Boolean,
       default: false
+    },
+
+    promotions: {
+      type: Array,
+      default: () => []
     }
   },
 
   computed: {
-    ...mapGetters({ promotions: 'pages/home/getPromotions' }),
-
-    isPromotions() {
-      return this.promotions.length;
-    },
-
     getImg() {
       return this.$device.isMobileOrTablet ? 'mobile' : 'desktop';
     }
@@ -39,7 +36,7 @@ export default {
 
   methods: {
     getImagePath(path) {
-      return `${process.env.basePureUrl}${path}`;
+      return `${process.env.imgCDN}${path}`;
     }
   }
 };

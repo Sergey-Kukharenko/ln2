@@ -1,5 +1,5 @@
 <template>
-  <button class="basket-button" :class="classes" @click="onClick">
+  <button class="basket-button" :disabled="disabled" :class="classes" @click="onClick">
     <slot />
   </button>
 </template>
@@ -49,12 +49,21 @@ export default {
       type: Boolean
     },
 
+    notChange: {
+      type: Boolean
+    },
+
     iconOnly: {
       type: Boolean,
       default: false
     },
 
     disabled: {
+      type: Boolean,
+      default: false
+    },
+
+    notClickable: {
       type: Boolean,
       default: false
     }
@@ -72,8 +81,9 @@ export default {
         'basket-button--width-stretch': this.stretch,
         'basket-button--icon-only': this.iconOnly,
         'basket-button--disabled': this.disabled,
-
-        'basket-button--size-not-change': this.sizeNotChange
+        'basket-button--size-not-change': this.sizeNotChange,
+        'basket-button--not-change': this.notChange,
+        'basket-button--not-clickable': this.notClickable
       };
     }
   },
@@ -165,6 +175,16 @@ export default {
       border-radius: 8px;
     }
 
+    &.basket-button--not-change {
+      min-width: 102px;
+      height: 36px;
+      font-size: 14px;
+      line-height: 20px;
+      border-radius: 12px;
+      padding: 0 12px;
+      margin-right: -8px;
+    }
+
     &.basket-button--icon-only {
       min-width: initial;
       width: 36px;
@@ -247,6 +267,11 @@ export default {
     color: #ffffff;
     background-color: #ccc;
     cursor: none;
+  }
+
+  &--not-clickable {
+    pointer-events: none;
+    user-select: none;
   }
 }
 </style>

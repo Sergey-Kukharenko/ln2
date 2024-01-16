@@ -4,7 +4,7 @@
       <div class="cookies-container">
         <div class="card">
           <div class="figure" @click.stop>
-            <img src="/images/cookies/cookies.png" class="figure__image" alt="cookies" />
+            <img src="/images/cookies/cookies.webp" class="figure__image" alt="cookies" />
           </div>
           <div class="figcaption">
             <div class="figcaption-container">

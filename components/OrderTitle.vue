@@ -25,6 +25,11 @@ export default {
     inProcess: {
       type: Boolean,
       default: false
+    },
+
+    realOrderId: {
+      type: [Number, String],
+      default: ''
     }
   },
 
@@ -35,10 +40,10 @@ export default {
       }
 
       return this.isPaid
-        ? ORDER_STATUS_TEXT.paid.title
+        ? ORDER_STATUS_TEXT.paid.getTitle(this.realOrderId)
         : this.inProcess
         ? ORDER_STATUS_TEXT.inProcess.title
-        : ORDER_STATUS_TEXT.notPaid.title;
+        : ORDER_STATUS_TEXT.notPaid.getTitle(this.realOrderId);
     },
 
     linkText() {

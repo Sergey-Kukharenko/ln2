@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper">
+  <div>
     <div class="product">
       <nuxt-link :to="{ name: 'product-id', params: { id: slug } }" class="product__figure">
         <basket-product-image
-          :url="useSizedImage({ name: image.filename, width: imgSize, height: imgSize })"
+          :url="useSizedImage({ realId: realId, sizeName: imgSize, imgName: image.filename })"
           class="product__figure-image"
         />
       </nuxt-link>
@@ -45,13 +45,36 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import { useSizedImage } from '~/helpers';
-import gtmClear from '~/mixins/gtmClear.vue';
+import gtm from '~/mixins/gtm.vue';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import BasketProductImage from '~/components/BasketProductImage.vue';
+import BasketProductRating from '~/components/BasketProductRating.vue';
+import BasketProductTitle from '~/components/BasketProductTitle.vue';
+import BasketProductSize from '~/components/BasketProductSize.vue';
+import BasketProductColor from '~/components/BasketProductColor.vue';
+import BasketProductPackage from '~/components/BasketProductPackage.vue';
+import BasketProductPrice from '~/components/BasketProductPrice.vue';
+import BasketProductCount from '~/components/BasketProductCount.vue';
+import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
+import BasketProductFavorite from '~/components/BasketProductFavorite.vue';
 
 export default {
   name: 'BasketProduct',
+  components: {
+    BasketProductFavorite,
+    BasketProductLeaves,
+    BasketProductCount,
+    BasketProductPrice,
+    BasketProductPackage,
+    BasketProductColor,
+    BasketProductSize,
+    BasketProductTitle,
+    BasketProductRating,
+    BasketProductImage
+  },
 
-  mixins: [gtmClear],
+  mixins: [gtm],
 
   props: {
     id: {
@@ -132,8 +155,7 @@ export default {
 
   data() {
     return {
-      leavesSwitch: false,
-      imgSize: 508
+      leavesSwitch: false
     };
   },
 
@@ -155,12 +177,17 @@ export default {
         this[action](payload);
 
         this.gtmClearItemEvent();
+        this.dataLayerSetOriginalUrl();
         newVal > this.count ? this.gtmAddToCartEvent(newVal) : this.gtmRemoveFromCartEvent(newVal);
       }
     },
 
     isLoading() {
       return this.isLoadingHttp(`/basket/${this.id}/${this.size}`);
+    },
+
+    imgSize() {
+      return this.$device.isMobileOrTablet ? IMG_SIZES_MAP.size10 : IMG_SIZES_MAP.size50;
     }
   },
 
@@ -209,7 +236,9 @@ export default {
     },
 
     useSizedImage
-  }
+  },
+
+  IMG_SIZES_MAP
 };
 </script>
 
@@ -317,7 +346,9 @@ export default {
   }
 
   &__leaves-mobile {
-    display: none;
+    @include gt-md {
+      display: none;
+    }
 
     @include lt-lg {
       display: block;
@@ -325,7 +356,9 @@ export default {
   }
 
   &__items {
-    display: none;
+    @include gt-md {
+      display: none;
+    }
 
     @include lt-lg {
       display: block;

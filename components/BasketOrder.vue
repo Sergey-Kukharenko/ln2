@@ -1,17 +1,34 @@
 <template>
   <div class="order">
-    <div class="order__row" style="margin-top: 16px">
+    <div class="order__row order__row--mt-16">
       <div class="order__text-grey">{{ itemsCount }}</div>
       <div class="order__text-price">£ {{ cost }}</div>
     </div>
-    <div v-if="isSale" class="order__row" style="margin-top: 6px">
+    <div v-if="isSale" class="order__row order__row--mt-6">
       <div class="order__text-grey">Discount</div>
       <div class="order__text-sale">- £ {{ sale }}</div>
     </div>
-    <div class="order__delim" style="margin-top: 16px"></div>
-    <div class="order__row" style="margin-top: 16px">
-      <div class="order__text-medium">Summary</div>
+    <div class="order__delim" />
+    <div class="order__row order__row--mt-16">
+      <div class="order__text">Summary</div>
       <div class="order__text-summary">£ {{ total }}</div>
+    </div>
+    <div class="order__row order__row--mt-8">
+      <div class="order__text order__text--row">
+        Promo code
+        <div class="order__tooltip">
+          <app-tooltip
+            :icon="$options.BASKET_TOOLTIP.icon"
+            :content="$options.BASKET_TOOLTIP.content"
+            theme="light"
+            size="sm"
+            position="right"
+            text-align="center"
+            tip
+          />
+        </div>
+      </div>
+      <div class="order__text-summary"></div>
     </div>
     <!--Временно скрыт-->
     <div class="order__cashback-desktop" style="display: none">
@@ -19,7 +36,7 @@
       <div>£0.4 Cashback from this order</div>
     </div>
     <!--Временно скрыт-->
-    <div class="order__row order__cashback-mobile" style="display: none; margin-top: 5px">
+    <div class="order__row order__cashback-mobile" style="display: none">
       <div class="order__text-grey">Cashback</div>
       <div class="order__text-cashback">
         <svg-icon class="order__icon-coins-2" name="coins" />
@@ -31,58 +48,42 @@
       <svg-icon class="order__icon-percent-green" name="percent-green" />
       <div>Promocode and Bonuses will be available at the next stage of order</div>
     </div>
-    <template>
-      <!--Временно скрыт-->
-      <!--      <div class="order__title">-->
-      <!--        <svg-icon v-if="step === $options.CODE" class="back__icon" name="arrow-green" @click="goToForm" />-->
-      <!--        {{ authTitle }}-->
-      <!--      </div>-->
-      <div class="order__title">Your details</div>
-      <form class="form" autocomplete="off" novalidate @submit.prevent="onSubmit">
-        <app-input
-          v-model="form.name.value"
-          size="x-large"
-          placeholder="Your name"
-          pattern="[a-zA-Z]*"
-          max="50"
-          type="text"
-          class="form__input"
-        />
+    <!--Временно скрыт-->
+    <!--      <div class="order__title">-->
+    <!--        <svg-icon v-if="step === $options.CODE" class="back__icon" name="arrow-green" @click="goToForm" />-->
+    <!--        {{ authTitle }}-->
+    <!--      </div>-->
+    <div class="order__title">Your details</div>
+    <form class="form" autocomplete="off" novalidate @submit.prevent="onSubmit">
+      <app-input
+        v-model="form.name.value"
+        size="x-large"
+        placeholder="Your First Name"
+        pattern="[a-zA-Z]*"
+        max="50"
+        type="text"
+        class="form__input"
+      />
 
-        <app-input
-          v-model="form.phone.value"
-          :error="form.phone.errorMsg"
-          size="x-large"
-          placeholder="Your phone"
-          pattern="[0-9]*"
-          name="search"
-          type=""
-          autocomplete="off"
-          inputmode="numeric"
-          max="16"
-          class="form__input"
-          @focus="onFocus"
-          @blur="onBlur"
-          @keypress="validateNumber"
-        />
-        <!--Временно скрыт-->
-        <!--<app-number-input :error="form.phone.errorMsg" class="form__input" @set-number="setNumber" />-->
-        <div v-if="form.errorMsg" class="form__error">{{ form.errorMsg }}</div>
-        <basket-button :stretch="true" align="center" class="form__button" size="medium">Continue</basket-button>
-        <div class="order__terms">
-          By clicking on the button, you agree to the<br />
-          <a href="/files/privacy-policy.pdf" target="_blank">Terms of personal data processing</a>
-        </div>
-      </form>
-      <!--Временно скрыт-->
-      <!--<div v-if="step === $options.CODE" class="code">-->
-      <!--  <app-code-input :error="codeForm.errorMsg" @set-code="setCode" @reset-code-input="resetCodeInput" />-->
-      <!--  <div class="code__retry" :class="{ active: !timerDuration }" @click="reinitTimer">-->
-      <!--    {{ retryText }}-->
-      <!--  </div>-->
-      <!--  <a class="code__link" @click="onLoginWithoutCode">I haven't received the code</a>-->
-      <!--</div>-->
-    </template>
+      <app-phone-input :error="form.phone.errorMsg" @set-phone="onSetPhone" />
+
+      <div v-if="form.errorMsg" class="form__error">{{ form.errorMsg }}</div>
+      <basket-button :stretch="true" align="center" class="form__button" :not-clickable="isSubmitClicked" size="medium">
+        Continue
+      </basket-button>
+      <div class="order__terms">
+        By clicking on the button, you agree to the<br />
+        <a href="/files/privacy-policy.pdf" target="_blank">Terms of personal data processing</a>
+      </div>
+    </form>
+    <!--Временно скрыт-->
+    <!--<div v-if="step === $options.CODE" class="code">-->
+    <!--  <app-code-input :error="codeForm.errorMsg" @set-code="setCode" @reset-code-input="resetCodeInput" />-->
+    <!--  <div class="code__retry" :class="{ active: !timerDuration }" @click="reinitTimer">-->
+    <!--    {{ retryText }}-->
+    <!--  </div>-->
+    <!--  <a class="code__link" @click="onLoginWithoutCode">I haven't received the code</a>-->
+    <!--</div>-->
     <!--Временно скрыт-->
     <!--<nuxt-link v-else to="/checkout" class="order__button">-->
     <!--  <basket-button :stretch="true" align="center">Continue</basket-button>-->
@@ -93,10 +94,14 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 
+import AppTooltip from '~/components/shared/AppTooltip.vue';
+
 import authManager from '~/mixins/authManager';
-import { AUTH_CODE_TIMER, AUTH_REG_STEPS, CODE_INPUT_DEFAULT_COUNT } from '~/constants/index';
-import { VALIDATE_MESSAGES } from '~/messages/index';
+import { AUTH_CODE_TIMER, AUTH_REG_STEPS, CODE_INPUT_DEFAULT_COUNT, BASKET_TOOLTIP } from '~/constants';
+import { VALIDATE_MESSAGES } from '~/messages';
 import inputPhone from '~/mixins/input-phone.vue';
+import AppPhoneInput from '~/components/AppPhoneInput.vue';
+import BasketButton from '~/components/BasketButton.vue';
 
 const { auth, code } = AUTH_REG_STEPS;
 
@@ -104,13 +109,18 @@ export default {
   name: 'BasketOrder',
 
   components: {
-    AppInput: () => import('~/components/shared/AppInput')
+    BasketButton,
+    AppPhoneInput,
+    AppInput: () => import('~/components/shared/AppInput'),
+    AppTooltip
     // Временно скрыт
     // AppCodeInput: () => import('~/components/shared/AppCodeInput')
     // AppNumberInput: () => import('~/components/shared/AppNumberInput')
   },
 
   mixins: [authManager, inputPhone],
+
+  BASKET_TOOLTIP,
 
   data() {
     return {
@@ -131,6 +141,8 @@ export default {
         code: '',
         errorMsg: ''
       },
+
+      isSubmitClicked: false,
 
       timerDuration: AUTH_CODE_TIMER.duration,
 
@@ -184,6 +196,10 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    this.isSubmitClicked = false;
+  },
+
   methods: {
     ...mapMutations({
       setState: 'auth/setState'
@@ -202,6 +218,7 @@ export default {
       this.form.phone.errorMsg = this.hasPhoneError(this.form.phone.value);
 
       if (this.isFormInvalid) {
+        this.isSubmitClicked = false;
         return;
       }
 
@@ -242,8 +259,13 @@ export default {
       }
 
       await this.$store.dispatch('user/fetchUser');
-
       await this.$router.push({ name: 'checkout' });
+    },
+
+    onSetPhone(value) {
+      this.form.phone.errorMsg = '';
+      this.form.errorMsg = '';
+      this.form.phone.value = value;
     },
 
     initTimer() {
@@ -274,15 +296,21 @@ export default {
     },
 
     async onLoginWithoutCode() {
+      this.isSubmitClicked = true;
+
       const payload = {
         name: this.form.name.value,
-        phone: this.form.phone.value.replace('+', '')
+        phone: this.form.phone.value.replace('+', '').replaceAll(' ', '')
       };
 
-      const { success } = await this.$store.dispatch('auth/loginWithoutCode', { ...payload });
+      const result = await this.$store.dispatch('auth/loginWithoutCode', { ...payload });
 
-      if (!success) {
+      if (!result?.success) {
         this.form.errorMsg = VALIDATE_MESSAGES.wrong;
+        this.isSubmitClicked = false;
+
+        // Вернул временно, так как пользователь не получит заказ и не сможет ничего оплатить
+        return;
       }
 
       await this.$store.dispatch('order/createOrder');
@@ -392,11 +420,41 @@ export default {
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
+
+    &--mt-6 {
+      margin-top: 6px;
+    }
+
+    &--mt-8 {
+      margin-top: 8px;
+    }
+
+    &--mt-16 {
+      margin-top: 16px;
+    }
   }
 
   &__delim {
     width: 100%;
     border-top: 1px solid #dde0e6;
+    margin-top: 16px;
+  }
+
+  &__tooltip {
+    position: relative;
+  }
+
+  &__text {
+    font-family: $golos-regular;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+
+    &--row {
+      display: flex;
+      gap: 2px;
+    }
   }
 
   &__text-grey {
@@ -471,6 +529,8 @@ export default {
   }
 
   &__cashback-mobile {
+    margin-top: 5px;
+
     display: none;
 
     @include lt-lg {

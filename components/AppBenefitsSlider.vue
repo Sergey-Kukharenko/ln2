@@ -28,6 +28,8 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import 'swiper/css/swiper.css';
+
 import pathToImage from '~/mixins/pathToImage';
 
 export default {
@@ -110,37 +112,37 @@ export default {
         top: 8px;
         padding: 0 8px;
         box-sizing: border-box;
+      }
 
-        &-item {
-          padding: 4px 6px;
-          background: rgba(0, 0, 0, 0.26);
-          backdrop-filter: blur(10px);
-          border-radius: 6px;
-          font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
-          font-size: 10px;
-          line-height: 12px;
-          letter-spacing: 0.01em;
-          color: #ffffff;
+      &__nav-item {
+        padding: 4px 6px;
+        background: rgba(0, 0, 0, 0.26);
+        backdrop-filter: blur(10px);
+        border-radius: 6px;
+        font-family: $golos-regular;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 12px;
+        letter-spacing: 0.01em;
+        color: #ffffff;
 
-          &.swipe {
-            padding: 4px;
-          }
-          .swipe__icon {
-            width: 16px;
-            height: 12px;
-          }
+        &.swipe {
+          padding: 4px;
+        }
+        .swipe__icon {
+          width: 16px;
+          height: 12px;
         }
       }
 
       &__picture {
         background: inherit;
+      }
 
-        &-img {
-          border-radius: 12px 12px 0 0;
-          width: 100%;
-        }
+      &__picture-img {
+        border-radius: 12px 12px 0 0;
+        width: 100%;
       }
 
       .info {
@@ -166,7 +168,6 @@ export default {
           flex-direction: column;
           gap: 8px;
           max-width: 90%;
-
           font-family: $golos-regular;
           font-style: normal;
           font-weight: 400;
@@ -174,12 +175,12 @@ export default {
           line-height: 16px;
           letter-spacing: 0.01em;
           color: #7c7c7c;
+        }
 
-          &-link {
-            display: block;
-            max-width: 70%;
-            color: $color-dark-green;
-          }
+        &__text-link {
+          display: block;
+          max-width: 70%;
+          color: $color-dark-green;
         }
       }
     }

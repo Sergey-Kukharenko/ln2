@@ -63,13 +63,6 @@ export default {
       opacity: 0.3;
       cursor: pointer;
 
-      &-status-bar {
-        height: 2px;
-        border-radius: 16px;
-        background: #dde0e6;
-        margin-bottom: 12px;
-      }
-
       &.active {
         opacity: 1;
 
@@ -77,6 +70,13 @@ export default {
           background: $color-dark-green;
         }
       }
+    }
+
+    &__item-status-bar {
+      height: 2px;
+      border-radius: 16px;
+      background: #dde0e6;
+      margin-bottom: 12px;
     }
   }
 }

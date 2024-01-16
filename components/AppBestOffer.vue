@@ -8,17 +8,47 @@
           inbox.
         </div>
       </div>
-      <div class="best-offer__panel-col form">
-        <input v-model="email" class="form__input" placeholder="Email" />
-        <button class="form__button">Submit</button>
+
+      <div>
+        <app-input
+          v-model="email"
+          size="x-large"
+          placeholder="Email"
+          :success="success"
+          :error="error"
+          theme="white"
+          :disabled="disabled"
+          @input="onInput"
+        >
+          <template #right>
+            <basket-button
+              size="small"
+              theme="green"
+              align="center"
+              not-change
+              :disabled="disabled"
+              @click="handleSubscribe"
+            >
+              Use
+            </basket-button>
+          </template>
+        </app-input>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import authManager from '~/mixins/authManager.vue';
+import subscribe from '~/mixins/subscribe.vue';
+import AppInput from '~/components/shared/AppInput.vue';
+import BasketButton from '~/components/BasketButton.vue';
+
 export default {
   name: 'AppBestOffer',
+  components: { BasketButton, AppInput },
+
+  mixins: [authManager, subscribe],
 
   props: {
     roundedTop: {
@@ -29,7 +59,11 @@ export default {
 
   data() {
     return {
-      email: ''
+      agreeEmailReceive: true,
+      options: {
+        email_subscription: true
+      },
+      subscribeModule: 'footer'
     };
   },
 
@@ -68,66 +102,6 @@ export default {
 
         .link {
           color: $color-green;
-        }
-      }
-    }
-
-    .form {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      background-color: #ffffff;
-      box-sizing: border-box;
-      padding: 8px;
-      border-radius: 12px;
-
-      &__input {
-        border: none;
-        outline: none;
-        box-sizing: border-box;
-        background: #fff;
-        color: $color-dark-grey;
-        border-radius: 10px;
-        width: 100%;
-        font-family: $golos-regular;
-        font-style: normal;
-        font-size: 14px;
-        line-height: 20px;
-        padding: 0 16px;
-
-        &::placeholder {
-          font-family: $golos-regular;
-          font-style: normal;
-          font-size: 14px;
-          line-height: 20px;
-          color: $color-white-grey;
-        }
-
-        height: 36px;
-        min-width: 50px;
-      }
-
-      &__button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: $golos-regular;
-        font-weight: 500;
-        line-height: 24px;
-        color: #ffffff;
-        border-radius: 12px;
-        padding: 0 12px;
-        transition: background-color 0.2s ease 0s;
-
-        width: 102px;
-        height: 36px;
-        background: $color-green;
-        font-size: 14px;
-
-        &:disabled {
-          background: #ccc;
-          cursor: none;
         }
       }
     }

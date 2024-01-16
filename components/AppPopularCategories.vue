@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isPopularCategories" class="layout popular-categories">
+  <section class="layout popular-categories">
     <h2 class="popular-title">New way to show love</h2>
     <div class="popular-list">
       <nuxt-link
@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 import AppTimer from '@/components/shared/AppTimer';
 
 export default {
@@ -39,13 +37,14 @@ export default {
     AppTimer
   },
 
+  props: {
+    popularCategories: {
+      type: Array,
+      default: () => []
+    }
+  },
+
   computed: {
-    ...mapGetters({ popularCategories: 'pages/home/getPopularCategories' }),
-
-    isPopularCategories() {
-      return this.popularCategories.length;
-    },
-
     getImg() {
       return this.$device.isMobileOrTablet ? 'mobile' : 'desktop';
     }
@@ -53,7 +52,7 @@ export default {
 
   methods: {
     getImagePath(path) {
-      return `${process.env.basePureUrl}${path}`;
+      return `${process.env.imgCDN}${path}`;
     }
   }
 };

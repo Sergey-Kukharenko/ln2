@@ -14,16 +14,16 @@
           </div>
           <div class="title__reviews">{{ reviews.toLocaleString('ru') }} reviews</div>
         </div>
+        <app-fake-trustpilot v-if="$device.isMobileOrTablet" hide-text />
       </div>
     </div>
-    <app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />
   </div>
 </template>
 
 <script>
 export default {
   name: 'BasketTitle',
-  components: { AppTrustbox: () => import('~/components/ui/AppTrustbox.vue') },
+  components: { AppFakeTrustpilot: () => import('~/components/fake-trustpilot/AppFakeTrustpilot.vue') },
   data() {
     return {
       reviews: 13074,

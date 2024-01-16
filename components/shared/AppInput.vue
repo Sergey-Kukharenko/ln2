@@ -22,8 +22,8 @@
     <div v-if="error" class="app-input__error">
       {{ error }}
     </div>
-    <div v-if="note" class="app-input__note">
-      {{ note }}
+    <div v-if="success" class="app-input__success">
+      {{ success }}
     </div>
   </div>
 </template>
@@ -69,7 +69,7 @@ export default {
       type: String,
       default: 'medium',
       validate(value) {
-        return ['small', 'medium', 'large', 'x-large'].includes(value);
+        return ['small', 'medium', 'large', 'x-large', 'xx-large'].includes(value);
       }
     },
     placeholder: {
@@ -92,9 +92,6 @@ export default {
       default: ''
     },
     success: {
-      type: Boolean
-    },
-    note: {
       type: String,
       default: ''
     },
@@ -114,15 +111,23 @@ export default {
       validate(val) {
         return ['on', 'off', 'chrome-off'].includes(val);
       }
+    },
+    theme: {
+      type: String,
+      default: 'grey',
+      validate(value) {
+        return ['grey', 'white'].includes(value);
+      }
     }
   },
   computed: {
     classes() {
       return {
+        [`app-input--theme-${this.theme}`]: true,
         [`app-input--size-${this.size}`]: true,
         [`app-input--align-${this.align}`]: true,
         'app-input--error': !!this.error,
-        'app-input--success': this.success
+        'app-input--success': !!this.success
       };
     },
     styles() {
@@ -164,12 +169,15 @@ export default {
     font-weight: inherit;
     line-height: inherit;
     width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0;
 
     @include placeholder {
       font-family: $golos-regular;
-      font-style: normal;
-      font-size: 14px;
-      line-height: 20px;
+      font-size: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
       color: $color-white-grey;
     }
 
@@ -197,6 +205,19 @@ export default {
     line-height: 20px;
   }
 
+  &--theme-grey {
+    & .app-input__field {
+      background: $bg-grey;
+    }
+  }
+
+  &--theme-white {
+    & .app-input__field {
+      background: #fff;
+      color: $color-dark-grey;
+    }
+  }
+
   &--size-small {
     .app-input__field {
       height: 24px;
@@ -212,13 +233,6 @@ export default {
     }
   }
 
-  &--size-x-medium {
-    .app-input__field {
-      height: 44px;
-      padding: 0 12px;
-    }
-  }
-
   &--size-large {
     .app-input__field {
       height: 48px;
@@ -230,6 +244,23 @@ export default {
     .app-input__field {
       height: 52px;
       padding: 0 16px;
+    }
+  }
+
+  &--size-xx-large {
+    .app-input__field {
+      padding: 0 16px;
+
+      @include gt-sm {
+        height: 56px;
+      }
+
+      @include lt-md {
+        height: 44px;
+        font-size: 12px;
+        line-height: 130%; /* 15.6px */
+        letter-spacing: -0.24px;
+      }
     }
   }
 
@@ -267,7 +298,7 @@ export default {
     }
   }
 
-  &__note {
+  &__success {
     font-family: $golos-regular;
     font-style: normal;
     font-weight: 400;
@@ -279,7 +310,7 @@ export default {
   }
 
   &--success {
-    & .app-input__note {
+    & .app-input__success {
       color: $color-dark-green;
     }
   }

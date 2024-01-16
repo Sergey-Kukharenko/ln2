@@ -92,12 +92,12 @@ export default {
       letter-spacing: -0.01em;
       color: $color-dark-grey;
       user-select: none;
+    }
 
-      &-icon {
-        width: 11px;
-        height: 6.33px;
-        fill: $color-dark-grey;
-      }
+    &__input-icon {
+      width: 11px;
+      height: 6.33px;
+      fill: $color-dark-grey;
     }
 
     &__list {
@@ -112,18 +112,18 @@ export default {
       background: #ffffff;
       border-radius: 16px;
       z-index: 3;
+    }
 
-      &-item {
-        width: 100%;
-        font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        letter-spacing: -0.01em;
-        color: $color-dark-grey;
-        cursor: pointer;
-      }
+    &__list-item {
+      width: 100%;
+      font-family: $golos-regular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: $color-dark-grey;
+      cursor: pointer;
     }
   }
 }

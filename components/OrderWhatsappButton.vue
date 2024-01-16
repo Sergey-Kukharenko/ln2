@@ -13,7 +13,7 @@ export default {
 
   computed: {
     whatsapp() {
-      return this.$store.getters['layout/getPhone']?.whatsapp;
+      return this.$store.getters['layout/getCall']?.whatsapp;
     }
   }
 };

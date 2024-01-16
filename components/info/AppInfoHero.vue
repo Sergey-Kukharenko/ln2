@@ -34,10 +34,15 @@ export default {
 
   @include lt-md {
     padding: 32px 0;
+    margin: 32px 0 0;
   }
 
   &__items {
     display: flex;
+
+    @include gt-sm {
+      gap: 40px;
+    }
 
     @include lt-md {
       flex-direction: column;
@@ -50,38 +55,38 @@ export default {
     flex-direction: column;
     flex: 1;
     gap: 12px;
+  }
 
-    &-title {
-      font-family: $golos-medium;
-      font-style: normal;
-      font-weight: 600;
-      color: $color-dark-green;
+  &__item-title {
+    font-family: $golos-medium;
+    font-style: normal;
+    font-weight: 600;
+    color: $color-dark-green;
 
-      @include gt-sm {
-        font-size: 24px;
-        line-height: 28px;
-        letter-spacing: 0.01em;
-      }
-
-      @include lt-md {
-        font-size: 20px;
-        line-height: 24px;
-      }
+    @include gt-sm {
+      font-size: 24px;
+      line-height: 28px;
+      letter-spacing: 0.01em;
     }
 
-    &-text {
-      flex: 1;
-      font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      letter-spacing: -0.01em;
-      color: $color-dark-grey;
+    @include lt-md {
+      font-size: 20px;
+      line-height: 24px;
+    }
+  }
 
-      @include gt-sm {
-        white-space: pre-wrap;
-      }
+  &__item-text {
+    flex: 1;
+    font-family: $golos-regular;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    color: $color-dark-grey;
+
+    @include gt-sm {
+      white-space: pre-wrap;
     }
   }
 }

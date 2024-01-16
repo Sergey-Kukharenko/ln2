@@ -1,7 +1,7 @@
-import { setState, useFixedSumByKey } from '@/helpers';
+import { setState } from '@/helpers';
 
 export const state = () => ({
-  order: null
+  orderDetails: null
 });
 
 export const mutations = {
@@ -11,26 +11,19 @@ export const mutations = {
 export const actions = {
   async fetchOrder({ commit }, id) {
     try {
-      const { data } = await this.$axios.$get(`/order/${id}/`);
-      commit('setState', { order: data });
+      const { data } = await this.$http.$get(`/v1/order/${id}/`);
+      commit('setState', { orderDetails: data });
+      return data;
     } catch (err) {
       console.error(err);
     }
   },
 
-  async createOrder(_) {
+  createOrder(_) {
     try {
-      await this.$axios.$post(`/order/`);
+      return this.$http.$post(`/v1/order/`);
     } catch (err) {
       console.error(err);
     }
   }
-};
-
-export const getters = {
-  getCount: (state) => Number(useFixedSumByKey(state.order?.positions, 'quantity')),
-  getOrder: (state) => state.order,
-  orderPositions: (state) => state.order?.positions || [],
-  orderSplittedPositions: (state) =>
-    state.order?.positions.flatMap((e) => Array(e.quantity).fill({ ...e, quantity: 1 })) || []
 };

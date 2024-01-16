@@ -39,27 +39,36 @@ const HERO_ITEMS = [
 ];
 
 const SOMETHING_IMPORTANT = {
-  title: 'What matters to us',
-  text: 'Our customers are the key to our success, that’s why we do everything to provide them with a professional service at the best value for money.',
+  title: 'Our Core Focus',
+  text: 'Our customers and their loved ones are at the heart of what we do. Our entire brand philosophy is to go above and beyond for our customers. And at the same time, we offer absolute perfection at affordable prices. We deliver on time, we deliver fresh, and we deliver exactly what you order.',
   columns: [
     {
-      title: 'Everyday Freshness',
-      text: 'We strictly monitor the freshness of our flowers, delivering exceptionally high-quality flowers each and every day',
+      title: 'Uncompromising Quality',
+      text:
+        'We have a strict process \n' +
+        'of monitoring the freshness \n' +
+        'of all our flower collections. We make it a point to deliver top-quality bouquets, 7 days a week.',
       backgroundColor: '#FFE389'
     },
     {
-      title: 'Privacy',
-      text: 'Choose between anonymous gifting or attach a postcard to your bouquet, letting your receiver know who made their day special',
+      title: 'Flexible Customisation and Personalisation',
+      text:
+        'Choose between anonymous gifting (adding more enigma to the surprise) or have us add\n' +
+        'a personalised message on the bouquet, expressing just how special your loved one is.',
       backgroundColor: '#D3F3FF'
     },
     {
-      title: 'Professional Customer Service',
-      text: 'In the rare case your recipient does not like the bouquet, report this to us in the first 24 hours and we’ll replace it',
+      title: 'Quality Customer Service',
+      text:
+        'You can get in touch with one of our customer representatives to inquire about your order or delivery via phone (WhatsApp +44 20 4577 0088) or by sending\n' +
+        'an email to support@myflowers.co.uk.',
       backgroundColor: '#FFC6BE'
     },
     {
-      title: 'Delivery on time',
-      text: 'We carefully monitor the logistics and delivery time of each bouquet',
+      title: 'Timely Deliveries',
+      text:
+        'Delivering on time is the lifeblood of our business.\n' +
+        'We pay special attention to the logistics of each order, ensuring each delivery is made on time. No compromises here!\n',
       backgroundColor: '#A0F5AF'
     }
   ]
@@ -69,20 +78,24 @@ const ADVANTAGES = [
   {
     icon: 'flower',
     color: '#FFE389',
-    title: 'Our Guarantee',
-    text: 'Fresh bouquets for 5 days. If your flowers wilt within 5 days, we’ll immediately send you a fresh bouquet of the same order'
+    title: 'Freshness guarantee',
+    // eslint-disable-next-line no-multi-str
+    text:
+      "One of the primary reasons why we're an in-demand flower business in the UK is that we deliver fresh flowers that last, and look absolutely stunning.\n" +
+      "At MyFlowers, you can only expect high-quality bouquets. Moreover, we offer customers a 5-day wilting guarantee, where if your flowers do wilt within the first five days of delivery, we'll send you more for free!"
   },
   {
     icon: 'truck',
     color: '#A0F5AF',
-    title: 'Delivery in 2 hours',
-    text: 'Express delivery in 2 hours within Zone 5.'
+    title: 'Speedy Delivery',
+    text: "Thanks to our specialised delivery system, you can expect your bouquets to be delivered within 3 hours of placing an order. We're open 7 days a week, which means you can order flowers any time you want."
   },
   {
     icon: 'camera',
     color: '#D3F3FF',
-    title: 'Bouquet photo',
-    text: 'We send a photo of your bouquet before handing it over the bouquet to the courier. You’ll know exactly what is being delivered'
+    text:
+      "Once we finish preparing your order, we'll send \n" +
+      "a photo of the bouquet so that you'll know exactly what the recipient will get. We're all about preparing classy surprises here!"
   }
 ];
 

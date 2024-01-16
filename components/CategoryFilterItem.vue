@@ -224,22 +224,22 @@ export default {
     @include lt-md {
       padding: 12px 0;
     }
+  }
 
-    &-title {
-      font-family: $golos-medium;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 20px;
-      color: #000000;
-    }
+  &__header-title {
+    font-family: $golos-medium;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: #000000;
+  }
 
-    &-chevron-icon {
-      width: 11px;
-      height: 6.33px;
-      fill: $color-dark-grey;
-      transition: transform 0.2s ease-in-out;
-    }
+  &__header-chevron-icon {
+    width: 11px;
+    height: 6.33px;
+    fill: $color-dark-grey;
+    transition: transform 0.2s ease-in-out;
   }
 
   &__body {
@@ -248,20 +248,6 @@ export default {
     will-change: max-height;
     transition: all 0.25s ease-out;
     border-bottom: 1px solid #eaeaea;
-
-    &-item {
-      .show {
-        margin-top: 10px;
-        font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        letter-spacing: -0.01em;
-        color: $color-white-grey;
-        cursor: pointer;
-      }
-    }
 
     .range {
       display: flex;
@@ -331,8 +317,22 @@ export default {
 
       &__item {
         transition: margin-top 0.25s ease-out;
-        margin-top: 0px;
+        margin-top: 0;
       }
+    }
+  }
+
+  &__body-item {
+    .show {
+      margin-top: 10px;
+      font-family: $golos-regular;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      color: $color-white-grey;
+      cursor: pointer;
     }
   }
 }

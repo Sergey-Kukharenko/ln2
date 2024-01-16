@@ -16,35 +16,30 @@
         <svg-icon class="app-select__icon" name="chevron-right" />
       </div>
     </div>
-    <client-only>
-      <teleport to="body">
-        <div v-show="isOpened" ref="dropdown" v-click-outside="close" class="app-select__dropdown">
-          <div class="app-select__dropdown-bg" @click="close" />
-          <div class="app-select__dropdown-scroll">
-            <div class="app-select__dropdown-title">
-              <div>{{ placeholder }}</div>
-              <div class="app-select__dropdown-close" @click="close">
-                <img src="~/assets/sprite/svg/close.svg" width="16" height="16" alt="close" />
-              </div>
-            </div>
-            <div v-for="(item, index) in list" :key="index" class="app-select__dropdown-item">
-              <slot :item="item" :index="index" :open="open" :close="close" :set-label="setLabel" />
-            </div>
+
+    <div v-show="isOpened" ref="dropdown" v-click-outside="close" class="app-select__dropdown">
+      <div class="app-select__dropdown-bg" @click="close" />
+      <div class="app-select__dropdown-scroll">
+        <div class="app-select__dropdown-title">
+          <div>{{ placeholder }}</div>
+          <div class="app-select__dropdown-close" @click="close">
+            <img src="~/assets/sprite/svg/close.svg" width="16" height="16" alt="close" />
           </div>
         </div>
-      </teleport>
-    </client-only>
+        <div v-for="(item, index) in list" :key="index" class="app-select__dropdown-item">
+          <slot :item="item" :index="index" :open="open" :close="close" :set-label="setLabel" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Teleport from 'vue2-teleport';
 import vClickOutside from 'v-click-outside';
 import { useScrollLockToggle } from '~/helpers';
 
 export default {
   name: 'AppSelect',
-  components: { Teleport },
   directives: {
     clickOutside: vClickOutside.directive
   },
@@ -59,6 +54,14 @@ export default {
       validate(value) {
         return ['small', 'medium', 'large', 'x-large'].includes(value);
       }
+    },
+    pinned: {
+      type: Boolean,
+      default: false
+    },
+    hideField: {
+      type: Boolean,
+      default: false
     },
     list: {
       type: Array,
@@ -78,7 +81,10 @@ export default {
   computed: {
     classes() {
       return {
-        [`app-select--size-${this.size}`]: true
+        [`app-select--size-${this.size}`]: true,
+        'app-select--pinned': this.pinned,
+        'app-select--hide-field': this.hideField,
+        'app-select--expand': this.isOpened
       };
     }
   },
@@ -110,13 +116,8 @@ export default {
     setLabel(value) {
       this.label = value;
     },
+
     onClickField() {
-      if (window.innerWidth > 1280) {
-        const rect = this.$refs.select.getBoundingClientRect();
-        this.$refs.dropdown.style.left = `${rect.x}px`;
-        this.$refs.dropdown.style.top = `${rect.y + window.scrollY + rect.height + 8}px`;
-        this.$refs.dropdown.style.width = `${rect.width}px`;
-      }
       this.isOpened = true;
     }
   }
@@ -125,6 +126,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-select {
+  position: relative;
   box-sizing: border-box;
 
   &__field {
@@ -191,17 +193,17 @@ export default {
 
   &__dropdown {
     position: absolute;
-    z-index: 1;
     left: 0;
-    top: 0;
+    right: 0;
+    z-index: 1;
     height: fit-content;
     max-height: 228px;
-
     box-sizing: border-box;
     background-color: #ffffff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
     border-radius: 10px;
     padding: 8px 6px 8px 16px;
+    margin-top: 8px;
 
     @include lt-lg {
       position: fixed;
@@ -335,18 +337,58 @@ export default {
       height: 52px;
       padding: 0 8px 0 16px;
     }
-  }
 
-  &--size-x-large {
-    .app-select__field {
-      height: 52px;
-      padding: 0 8px 0 16px;
+    &.app-select--pinned {
+      .app-select__field {
+        padding: 0 8px 0 24px;
+      }
+    }
+
+    &.app-select--hide-field {
+      .app-select__field {
+        display: none;
+      }
     }
   }
 
   &__icon {
     width: 16px;
     height: 16px;
+  }
+
+  &--pinned {
+    & .app-select__dropdown {
+      width: 100%;
+      max-height: initial;
+      padding: 0 16px 0 16px;
+      box-shadow: none;
+      border-radius: 0 0 10px 10px;
+      border: 1px solid #eaeaea;
+      border-top: 0;
+      margin-top: 0;
+    }
+
+    & .app-select__dropdown-scroll {
+      @include gt-md {
+        max-height: initial;
+        padding-right: 0;
+      }
+    }
+
+    &.app-select--expand {
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid #eaeaea;
+        border-radius: 12px 12px 0 0;
+        border-bottom: 0;
+      }
+    }
   }
 }
 </style>

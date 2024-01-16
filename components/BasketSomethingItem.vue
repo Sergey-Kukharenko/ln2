@@ -11,8 +11,11 @@
 </template>
 
 <script>
+import BasketButton from '~/components/BasketButton.vue';
+
 export default {
   name: 'BasketSomethingItem',
+  components: { BasketButton },
   props: {
     img: {
       type: String,

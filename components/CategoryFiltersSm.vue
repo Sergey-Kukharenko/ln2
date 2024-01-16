@@ -92,42 +92,42 @@ export default {
     &__top {
       display: flex;
       margin-bottom: 20px;
+    }
 
-      &-col {
+    &__top-col {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+
+      .title {
+        font-family: $golos-bold;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: -0.01em;
+        color: $color-dark-grey;
+        margin: 0;
+      }
+      .icon {
+        width: 16px;
+        height: 15.54px;
+        cursor: pointer;
+      }
+
+      &.info {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 16px;
-        flex: 1;
-
-        .title {
-          font-family: $golos-bold;
-          font-style: normal;
-          font-weight: 700;
-          font-size: 20px;
-          line-height: 24px;
-          letter-spacing: -0.01em;
-          color: $color-dark-grey;
-          margin: 0;
-        }
-        .icon {
-          width: 16px;
-          height: 15.54px;
-          cursor: pointer;
-        }
-
-        &.info {
-          display: flex;
-          justify-content: flex-end;
-          font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 20px;
-          text-align: right;
-          letter-spacing: -0.01em;
-          color: $color-white-grey;
-        }
+        justify-content: flex-end;
+        font-family: $golos-regular;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: right;
+        letter-spacing: -0.01em;
+        color: $color-white-grey;
       }
     }
 

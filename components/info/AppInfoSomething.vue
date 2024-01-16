@@ -1,14 +1,20 @@
 <template>
   <div class="layout something" :class="className">
-    <div class="something__top">
+    <div v-for="(item, idx) in content.sections" :key="idx" class="something__top">
       <h2 class="something__title">
-        {{ content.title }}
+        {{ item.title }}
       </h2>
-      <p class="something__text">{{ content.text }}</p>
+      <p class="something__text">{{ item.text }}</p>
     </div>
 
     <div class="something__cards">
-      <app-info-card v-for="(card, index) in content.columns" :key="index" :number="index + 1" :theme="theme">
+      <app-info-card
+        v-for="(card, index) in content.columns"
+        :key="index"
+        :number="index + 1"
+        :theme="theme"
+        :has-step="hasStep"
+      >
         <template #link>
           <a v-if="card.link" :href="card.link.url" class="card__link">{{ card.link.text }}</a>
           <app-info-social-list v-if="card.social" :list="card.social" />
@@ -48,6 +54,11 @@ export default {
     content: {
       type: Object,
       default: () => ({})
+    },
+
+    hasStep: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -67,7 +78,7 @@ export default {
   flex-direction: column;
 
   @include gt-sm {
-    gap: 52px;
+    gap: 40px;
   }
 
   @include lt-md {
@@ -79,7 +90,7 @@ export default {
     flex-direction: column;
 
     @include gt-sm {
-      gap: 24px;
+      gap: 8px;
     }
 
     @include lt-md {
@@ -92,17 +103,16 @@ export default {
     font-family: $Literata;
     font-style: normal;
     font-weight: 700;
+    line-height: 120%;
     color: $color-dark-grey;
 
     @include gt-sm {
-      font-size: 48px;
-      line-height: 70px;
+      font-size: 32px;
     }
 
     @include lt-md {
       font-size: 20px;
-      line-height: 24px;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.2px;
     }
   }
 
@@ -117,7 +127,6 @@ export default {
     color: $color-dark-grey;
 
     @include gt-sm {
-      width: 50%;
       white-space: pre-wrap;
     }
   }

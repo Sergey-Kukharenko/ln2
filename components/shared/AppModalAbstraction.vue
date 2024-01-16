@@ -1,22 +1,24 @@
 <template>
-  <Teleport to="body">
-    <div :class="classNames">
-      <div class="modal__overlay" @click="close"></div>
-      <div class="modal__content">
-        <div class="modal__layout">
-          <slot />
-          <button type="button" class="button" @click="close">
-            <svg-icon name="close" class="button__icon" />
-          </button>
+  <client-only>
+    <Teleport to="body">
+      <div class="modal" :class="classNames">
+        <div class="modal__overlay" @click="close"></div>
+        <div class="modal__content">
+          <div class="modal__layout">
+            <slot />
+            <button type="button" class="button" @click="close">
+              <svg-icon name="close" class="button__icon" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </Teleport>
+    </Teleport>
+  </client-only>
 </template>
 
 <script>
 import Teleport from 'vue2-teleport';
-import { useClassName } from '~/helpers';
+// import { useClassName } from '~/helpers';
 
 export default {
   name: 'AppModalAbstraction',
@@ -32,12 +34,26 @@ export default {
       validate(value) {
         return ['full'].includes(value);
       }
+    },
+
+    center: {
+      type: Boolean,
+      default: false
+    },
+
+    inside: {
+      type: Boolean,
+      default: false
     }
   },
 
   computed: {
     classNames() {
-      return useClassName(this.$props, 'modal');
+      return {
+        [`modal--${this.theme}`]: this.theme,
+        'modal--center': this.center,
+        'modal--inside': this.inside
+      };
     }
   },
 
@@ -90,7 +106,7 @@ export default {
   &__content {
     position: relative;
     background-color: #fff;
-    border-radius: 0.3rem;
+    border-radius: 16px;
     z-index: 2;
 
     @include gt-xs {
@@ -168,12 +184,36 @@ export default {
       }
     }
   }
+
+  &--center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &--inside {
+    & .modal__content {
+      border-radius: 16px;
+    }
+
+    & .button {
+      right: 0;
+      padding: 16px 18px;
+      background: none;
+      border-radius: 0;
+      &__icon {
+        height: 16px;
+        width: 16px;
+        color: #000;
+      }
+    }
+  }
 }
 
 .button {
   position: absolute;
   top: 0;
-  right: -62px;
+  right: -72px;
   color: #8b8b8b;
   padding: 14px;
   background: rgb(0 0 0 / 50%);

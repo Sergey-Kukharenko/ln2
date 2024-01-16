@@ -1,41 +1,27 @@
 import * as AxiosLogger from 'axios-logger';
 
-export default function ({ store, app: { $axios }, isDev, $cookies }) {
-  $axios.create({
-    baseURL: process.env.BASE_URL,
-    timeout: 60000
-    // withCredentials: true
-  });
+AxiosLogger.setGlobalConfig({
+  data: false
+});
 
-  AxiosLogger.setGlobalConfig({
-    data: false
-  });
-
+export default function ({ store, app: { $axios, router }, isDev, $cookies }) {
   $axios.onRequest((config) => {
-    const token = $cookies.get('token') || store.state.auth.token;
+    const token = $cookies.get(process.env.sessionTokenField) || store.state.auth.token;
 
     config.headers.Authorization = token ? `Bearer ${token}` : '';
+    config.headers['custom-referer'] = router.currentRoute.fullPath;
 
     store.commit('httpEndpointsCallStackHandler', config.url);
 
-    return isDev ? AxiosLogger.requestLogger(config) : config;
+    if (isDev) {
+      AxiosLogger.requestLogger(config);
+    }
   });
 
   $axios.onResponse((response) => {
     store.commit('httpEndpointsCallStackHandler', response.config.url);
-    return isDev ? AxiosLogger.responseLogger(response) : response;
-  });
-
-  $axios.onError(
-    // async
-    (error) => {
-      const statusCode = error?.response?.status;
-
-      if ([401, 403].includes(statusCode)) {
-        // await store.dispatch('auth/fetchToken');
-      }
-
-      return isDev ? AxiosLogger.errorLogger(error) : error;
+    if (isDev) {
+      AxiosLogger.responseLogger(response);
     }
-  );
+  });
 }

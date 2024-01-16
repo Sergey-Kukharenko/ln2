@@ -9,27 +9,27 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchFavorites({ state, commit }) {
+  async fetchFavorites({ commit }) {
     try {
-      const favorites = await this.$axios.$get('/favorites/');
+      const favorites = await this.$http.$get('/v1/favorites/');
       commit('setFavorites', favorites);
     } catch (e) {
       console.error(e);
     }
   },
 
-  async addToFavorites({ state, commit }, productId) {
+  async addToFavorites({ commit }, productId) {
     try {
-      const favorites = await this.$axios.$post(`/favorite/${productId}`);
+      const favorites = await this.$http.$post(`/v1/favorite/${productId}`);
       commit('setFavorites', favorites);
     } catch (e) {
       console.error(e);
     }
   },
 
-  async removeFromFavorites({ state, commit }, productId) {
+  async removeFromFavorites({ commit }, productId) {
     try {
-      const favorites = await this.$axios.$delete(`/favorite/${productId}`);
+      const favorites = await this.$http.$delete(`/v1/favorite/${productId}`);
       commit('setFavorites', favorites);
     } catch (e) {
       console.error(e);
@@ -38,6 +38,5 @@ export const actions = {
 };
 
 export const getters = {
-  getCount: (state) => state.favorites?.list?.length,
-  getFavorites: (state) => state.favorites
+  getCount: (state) => state.favorites?.list?.length
 };

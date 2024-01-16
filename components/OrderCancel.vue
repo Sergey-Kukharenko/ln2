@@ -66,12 +66,12 @@ export default {
 
       display: flex;
       justify-content: flex-end;
+    }
 
-      &-icon {
-        width: 16px;
-        height: 16px;
-        user-select: none;
-      }
+    &__close-icon {
+      width: 16px;
+      height: 16px;
+      user-select: none;
     }
 
     &__title {
