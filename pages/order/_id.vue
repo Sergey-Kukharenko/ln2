@@ -327,7 +327,7 @@ export default {
         address: (this.shippingAddress?.address1 || this.shippingAddress?.address2) && this.getAddressText,
         postcode: this.shippingAddress?.postal_code,
         date: this.intervalData?.date && this.getIntervalDate,
-        time: `${this.intervalData?.time}, ${this.deliveryAmount}`
+        time: this.intervalData?.time ? `${this.intervalData?.time}, ${this.deliveryAmount}` : `${this.deliveryAmount}`
       };
     },
 

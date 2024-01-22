@@ -25,6 +25,8 @@
         @focus="onFocus"
         @blur="setNumber"
         @keypress="validateNumber"
+        @paste.prevent="handle"
+        @keydown.space.prevent
       />
       <!--      Временно скрыт-->
       <!--      <app-number-input :error="form.phone.errorMsg" @set-number="setNumber" />-->

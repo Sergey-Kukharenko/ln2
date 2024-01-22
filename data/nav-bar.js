@@ -9,6 +9,16 @@ const desktopNavbar = [
     hasSubLevel: true
   },
   {
+    title: 'Letterbox flowers',
+    icon: 'envelope',
+    style: {
+      width: 16,
+      height: 16
+    },
+    hasSubLevel: false,
+    to: '/category/letterbox-flowers'
+  },
+  {
     title: 'Trending',
     icon: 'fire',
     style: {
@@ -54,27 +64,17 @@ const desktopNavbar = [
       height: 16
     },
     hasSubLevel: true
-  },
-  {
-    title: 'Sales',
-    icon: 'percent-sale',
-    style: {
-      width: 14,
-      height: 14
-    },
-    color: 'pink',
-    hasSubLevel: true
-  },
-  {
-    title: 'Letterbox',
-    icon: 'envelope',
-    style: {
-      width: 16,
-      height: 16
-    },
-    hasSubLevel: false,
-    to: '/category/letterbox-flowers'
   }
+  // {
+  //   title: 'Sales',
+  //   icon: 'percent-sale',
+  //   style: {
+  //     width: 14,
+  //     height: 14
+  //   },
+  //   color: 'pink',
+  //   hasSubLevel: true
+  // },
 ];
 
 const mobileNavbar = [
@@ -88,6 +88,13 @@ const mobileNavbar = [
       url: 'some url',
       text: 'Show all bouquets MyFlowers'
     }
+  },
+  {
+    type: 'letterbox',
+    title: 'Letterbox flowers',
+    icon: 'envelope',
+    hasSubLevel: false,
+    to: '/category/letterbox-flowers'
   },
   {
     title: 'Trending',
@@ -120,20 +127,13 @@ const mobileNavbar = [
     type: 'gifts',
     icon: 'gift',
     hasSubLevel: true
-  },
-  {
-    type: 'sales',
-    title: 'Sales',
-    icon: 'percent-sale',
-    hasSubLevel: true
-  },
-  {
-    type: 'letterbox',
-    title: 'Letterbox',
-    icon: 'envelope',
-    hasSubLevel: false,
-    to: '/category/letterbox-flowers'
   }
+  // {
+  //   type: 'sales',
+  //   title: 'Sales',
+  //   icon: 'percent-sale',
+  //   hasSubLevel: true
+  // },
 ];
 
 export { desktopNavbar, mobileNavbar };

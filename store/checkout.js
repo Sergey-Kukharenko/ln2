@@ -7,7 +7,7 @@ const getCheckoutCost = (checkout) => ({
   positionsCost: checkout?.positions_cost || 0,
   deliveryAmount: +checkout?.delivery_amount ? `£ ${checkout?.delivery_amount}` : 'Free',
   deliveryCost: +checkout?.delivery_amount || 0,
-  totalSum: +checkout?.total_cost || 0,
+  totalSum: +checkout?.total_cost.replace(',', '') || 0,
   cashback: +checkout?.cashback || 0,
   sale: +checkout?.promo_code?.discount ? checkout?.promo_code?.discount : 0
 });

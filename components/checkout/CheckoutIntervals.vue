@@ -235,9 +235,11 @@ export default {
       this.selectDate(payloadDate);
     },
 
-    async selectDate(date) {
+    selectDate(date) {
       try {
-        const [firstInterval] = await this.$store.dispatch('checkout/fetchInterval', date);
+        const foundIntervalDay = this.intervals.find((day) => day.date === date);
+        const intervalDay = foundIntervalDay || this.firstAvalibleDay;
+        const [firstInterval] = intervalDay?.intervals;
         const time = firstInterval?.label || this.timeIntervalLabel;
 
         this.closeCalendarModal();

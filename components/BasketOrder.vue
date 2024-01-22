@@ -73,7 +73,7 @@
       </basket-button>
       <div class="order__terms">
         By clicking on the button, you agree to the<br />
-        <a href="/files/privacy-policy.pdf" target="_blank">Terms of personal data processing</a>
+        <a href="/privacy-policy" target="_blank">Terms of personal data processing</a>
       </div>
     </form>
     <!--Временно скрыт-->

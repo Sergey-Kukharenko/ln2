@@ -8,7 +8,7 @@
 
     <checkout-email />
 
-    <div v-if="orderId" class="final-details__submit">
+    <div class="final-details__submit">
       <payment-button
         :payment-method="paymentMethod"
         :order-id="orderId"
@@ -47,7 +47,7 @@ export default {
 
     orderId: {
       type: String,
-      required: true
+      default: ''
     },
 
     price: {

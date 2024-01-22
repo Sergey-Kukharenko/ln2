@@ -23,6 +23,17 @@ export default {
       }
     },
 
+    handle(e) {
+      const paste = e.clipboardData.getData('text').replaceAll(' ', '');
+
+      if (e.target.value.trim() === '') {
+        this.form.phone.value = paste;
+      } else {
+        const withoutCode = paste.replace(/^(\+44)|(44)/g, '');
+        this.form.phone.value = this.countryCode + withoutCode;
+      }
+    },
+
     onBlur(e) {
       if (e.target.value.trim() === this.countryCode) {
         this.form.phone.value = '';

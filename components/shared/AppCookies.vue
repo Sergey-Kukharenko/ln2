@@ -12,7 +12,7 @@
               <div class="figcaption-container__text" @click.stop>
                 Using our site means you agree with our
                 <a href="/files/cookie-policy.pdf" target="_blank" class="link">Cookie Policy</a> and
-                <a href="/files/privacy-policy.pdf" target="_blank" class="link">Privacy Policy</a> (Click to read).
+                <a href="/privacy-policy" target="_blank" class="link">Privacy Policy</a> (Click to read).
               </div>
             </div>
             <app-button theme="yellow-whitely" size="x-lg" class="cookies-button">Close</app-button>
