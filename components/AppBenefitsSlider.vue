@@ -30,7 +30,7 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
-import pathToImage from '~/mixins/pathToImage';
+import pathToImage from '~/mixins/pathToImage.vue';
 
 export default {
   name: 'AppBenefitsSlider',
@@ -120,8 +120,6 @@ export default {
         backdrop-filter: blur(10px);
         border-radius: 6px;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 10px;
         line-height: 12px;
         letter-spacing: 0.01em;
@@ -160,7 +158,7 @@ export default {
           font-size: 20px;
           line-height: 24px;
           letter-spacing: -0.01em;
-          color: #1f2226;
+          color: $color-dark-grey;
         }
 
         &__text {
@@ -169,8 +167,6 @@ export default {
           gap: 8px;
           max-width: 90%;
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           font-size: 12px;
           line-height: 16px;
           letter-spacing: 0.01em;

@@ -34,17 +34,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
+import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
+import CheckoutProductCount from '~/components/checkout/CheckoutProductCount.vue';
+import CheckoutProductImage from '~/components/checkout/CheckoutProductImage.vue';
+import CheckoutProductPrice from '~/components/checkout/CheckoutProductPrice.vue';
+import CheckoutProductSize from '~/components/checkout/CheckoutProductSize.vue';
+import CheckoutProductTitle from '~/components/checkout/CheckoutProductTitle.vue';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 import { useSizedImage } from '~/helpers';
 import gtm from '~/mixins/gtm.vue';
-import { IMG_SIZES_MAP } from '~/constants/image-sizes';
-import CheckoutProductImage from '~/components/checkout/CheckoutProductImage.vue';
-import CheckoutProductTitle from '~/components/checkout/CheckoutProductTitle.vue';
-import CheckoutProductSize from '~/components/checkout/CheckoutProductSize.vue';
-import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
-import CheckoutProductPrice from '~/components/checkout/CheckoutProductPrice.vue';
-import CheckoutProductCount from '~/components/checkout/CheckoutProductCount.vue';
 
 export default {
   name: 'CheckoutProduct',
@@ -168,11 +166,6 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      addToCart: 'cart/addToCart',
-      removeFromCart: 'cart/removeFromCart'
-    }),
-
     useSizedImage
   },
 

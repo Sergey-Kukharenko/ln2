@@ -22,11 +22,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import AppButton from '~/components/shared/AppButton.vue';
-import ModalNotification from '~/components/ModalNotification.vue';
+import Vue from 'vue';
 
-export default {
+import ModalNotification from '~/components/ModalNotification.vue';
+import AppButton from '~/components/shared/AppButton.vue';
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'UnsubscribePage',
 
   components: { ModalNotification, AppButton },
@@ -41,9 +43,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      unsubscribeFromSMS: 'user/unsubscribeFromSMS'
-    }),
+    ...accessorMapper('user', ['unsubscribeFromSMS']),
 
     openModal() {
       this.isVisible = true;
@@ -65,7 +65,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style scoped lang="scss">

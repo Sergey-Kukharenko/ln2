@@ -1,11 +1,21 @@
 <template>
   <div class="checkout-intervals-group">
-    <div v-for="(item, idx) in list" :key="idx" class="interval-item" @click="$emit('set-interval-type', item.type)">
-      <div class="interval-item__title">{{ item.title }}</div>
-      <div class="interval-item__value">
-        {{ item.value }} <svg-icon class="interval-item__icon" name="chevron-right" />
+    <div v-for="(item, idx) in list" :key="idx" class="interval-wrapper">
+      <div
+        class="interval-item"
+        :class="{ 'interval-item--error': item.error }"
+        @click="$emit('set-interval-type', item.type)"
+      >
+        <div class="interval-item__title">{{ item.title }}</div>
+        <div class="interval-item__value">
+          {{ item.value }} <span v-if="!item.value" class="interval-item__value--default">{{ item.default }}</span>
+          <svg-icon class="interval-item__icon" name="chevron-right" />
+        </div>
+        <div v-if="item.value" class="interval-item__delivery">{{ item.delivery }}</div>
       </div>
-      <div class="interval-item__delivery">{{ item.delivery }}</div>
+      <div class="interval-error">
+        {{ item.error }}
+      </div>
     </div>
   </div>
 </template>
@@ -42,11 +52,14 @@ export default {
   }
 }
 
+.interval-wrapper {
+  gap: 4px;
+  flex: 1;
+}
+
 .interval-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  flex: 1;
   background: #f7f7f7;
   box-sizing: border-box;
   border-radius: 12px;
@@ -60,6 +73,10 @@ export default {
 
   @include lt-lg {
     padding: 14px 16px;
+  }
+
+  &--error {
+    border: 1px solid $color-red;
   }
 
   &__icon {
@@ -88,7 +105,6 @@ export default {
     display: flex;
     justify-content: space-between;
     font-family: $golos-regular;
-    font-weight: 400;
 
     @include gt-sm {
       font-size: 14px;
@@ -100,6 +116,10 @@ export default {
       font-size: 12px;
       line-height: 16px;
       letter-spacing: -0.02em;
+    }
+
+    &--default {
+      color: $color-dark-green;
     }
   }
 
@@ -124,6 +144,24 @@ export default {
       line-height: 14px;
       letter-spacing: -0.03em;
     }
+  }
+}
+
+.interval-error {
+  font-family: $golos-regular;
+  color: $color-red;
+  padding: 4px 16px;
+
+  @include gt-sm {
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -0.02em;
+  }
+
+  @include lt-lg {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.02em;
   }
 }
 </style>

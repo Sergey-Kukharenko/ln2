@@ -38,20 +38,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
-import { useToggleClassName } from '~/helpers';
-
-import AppDrawer from '~/components/shared/AppDrawer';
-import AppLogo from '~/components/header/AppLogo';
-import AppCall from '~/components/header/AppCall';
-import AppCart from '~/components/header/AppCart';
-import AppMobileProfile from '~/components/header/mobile/AppMobileProfile';
+import AppCall from '~/components/header/AppCall.vue';
+import AppCart from '~/components/header/AppCart.vue';
+import AppLogo from '~/components/header/AppLogo.vue';
 // import AppMobileLocation from '~/components/header/mobile/AppMobileLocation';
-import AppHeaderMobileMenu from '~/components/header/mobile/AppHeaderMobileMenu';
-import AppHeaderMobileNav from '~/components/header/mobile/AppHeaderMobileNav';
+import AppHeaderMobileMenu from '~/components/header/mobile/AppHeaderMobileMenu.vue';
+import AppHeaderMobileNav from '~/components/header/mobile/AppHeaderMobileNav.vue';
+import AppMobileProfile from '~/components/header/mobile/AppMobileProfile.vue';
+import AppDrawer from '~/components/shared/AppDrawer.vue';
+import { useToggleClassName } from '~/helpers';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppHeaderMobile',
 
   components: {
@@ -78,7 +78,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ isUserData: 'user/isUserData' }),
+    ...accessorMapper('user', ['isUserData']),
 
     classNames() {
       return useToggleClassName(this.isVisible, 'content', 'active');
@@ -102,7 +102,7 @@ export default {
       this.isVisible = payload;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -13,22 +13,25 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
-import AppNavigationList from '@/components/header/AppNavigationList';
-import AppCall from '@/components/header/AppCall';
+import AppCall from '@/components/header/AppCall.vue';
+import AppNavigationList from '@/components/header/AppNavigationList.vue';
 
-export default {
+export default Vue.extend({
   name: 'AppNavigation',
+
   components: {
     AppCall,
     AppNavigationList
   },
 
   computed: {
-    ...mapGetters({ navigation: 'layout/getNavigation' })
+    navigation() {
+      return this.$accessor.layout.getNavigation;
+    }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

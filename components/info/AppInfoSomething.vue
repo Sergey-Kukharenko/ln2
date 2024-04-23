@@ -119,8 +119,6 @@ export default {
   &__text {
     margin: 0;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -166,8 +164,6 @@ export default {
       &__text {
         margin: 0;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
@@ -216,8 +212,6 @@ export default {
     &__text {
       margin: 0;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;
@@ -279,8 +273,6 @@ export default {
 
         &__text {
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           font-size: 14px;
           line-height: 20px;
           letter-spacing: -0.01em;
@@ -293,7 +285,7 @@ export default {
         }
 
         &__content {
-          background: #26ad4f;
+          background: $color-green;
           @include gt-sm {
             gap: 0;
           }

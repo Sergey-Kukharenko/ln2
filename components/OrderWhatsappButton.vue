@@ -8,15 +8,17 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'OrderWhatsappButton',
 
   computed: {
     whatsapp() {
-      return this.$store.getters['layout/getCall']?.whatsapp;
+      return this.$accessor.layout.getCall?.whatsapp;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -40,8 +42,6 @@ export default {
 
     &__text {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 13px;
       line-height: 17px;
       letter-spacing: -0.01em;

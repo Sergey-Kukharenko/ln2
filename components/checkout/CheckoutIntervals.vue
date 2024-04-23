@@ -24,8 +24,7 @@
       <checkout-calendar
         :today-date="useGetDateByTimeZone(todayDate)"
         :curr-checkout-date="checkoutIntervalDate"
-        :interval-list="intervals"
-        :intervals-date-offset="intervalsDateOffset"
+        :interval-list="getIntervals"
         @select-date="selectDate"
         @close="closeCalendarModal"
       />
@@ -40,23 +39,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { useGetDateByTimeZone, useFormattedDateForBackend } from '~/helpers';
+import Vue from 'vue';
+
 import CheckoutCurrentIntervals from '~/components/checkout/CheckoutCurrentIntervals.vue';
 import CheckoutIntervalsGroup from '~/components/checkout/CheckoutIntervalsGroup.vue';
+import { AB_TESTING_COOKIE } from '~/constants';
+import { useFormattedDateForBackend, useGetDateByTimeZone } from '~/helpers';
+import { INTERVAL_VALIDATE_MESSAGES } from '~/messages/index';
+import { accessorMapper } from '~/store';
 
 const findFirstAvailableDay = (arr) => {
   return arr.find((day) => !!day?.intervals.filter((interval) => !interval?.disabled).length);
 };
 
-export default {
+export default Vue.extend({
   name: 'CheckoutIntervals',
 
   components: {
     CheckoutIntervalsGroup,
     CheckoutCurrentIntervals,
-    CheckoutModalSelect: () => import('~/components/checkout/CheckoutModalSelect'),
-    CheckoutCalendar: () => import('~/components/checkout/CheckoutCalendar')
+    CheckoutModalSelect: () => import('~/components/checkout/CheckoutModalSelect.vue'),
+    CheckoutCalendar: () => import('~/components/checkout/CheckoutCalendar.vue')
   },
 
   props: {
@@ -76,17 +79,17 @@ export default {
       selectedInterval: 0,
 
       isIntervalsModalVisible: false,
-      isCalendarModalVisible: false
+      isCalendarModalVisible: false,
+
+      errors: {
+        date: '',
+        time: ''
+      }
     };
   },
 
   computed: {
-    ...mapGetters({
-      intervals: 'checkout/getIntervals',
-      todayDate: 'checkout/getTodayDate',
-      intervalsDateOffset: 'checkout/getIntervalsDateOffset',
-      checkoutCost: 'checkout/checkoutCost'
-    }),
+    ...accessorMapper('checkout', ['checkoutCost', 'todayDate', 'getIntervals']),
 
     deliveryLabel() {
       return +this.checkoutCost.deliveryCost ? `+ ${+this.checkoutCost.deliveryCost}£` : 'Free';
@@ -95,12 +98,16 @@ export default {
     currIntervals() {
       const targetDate = useFormattedDateForBackend(this.checkoutIntervalDate);
 
-      return this.intervals
+      return this.getIntervals
         ?.find((day) => day?.date === targetDate)
         ?.intervals?.filter((interval) => !interval?.disabled);
     },
 
     timeIntervalLabel() {
+      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.checkoutIntervalData?.time) {
+        return '';
+      }
+
       if (this.interval.time) {
         return this.interval.time;
       }
@@ -113,6 +120,10 @@ export default {
     },
 
     dateIntervalLabel() {
+      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.checkoutIntervalData?.date) {
+        return '';
+      }
+
       const date = this.checkoutIntervalDate;
 
       const weekday = new Intl.DateTimeFormat('en-ES', { weekday: 'long' }).format(date);
@@ -123,7 +134,7 @@ export default {
     },
 
     checkoutIntervalData() {
-      return this.$store.getters['checkout/getCheckout']?.interval;
+      return this.$accessor.checkout.getCheckout?.interval;
     },
 
     checkoutIntervalDate() {
@@ -131,11 +142,11 @@ export default {
     },
 
     firstAvalibleDay() {
-      return findFirstAvailableDay(this.intervals);
+      return findFirstAvailableDay(this.getIntervals);
     },
 
     firstAvalibleIterval() {
-      return this.firstAvalibleDay?.intervals?.find((interval) => !interval.disabled);
+      return this.firstAvalibleDay?.intervals?.find((interval) => !interval.disabled) || '';
     },
 
     intervalsGroupDetails() {
@@ -143,13 +154,17 @@ export default {
         {
           type: 'delivery',
           title: 'For delivery on',
-          value: this.dateIntervalLabel
+          value: this.dateIntervalLabel,
+          default: 'Choose the date',
+          error: this.errors.date
         },
         {
           type: 'time',
           title: 'Time',
           value: this.timeIntervalLabel,
-          delivery: this.deliveryLabel
+          delivery: this.deliveryLabel,
+          default: 'Choose the time',
+          error: this.errors.time
         }
       ];
     }
@@ -159,17 +174,22 @@ export default {
     isClarified(val) {
       if (!val) {
         const time = this.checkoutIntervalData?.time ?? this.firstAvalibleIterval?.label;
-        this.setInterval({ date: null, time });
+        !this.$cookies.get(AB_TESTING_COOKIE) && this.setInterval({ date: null, time });
 
         return;
       }
 
-      this.setInterval({ date: null, time: null });
+      !this.$cookies.get(AB_TESTING_COOKIE) && this.setInterval({ date: null, time: null });
     }
   },
 
   async mounted() {
     this.$nuxt.$on('set-intervals', this.initSelectedIntervals);
+    this.$nuxt.$on('set-interval-validation-error', this.setIntervalValidationError);
+
+    if (this.$cookies.get(AB_TESTING_COOKIE)) {
+      return;
+    }
 
     await this.$nextTick();
 
@@ -189,9 +209,15 @@ export default {
 
   beforeDestroy() {
     this.$nuxt.$off('set-intervals', this.initSelectedIntervals);
+    this.$nuxt.$off('set-interval-validation-error', this.setIntervalValidationError);
   },
 
   methods: {
+    setIntervalValidationError() {
+      this.errors.date = !this.checkoutIntervalData.date ? INTERVAL_VALIDATE_MESSAGES.date : '';
+      this.errors.time = !this.checkoutIntervalData.time ? INTERVAL_VALIDATE_MESSAGES.time : '';
+    },
+
     openCalendarModal() {
       this.isCalendarModalVisible = true;
     },
@@ -206,6 +232,12 @@ export default {
     },
 
     onIntervalsModalToggle() {
+      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.checkoutIntervalData.date) {
+        this.errors.date = INTERVAL_VALIDATE_MESSAGES.date;
+
+        return;
+      }
+
       this.isIntervalsModalVisible = !this.isIntervalsModalVisible;
 
       const NOSCROLL_CLASS = 'noscroll';
@@ -224,11 +256,18 @@ export default {
     },
 
     async initSelectedIntervals() {
-      const intervals = await this.$store.dispatch('checkout/fetchIntervals');
+      const intervals = await this.$accessor.checkout.fetchIntervals();
+
+      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.dateIntervalLabel) {
+        return;
+      }
+
       const avalibleDate = intervals.find((el) => !!el.intervals.length)?.date;
+      const avalibleIntervalDate = useGetDateByTimeZone(avalibleDate);
       const payloadDate =
-        useGetDateByTimeZone(avalibleDate).getDate() > this.checkoutIntervalDate.getDate() &&
-        useGetDateByTimeZone(avalibleDate).getMonth() === this.checkoutIntervalDate.getMonth()
+        (avalibleIntervalDate.getDate() > this.checkoutIntervalDate.getDate() &&
+          avalibleIntervalDate.getMonth() === this.checkoutIntervalDate.getMonth()) ||
+        avalibleIntervalDate.getMonth() > this.checkoutIntervalDate.getMonth()
           ? avalibleDate
           : this.checkoutIntervalData?.date;
 
@@ -237,7 +276,7 @@ export default {
 
     selectDate(date) {
       try {
-        const foundIntervalDay = this.intervals.find((day) => day.date === date);
+        const foundIntervalDay = this.getIntervals.find((day) => day.date === date);
         const intervalDay = foundIntervalDay || this.firstAvalibleDay;
         const [firstInterval] = intervalDay?.intervals;
         const time = firstInterval?.label || this.timeIntervalLabel;
@@ -251,7 +290,7 @@ export default {
 
     async setInterval({ date = null, time = null }) {
       try {
-        if (!date) {
+        if (!date && !this.$cookies.get(AB_TESTING_COOKIE)) {
           date = useFormattedDateForBackend(this.checkoutIntervalDate);
         }
 
@@ -259,8 +298,13 @@ export default {
           this.interval.time = time;
         }
 
-        await this.$store.dispatch('checkout/setCheckoutInterval', { date, time });
-        this.$store.dispatch('checkout/fetchCheckout');
+        await this.$accessor.checkout.setCheckoutInterval({ date, time });
+        this.$accessor.checkout.fetchCheckout();
+
+        if (this.$cookies.get(AB_TESTING_COOKIE)) {
+          this.errors.date = '';
+          this.errors.time = '';
+        }
       } catch (err) {
         console.error(err);
       }
@@ -269,7 +313,7 @@ export default {
     useGetDateByTimeZone,
     useFormattedDateForBackend
   }
-};
+});
 </script>
 
 <style lang="scss">
@@ -285,7 +329,7 @@ export default {
 @keyframes show-in {
   0% {
     opacity: 0;
-    height: 0%;
+    height: 0;
   }
   100% {
     height: 70%;
@@ -304,7 +348,6 @@ export default {
 
     &__row {
       font-family: $golos-regular;
-      font-weight: 400;
       letter-spacing: -0.02em;
       text-align: center;
 

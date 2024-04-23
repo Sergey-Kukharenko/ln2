@@ -42,24 +42,25 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import Vue from 'vue';
 
-import { useSizedImage } from '~/helpers';
-import gtm from '~/mixins/gtm.vue';
-import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import { IMG_SIZES_MAP } from '~/constants/image-sizes';
-import BasketProductImage from '~/components/BasketProductImage.vue';
-import BasketProductRating from '~/components/BasketProductRating.vue';
-import BasketProductTitle from '~/components/BasketProductTitle.vue';
-import BasketProductSize from '~/components/BasketProductSize.vue';
 import BasketProductColor from '~/components/BasketProductColor.vue';
+import BasketProductCount from '~/components/BasketProductCount.vue';
+import BasketProductFavorite from '~/components/BasketProductFavorite.vue';
+import BasketProductImage from '~/components/BasketProductImage.vue';
+import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
 import BasketProductPackage from '~/components/BasketProductPackage.vue';
 import BasketProductPrice from '~/components/BasketProductPrice.vue';
-import BasketProductCount from '~/components/BasketProductCount.vue';
-import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
-import BasketProductFavorite from '~/components/BasketProductFavorite.vue';
+import BasketProductRating from '~/components/BasketProductRating.vue';
+import BasketProductSize from '~/components/BasketProductSize.vue';
+import BasketProductTitle from '~/components/BasketProductTitle.vue';
+import { GTM_EVENTS_MAP } from '~/constants/gtm';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useSizedImage } from '~/helpers';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'BasketProduct',
   components: {
     BasketProductFavorite,
@@ -160,8 +161,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isLoadingHttp']),
-
     count: {
       get() {
         return this.qty;
@@ -183,7 +182,7 @@ export default {
     },
 
     isLoading() {
-      return this.isLoadingHttp(`/basket/${this.id}/${this.size}`);
+      return this.$accessor.isLoadingHttp(`/basket/${this.id}/${this.size}`);
     },
 
     imgSize() {
@@ -192,10 +191,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      addToCart: 'cart/addToCart',
-      removeFromCart: 'cart/removeFromCart'
-    }),
+    ...accessorMapper('cart', ['addToCart', 'removeFromCart']),
 
     gtmAddToCartEvent(actualCount) {
       this.$gtm.push({
@@ -239,7 +235,7 @@ export default {
   },
 
   IMG_SIZES_MAP
-};
+});
 </script>
 
 <style lang="scss" scoped>

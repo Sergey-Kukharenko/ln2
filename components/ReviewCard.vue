@@ -124,8 +124,6 @@ export default {
     background: #ffffff;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     letter-spacing: -0.01em;
     color: $color-dark-grey;
     user-select: none;
@@ -164,8 +162,6 @@ export default {
 
   &__text {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     letter-spacing: -0.01em;
     color: $color-dark-grey;
 

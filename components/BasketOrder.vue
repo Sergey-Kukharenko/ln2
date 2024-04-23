@@ -2,16 +2,16 @@
   <div class="order">
     <div class="order__row order__row--mt-16">
       <div class="order__text-grey">{{ itemsCount }}</div>
-      <div class="order__text-price">£ {{ cost }}</div>
+      <div class="order__text-price">£ {{ getCost }}</div>
     </div>
-    <div v-if="isSale" class="order__row order__row--mt-6">
+    <div v-if="isDiscountExist" class="order__row order__row--mt-6">
       <div class="order__text-grey">Discount</div>
-      <div class="order__text-sale">- £ {{ sale }}</div>
+      <div class="order__text-sale">- £ {{ getDiscount }}</div>
     </div>
     <div class="order__delim" />
     <div class="order__row order__row--mt-16">
       <div class="order__text">Summary</div>
-      <div class="order__text-summary">£ {{ total }}</div>
+      <div class="order__text-summary">£ {{ getTotal }}</div>
     </div>
     <div class="order__row order__row--mt-8">
       <div class="order__text order__text--row">
@@ -92,26 +92,26 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import Vue from 'vue';
 
-import AppTooltip from '~/components/shared/AppTooltip.vue';
-
-import authManager from '~/mixins/authManager';
-import { AUTH_CODE_TIMER, AUTH_REG_STEPS, CODE_INPUT_DEFAULT_COUNT, BASKET_TOOLTIP } from '~/constants';
-import { VALIDATE_MESSAGES } from '~/messages';
-import inputPhone from '~/mixins/input-phone.vue';
 import AppPhoneInput from '~/components/AppPhoneInput.vue';
 import BasketButton from '~/components/BasketButton.vue';
+import AppTooltip from '~/components/shared/AppTooltip.vue';
+import { AUTH_CODE_TIMER, AUTH_REG_STEPS, BASKET_TOOLTIP, CODE_INPUT_DEFAULT_COUNT } from '~/constants';
+import { VALIDATE_MESSAGES } from '~/messages';
+import authManager from '~/mixins/authManager.vue';
+import inputPhone from '~/mixins/input-phone.vue';
+import { accessorMapper } from '~/store';
 
 const { auth, code } = AUTH_REG_STEPS;
 
-export default {
+export default Vue.extend({
   name: 'BasketOrder',
 
   components: {
     BasketButton,
     AppPhoneInput,
-    AppInput: () => import('~/components/shared/AppInput'),
+    AppInput: () => import('~/components/shared/AppInput.vue'),
     AppTooltip
     // Временно скрыт
     // AppCodeInput: () => import('~/components/shared/AppCodeInput')
@@ -154,18 +154,12 @@ export default {
   CODE: code.name,
 
   computed: {
-    ...mapGetters({
-      cost: 'cart/getCost',
-      total: 'cart/getTotal',
-      sale: 'cart/getDiscount',
-      isSale: 'cart/isDiscountExist',
-      count: 'cart/getCount',
-      recipient: 'user/getRecipient',
-      isAuthorized: 'auth/isAuthorized'
-    }),
+    ...accessorMapper('auth', ['isAuthorized']),
+    ...accessorMapper('user', ['recipient']),
+    ...accessorMapper('cart', ['getCost', 'getTotal', 'getDiscount', 'isDiscountExist', 'getCount']),
 
     itemsCount() {
-      return this.count > 1 ? `${this.count} items` : `${this.count} item`;
+      return this.getCount > 1 ? `${this.getCount} items` : `${this.getCount} item`;
     },
 
     isFormInvalid() {
@@ -201,10 +195,6 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setState: 'auth/setState'
-    }),
-
     goToForm() {
       this.resetCodeInput();
       this.timerDuration = AUTH_CODE_TIMER.duration;
@@ -229,8 +219,8 @@ export default {
       //   phone: this.form.phone.value
       // };
       //
-      // const isSuccess = await this.$store.dispatch('auth/login', { ...payload });
-      //
+      // const isSuccess = await this.$accessor.auth.login(payload);
+
       // if (!isSuccess) {
       //   this.form.errorMsg = VALIDATE_MESSAGES.wrong;
       //   this.step = auth.name;
@@ -248,9 +238,7 @@ export default {
         return;
       }
 
-      const { success, data } = await this.$store.dispatch('auth/sendOtp', {
-        code
-      });
+      const { success, data } = await this.$accessor.auth.sendOtp({ code });
 
       this.codeForm.errorMsg = data?.title ?? '';
 
@@ -258,7 +246,7 @@ export default {
         return;
       }
 
-      await this.$store.dispatch('user/fetchUser');
+      await this.$accessor.user.fetchUser();
       await this.$router.push({ name: 'checkout' });
     },
 
@@ -303,7 +291,7 @@ export default {
         phone: this.form.phone.value.replace('+', '').replaceAll(' ', '')
       };
 
-      const result = await this.$store.dispatch('auth/loginWithoutCode', { ...payload });
+      const result = await this.$accessor.auth.loginWithoutCode(payload);
 
       if (!result?.success) {
         this.form.errorMsg = VALIDATE_MESSAGES.wrong;
@@ -313,11 +301,11 @@ export default {
         return;
       }
 
-      await this.$store.dispatch('order/createOrder');
+      await this.$accessor.order.createOrder();
       await this.$router.push({ name: 'checkout' });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -350,9 +338,7 @@ export default {
       pointer-events: none;
       user-select: none;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
-      color: #7c7c7c;
+      color: $color-white-grey;
 
       @include gt-sm {
         font-size: 14px;
@@ -447,7 +433,6 @@ export default {
   &__text {
     font-family: $golos-regular;
     font-size: 14px;
-    font-weight: 400;
     line-height: 20px;
     letter-spacing: -0.01em;
 
@@ -459,8 +444,6 @@ export default {
 
   &__text-grey {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -469,8 +452,6 @@ export default {
 
   &__text-medium {
     font-family: $golos-medium;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -516,8 +497,6 @@ export default {
     margin-top: 24px;
 
     font-family: $golos-medium;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -562,8 +541,6 @@ export default {
     margin-top: 12px;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -577,8 +554,6 @@ export default {
 
   &__terms {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 12px;
     line-height: 16px;
     text-align: center;

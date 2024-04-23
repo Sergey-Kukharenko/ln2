@@ -22,8 +22,9 @@
 
 <script>
 import { hydrateWhenIdle } from 'vue-lazy-hydration';
-import AppSeo from '~/components/seo/AppSeo.vue';
+
 import CategoryProductList from '~/components/CategoryProductList.vue';
+import AppSeo from '~/components/seo/AppSeo.vue';
 
 export default {
   name: 'CategoryWrapper',
@@ -31,7 +32,7 @@ export default {
   components: {
     CategoryProductList,
     AppSeo,
-    AppNotice: hydrateWhenIdle(() => import('@/components/shared/AppNotice'))
+    AppNotice: hydrateWhenIdle(() => import('~/components/shared/AppNotice.vue'))
   },
 
   props: {
@@ -89,6 +90,8 @@ export default {
     .filter-panel {
       width: 344px;
       margin-right: 31px;
+      position: relative;
+      z-index: 2;
 
       &__header {
         display: flex;
@@ -140,6 +143,8 @@ export default {
 
     .category-products {
       flex: auto;
+      position: relative;
+      z-index: 1;
 
       &__header {
         height: 73px;
@@ -156,8 +161,6 @@ export default {
 
       &__header-title {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;

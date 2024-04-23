@@ -20,12 +20,11 @@
 </template>
 
 <script>
-import CheckoutPaymentMethods from '~/components/checkout/CheckoutPaymentMethods';
-import CheckoutGiftCard from '~/components/checkout/CheckoutGiftCard';
-import CheckoutPromoCode from '~/components/checkout/CheckoutPromoCode';
-import CheckoutEmail from '~/components/checkout/CheckoutEmail';
-import PaymentButton from '~/components/PaymentButton';
-
+import PaymentButton from '~/components/PaymentButton.vue';
+import CheckoutEmail from '~/components/checkout/CheckoutEmail.vue';
+import CheckoutGiftCard from '~/components/checkout/CheckoutGiftCard.vue';
+import CheckoutPaymentMethods from '~/components/checkout/CheckoutPaymentMethods.vue';
+import CheckoutPromoCode from '~/components/checkout/CheckoutPromoCode.vue';
 import { STRIPE_PAYMENT_METHOD } from '~/data/payment-methods';
 
 export default {

@@ -88,15 +88,13 @@
 </template>
 
 <script>
+import AppPersonalDataTerms from '~/components/header/auth/AppPersonalDataTerms';
 import AppButton from '~/components/shared/AppButton';
 import AppCheckbox from '~/components/shared/AppCheckbox';
-import AppPersonalDataTerms from '~/components/header/auth/AppPersonalDataTerms';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile';
-
-import authManager from '~/mixins/authManager';
-
-import GENDERS_DATA from '~/data/genders';
 import { AUTH_REG_STEPS } from '~/constants';
+import GENDERS_DATA from '~/data/genders';
+import authManager from '~/mixins/authManager';
 
 export default {
   name: 'AppReg',
@@ -280,27 +278,27 @@ export default {
         @include lt-md {
           padding-bottom: 25.67px;
         }
+      }
 
-        &-row {
-          display: flex;
-          gap: 8px;
+      &__tabs-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      &__tabs-title {
+        font-family: $golos-medium;
+        font-style: normal;
+        font-weight: 600;
+        color: $color-dark-grey;
+        font-size: 16px;
+        line-height: 20px;
+
+        @include gt-sm {
+          margin-bottom: 16px;
         }
 
-        &-title {
-          font-family: $golos-medium;
-          font-style: normal;
-          font-weight: 600;
-          color: $color-dark-grey;
-          font-size: 16px;
-          line-height: 20px;
-
-          @include gt-sm {
-            margin-bottom: 16px;
-          }
-
-          @include lt-md {
-            margin-bottom: 12px;
-          }
+        @include lt-md {
+          margin-bottom: 12px;
         }
       }
 
@@ -310,14 +308,12 @@ export default {
         gap: 8px;
         flex: 1;
 
-        background: #f7f7f7;
+        background: $bg-grey;
         border-radius: 12px;
         cursor: pointer;
         user-select: none;
 
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         line-height: 20px;
         font-size: 14px;
         letter-spacing: -0.01em;
@@ -337,11 +333,11 @@ export default {
           background: $color-green;
           color: #ffffff;
         }
+      }
 
-        &-icon {
-          width: 24px;
-          height: 24px;
-        }
+      &__tab-icon {
+        width: 24px;
+        height: 24px;
       }
 
       &__checkbox {
@@ -357,32 +353,30 @@ export default {
           gap: 7.33px;
           padding-bottom: 25.67px;
         }
+      }
 
-        &-item {
-          font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
-          color: #7c7c7c;
-          width: 100%;
+      &__checkbox-item {
+        font-family: $golos-regular;
+        color: $color-white-grey;
+        width: 100%;
 
-          @include gt-sm {
-            font-size: 14px;
-            line-height: 20px;
-          }
-
-          @include lt-md {
-            font-size: 11px;
-            line-height: 16px;
-            letter-spacing: -0.01em;
-          }
+        @include gt-sm {
+          font-size: 14px;
+          line-height: 20px;
         }
 
-        &-link {
-          color: $color-green;
+        @include lt-md {
+          font-size: 11px;
+          line-height: 16px;
+          letter-spacing: -0.01em;
+        }
+      }
 
-          @include lt-md {
-            display: inline;
-          }
+      &__checkbox-link {
+        color: $color-green;
+
+        @include lt-md {
+          display: inline;
         }
       }
     }

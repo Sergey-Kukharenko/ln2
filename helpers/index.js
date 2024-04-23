@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
-import { NO_SCROLL_CLASS_NAME, FIXED_TIMEZONE } from '../constants';
+
+import { FIXED_TIMEZONE, NO_SCROLL_CLASS_NAME } from '../constants';
 import { IMG_SIZES_MAP } from '../constants/image-sizes';
 
 const useClassName = (obj, clsNm) => {
@@ -28,7 +29,7 @@ const useSortArrayBy = (array, value, prop) => {
 };
 
 const useBreadCrumbs = (route) => {
-  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'delivery', 'gifts'];
+  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'delivery', 'gifts', 'become-affiliate'];
   const replacementPathList = ['product', 'articles'];
   const replacePath = (array, path, newPath) => (array.includes(path) ? newPath : path);
 
@@ -91,7 +92,7 @@ const useCollectionUniqueByKey = (arr, props = []) =>
   }, {});
 
 const useObjectUniqueByKey = (arr, key) =>
-  arr.reduce((acc, item, index) => {
+  arr.reduce((acc, item, _index) => {
     acc[item[key]] = acc[item[key]] ? acc[item[key]] + 1 : 1;
     return acc;
   }, {});
@@ -129,6 +130,7 @@ const useDebounce = (fn, wait) => {
     if (timer) {
       clearTimeout(timer);
     }
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const context = this;
     timer = setTimeout(() => {
       fn.apply(context, args);

@@ -25,12 +25,11 @@
 
 <script>
 // import AppInfoBanner from '~/components/info/AppInfoBanner';
-import AppInfoTextSection from '~/components/info/AppInfoTextSection';
-// import AppInfoHero from '~/components/info/AppInfoHero';
-
-import { PROMO, TEXT_INFO, HERO_ITEMS } from '~/data/about';
 import AboutAdvantages from '~/components/AboutAdvantages.vue';
 import AboutSomething from '~/components/AboutSomething.vue';
+import AppInfoTextSection from '~/components/info/AppInfoTextSection.vue';
+// import AppInfoHero from '~/components/info/AppInfoHero';
+import { HERO_ITEMS, PROMO, TEXT_INFO } from '~/data/about';
 
 export default {
   name: 'AboutPage',

@@ -9,12 +9,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
+
+import AppCounter from '@/components/shared/AppCounter.vue';
 import { useClassName, useSetClassName } from '@/helpers';
+import { accessorMapper } from '~/store';
 
-import AppCounter from '@/components/shared/AppCounter';
-
-export default {
+export default Vue.extend({
   name: 'AppCart',
   components: { AppCounter },
   props: {
@@ -25,11 +26,15 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      count: 'cart/getCount',
-      isCartExist: 'cart/isCartExist',
-      total: 'cart/getTotal'
-    }),
+    ...accessorMapper('cart', ['isCartExist']),
+
+    count() {
+      return this.$accessor.cart.getCount;
+    },
+
+    total() {
+      return this.$accessor.cart.getTotal;
+    },
 
     getImg() {
       return this.$device.isMobileOrTablet ? 'cart-bag' : 'cart-outline';
@@ -47,7 +52,7 @@ export default {
       return [useClassName(this.$props, 'cart'), useSetClassName(this.isCartExist, 'cart--active')];
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

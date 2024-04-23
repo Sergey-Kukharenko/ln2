@@ -60,7 +60,7 @@ const SOMETHING_IMPORTANT = {
     {
       title: 'Quality Customer Service',
       text:
-        'You can get in touch with one of our customer representatives to inquire about your order or delivery via phone (WhatsApp +44 20 4577 0088) or by sending\n' +
+        'You can get in touch with one of our customer representatives to inquire about your order or delivery via phone (WhatsApp +44 73 0088 7404) or by sending\n' +
         'an email to support@myflowers.co.uk.',
       backgroundColor: '#FFC6BE'
     },
@@ -79,7 +79,7 @@ const ADVANTAGES = [
     icon: 'flower',
     color: '#FFE389',
     title: 'Freshness guarantee',
-    // eslint-disable-next-line no-multi-str
+
     text:
       "One of the primary reasons why we're an in-demand flower business in the UK is that we deliver fresh flowers that last, and look absolutely stunning.\n" +
       "At MyFlowers, you can only expect high-quality bouquets. Moreover, we offer customers a 5-day wilting guarantee, where if your flowers do wilt within the first five days of delivery, we'll send you more for free!"

@@ -14,9 +14,10 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import AppProfileButton from '~/components/header/profile/AppProfileButton.vue';
+import AppProfilePreview from '~/components/header/profile/AppProfilePreview.vue';
 import AppDropdown from '~/components/shared/AppDropdown.vue';
-import AppProfileButton from '~/components/header/profile/AppProfileButton';
-import AppProfilePreview from '~/components/header/profile/AppProfilePreview';
+
 export default {
   name: 'AppMobileProfile',
 

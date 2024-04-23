@@ -59,9 +59,6 @@
 <script>
 import AppCodeInput from '~/components/shared/AppCodeInput';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile';
-
-import authManager from '~/mixins/authManager';
-
 import {
   AUTH_CODE_TIMER,
   AUTH_CORRECT_CODE,
@@ -69,6 +66,7 @@ import {
   AUTH_REG_STEPS,
   AUTH_TYPES
 } from '~/constants/index';
+import authManager from '~/mixins/authManager';
 
 export default {
   name: 'AppCode',
@@ -214,8 +212,6 @@ export default {
         bottom: 12px;
         user-select: none;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 12px;
         line-height: 16px;
         letter-spacing: -0.02em;
@@ -265,11 +261,8 @@ export default {
 
     .receiver-info {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       letter-spacing: -0.01em;
-      color: #7c7c7c;
-
+      color: $color-white-grey;
       padding-bottom: 16px;
 
       @include gt-sm {
@@ -318,9 +311,7 @@ export default {
         pointer-events: none;
         user-select: none;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
-        color: #7c7c7c;
+        color: $color-white-grey;
 
         @include gt-sm {
           font-size: 14px;
@@ -366,8 +357,6 @@ export default {
         @include gt-sm {
           display: block;
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           color: #db1838;
           margin-top: 24px;
           font-size: 14px;

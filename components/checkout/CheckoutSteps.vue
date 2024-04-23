@@ -11,7 +11,9 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'CheckoutSteps',
 
   props: {
@@ -32,10 +34,10 @@ export default {
     },
 
     changeStep(id) {
-      this.$store.dispatch('checkout/setCheckoutStep', id);
+      this.$accessor.checkout.SET_STEP(id);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

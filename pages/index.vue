@@ -1,37 +1,35 @@
 <template>
   <main>
-    <app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />
+    <!--Временно скрыт-->
+    <!--<app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />-->
     <app-promotions :promotions="$options.PROMOTIONS" />
     <app-popular-categories :popular-categories="$options.POPULAR_CATEGORIES" />
     <app-section :section="$options.CONSTRUCTOR_BLOCK" name="constructor" theme="constructor" is-constructor has-from />
-    <app-section-sm :section="$options.RECIPIENT" use-without-image-size name="recipient" />
-
     <app-section
       v-if="isSpecialOffers"
-      :section="getDataByDevice(specialOffers)"
+      :section="getDataByDevice(specialOffers, 11)"
       theme="custom"
       name="special-offers"
     />
-    <!--Временно скрыт-->
-    <!--<app-reviews />-->
-
-    <app-section v-if="isUnderPounds" :section="getDataByDevice(underPounds)" theme="custom" name="under-pounds" />
     <app-shop-by-price :shop-by-price="$options.SHOP_BY_PRICE" />
     <app-section v-if="isBaseRoses" :section="getDataByDevice(baseRoses)" theme="custom" name="base-roses" />
+    <app-section v-if="isUnderPounds" :section="getDataByDevice(underPounds)" theme="custom" name="under-pounds" />
+    <app-section-sm :section="$options.RECIPIENT" use-without-image-size name="recipient" />
     <app-section v-if="isNewBouquets" :section="getDataByDevice(newBouquets)" theme="custom" name="new-bouquets" />
+    <app-section
+      v-if="isLetterboxBouquets"
+      :section="getDataByDevice(letterboxBouquets)"
+      theme="custom"
+      name="letterbox-bouquets"
+    />
     <app-section
       v-if="isTrendyBouquets"
       :section="getDataByDevice(trendyBouquets)"
       theme="custom"
       name="trendy-bouquets"
     />
-
     <app-benefits :benefits="$options.BENEFITS" />
     <app-section-sm :section="$options.PICK_BOUQUET" name="pick-bouquet" theme="custom" />
-
-    <!--Временно скрыт-->
-    <!--<app-discount /> -->
-
     <app-faq :faq="$options.FAQ" />
     <app-info :info="$options.INFO" />
     <app-notice v-if="$device.isMobileOrTablet" />
@@ -40,28 +38,29 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { useArrayNotEmpty, useDeepCopyObject } from '~/helpers';
-import gtm from '~/mixins/gtm.vue';
-import AppSeo from '~/components/seo/AppSeo.vue';
+import Vue from 'vue';
 
-import promotions from '~/mocks/promotions';
-import popularCategories from '~/mocks/popular-categories';
-import constructorBlock from '~/mocks/constructor-block';
-import recipient from '~/mocks/recipient';
-import shopByPrice from '~/mocks/shop-by-price';
-import benefits from '~/mocks/benefits';
-import pickBouquet from '~/mocks/pick-bouquet';
-import faq from '~/mocks/faq';
-import info from '~/mocks/info';
-import AppPromotions from '~/components/AppPromotions.vue';
-import AppPopularCategories from '~/components/AppPopularCategories.vue';
-import AppShopByPrice from '~/components/AppShopByPrice.vue';
 import AppBenefits from '~/components/AppBenefits.vue';
 import AppFaq from '~/components/AppFaq.vue';
 import AppInfo from '~/components/AppInfo.vue';
+import AppPopularCategories from '~/components/AppPopularCategories.vue';
+import AppPromotions from '~/components/AppPromotions.vue';
+import AppShopByPrice from '~/components/AppShopByPrice.vue';
+import AppSeo from '~/components/seo/AppSeo.vue';
+import { useArrayNotEmpty, useDeepCopyObject } from '~/helpers';
+import gtm from '~/mixins/gtm.vue';
+import benefits from '~/mocks/benefits';
+import constructorBlock from '~/mocks/constructor-block';
+import faq from '~/mocks/faq';
+import info from '~/mocks/info';
+import pickBouquet from '~/mocks/pick-bouquet';
+import popularCategories from '~/mocks/popular-categories';
+import promotions from '~/mocks/promotions';
+import recipient from '~/mocks/recipient';
+import shopByPrice from '~/mocks/shop-by-price';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'IndexPage',
 
   components: {
@@ -72,13 +71,14 @@ export default {
     AppPopularCategories,
     AppPromotions,
     AppSeo,
-    AppTrustbox: () => import('~/components/ui/AppTrustbox.vue'),
-    AppNotice: () => import('@/components/shared/AppNotice'),
-    AppSection: () => import('@/components/shared/AppSection'),
-    AppSectionSm: () => import('@/components/shared/AppSectionSm')
+    // AppTrustbox: () => import('~/components/ui/AppTrustbox.vue'),
+    AppNotice: () => import('@/components/shared/AppNotice.vue'),
+    AppSection: () => import('@/components/shared/AppSection.vue'),
+    AppSectionSm: () => import('@/components/shared/AppSectionSm.vue')
   },
-
   mixins: [gtm],
+
+  middleware: ['ab-testing'],
 
   PROMOTIONS: promotions,
   POPULAR_CATEGORIES: popularCategories,
@@ -91,7 +91,7 @@ export default {
   INFO: info,
 
   async fetch() {
-    await this.$store.dispatch('pages/home/fetchMainPageServerSide');
+    await this.$accessor.home.fetchMainPageServerSide();
   },
 
   head() {
@@ -108,7 +108,14 @@ export default {
   },
 
   computed: {
-    ...mapState('pages/home', ['specialOffers', 'underPounds', 'baseRoses', 'newBouquets', 'trendyBouquets']),
+    ...accessorMapper('home', [
+      'specialOffers',
+      'underPounds',
+      'baseRoses',
+      'newBouquets',
+      'letterboxBouquets',
+      'trendyBouquets'
+    ]),
 
     isSpecialOffers() {
       return useArrayNotEmpty(this.specialOffers?.list);
@@ -126,6 +133,10 @@ export default {
       return useArrayNotEmpty(this.newBouquets?.list);
     },
 
+    isLetterboxBouquets() {
+      return useArrayNotEmpty(this.letterboxBouquets?.list);
+    },
+
     isTrendyBouquets() {
       return useArrayNotEmpty(this.trendyBouquets?.list);
     },
@@ -140,9 +151,9 @@ export default {
   },
 
   methods: {
-    getDataByDevice(obj) {
+    getDataByDevice(obj, limit = null) {
       const copyObj = useDeepCopyObject(obj);
-      const PAGE_LIMIT = 7;
+      const PAGE_LIMIT = limit || 7;
       const list = copyObj?.list || [];
       const isAvalible = this.$device.isMobileOrTablet && list.length === PAGE_LIMIT;
 
@@ -156,7 +167,7 @@ export default {
       };
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -173,27 +184,25 @@ main {
       order: 0;
     }
 
-    .best-sellers {
+    .constructor {
       order: 1;
     }
 
-    .shop-by-price {
+    .special-offers {
       order: 2;
     }
 
-    .special-offers {
+    .shop-by-price {
       order: 3;
     }
-
     .base-roses {
       order: 4;
     }
 
-    .popular-categories {
+    .under-pounds {
       order: 5;
     }
-
-    .under-pounds {
+    .popular-categories {
       order: 6;
     }
 
@@ -201,8 +210,12 @@ main {
       order: 7;
     }
 
-    .trendy-bouquets {
+    .letterbox-bouquets {
       order: 8;
+    }
+
+    .trendy-bouquets {
+      order: 9;
     }
 
     .recipient,
@@ -214,7 +227,7 @@ main {
     .faq,
     .info,
     .seo {
-      order: 9;
+      order: 10;
     }
   }
 

@@ -6,6 +6,7 @@
 
 <script>
 import dataPolicy from '@/data/policy';
+
 export default {
   name: 'AppPolicy',
 

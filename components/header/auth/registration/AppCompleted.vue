@@ -28,7 +28,6 @@
 <script>
 import AppButton from '~/components/shared/AppButton';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile';
-
 import authManager from '~/mixins/authManager';
 
 export default {
@@ -123,43 +122,41 @@ export default {
         display: flex;
         flex-direction: column;
         gap: 8px;
+      }
 
-        &-title {
-          font-family: $golos-bold;
-          font-style: normal;
-          font-weight: 600;
-          text-align: center;
-          color: #000000;
+      &__content-title {
+        font-family: $golos-bold;
+        font-style: normal;
+        font-weight: 600;
+        text-align: center;
+        color: #000000;
 
-          @include gt-sm {
-            font-size: 20px;
-            line-height: 24px;
-            letter-spacing: 0.03px;
-          }
-
-          @include lt-md {
-            font-size: 16px;
-            line-height: 20px;
-          }
+        @include gt-sm {
+          font-size: 20px;
+          line-height: 24px;
+          letter-spacing: 0.03px;
         }
 
-        &-text {
-          font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
-          color: #000000;
-          text-align: center;
+        @include lt-md {
+          font-size: 16px;
+          line-height: 20px;
+        }
+      }
 
-          @include gt-sm {
-            font-size: 16px;
-            line-height: 24px;
-          }
+      &__content-text {
+        font-family: $golos-regular;
+        color: #000000;
+        text-align: center;
 
-          @include lt-md {
-            font-size: 14px;
-            line-height: 20px;
-            letter-spacing: -0.01em;
-          }
+        @include gt-sm {
+          font-size: 16px;
+          line-height: 24px;
+        }
+
+        @include lt-md {
+          font-size: 14px;
+          line-height: 20px;
+          letter-spacing: -0.01em;
         }
       }
 
@@ -176,7 +173,7 @@ export default {
           font-size: 16px;
           line-height: 20px;
           text-align: center;
-          color: #26ad4f;
+          color: $color-green;
         }
       }
     }

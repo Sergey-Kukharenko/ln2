@@ -9,10 +9,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-import BasketTitle from '~/components/BasketTitle.vue';
+import Vue from 'vue';
 
-export default {
+import BasketTitle from '~/components/BasketTitle.vue';
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'BasketPage',
   components: {
     BasketEmpty: () => import('~/components/BasketEmpty.vue'),
@@ -30,11 +32,7 @@ export default {
   },
 
   computed: {
-    ...mapState('cart', ['cartPending']),
-
-    ...mapGetters({
-      isCartExist: 'cart/isCartExist'
-    })
+    ...accessorMapper('cart', ['cartPending', 'isCartExist'])
   }
-};
+});
 </script>

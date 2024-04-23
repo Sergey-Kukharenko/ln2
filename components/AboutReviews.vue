@@ -41,8 +41,7 @@
 </template>
 
 <script>
-import StarsRating from '@/components/shared/stars-rating/StarsRating';
-
+import StarsRating from '@/components/shared/stars-rating/StarsRating.vue';
 import { REVIEWS } from '~/data/about';
 
 export default {
@@ -92,8 +91,6 @@ export default {
     &__text {
       margin: 0;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;
@@ -184,8 +181,6 @@ export default {
 
           &__reviews-count {
             font-family: $golos-regular;
-            font-style: normal;
-            font-weight: 400;
             letter-spacing: -0.01em;
             color: $color-dark-grey;
 
@@ -204,10 +199,8 @@ export default {
         &__info {
           border-left: 1px solid #7c7c7c;
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           letter-spacing: -0.01em;
-          color: #7c7c7c;
+          color: $color-white-grey;
 
           @include gt-sm {
             padding-left: 16px;

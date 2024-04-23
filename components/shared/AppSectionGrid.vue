@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AppCardShowMore from '~/components/shared/AppCardShowMore';
+import AppCardShowMore from '~/components/shared/AppCardShowMore.vue';
 
 export default {
   name: 'AppSectionGrid',
@@ -78,6 +78,8 @@ export default {
   display: grid;
   max-width: 1064px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 
   @include gt-sm {
     grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));

@@ -10,9 +10,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { useToggleClassName } from '@/helpers';
 
-import AppCounter from '@/components/shared/AppCounter';
+import AppCounter from '@/components/shared/AppCounter.vue';
+import { useToggleClassName } from '@/helpers';
 
 export default {
   name: 'AppFavorite',

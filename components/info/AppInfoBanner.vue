@@ -5,7 +5,7 @@
         <h1 class="banner__title">{{ title }}</h1>
         <p class="banner__text">{{ text }}</p>
       </div>
-      <nuxt-link :to="$options.ALL_CATEGORIES_BUTTON.path" class="banner__button">
+      <nuxt-link v-if="hasBannerButton" :to="$options.ALL_CATEGORIES_BUTTON.path" class="banner__button">
         <app-button theme="green" class="banner__button">{{ $options.ALL_CATEGORIES_BUTTON.text }}</app-button>
       </nuxt-link>
       <div v-if="hasButtons" class="banner__button-group button__group">
@@ -68,6 +68,11 @@ export default {
       default: false
     },
 
+    hasBannerButton: {
+      type: Boolean,
+      default: false
+    },
+
     page: {
       type: String,
       default: 'info'
@@ -91,9 +96,9 @@ export default {
   ALL_CATEGORIES_BUTTON,
 
   methods: {
-    goToPath(path) {
-      //
-    }
+    // goToPath(path) {
+    //
+    // }
   }
 };
 </script>
@@ -103,8 +108,16 @@ export default {
   padding-bottom: 0;
 
   @include gt-sm {
+    display: flex;
+    align-items: center;
     background-size: contain;
+    height: 328px;
   }
+
+  @include lt-md {
+    height: 160px;
+  }
+
   &.articles-payment-delivery-banner {
     @include gt-sm {
       background-position: 100% 100%;
@@ -115,6 +128,7 @@ export default {
     }
   }
 
+  &.become-affiliate-banner,
   &.articles-about-us-banner,
   &.articles-contact-us-banner {
     @include gt-sm {
@@ -137,7 +151,8 @@ export default {
     }
 
     @include lt-md {
-      padding: 52px 16px 32px 16px;
+      height: 100%;
+      justify-content: center;
       gap: 43px;
     }
   }
@@ -166,12 +181,15 @@ export default {
     @include gt-sm {
       font-size: 48px;
       line-height: 56px;
+      max-width: 513px;
     }
 
     @include lt-md {
       font-size: 20px;
       line-height: 24px;
       letter-spacing: -0.01em;
+      max-width: 140px;
+      white-space: pre-line;
     }
   }
 
@@ -179,8 +197,6 @@ export default {
     margin: 0;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     color: $color-dark-grey;
 
     @include gt-sm {

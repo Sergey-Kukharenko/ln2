@@ -161,7 +161,6 @@ export default {
   @include lt-lg {
     font-size: 13px;
     line-height: 10px;
-    font-weight: 400;
   }
 
   & > input {
@@ -285,8 +284,6 @@ export default {
 
   &__error {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 12px;
     line-height: 16px;
     color: #db1838;

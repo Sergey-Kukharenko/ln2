@@ -18,7 +18,7 @@ import { useObjectNotEmpty } from '~/helpers';
 
 export default {
   components: {
-    AppLoadingDots: () => import('@/components/shared/AppLoadingDots')
+    AppLoadingDots: () => import('@/components/shared/AppLoadingDots.vue')
   },
 
   props: {

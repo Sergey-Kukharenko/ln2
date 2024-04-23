@@ -1,17 +1,19 @@
 <script>
-import { AUTH_REG_STEPS, AUTH_REG_TYPES, AUTH_TYPES, AUTH_REG_ERROR_MESSAGES } from '~/constants/index';
+import Vue from 'vue';
+
+import { AUTH_REG_ERROR_MESSAGES, AUTH_REG_STEPS, AUTH_REG_TYPES, AUTH_TYPES } from '~/constants/index';
 import { isEmailValid } from '~/helpers/validators';
 
-export default {
+export default Vue.extend({
   name: 'AuthManager',
 
   computed: {
     currCodeType() {
-      return this.$store.getters['auth/codeType'];
+      return this.$accessor.auth.codeType;
     },
 
     receiver() {
-      return this.$store.getters['auth/receiver'];
+      return this.$accessor.auth.receiver;
     },
 
     isPhoneFormType() {
@@ -27,7 +29,7 @@ export default {
     },
 
     phoneMask() {
-      return this.$store.getters['auth/phoneMask'];
+      return this.$accessor.auth.phoneMask;
     }
   },
 
@@ -49,30 +51,28 @@ export default {
 
       if (this.$device.isMobileOrTablet) this.$router.push({ name: AUTH_REG_STEPS[status].page });
 
-      this.$store.commit('auth/setCurrStep', AUTH_REG_STEPS[status].component);
+      this.$accessor.auth.SET_CURR_STEP(AUTH_REG_STEPS[status].component);
     },
 
     resetStep() {
-      this.$store.commit('auth/setCurrStep', AUTH_REG_STEPS.auth.component);
-      this.$store.commit('auth/setCodeType', AUTH_REG_TYPES[0]);
+      this.$accessor.auth.SET_CURR_STEP(AUTH_REG_STEPS.auth.component);
+      this.$accessor.auth.SET_CODE_TYPE(AUTH_REG_TYPES[0]);
     },
 
     setReceiver(payload) {
-      this.$store.commit('auth/setReceiver', payload);
+      this.$accessor.auth.SET_RECEIVER(payload);
     },
 
     setCodeType(payload) {
-      this.$store.commit('auth/setCodeType', payload);
+      this.$accessor.auth.SET_CODE_TYPE(payload);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
 .form__error {
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: #db1838;

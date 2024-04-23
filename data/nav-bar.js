@@ -18,26 +18,26 @@ const desktopNavbar = [
     hasSubLevel: false,
     to: '/category/letterbox-flowers'
   },
-  {
-    title: 'Trending',
-    icon: 'fire',
-    style: {
-      width: 16,
-      height: 16
-    },
-    prefix: 'filter',
-    slug: 'trendy-bouquets',
-    hasSubLevel: false
-  },
-  {
-    title: 'Recipient',
-    icon: 'user-hart',
-    style: {
-      width: 17.33,
-      height: 16.67
-    },
-    hasSubLevel: true
-  },
+  // {
+  //   title: 'Trending',
+  //   icon: 'fire',
+  //   style: {
+  //     width: 16,
+  //     height: 16
+  //   },
+  //   prefix: 'filter',
+  //   slug: 'trendy-bouquets',
+  //   hasSubLevel: false
+  // },
+  // {
+  //   title: 'Recipient',
+  //   icon: 'user-hart',
+  //   style: {
+  //     width: 17.33,
+  //     height: 16.67
+  //   },
+  //   hasSubLevel: true
+  // },
   {
     title: 'Occasions',
     icon: 'organizer',
@@ -64,6 +64,16 @@ const desktopNavbar = [
       height: 16
     },
     hasSubLevel: true
+  },
+  {
+    title: 'Birthday',
+    icon: 'birthday',
+    style: {
+      width: 16,
+      height: 16
+    },
+    hasSubLevel: false,
+    to: '/category/birthday-flowers'
   }
   // {
   //   title: 'Sales',
@@ -96,20 +106,20 @@ const mobileNavbar = [
     hasSubLevel: false,
     to: '/category/letterbox-flowers'
   },
-  {
-    title: 'Trending',
-    type: 'trending',
-    icon: 'fire',
-    hasSubLevel: false,
-    prefix: 'filter',
-    slug: 'trendy-bouquets'
-  },
-  {
-    type: 'recipient',
-    title: 'Recipient',
-    icon: 'user-hart',
-    hasSubLevel: true
-  },
+  // {
+  //   title: 'Trending',
+  //   type: 'trending',
+  //   icon: 'fire',
+  //   hasSubLevel: false,
+  //   prefix: 'filter',
+  //   slug: 'trendy-bouquets'
+  // },
+  // {
+  //   type: 'recipient',
+  //   title: 'Recipient',
+  //   icon: 'user-hart',
+  //   hasSubLevel: true
+  // },
   {
     type: 'occassions',
     title: 'Occasions',
@@ -127,6 +137,16 @@ const mobileNavbar = [
     type: 'gifts',
     icon: 'gift',
     hasSubLevel: true
+  },
+  {
+    title: 'Birthday',
+    icon: 'birthday',
+    style: {
+      width: 16,
+      height: 16
+    },
+    hasSubLevel: false,
+    to: '/category/birthday-flowers'
   }
   // {
   //   type: 'sales',

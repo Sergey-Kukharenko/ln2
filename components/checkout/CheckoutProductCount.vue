@@ -31,9 +31,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-family: $golos-regular;
-  font-weight: 400;
-
-  background: #f7f7f7;
+  background: $bg-grey;
 
   @include gt-sm {
     font-size: 14px;
@@ -51,7 +49,7 @@ export default {
     font-weight: 400;
     line-height: 13px;
     letter-spacing: -0.02em;
-    color: #7c7c7c;
+    color: $color-white-grey;
     border-radius: 6px;
   }
 }

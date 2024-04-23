@@ -13,6 +13,7 @@ export default [
     is_new: false,
     category_name: null,
     flower_count: 20,
+    type_name: 'Hand-tied',
     colors: [
       {
         id: 'pink',
@@ -79,11 +80,12 @@ export default [
     rating: '5.00',
     reviews: 500,
     like: false,
-    price: '49.90',
+    price: '45.90',
     position_name: 'Short Kenya',
     is_new: false,
     category_name: null,
     flower_count: 35,
+    type_name: 'Hand-tied',
     colors: [
       {
         id: 'pink',
@@ -150,11 +152,12 @@ export default [
     rating: '5.00',
     reviews: 500,
     like: false,
-    price: '69.90',
+    price: '59.90',
     position_name: 'Short Kenya',
     is_new: false,
     category_name: null,
     flower_count: 50,
+    type_name: 'Hand-tied',
     colors: [
       {
         id: 'pink',
@@ -221,11 +224,12 @@ export default [
     rating: '5.00',
     reviews: 500,
     like: false,
-    price: '99.90',
+    price: '89.90',
     position_name: 'Short Kenya',
     is_new: false,
     category_name: null,
     flower_count: 100,
+    type_name: 'Hand-tied',
     colors: [
       {
         id: 'pink',

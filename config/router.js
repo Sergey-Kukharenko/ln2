@@ -1,6 +1,6 @@
 export default {
   prefetchLinks: false,
-  middleware: 'reset-promocode',
+  // middleware: 'reset-promocode',
   extendRoutes(routes, resolve) {
     routes.push({
       name: 'preorder-id',

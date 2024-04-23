@@ -26,8 +26,7 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
-
+import AppButton from '~/components/shared/AppButton.vue';
 import { STRIPE_PAYMENT_METHOD } from '~/data/payment-methods';
 
 export default {
@@ -35,7 +34,7 @@ export default {
 
   components: {
     AppButton,
-    AppLoadingDots: () => import('@/components/shared/AppLoadingDots')
+    AppLoadingDots: () => import('@/components/shared/AppLoadingDots.vue')
     // PaypalCheckout: () => import('vue-paypal-checkout')
   },
 
@@ -74,7 +73,7 @@ export default {
       this.$router.push({ name: 'payment-stripe' });
     },
 
-    paypalPaymentCompleted(response) {
+    paypalPaymentCompleted(_response) {
       // console.log('Paypal payment has been completed', response);
     }
   }

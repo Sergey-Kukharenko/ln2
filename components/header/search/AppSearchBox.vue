@@ -47,29 +47,27 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-
 import vClickOutside from 'v-click-outside';
-import AppSection from './AppSection';
-// import AppList from './AppList';
+import Vue from 'vue';
+
+import AppSection from './AppSection.vue';
+
 import siteData from '@/data/site-data';
-import AppSectionGrid from '~/components/shared/AppSectionGrid.vue';
+import AppNotFound from '~/components/header/search/AppNotFound.vue';
 import AppCard from '~/components/shared/AppCard.vue';
-import AppNotFound from '~/components/header/search/AppNotFound';
-import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader';
-
+import AppSectionGrid from '~/components/shared/AppSectionGrid.vue';
+import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader.vue';
 import { useDebounce, useToggleClassName } from '~/helpers';
-// import searchByResult from '~/data/searchByResult';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppSearchBox',
 
   components: {
     AppSpinnerLoader,
     AppSection,
     AppNotFound,
-    // AppList,
-    AppButton: () => import('~/components/shared/AppButton'),
+    AppButton: () => import('~/components/shared/AppButton.vue'),
     AppSectionGrid,
     AppCard
   },
@@ -88,11 +86,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      searchHistory: 'user/getSearchHistory',
-      loading: 'search/getLoading',
-      searchedProducts: 'search/getProducts'
-    }),
+    searchHistory() {
+      return this.$accessor.user.getSearchHistory;
+    },
+
+    loading() {
+      return this.$accessor.search.getLoading;
+    },
+
+    searchedProducts() {
+      return this.$accessor.search.getProducts;
+    },
 
     filteredList() {
       return this.data.filter((item) => {
@@ -128,9 +132,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      fetchByQuery: 'search/fetchByQuery'
-    }),
+    ...accessorMapper('search', ['fetchByQuery']),
 
     onFocusIn() {
       this.isVisible = true;
@@ -149,16 +151,16 @@ export default {
     onSubmit() {
       if (!this.query) return;
       // const payload = { url: '', title: this.query };
-      // this.$store.commit('user/addToHistory', payload);
+      // this.$accessor.user.ADD_TO_HISTORY(payload);
       this.clearQuery();
     },
 
     onRemoveItem(payload) {
-      this.$store.commit('user/removeFromHistory', payload);
+      this.$accessor.user.REMOVE_FROM_HISTORY(payload);
     },
 
     onAddItem(payload) {
-      this.$store.commit('user/addToHistory', payload);
+      this.$accessor.user.ADD_TO_HISTORY(payload);
       this.clearQuery();
     },
 
@@ -166,7 +168,7 @@ export default {
       this.fetchByQuery(value);
     }, 300)
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

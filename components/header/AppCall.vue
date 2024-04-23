@@ -12,18 +12,20 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'AppCall',
 
   computed: {
     call() {
       return {
-        title: this.$store.getters['layout/getCall']?.title,
-        whatsapp: this.$store.getters['layout/getCall']?.whatsapp
+        title: this.$accessor.layout.getCall?.title,
+        whatsapp: this.$accessor.layout.getCall?.whatsapp
       };
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -85,8 +85,6 @@ export default {
       box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.1);
       border-radius: 16px;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;
@@ -117,8 +115,6 @@ export default {
     &__list-item {
       width: 100%;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;

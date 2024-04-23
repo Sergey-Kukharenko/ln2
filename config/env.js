@@ -19,5 +19,7 @@ module.exports = {
   DWIN_URL: process.env.DWIN_URL,
   sessionTokenField: process.env.SESSION_TOKEN_FIELD,
   imgCDN: process.env.IMG_CDN,
-  addressSuggestionsOptimization: process.env.ADDRESS_SUGGESTIONS_OPTIMIZATION
+  addressSuggestionsOptimization: process.env.ADDRESS_SUGGESTIONS_OPTIMIZATION,
+  sessionCookieDomain: process.env.SESSION_COOKIE_DOMAIN,
+  ABTesting: process.env.AB_TESTING
 };

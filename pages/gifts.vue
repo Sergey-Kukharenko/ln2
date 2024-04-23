@@ -19,11 +19,14 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import AppListGifts from '~/components/gifts/AppListGifts.vue';
+import Vue from 'vue';
+
 import AppCardGift from '~/components/gifts/AppCardGift.vue';
+import AppListGifts from '~/components/gifts/AppListGifts.vue';
 import AppButton from '~/components/shared/AppButton.vue';
-export default {
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'GiftsPage',
 
   components: {
@@ -52,7 +55,7 @@ export default {
   },
 
   computed: {
-    ...mapState('gifts', ['gifts']),
+    ...accessorMapper('gifts', ['gifts']),
 
     seo() {
       return this.gifts?.seo;
@@ -76,9 +79,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({ fetchGifts: 'gifts/fetchGifts' })
+    ...accessorMapper('gifts', ['fetchGifts'])
   }
-};
+});
 </script>
 
 <style scoped lang="scss">

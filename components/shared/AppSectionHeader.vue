@@ -34,6 +34,8 @@ export default {
 .title {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 2;
 
   &__text {
     color: $color-dark-grey;

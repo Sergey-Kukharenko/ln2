@@ -8,7 +8,7 @@
         <!-- <app-policy /> -->
         <div class="text">
           <div class="text--desktop">
-            {{ footer?.rights }}
+            {{ getFooter?.rights }}
           </div>
           <div class="text--mobile">
             MyFlowers LTD - Flower delivery<br />
@@ -21,19 +21,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
+
+import { accessorMapper } from '~/store';
 
 // import AppPolicy from '@/components/AppPolicy.vue';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutFooterBottom',
 
   // components: { AppPolicy },
 
   computed: {
-    ...mapGetters({ footer: 'layout/getFooter' })
+    ...accessorMapper('layout', ['getFooter'])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -97,7 +99,7 @@ export default {
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.01em;
-    color: #7c7c7c;
+    color: $color-white-grey;
 
     @include gt-sm {
       text-align: right;
@@ -116,12 +118,10 @@ export default {
 
     font-family: $golos-regular;
     font-size: 12px;
-    font-weight: 400;
     line-height: 16px;
     letter-spacing: -0.02em;
     text-align: center;
     color: $color-dark-grey;
-
     margin: 8px auto;
   }
 }

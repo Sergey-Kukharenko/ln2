@@ -8,15 +8,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
-export default {
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'AppInformer',
 
   computed: {
-    ...mapGetters({ footer: 'layout/getFooter' })
+    ...accessorMapper('layout', ['footer'])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

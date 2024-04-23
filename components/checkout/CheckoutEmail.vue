@@ -42,18 +42,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import Vue from 'vue';
 
-import AppInput from '~/components/shared/AppInput';
-import AppCheckbox from '~/components/shared/AppCheckbox';
-
-import authManager from '~/mixins/authManager';
+import AppCheckbox from '~/components/shared/AppCheckbox.vue';
+import AppInput from '~/components/shared/AppInput.vue';
+import { BONUS, SUBSCRIBE_VARIANTS } from '~/constants';
+import authManager from '~/mixins/authManager.vue';
 import subscribe from '~/mixins/subscribe.vue';
-import { SUBSCRIBE_VARIANTS, BONUS } from '~/constants';
+import { accessorMapper } from '~/store';
 
 const { email, sms, push } = SUBSCRIBE_VARIANTS;
 
-export default {
+export default Vue.extend({
   name: 'CheckoutEmail',
 
   components: {
@@ -110,9 +110,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      fetchUserSubscribe: 'user/fetchUserSubscribe'
-    }),
+    ...accessorMapper('user', ['fetchUserSubscribe']),
 
     toggleSubscribeList() {
       this.isSubscribeListVisible = !this.isSubscribeListVisible;
@@ -126,12 +124,16 @@ export default {
           keys.forEach((k) => {
             this.options[k] = '';
           });
+
+          this.error = '';
         } else {
           this.options = {
             email_subscription: this.email ? email : '',
             sms_subscription: sms,
             push_subscription: push
           };
+
+          this.handleSubscribe();
         }
       }
 
@@ -140,11 +142,9 @@ export default {
       } else {
         this.agreeEmailReceive = BONUS;
       }
-
-      this.handleSubscribe();
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -154,8 +154,6 @@ export default {
   width: 100%;
 
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.01em;
@@ -186,7 +184,6 @@ export default {
       margin-bottom: 8px;
       font-family: $golos-regular;
       font-size: 12px;
-      font-weight: 400;
       line-height: 20px;
       letter-spacing: -0.01em;
 

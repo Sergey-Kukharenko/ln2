@@ -62,7 +62,7 @@ export default {
   mounted() {
     this.mappedInputs = Array(CODE_INPUT_DEFAULT_COUNT)
       .fill()
-      .reduce((acc, v, i) => {
+      .reduce((acc, _v, i) => {
         const key = i + 1;
         acc[key] = document.getElementById(`codeInput_${key}`);
         return acc;
@@ -200,8 +200,6 @@ export default {
       box-sizing: border-box;
 
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       text-align: center;
       color: #010810;
 
@@ -231,8 +229,6 @@ export default {
 
   &__error {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     color: #db1838;
 
     @include gt-sm {

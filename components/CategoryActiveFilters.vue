@@ -65,8 +65,6 @@ export default {
     gap: 8px;
     border-radius: 11px;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     line-height: 20px;
     letter-spacing: -0.01em;
     color: $color-dark-grey;
@@ -95,8 +93,6 @@ export default {
     gap: 6.2px;
     height: 28px;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     line-height: 20px;
     letter-spacing: -0.01em;
     color: $color-dark-grey;

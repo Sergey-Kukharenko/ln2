@@ -23,6 +23,7 @@
 
 <script>
 import Teleport from 'vue2-teleport';
+
 import { NO_SCROLL_CLASS_NAME } from '~/constants';
 
 export default {

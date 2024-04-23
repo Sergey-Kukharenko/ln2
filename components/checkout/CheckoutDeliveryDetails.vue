@@ -11,16 +11,16 @@
     <checkout-intervals v-if="todayDate" :is-clarified="isClarified" />
 
     <div class="checkout-details__button">
-      <checkout-continue-button :curr-checkout-step="currCheckoutStep" />
+      <checkout-continue-button :is-clarified="isClarified" :curr-checkout-step="currCheckoutStep" />
     </div>
   </div>
 </template>
 
 <script>
-import CheckoutRecipient from '~/components/checkout/CheckoutRecipient';
-import CheckoutDelivery from '~/components/checkout/CheckoutDelivery';
-import CheckoutContinueButton from '~/components/checkout/CheckoutContinueButton';
 import CheckoutClarify from '~/components/checkout/CheckoutClarify.vue';
+import CheckoutContinueButton from '~/components/checkout/CheckoutContinueButton.vue';
+import CheckoutDelivery from '~/components/checkout/CheckoutDelivery.vue';
+import CheckoutRecipient from '~/components/checkout/CheckoutRecipient.vue';
 
 export default {
   name: 'CheckoutDeliveryDetails',
@@ -30,7 +30,7 @@ export default {
     CheckoutRecipient,
     CheckoutDelivery,
     CheckoutContinueButton,
-    CheckoutIntervals: () => import('~/components/checkout/CheckoutIntervals')
+    CheckoutIntervals: () => import('~/components/checkout/CheckoutIntervals.vue')
   },
 
   props: {

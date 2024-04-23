@@ -116,7 +116,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f63866;
+  background: $color-link-pink;
   border-radius: 50%;
 
   &__number {

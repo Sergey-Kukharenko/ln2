@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import dataCategoryProducts from '~/data/category-products';
 import CategoryProductList from '~/components/CategoryProductList.vue';
+import dataCategoryProducts from '~/data/category-products';
 
 export default {
   name: 'CategoryPage',
@@ -108,12 +108,10 @@ export default {
 
       &__header-title {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
-        color: #7c7c7c;
+        color: $color-white-grey;
       }
 
       &__header-bottom .active-filters {

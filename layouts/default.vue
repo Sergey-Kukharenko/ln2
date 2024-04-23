@@ -7,27 +7,31 @@
     <Nuxt />
     <app-footer v-if="!isBasket" />
     <app-footer-bottom v-else />
-    <transition v-if="isDefaultRoute" name="slide-fade">
-      <app-cookies v-if="isShowAppCookie" @setCookie="onSetCookie" />
-    </transition>
+    <client-only>
+      <transition v-if="isDefaultRoute" name="slide-fade">
+        <app-cookies v-if="getCookie" @setCookie="onSetCookie" />
+      </transition>
+    </client-only>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs';
-import AppNotification from '~/components/header/AppNotification';
-import { OUR_COOKIE } from '~/constants';
+import Vue from 'vue';
 
-export default {
+import AppNotification from '~/components/header/AppNotification.vue';
+import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs.vue';
+import { OUR_COOKIE } from '~/constants';
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'DefaultLayout',
 
   components: {
-    AppCookies: () => import('@/components/shared/AppCookies'),
-    AppHeader: () => import('@/components/header/AppHeader'),
-    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile'),
-    AppFooterBottom: () => import('@/components/footer/AppFooterBottom'),
-    AppFooter: () => import('@/components/footer/AppFooter'),
+    AppCookies: () => import('@/components/shared/AppCookies.vue'),
+    AppHeader: () => import('@/components/header/AppHeader.vue'),
+    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile.vue'),
+    AppFooterBottom: () => import('@/components/footer/AppFooterBottom.vue'),
+    AppFooter: () => import('@/components/footer/AppFooter.vue'),
     AppBreadcrumbs,
     AppNotification
   },
@@ -36,12 +40,12 @@ export default {
 
   data() {
     return {
-      routeNames: ['basket', 'preorder-id', 'order-id']
+      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate']
     };
   },
 
   computed: {
-    ...mapGetters({ isShowAppCookie: 'cookie/getCookie' }),
+    ...accessorMapper('cookie', ['getCookie']),
 
     getRouteName() {
       return this.$route.name;
@@ -70,13 +74,13 @@ export default {
   },
 
   methods: {
-    ...mapActions({ addCookie: 'cookie/addCookie' }),
+    ...accessorMapper('cookie', ['addCookie']),
 
     onSetCookie() {
       this.addCookie(false);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

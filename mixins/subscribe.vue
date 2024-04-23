@@ -1,22 +1,21 @@
 <script>
-import { mapActions } from 'vuex';
-
 import debounce from 'lodash.debounce';
-
-import { isEmailValid } from '~/helpers/validators';
+import Vue from 'vue';
 
 import {
-  SUBSCRIBE_ACTION_TYPES,
-  SUBSCRIBE_VARIANTS,
-  SUBSCRIBE_MESSAGES,
-  CHECKOUT_INPUT_DELAY,
   BONUS,
-  SUBSCRIBE_INVALID_EMAIL
+  CHECKOUT_INPUT_DELAY,
+  SUBSCRIBE_ACTION_TYPES,
+  SUBSCRIBE_INVALID_EMAIL,
+  SUBSCRIBE_MESSAGES,
+  SUBSCRIBE_VARIANTS
 } from '~/constants';
+import { isEmailValid } from '~/helpers/validators';
+import { accessorMapper } from '~/store';
 
 const { email, sms, push } = SUBSCRIBE_VARIANTS;
 
-export default {
+export default Vue.extend({
   name: 'SubscribeMixin',
 
   data() {
@@ -59,9 +58,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      sendUserSubscribe: 'user/sendUserSubscribe'
-    }),
+    ...accessorMapper('user', ['sendUserSubscribe']),
 
     setRequiredError() {
       if (this.isFooterModule || this.email) {
@@ -155,5 +152,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

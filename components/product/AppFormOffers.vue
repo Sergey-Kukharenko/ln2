@@ -2,7 +2,7 @@
   <div class="form">
     <div class="section">
       <div class="section__item item">
-        <div class="item__header">Choose size</div>
+        <div class="item__header">Choose bouquet size</div>
         <div class="item__body item__body--sm-include-border">
           <app-offers :offers="product.positions" @setOffer="onSetOffer" />
           <app-offer-detail :list="offer?.items" />
@@ -35,17 +35,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import AppOffers from '@/components/product/AppOffers';
-import AppButton from '@/components/shared/AppButton';
-import AppBadges from '@/components/shared/AppBadges';
-import AppOfferDetail from '@/components/product/AppOfferDetail';
+import Vue from 'vue';
+
+import AppOfferDetail from '@/components/product/AppOfferDetail.vue';
+import AppOffers from '@/components/product/AppOffers.vue';
+import AppBadges from '@/components/shared/AppBadges.vue';
+import AppButton from '@/components/shared/AppButton.vue';
 // import ToastCardDeals from '@/components/toast-cards/ToastCardDeals';
 // import AppLikeIcon from '~/components/shared/AppLikeIcon';
-import gtm from '~/mixins/gtm.vue';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppFormOffers',
 
   components: {
@@ -105,11 +107,8 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      addToCart: 'cart/addToCart',
-      addToFavorites: 'favorites/addToFavorites',
-      removeFromFavorites: 'favorites/removeFromFavorites'
-    }),
+    ...accessorMapper('cart', ['addToCart']),
+    ...accessorMapper('favorites', ['addToFavorites', 'removeFromFavorites']),
 
     onSetOffer(payload) {
       this.offer = payload;
@@ -157,7 +156,7 @@ export default {
       });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

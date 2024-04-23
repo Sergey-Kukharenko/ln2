@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AppStoreButton from '~/components/shared/AppStoreButton';
+import AppStoreButton from '~/components/shared/AppStoreButton.vue';
 
 export default {
   name: 'OrderFooter',
@@ -50,12 +50,10 @@ export default {
 
   &__copyright {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.01em;
-    color: #7c7c7c;
+    color: $color-white-grey;
   }
 }
 </style>

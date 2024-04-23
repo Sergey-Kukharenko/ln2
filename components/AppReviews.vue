@@ -71,7 +71,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import StarsRating from '@/components/shared/stars-rating/StarsRating';
+import StarsRating from '@/components/shared/stars-rating/StarsRating.vue';
 
 export default {
   name: 'AppReviews',
@@ -88,7 +88,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ reviewList: 'pages/home/getReviews' }),
+    ...mapGetters({ reviewList: 'home/getReviews' }),
 
     isReviewsList() {
       return this.reviewList.length;
@@ -247,11 +247,8 @@ export default {
         display: flex;
         align-items: center;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         line-height: 16px;
         color: #7e8895;
-
         border-left: 1px solid #dde0e6;
 
         @include gt-sm {
@@ -437,8 +434,6 @@ export default {
           &__text {
             @include gt-sm {
               font-family: $golos-regular;
-              font-style: normal;
-              font-weight: 400;
               font-size: 14px;
               line-height: 20px;
               color: $color-dark-grey;

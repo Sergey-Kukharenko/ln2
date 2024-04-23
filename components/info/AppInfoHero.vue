@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .hero {
-  background: #f7f7f7;
+  background: $bg-grey;
 
   @include gt-sm {
     padding: 40px 0;
@@ -78,8 +78,6 @@ export default {
   &__item-text {
     flex: 1;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;

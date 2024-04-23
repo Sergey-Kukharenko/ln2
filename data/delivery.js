@@ -1,3 +1,12 @@
+const BECOME_AFFILIATE = {
+  backgroundImage: {
+    desktop: '/images/info/become-affiliate.webp',
+    mobile: '/images/info/become-affiliate-mobile.webp'
+  },
+  backgroundColor: '#EBFAF0',
+  title: 'Become \na MyFlowers Affiliate'
+};
+
 const PROMO = {
   backgroundImage: {
     desktop: '/images/info/delivery.webp',
@@ -30,7 +39,7 @@ const HERO_ITEMS = [
   },
   {
     title: 'Customer Support and Help',
-    text: 'If you wish to know how we do what we do or have any questions or queries related to payments, our services, or delivery, feel free to get in touch with one of our representatives at +44 20 4577 0088 (or WhatsApp) or send us an email on support@myflowers.co.uk.'
+    text: 'If you wish to know how we do what we do or have any questions or queries related to payments, our services, or delivery, feel free to get in touch with one of our representatives at +44 73 0088 7398  (or WhatsApp) or send us an email on support@myflowers.co.uk.'
   },
   {
     title: 'Time of Delivery',
@@ -113,4 +122,4 @@ const DATA_PAYMENT = [
   }
 ];
 
-export { PROMO, TEXT_INFO, HERO_ITEMS, SOMETHING_IMPORTANT, PAYMENT, ADVERTISING, DATA_PAYMENT };
+export { BECOME_AFFILIATE, PROMO, TEXT_INFO, HERO_ITEMS, SOMETHING_IMPORTANT, PAYMENT, ADVERTISING, DATA_PAYMENT };

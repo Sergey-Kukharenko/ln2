@@ -16,11 +16,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import AppInput from '~/components/shared/AppInput.vue';
-import BasketButton from '~/components/BasketButton.vue';
+import Vue from 'vue';
 
-export default {
+import BasketButton from '~/components/BasketButton.vue';
+import AppInput from '~/components/shared/AppInput.vue';
+import { TOO_MANY_PROMOCODE_ATTEMPTS_MSG } from '~/constants';
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'AppPromoCode',
 
   components: { BasketButton, AppInput },
@@ -41,19 +44,16 @@ export default {
   },
 
   watch: {
-    promoCode(value, prevValue) {
+    promoCode(_value, _prevValue) {
       this.clear();
     }
   },
 
   methods: {
-    ...mapActions({
-      setPromoCode: 'checkout/setPromoCode',
-      fetchCheckout: 'checkout/fetchCheckout'
-    }),
+    ...accessorMapper('checkout', ['setPromoCode', 'fetchCheckout']),
 
     getPromoCode() {
-      return this.$store.getters['checkout/checkoutPromocode'];
+      return this.$accessor.checkout.checkoutPromocode;
     },
 
     setSuccess() {
@@ -77,17 +77,21 @@ export default {
     },
 
     async submitHandler() {
-      if (!this.promoCode) {
-        return;
+      try {
+        if (!this.promoCode) {
+          return;
+        }
+
+        const payload = { promo_code: this.promoCode };
+        const { success, message } = await this.setPromoCode(payload);
+
+        success ? await this.setAndUpdate() : this.setError(message);
+      } catch (error) {
+        this.setError(TOO_MANY_PROMOCODE_ATTEMPTS_MSG);
       }
-
-      const payload = { promo_code: this.promoCode };
-      const { success, message } = await this.setPromoCode(payload);
-
-      success ? await this.setAndUpdate() : this.setError(message);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">

@@ -26,6 +26,7 @@
 
 <script>
 import VuePhoneNumberInput from 'vue-phone-number-input';
+
 import AppInput from '~/components/shared/AppInput';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
@@ -136,13 +137,11 @@ export default {
     &__input {
       border: none;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;
-      color: #1f2226;
-      padding-top: 0px;
+      color: $color-dark-grey;
+      padding-top: 0;
     }
 
     &.has-list-open .country-selector__input,

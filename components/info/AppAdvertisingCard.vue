@@ -105,8 +105,6 @@ export default {
 
   &__content-text {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     line-height: 20px;
     letter-spacing: -0.01em;
     color: $color-dark-grey;

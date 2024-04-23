@@ -6,11 +6,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import Vue from 'vue';
 
 import { useArrayNotEmpty } from '~/helpers';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'FavoritesPage',
 
   components: {
@@ -21,13 +22,13 @@ export default {
   layout: 'empty',
 
   computed: {
-    ...mapState('favorites', ['favorites']),
+    ...accessorMapper('favorites', ['favorites']),
 
     isFavorites() {
       return useArrayNotEmpty(this.favorites?.list);
     }
   }
-};
+});
 </script>
 
 <style scoped lang="scss">

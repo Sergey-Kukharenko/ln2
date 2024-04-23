@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import AppModal from '~/components/shared/AppModal.vue';
-import AppLocationButton from '~/components/header/location/AppLocationButton';
-import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 import AppAddress from '~/components/header/address/AppAddress';
+import AppLocationButton from '~/components/header/location/AppLocationButton';
+import AppModal from '~/components/shared/AppModal.vue';
+import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 
 export default {
   name: 'AppLocation',
@@ -66,7 +66,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     width: 245px;
-    background: #f7f7f7;
+    background: $bg-grey;
     padding: 7px 17px;
     border-radius: 12px;
     box-sizing: border-box;

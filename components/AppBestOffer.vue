@@ -39,10 +39,10 @@
 </template>
 
 <script>
+import BasketButton from '~/components/BasketButton.vue';
+import AppInput from '~/components/shared/AppInput.vue';
 import authManager from '~/mixins/authManager.vue';
 import subscribe from '~/mixins/subscribe.vue';
-import AppInput from '~/components/shared/AppInput.vue';
-import BasketButton from '~/components/BasketButton.vue';
 
 export default {
   name: 'AppBestOffer',

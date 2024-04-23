@@ -3,10 +3,12 @@
 </template>
 
 <script>
+import Vue from 'vue';
+
 const OPEN_TEXT = 'Order details';
 const CLOSE_TEXT = 'Close';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutDetailsButton',
 
   props: {
@@ -24,10 +26,10 @@ export default {
 
   methods: {
     onClick() {
-      this.$store.commit('checkout/setState', { isDetailsVisible: !this.isDetailsVisible });
+      this.$accessor.checkout.SET_DETAILS_VISIBLE(!this.isDetailsVisible);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

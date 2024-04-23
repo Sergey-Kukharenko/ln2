@@ -5,6 +5,7 @@
         <order-title
           :is-paid="isPaid"
           :is-failed="isFailed"
+          :is-canceled="isCanceled"
           :in-process="isPaymentInProcess"
           :real-order-id="orderDetails?.real_id"
         />
@@ -90,7 +91,7 @@
 
         <payment-button
           v-if="isPaymentElementsVisible"
-          :payment-method="paymentMethod"
+          :payment-method="getPaymentMethod"
           :order-id="orderId"
           :total-cost="orderDetails?.total_cost"
           @clear-time-id="clearTimeId"
@@ -113,26 +114,26 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
-import * as paymentMethods from '~/data/payment-methods';
-import OrderDetails from '~/components/OrderDetails';
-import AppRadio from '~/components/shared/AppRadio';
-import AppModal from '~/components/shared/AppModal';
+import Vue from 'vue';
 
-import { disableScroll, enableScroll } from '~/helpers/scrollLock';
-import { useObjectNotEmpty, useSizedImage } from '~/helpers';
-
-import gtm from '~/mixins/gtm.vue';
-import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import { AUTH_WITHOUT_SMS_COOKIE, PAYMENT_METHOD_COOKIE, RELOAD_ORDER_DELAY } from '~/constants';
-import { PAYMENT_STATUS_MAP } from '~/constants/payment';
-import OrderTitle from '~/components/OrderTitle.vue';
-import OrderRecipient from '~/components/OrderRecipient.vue';
-import OrderPanelBody from '~/components/OrderPanelBody.vue';
+import OrderDetails from '~/components/OrderDetails.vue';
 import OrderItems from '~/components/OrderItems.vue';
+import OrderPanelBody from '~/components/OrderPanelBody.vue';
+import OrderRecipient from '~/components/OrderRecipient.vue';
+import OrderTitle from '~/components/OrderTitle.vue';
 import PaymentItem from '~/components/PaymentItem.vue';
+import AppModal from '~/components/shared/AppModal.vue';
+import AppRadio from '~/components/shared/AppRadio.vue';
+import { AUTH_WITHOUT_SMS_COOKIE, PAYMENT_METHOD_COOKIE, RELOAD_ORDER_DELAY } from '~/constants';
+import { GTM_EVENTS_MAP } from '~/constants/gtm';
+import { PAYMENT_STATUS_MAP } from '~/constants/payment';
+import * as paymentMethods from '~/data/payment-methods';
+import { useObjectNotEmpty, useSizedImage } from '~/helpers';
+import { disableScroll, enableScroll } from '~/helpers/scrollLock';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'OrderPage',
 
   components: {
@@ -144,10 +145,10 @@ export default {
     OrderDetails,
     AppRadio,
     AppModal,
-    OrderPanel: () => import('~/components/OrderPanel'),
-    AppSelect: () => import('~/components/shared/AppSelect'),
-    OrderWhatsappButton: () => import('~/components/OrderWhatsappButton'),
-    PaymentButton: () => import('~/components/PaymentButton')
+    OrderPanel: () => import('~/components/OrderPanel.vue'),
+    AppSelect: () => import('~/components/shared/AppSelect.vue'),
+    OrderWhatsappButton: () => import('~/components/OrderWhatsappButton.vue'),
+    PaymentButton: () => import('~/components/PaymentButton.vue')
   },
 
   mixins: [gtm],
@@ -183,15 +184,12 @@ export default {
       return;
     }
 
-    this.$store.dispatch('order/fetchOrder', orderId);
+    this.fetchOrder(orderId);
   },
 
   computed: {
-    ...mapState('order', ['orderDetails']),
-
-    ...mapGetters({
-      paymentMethod: 'payment/getPaymentMethod'
-    }),
+    ...accessorMapper('order', ['orderDetails']),
+    ...accessorMapper('payment', ['getPaymentMethod']),
 
     orderItems() {
       return this.orderDetails?.positions || [];
@@ -208,7 +206,7 @@ export default {
     getPaymentMethodLabel() {
       return (
         this.availablePaymentMethods.find((item) => item?.name === this.$cookies.get(PAYMENT_METHOD_COOKIE))?.label ||
-        `By ${this.availablePaymentMethods[0]?.label}`
+        `By ${this.availablePaymentMethods?.[0]?.label}`
       );
     },
 
@@ -248,8 +246,15 @@ export default {
       return !!(this.orderDetails?.status === PAYMENT_STATUS_MAP.failPaid);
     },
 
+    isCanceled() {
+      return !!(this.orderDetails?.status === PAYMENT_STATUS_MAP.canceled);
+    },
+
     isPaid() {
-      return !!(this.orderDetails?.status === PAYMENT_STATUS_MAP.paid);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { basket, order, payment, failPaid, canceled, ...paidStatuses } = PAYMENT_STATUS_MAP;
+
+      return Object.values(paidStatuses).includes(this.orderDetails?.status);
     },
 
     isAwaitingPayment() {
@@ -265,11 +270,11 @@ export default {
     },
 
     isPaymentElementsVisible() {
-      return (!this.isPaid && !this.isPaymentInProcess) || this.isFailed;
+      return !this.isCanceled && ((!this.isPaid && !this.isPaymentInProcess) || this.isFailed);
     },
 
     isWhatsappButtonVisible() {
-      return this.isAwaitingPayment || this.isFailed || this.isPaymentInProcess;
+      return this.isAwaitingPayment || this.isFailed || this.isPaymentInProcess || this.isCanceled;
     },
 
     customerData() {
@@ -277,10 +282,11 @@ export default {
     },
 
     getAddressText() {
-      const address1 = this.shippingAddress.address1;
-      const address2 = this.shippingAddress.address2 ? `, ${this.shippingAddress.address2}` : '';
+      const address1 = this.shippingAddress.address1 || '';
+      const address2 = this.shippingAddress.address2 || '';
+      const splitter = address1 && address2 ? ', ' : '';
 
-      return address1 + address2;
+      return address1 + splitter + address2;
     },
 
     isChangeButtonVisible() {
@@ -324,10 +330,10 @@ export default {
     deliveryDetails() {
       return {
         city: this.shippingAddress?.city,
-        address: (this.shippingAddress?.address1 || this.shippingAddress?.address2) && this.getAddressText,
+        address: this.getAddressText,
         postcode: this.shippingAddress?.postal_code,
         date: this.intervalData?.date && this.getIntervalDate,
-        time: this.intervalData?.time ? `${this.intervalData?.time}, ${this.deliveryAmount}` : `${this.deliveryAmount}`
+        time: this.intervalData?.time && `${this.intervalData?.time}, ${this.deliveryAmount}`
       };
     },
 
@@ -341,7 +347,7 @@ export default {
   },
 
   async mounted() {
-    await this.$store.dispatch('payment/getClientIdPayPal');
+    await this.getClientIdPayPal();
 
     const STEP_INITIAL_VALUE = 1;
     let step = STEP_INITIAL_VALUE;
@@ -380,13 +386,16 @@ export default {
     }
 
     this.$cookies.remove(PAYMENT_METHOD_COOKIE);
-    this.$store.commit('payment/setState', { paymentMethod: 'stripe' });
+    this.SET_PAYMENT_METHOD('stripe');
 
     this.clearTimeId();
   },
 
   methods: {
     useSizedImage,
+
+    ...accessorMapper('order', ['fetchOrder']),
+    ...accessorMapper('payment', ['getClientIdPayPal', 'SET_PAYMENT_METHOD']),
 
     async executeScriptEvents() {
       if (this.hasGoogleAdsFired) {
@@ -396,6 +405,7 @@ export default {
       this.gtmMultipleEvents();
       this.awinMultiple();
       this.fbTrack();
+      this.uetTrack();
       this.addGtagUserDataScript();
       this.addGtagScript();
       await this.saveGadsData();
@@ -425,7 +435,7 @@ export default {
       }
 
       if (!this.isPaid) {
-        await this.$store.dispatch('order/fetchOrder', orderId);
+        await this.fetchOrder(orderId);
 
         return;
       }
@@ -450,6 +460,11 @@ export default {
 
     fbTrack() {
       this.$fb.track('Purchase', { currency: 'GBP', value: this.orderDetails.total_cost });
+    },
+
+    uetTrack() {
+      window.uetq = window.uetq || [];
+      window.uetq.push('event', '', { revenue_value: this.orderDetails.total_cost, currency: 'GBP' });
     },
 
     addGtagScript() {
@@ -570,7 +585,7 @@ export default {
 
     onClickPaymentSystem(index, close) {
       this.selectIndex = index;
-      this.$store.commit('payment/setState', { paymentMethod: this.availablePaymentMethods[index].name });
+      this.SET_PAYMENT_METHOD(this.availablePaymentMethods[index].name);
       this.$cookies.set(PAYMENT_METHOD_COOKIE, this.availablePaymentMethods[index].name);
 
       if (!close) {
@@ -581,7 +596,7 @@ export default {
     },
 
     setIcon(icon) {
-      this.paymentMethod.logo = icon;
+      this.getPaymentMethod.logo = icon;
     },
 
     toggleDetail() {
@@ -644,7 +659,7 @@ export default {
       this.availablePaymentMethods[paymentMethodIndex].available = true;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -743,7 +758,7 @@ export default {
         display: flex;
         align-items: center;
         margin-top: 13px;
-        background: #f7f7f7;
+        background: $bg-grey;
         border-radius: 10px;
         box-sizing: border-box;
       }
@@ -767,12 +782,10 @@ export default {
         }
 
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
-        color: #7c7c7c;
+        color: $color-white-grey;
 
         box-sizing: border-box;
         padding-left: 48px;

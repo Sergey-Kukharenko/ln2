@@ -18,10 +18,12 @@
 </template>
 
 <script>
-import AppInput from '~/components/shared/AppInput';
-import AppButton from '~/components/shared/AppButton';
+import Vue from 'vue';
 
-export default {
+import AppButton from '~/components/shared/AppButton.vue';
+import AppInput from '~/components/shared/AppInput.vue';
+
+export default Vue.extend({
   name: 'OrderRecipient',
   components: { AppInput, AppButton },
 
@@ -48,7 +50,7 @@ export default {
 
   methods: {
     async saveRecipient() {
-      await this.$store.dispatch('checkout/setCheckoutRecipient', {
+      await this.$accessor.checkout.setCheckoutRecipient({
         name: this.form.name,
         phone: this.form.phone.replace('+', '')
       });
@@ -64,7 +66,7 @@ export default {
       this.form.phone = '+44';
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

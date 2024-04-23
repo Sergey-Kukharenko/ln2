@@ -30,8 +30,8 @@ export default {
   name: 'AppPagination',
 
   components: {
-    AppButton: () => import('@/components/shared/AppButton'),
-    AppSpinnerLoader: () => import('@/components/shared/AppSpinnerLoader')
+    AppButton: () => import('@/components/shared/AppButton.vue'),
+    AppSpinnerLoader: () => import('@/components/shared/AppSpinnerLoader.vue')
   },
 
   props: {
@@ -85,15 +85,23 @@ export default {
           res = [...useGeneratedNumsArray(PAGINATION.blindValue), dots, pages];
         }
 
-        if (currPage >= pages - 2) {
+        if (currPage >= pages - 1) {
           res = [1, dots, pages - 2, pages - 1, pages];
+        }
+
+        if (currPage === pages - 2) {
+          res = [1, dots, currPage - 1, pages - 2, pages - 1, pages];
         }
 
         if (currPage === PAGINATION.blindValue) {
           res = [1, currPage - 1, currPage, currPage + 1, dots, pages];
         }
 
-        if (currPage > PAGINATION.blindValue && currPage < pages - 2) {
+        if (currPage === PAGINATION.blindValue + 1) {
+          res = [1, currPage - 2, currPage - 1, currPage, currPage + 1, dots, pages];
+        }
+
+        if (currPage > PAGINATION.blindValue + 1 && currPage < pages - 2) {
           res = [1, dots, currPage - 1, currPage, currPage + 1, dots, pages];
         }
       }
@@ -129,7 +137,7 @@ export default {
           threshold: 1.0
         };
 
-        const callback = (entries, observer) => {
+        const callback = (entries, _observer) => {
           console.log('entries', entries);
           if (entries[0].isIntersecting) {
             this.fetchMore();
@@ -173,8 +181,6 @@ export default {
       border: 1px solid #eaeaea;
       border-radius: 10px;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       color: $color-dark-grey;

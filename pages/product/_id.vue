@@ -1,7 +1,7 @@
 <template>
-  <div class="layout layout-dt detail-page">
-    <div class="detail-page__row">
-      <div class="detail-page__col">
+  <div class="layout layout-dt product-page">
+    <div class="product-page__row">
+      <div class="product-page__col">
         <app-gallery :slides="sliderImages" :type-name="type_name" />
 
         <div class="additional-group" style="display: none">
@@ -13,8 +13,8 @@
           </div>
         </div>
       </div>
-      <div class="detail-page__col">
-        <h1 class="detail-page__title">{{ getProductTitle }}</h1>
+      <div class="product-page__col">
+        <h1 class="product-page__title">{{ getProductTitle }}</h1>
         <app-form-offers v-if="!isListsPage" :product="getProduct" @setProductOffer="onSetProductOffer" />
         <keep-alive v-else>
           <app-form-lists :product="cardProductSettings" />
@@ -23,10 +23,10 @@
       </div>
     </div>
 
-    <div class="detail-page__section">
+    <div class="product-page__section">
       <app-section v-if="isRecentlyViewed" :section="recentlyViewed" name="recently-viewed" />
     </div>
-    <div class="detail-page__section">
+    <div class="product-page__section">
       <app-popular-categories-items v-if="isPopularCategoriesItems" :popular="popularCategoriesItems" />
     </div>
     <app-seo v-if="seoHtml" :html="seoHtml" :faq="faq" />
@@ -34,24 +34,25 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
-import { useObjectNotEmpty, useSizedImage } from '~/helpers';
+import Vue from 'vue';
 
-import AppFormOffers from '~/components/product/AppFormOffers';
-import AppFormLists from '~/components/card-product/AppFormLists';
-import AppService from '~/components/product/AppService';
+import AppFormLists from '~/components/card-product/AppFormLists.vue';
+import AppPopularCategoriesItems from '~/components/card-product/AppPopularCategoriesItems.vue';
+import AppFormOffers from '~/components/product/AppFormOffers.vue';
+import AppService from '~/components/product/AppService.vue';
+import AppSeo from '~/components/seo/AppSeo.vue';
+import AppBadge from '~/components/shared/AppBadge.vue';
+import AppBadgeRateReviews from '~/components/shared/AppBadgeRateReviews.vue';
 import AppSection from '~/components/shared/AppSection.vue';
-import AppPopularCategoriesItems from '~/components/card-product/AppPopularCategoriesItems';
-import AppGallery from '~/components/ui/AppGallery';
-import AppBadge from '~/components/shared/AppBadge';
-import AppBadgeRateReviews from '~/components/shared/AppBadgeRateReviews';
+import AppGallery from '~/components/ui/AppGallery.vue';
 import { CONSTRUCTOR_HEIGHT_COOKIE, CONSTRUCTOR_PACKAGE_COOKIE } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtm from '~/mixins/gtm.vue';
-import AppSeo from '~/components/seo/AppSeo.vue';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useObjectNotEmpty, useSizedImage } from '~/helpers';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'IdPage',
 
   components: {
@@ -70,7 +71,7 @@ export default {
 
   middleware: ['not-found'],
 
-  async asyncData({ req, route, $http, store }) {
+  async asyncData({ _req, route, $http, app: { $accessor } }) {
     const path = route.fullPath;
     let data = {
       seo: {},
@@ -82,7 +83,7 @@ export default {
       const { data: response } = await $http.$get(`v1${path}`);
 
       if (response?.settings) {
-        store.commit('pages/card-product/setProductSettings', response);
+        $accessor.product.ADD_PRODUCT_SETTINGS(response);
       }
 
       data.seo.fullUrl = `https://myflowers.co.uk${path}`;
@@ -168,18 +169,14 @@ export default {
   },
 
   computed: {
-    ...mapState('pages/card-product', [
+    ...accessorMapper('product', [
       'cardProductSettings',
       'cardConstructorActiveColor',
       'cardConstructorActiveCount',
-      'cardConstructorActiveType'
+      'cardConstructorActiveType',
+      'popularCategoriesItems',
+      'recentlyViewed'
     ]),
-
-    ...mapGetters({
-      // similarBouquets: 'pages/card-product/getSimilarBouquets',
-      recentlyViewed: 'pages/card-product/getRecentlyViewed',
-      popularCategoriesItems: 'pages/card-product/getPopularCategoriesItems'
-    }),
 
     isListsPage() {
       return !!this.cardProductSettings?.colors?.length;
@@ -208,10 +205,6 @@ export default {
       return this.cardProductSettings?.prices?.[this.cardConstructorActiveCount]?.[this.cardConstructorActiveColor]
         ?.real_id;
     },
-
-    // isSimilarBouquets() {
-    //   return useObjectNotEmpty(this.similarBouquets);
-    // },
 
     isRecentlyViewed() {
       return useObjectNotEmpty(this.recentlyViewed);
@@ -258,13 +251,13 @@ export default {
   },
 
   beforeDestroy() {
-    this.$store.commit('pages/card-product/setField', { name: 'cardProductSettings', value: {} });
+    this.CLEAR_PRODUCT_SETTINGS();
     this.$cookies.remove(CONSTRUCTOR_HEIGHT_COOKIE);
     this.$cookies.remove(CONSTRUCTOR_PACKAGE_COOKIE);
   },
 
   methods: {
-    ...mapActions({ fetchCardProductPage: 'pages/card-product/fetchCardProductPage' }),
+    ...accessorMapper('product', ['fetchCardProductPage', 'CLEAR_PRODUCT_SETTINGS']),
 
     gtmViewItemEvent(title, realId, price, categoryName, positionName) {
       const item = {
@@ -293,11 +286,11 @@ export default {
   },
 
   IMG_SIZES_MAP
-};
+});
 </script>
 
 <style lang="scss" scoped>
-.detail-page {
+.product-page {
   @include gt-sm {
     padding-top: 20px;
   }

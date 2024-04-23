@@ -38,11 +38,12 @@
 </template>
 
 <script>
-import CheckoutPaymentSelect from '~/components/checkout/CheckoutPaymentSelect';
+import Vue from 'vue';
 
+import CheckoutPaymentSelect from '~/components/checkout/CheckoutPaymentSelect.vue';
 import { PAYMENT_METHOD_COOKIE } from '~/constants';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutPaymentMethods',
 
   components: {
@@ -66,7 +67,7 @@ export default {
   methods: {
     onClickSelect(index, close) {
       this.selectIndex = index;
-      this.$store.commit('payment/setState', { paymentMethod: this.availablePaymentMethods[index].name });
+      this.$accessor.payment.SET_PAYMENT_METHOD(this.availablePaymentMethods[index].name);
       this.$cookies.set(PAYMENT_METHOD_COOKIE, this.availablePaymentMethods[index].name);
 
       if (!close) {
@@ -92,7 +93,7 @@ export default {
       };
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -112,8 +113,6 @@ export default {
 
       &__text {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 16px;
         line-height: 24px;
         color: $color-dark-grey;
@@ -224,7 +223,6 @@ export default {
       &__text {
         font-family: $golos-regular;
         font-size: 12px;
-        font-weight: 400;
         line-height: 16px;
         letter-spacing: -0.02em;
       }

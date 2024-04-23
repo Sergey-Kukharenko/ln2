@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import { useFormattedDateForBackend, useGetDateByTimeZone, useDeepCopyObject } from '~/helpers';
-import { sortByDeliveryAmount } from '~/store/checkout';
 import { ONE_DIGIT_DAY_MONTH_LIMIT } from '~/constants';
+import { useDeepCopyObject, useFormattedDateForBackend } from '~/helpers';
+import { sortByDeliveryAmount } from '~/store/checkout';
 
 const FIRST_MONTH = 0;
 const LAST_MONTH = ONE_DIGIT_DAY_MONTH_LIMIT + 1;
@@ -77,11 +77,6 @@ export default {
     intervalList: {
       type: Array,
       default: () => []
-    },
-
-    intervalsDateOffset: {
-      type: String,
-      default: ''
     }
   },
 
@@ -139,10 +134,6 @@ export default {
 
     isCurrentMonth() {
       return this.todayDate.getMonth() === this.currDate.month;
-    },
-
-    dateOffset() {
-      return useGetDateByTimeZone(this.intervalsDateOffset || new Date());
     }
   },
 
@@ -166,11 +157,10 @@ export default {
     },
 
     checkDisabledDay(day) {
-      const isAfterNextMonth = this.currDate.month > this.todayDate.getMonth() + 1;
       const isDayDisabled = !this.intervalList?.find((el) => el?.date === this.formatDateForBackend(day))?.intervals
         ?.length;
 
-      return isDayDisabled || isAfterNextMonth;
+      return isDayDisabled;
     },
 
     checkSelected(day) {
@@ -338,7 +328,6 @@ export default {
         border-radius: 4px;
         font-family: $golos-regular;
         font-size: 10px;
-        font-weight: 400;
         line-height: 12px;
         letter-spacing: -0.02em;
         background: #f2f2f7;

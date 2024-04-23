@@ -21,6 +21,7 @@
             </span>
             <svg-icon class="item__top-icon" name="arrow-down" />
           </div>
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="item__bottom" v-html="item.answer" />
         </div>
       </div>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import AppEmailButton from '@/components/shared/AppEmailButton';
+import AppEmailButton from '@/components/shared/AppEmailButton.vue';
 
 export default {
   name: 'AppFaq',
@@ -106,8 +107,6 @@ export default {
 
       &__text {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         color: $color-dark-grey;
 
         @include gt-sm {
@@ -122,7 +121,6 @@ export default {
           line-height: 20px;
           letter-spacing: -0.01em;
           margin-bottom: 16px;
-
           max-width: 252px;
         }
       }
@@ -230,8 +228,6 @@ export default {
         &__bottom {
           display: none;
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           color: $color-dark-grey;
           white-space: pre-line;
 

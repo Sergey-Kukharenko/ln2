@@ -25,7 +25,7 @@
         @focus="onFocus"
         @blur="setNumber"
         @keypress="validateNumber"
-        @paste.prevent="handle"
+        @paste.prevent="onPaste"
         @keydown.space.prevent
       />
       <!--      Временно скрыт-->
@@ -35,15 +35,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import Vue from 'vue';
 
 // import AppRadio from '~/components/shared/AppRadio';
-import AppInput from '~/components/shared/AppInput';
+import AppInput from '~/components/shared/AppInput.vue';
+import authManager from '~/mixins/authManager.vue';
+import inputPhone from '~/mixins/input-phone.vue';
+import { accessorMapper } from '~/store';
 
-import authManager from '~/mixins/authManager';
-import inputPhone from '~/mixins/input-phone';
-
-export default {
+export default Vue.extend({
   name: 'CheckoutRecipient',
 
   components: {
@@ -73,7 +73,7 @@ export default {
   },
 
   computed: {
-    ...mapState('checkout', ['selfRecipient'])
+    ...accessorMapper('checkout', ['selfRecipient', 'getCheckout'])
   },
 
   mounted() {
@@ -81,38 +81,36 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setStoreRecipient: 'checkout/setState'
-    }),
+    ...accessorMapper('checkout', ['SET_SELF_RECIPIENT', 'setCheckoutRecipient']),
 
     initRecipientData() {
-      const recipientPhone = this.$store.getters['checkout/getCheckout']?.recipient?.phone;
+      const recipientPhone = this.getCheckout?.recipient?.phone;
 
-      this.form.name.value = this.$store.getters['checkout/getCheckout']?.recipient?.name || '';
+      this.form.name.value = this.getCheckout?.recipient?.name || '';
       this.form.phone.value = recipientPhone ? `+${recipientPhone}` : '';
     },
 
     setRecipientType(status) {
-      this.setStoreRecipient({ selfRecipient: status });
+      this.SET_SELF_RECIPIENT(status);
 
       if (status) {
-        this.$store.dispatch('checkout/setCheckoutRecipient');
+        this.setCheckoutRecipient();
       }
     },
 
     setNumber() {
-      this.setRecipient({ name: this.form.name.value, phone: this.form.phone.value.replace('+', '') });
+      this.setRecipient({ name: this.form.name.value, phone: this.form.phone.value?.replace('+', '') });
     },
 
     setName() {
-      this.setRecipient({ name: this.form.name.value, phone: this.form.phone.value.replace('+', '') });
+      this.setRecipient({ name: this.form.name.value, phone: this.form.phone.value?.replace('+', '') });
     },
 
     setRecipient(payload) {
-      this.$store.dispatch('checkout/setCheckoutRecipient', { ...payload });
+      this.setCheckoutRecipient({ ...payload });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

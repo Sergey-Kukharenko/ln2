@@ -1,7 +1,7 @@
 <template>
   <div class="product-list">
     <basket-product
-      v-for="(product, idx) in cart"
+      v-for="(product, idx) in getCart"
       :id="product.offer_id"
       :key="idx"
       :slug="product.offer_slug"
@@ -18,19 +18,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import BasketProduct from '~/components/BasketProduct.vue';
+import Vue from 'vue';
 
-export default {
+import BasketProduct from '~/components/BasketProduct.vue';
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'BasketProductList',
+
   components: { BasketProduct },
 
   computed: {
-    ...mapGetters({
-      cart: 'cart/getCart'
-    })
+    ...accessorMapper('cart', ['getCart'])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

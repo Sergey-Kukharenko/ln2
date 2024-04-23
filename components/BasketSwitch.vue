@@ -7,15 +7,18 @@
 <script>
 export default {
   name: 'BasketSwitch',
+
   model: {
     prop: 'value',
     event: 'change'
   },
+
   props: {
     value: {
       type: Boolean,
       default: false
     },
+
     color: {
       type: String,
       default: 'green',

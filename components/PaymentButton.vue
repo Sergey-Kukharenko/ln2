@@ -22,23 +22,23 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import Vue from 'vue';
 
-import AppButton from '~/components/shared/AppButton';
-
-import { STRIPE_PAYMENT_METHOD, PAYPAL_PAYMENT_METHOD } from '~/data/payment-methods';
-import { useObjectNotEmpty } from '~/helpers';
+import PaymentErrorModal from '~/components/PaymentErrorModal.vue';
+import AppButton from '~/components/shared/AppButton.vue';
 import { APPLE_PAY, GOOGLE_PAY, LINK_PAY } from '~/constants';
 import { ORDER_ALREADY_PAID, PAYMENT_ERROR_MESSAGE } from '~/constants/payment';
-import PaymentErrorModal from '~/components/PaymentErrorModal.vue';
+import { PAYPAL_PAYMENT_METHOD, STRIPE_PAYMENT_METHOD } from '~/data/payment-methods';
+import { useObjectNotEmpty } from '~/helpers';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'PaymentButton',
 
   components: {
     PaymentErrorModal,
     AppButton,
-    AppLoadingDots: () => import('~/components/shared/AppLoadingDots')
+    AppLoadingDots: () => import('~/components/shared/AppLoadingDots.vue')
   },
 
   props: {
@@ -101,7 +101,7 @@ export default {
   },
 
   computed: {
-    ...mapState('payment', ['paypalClientId']),
+    ...accessorMapper('payment', ['paypalClientId']),
 
     isStripeRedirectPayment() {
       return this.paymentMethod === STRIPE_PAYMENT_METHOD.name;
@@ -159,17 +159,19 @@ export default {
 
     this.removePaymentError();
 
-    this.$store.commit('payment/setState', { paymentMethod: 'stripe' });
+    this.SET_PAYMENT_METHOD('stripe');
     // this.$nuxt.$off('set-email-status', this.setEmailStatus);
   },
 
   methods: {
-    ...mapActions({
-      setCheckoutToPay: 'checkout/setCheckoutToPay',
-      getClientIdPayPal: 'payment/getClientIdPayPal',
-      createPaymentPayPal: 'payment/createPaymentPayPal',
-      approvePaymentPayPal: 'payment/approvePaymentPayPal'
-    }),
+    ...accessorMapper('checkout', ['setCheckoutToPay']),
+    ...accessorMapper('payment', [
+      'getClientIdPayPal',
+      'createPaymentPayPal',
+      'approvePaymentPayPal',
+      'fetchStripeClientSecret',
+      'SET_PAYMENT_METHOD'
+    ]),
 
     closePaymentErrorModal() {
       this.errorModal.isVisible = false;
@@ -309,7 +311,7 @@ export default {
           return this.clientSecret;
         }
 
-        const { client_secret: clientSecret } = await this.$store.dispatch('payment/fetchStripeClientSecret');
+        const { client_secret: clientSecret } = await this.fetchStripeClientSecret();
         this.clientSecret = clientSecret || '';
 
         return clientSecret;
@@ -347,7 +349,7 @@ export default {
     async initStripePaymentButtons() {
       try {
         await this.generatePaymentIntent();
-        // eslint-disable-next-line no-undef
+
         this.stripe = await window.Stripe(process.env.stripePublicKey);
 
         this.setStripePaymentRequest();
@@ -422,7 +424,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

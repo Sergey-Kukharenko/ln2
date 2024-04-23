@@ -284,8 +284,6 @@ export default {
 
   &__error {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 12px;
     line-height: 16px;
     color: #db1838;
@@ -300,8 +298,6 @@ export default {
 
   &__success {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 11px;
     line-height: 16px;
     letter-spacing: -0.01em;

@@ -8,6 +8,7 @@
 
 <script>
 import { useClassNameProp } from '~/helpers';
+
 export default {
   name: 'AppSectionGridSm',
 

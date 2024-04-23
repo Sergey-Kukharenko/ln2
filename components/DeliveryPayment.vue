@@ -21,10 +21,8 @@
 </template>
 
 <script>
-import AppButton from '@/components/shared/AppButton';
-
-import { PAYMENT } from '~/data/delivery';
-import { DATA_PAYMENT } from '@/data/delivery';
+import AppButton from '@/components/shared/AppButton.vue';
+import { DATA_PAYMENT, PAYMENT } from '@/data/delivery';
 import { ALL_CATEGORIES_BUTTON } from '~/constants';
 
 export default {
@@ -99,8 +97,6 @@ export default {
 
     &__item-text {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;

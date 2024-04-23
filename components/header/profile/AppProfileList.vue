@@ -13,9 +13,11 @@
 </template>
 
 <script>
-import AppBadge from '~/components/shared/AppBadge';
+import Vue from 'vue';
 
-export default {
+import AppBadge from '~/components/shared/AppBadge.vue';
+
+export default Vue.extend({
   name: 'AppProfileList',
   components: { AppBadge },
   props: {
@@ -64,11 +66,11 @@ export default {
 
   methods: {
     async logout() {
-      await this.$store.dispatch('auth/logout');
+      await this.$accessor.auth.logout();
       location.reload();
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -98,7 +100,7 @@ export default {
     }
 
     &:last-child {
-      color: #db1838;
+      color: $color-like-active;
     }
 
     &:hover {

@@ -15,6 +15,7 @@
 
 <script>
 import vClickOutside from 'v-click-outside';
+
 import { useClassNameProp } from '@/helpers';
 
 export default {

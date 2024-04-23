@@ -90,20 +90,19 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import Vue from 'vue';
+
+import AppList from '@/components/card-product/AppList.vue';
+import AppButton from '@/components/shared/AppButton.vue';
 import { useToggleClassName } from '@/helpers';
-import AppList from '@/components/card-product/AppList';
-// import AppCounter from '@/components/card-product/AppCounter';
-// import AppBadges from '@/components/shared/AppBadges';
-import AppButton from '@/components/shared/AppButton';
 import AppListNumbers from '~/components/card-product/AppListNumbers.vue';
 import AppListTypes from '~/components/card-product/AppListTypes.vue';
-import gtm from '~/mixins/gtm.vue';
 import AppTooltip from '~/components/card-product/AppTooltip.vue';
-
 import { CONSTRUCTOR_HEIGHT_COOKIE, CONSTRUCTOR_PACKAGE_COOKIE } from '~/constants';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppFormLists',
 
   components: {
@@ -164,16 +163,9 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      setField: 'pages/card-product/setField'
-    }),
-
-    ...mapActions({
-      addToCartConstructor: 'cart/addToCartConstructor',
-      fetchCardProduct: 'pages/card-product/fetchCardProduct',
-      addToFavorites: 'favorites/addToFavorites',
-      removeFromFavorites: 'favorites/removeFromFavorites'
-    }),
+    ...accessorMapper('product', ['SET_ACTIVE_COLOR', 'SET_ACTIVE_COUNT', 'SET_ACTIVE_TYPE', 'fetchCardProduct']),
+    ...accessorMapper('cart', ['addToCartConstructor']),
+    ...accessorMapper('favorites', ['addToFavorites', 'removeFromFavorites']),
 
     getFlowersPackage() {
       const packageCookieId = this.$cookies.get(CONSTRUCTOR_PACKAGE_COOKIE);
@@ -199,7 +191,7 @@ export default {
       if (!isFLowersHeightExist) {
         this.$cookies.set(CONSTRUCTOR_HEIGHT_COOKIE, firstHeight?.id);
 
-        this.setField({ name: 'cardConstructorActiveType', value: firstHeight?.id });
+        this.SET_ACTIVE_TYPE(firstHeight?.id);
 
         return firstHeight;
       }
@@ -207,7 +199,7 @@ export default {
       const idx = this.product?.heights.findIndex((el) => el.id === heightCookieId);
       const result = idx !== -1 ? this.product?.heights?.[idx] : firstHeight;
 
-      this.setField({ name: 'cardConstructorActiveType', value: result?.id });
+      this.SET_ACTIVE_TYPE(result?.id);
       return result;
     },
 
@@ -219,7 +211,7 @@ export default {
         if (isNotExistFlowerColor) {
           const [firstColor] = colors;
           this.itemColor = firstColor;
-          this.setField({ name: 'cardConstructorActiveColor', value: firstColor.id });
+          this.SET_ACTIVE_COLOR(firstColor.id);
 
           return;
         }
@@ -229,7 +221,7 @@ export default {
         const color = colors[activeIdx];
 
         this.itemColor = color;
-        this.setField({ name: 'cardConstructorActiveColor', value: color.id });
+        this.SET_ACTIVE_COLOR(color.id);
       } catch (error) {
         console.error(error);
       }
@@ -243,7 +235,7 @@ export default {
 
         if (isNotExistFlowerCount) {
           this.itemNumberOfRoses = priceKey;
-          this.setField({ name: 'cardConstructorActiveColor', value: priceKey });
+          this.SET_ACTIVE_COLOR(priceKey);
 
           return;
         }
@@ -253,7 +245,7 @@ export default {
         const itemKey = pricesKeys[activeIdx];
 
         this.itemNumberOfRoses = itemKey;
-        this.setField({ name: 'cardConstructorActiveCount', value: itemKey });
+        this.SET_ACTIVE_COUNT(itemKey);
       } catch (error) {
         console.error(error);
       }
@@ -269,20 +261,20 @@ export default {
 
     async onSetColor(payload) {
       this.itemColor = payload;
-      this.setField({ name: 'cardConstructorActiveColor', value: payload?.id });
+      this.SET_ACTIVE_COLOR(payload?.id);
       await this.$nextTick();
       this.goToProductByConstructor();
     },
 
     onSetFlowersHeight(payload) {
       this.itemFlowersHeight = payload;
-      this.setField({ name: 'cardConstructorActiveType', value: payload?.id });
+      this.SET_ACTIVE_TYPE(payload?.id);
       this.$cookies.set(CONSTRUCTOR_HEIGHT_COOKIE, payload?.id);
     },
 
     async onSetNumberOfRoses(payload) {
       this.itemNumberOfRoses = payload;
-      this.setField({ name: 'cardConstructorActiveCount', value: payload });
+      this.SET_ACTIVE_COUNT(payload);
       await this.$nextTick();
       this.goToProductByConstructor();
     },
@@ -309,7 +301,7 @@ export default {
       this.$router.push({ name: 'gifts' });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

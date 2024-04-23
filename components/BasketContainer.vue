@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import promotions from '~/mocks/promotions';
-import BasketProductList from '~/components/BasketProductList.vue';
-import BasketOrder from '~/components/BasketOrder.vue';
 import AppPromotions from '~/components/AppPromotions.vue';
+import BasketOrder from '~/components/BasketOrder.vue';
+import BasketProductList from '~/components/BasketProductList.vue';
+import promotions from '~/mocks/promotions';
 // import ToastCardDeals from '~/components/toast-cards/ToastCardDeals';
 
 export default {

@@ -21,12 +21,11 @@
 
 <script>
 // import AppInfoBanner from '~/components/info/AppInfoBanner';
-import AppInfoTextSection from '~/components/info/AppInfoTextSection';
-import AppInfoHero from '~/components/info/AppInfoHero';
-
-import { PROMO, TEXT_INFO, HERO_ITEMS, SOMETHING_IMPORTANT } from '~/data/delivery';
-import AppInfoSomething from '~/components/info/AppInfoSomething';
 import DeliveryPayment from '~/components/DeliveryPayment.vue';
+import AppInfoHero from '~/components/info/AppInfoHero.vue';
+import AppInfoSomething from '~/components/info/AppInfoSomething.vue';
+import AppInfoTextSection from '~/components/info/AppInfoTextSection.vue';
+import { HERO_ITEMS, PROMO, SOMETHING_IMPORTANT, TEXT_INFO } from '~/data/delivery';
 
 export default {
   name: 'DeliveryPage',

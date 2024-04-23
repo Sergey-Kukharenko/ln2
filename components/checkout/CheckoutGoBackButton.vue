@@ -5,7 +5,9 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'CheckoutGoBackButton',
 
   props: {
@@ -23,7 +25,7 @@ export default {
   methods: {
     goBack() {
       if (this.currCheckoutStep > 1) {
-        this.$store.dispatch('checkout/setCheckoutStep', this.currCheckoutStep - 1);
+        this.$accessor.checkout.SET_STEP(this.currCheckoutStep - 1);
 
         return;
       }
@@ -31,7 +33,7 @@ export default {
       this.$router.push({ name: 'basket' });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

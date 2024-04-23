@@ -22,6 +22,11 @@ export default {
       default: false
     },
 
+    isCanceled: {
+      type: Boolean,
+      default: false
+    },
+
     inProcess: {
       type: Boolean,
       default: false
@@ -35,6 +40,10 @@ export default {
 
   computed: {
     orderTitle() {
+      if (this.isCanceled) {
+        return ORDER_STATUS_TEXT.canceled.getTitle(this.realOrderId);
+      }
+
       if (this.isFailed) {
         return ORDER_STATUS_TEXT.failed.title;
       }
@@ -47,6 +56,10 @@ export default {
     },
 
     linkText() {
+      if (this.isCanceled) {
+        return ORDER_STATUS_TEXT.canceled.text;
+      }
+
       if (this.isFailed) {
         return ORDER_STATUS_TEXT.failed.text;
       }
@@ -87,8 +100,6 @@ export default {
 
   &__link {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 16px;
     line-height: 24px;
     color: $color-dark-green;

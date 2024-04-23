@@ -38,11 +38,12 @@
 
 <script>
 import debounce from 'lodash.debounce';
+import Vue from 'vue';
 // import AppInput from '~/components/shared/AppInput';
 
 import { CHECKOUT_INPUT_DELAY } from '~/constants';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutGiftCard',
 
   // components: { AppInput },
@@ -55,7 +56,7 @@ export default {
 
   computed: {
     giftData() {
-      return this.$store.getters['checkout/getCheckout']?.gift ?? '';
+      return this.$accessor.checkout.getCheckout?.gift ?? '';
     }
   },
 
@@ -65,10 +66,10 @@ export default {
 
   methods: {
     giftHandler: debounce(function () {
-      this.$store.dispatch('checkout/setCheckoutOther', { gift: this.gift });
+      this.$accessor.checkout.setCheckoutOther({ gift: this.gift });
     }, CHECKOUT_INPUT_DELAY)
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -105,8 +106,6 @@ export default {
     width: 38px;
     height: 19px;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 10px;
     line-height: 16px;
     letter-spacing: 0.01em;
@@ -158,12 +157,10 @@ export default {
       padding: 0 16px;
 
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;
-      color: #009959;
+      color: $color-dark-green;
     }
   }
 
@@ -195,9 +192,7 @@ export default {
     border-radius: 12px;
     flex: 1;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
-    background: #f7f7f7;
+    background: $bg-grey;
     color: $color-dark-grey;
     // background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23EAEAEA' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
     border: none;

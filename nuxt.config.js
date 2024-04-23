@@ -6,14 +6,14 @@ import css from './config/css';
 import device from './config/device';
 import env from './config/env';
 import head from './config/head';
-import router from './config/router';
-import styleResources from './config/style-resources';
-import server from './config/server';
-import sentry from './config/sentry';
 import modules from './config/modules';
 import plugins from './config/plugins';
 import robots from './config/robots';
+import router from './config/router';
+import sentry from './config/sentry';
+import server from './config/server';
 import sitemap from './config/sitemap';
+import styleResources from './config/style-resources';
 
 const isDev = process.env.NODE_ENV !== 'production';
 

@@ -8,10 +8,9 @@
 </template>
 
 <script>
-import AppMobileMenu from '~/components/header/mobile/AppMobileMenu';
 import AppDrawerNested from '~/components/header/mobile/AppDrawerNested';
+import AppMobileMenu from '~/components/header/mobile/AppMobileMenu';
 import AppMobileSubMenu from '~/components/header/mobile/AppMobileSubMenu';
-
 import { mobileNavbar } from '~/data/nav-bar';
 
 export default {

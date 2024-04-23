@@ -66,23 +66,24 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import Vue from 'vue';
 
 // import AppBadge from './AppBadge.vue';
 // import AppLikeIcon from '~/components/shared/AppLikeIcon';
-import AppButton from './AppButton';
-import AppCardLink from './AppCardLink';
-import { useSizedImage, useToggleClassName } from '~/helpers';
+import AppButton from './AppButton.vue';
+import AppCardLink from './AppCardLink.vue';
 
+import AppCardTag from '~/components/shared/AppCardTag.vue';
+import AppCardTags from '~/components/shared/AppCardTags.vue';
+import AppImage from '~/components/shared/AppImage.vue';
 import { PRODUCT_CARD_IMAGE_SIZE } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtm from '~/mixins/gtm.vue';
-import AppImage from '~/components/shared/AppImage.vue';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
-import AppCardTags from '~/components/shared/AppCardTags.vue';
-import AppCardTag from '~/components/shared/AppCardTag.vue';
+import { useSizedImage, useToggleClassName } from '~/helpers';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppCard',
 
   components: {
@@ -192,11 +193,8 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      addToCart: 'cart/addToCart',
-      addToFavorites: 'favorites/addToFavorites',
-      removeFromFavorites: 'favorites/removeFromFavorites'
-    }),
+    ...accessorMapper('cart', ['addToCart']),
+    ...accessorMapper('favorites', ['addToFavorites', 'removeFromFavorites']),
 
     useSizedImage,
 
@@ -223,11 +221,14 @@ export default {
       // };
 
       // this.addToCart(payload);
-
-      this.$router.push({ name: 'product-id', params: { id: this.getProductSlug } });
-
       this.gtmClearItemEvent();
       this.dataLayerSetOriginalUrl();
+
+      if (this.isProductPage) {
+        location.href = `/product/${this.getProductSlug}`;
+      } else {
+        this.$router.push({ name: 'product-id', params: { id: this.getProductSlug } });
+      }
     },
 
     gtmSelectItemEvent() {
@@ -275,7 +276,7 @@ export default {
   },
 
   IMG_SIZES_MAP
-};
+});
 </script>
 
 <style lang="scss" scoped>

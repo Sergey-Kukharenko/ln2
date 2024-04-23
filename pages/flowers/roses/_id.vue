@@ -37,16 +37,15 @@
 </template>
 
 <script>
+import AppFormLists from '@/components/card-product/AppFormLists.vue';
+import AppFormSizes from '@/components/card-product/AppFormSizes.vue';
+import AppNotification from '@/components/card-product/AppNotification.vue';
+import AppRating from '@/components/card-product/AppRating.vue';
+import AppReviews from '@/components/card-product/AppReviews.vue';
+import AppService from '@/components/card-product/AppService.vue';
+import AppGallery from '@/components/ui/AppGallery.vue';
 import products from '@/data/products';
-
-import AppGallery from '@/components/ui/AppGallery';
-import AppNotification from '@/components/card-product/AppNotification';
-import AppFormSizes from '@/components/card-product/AppFormSizes';
-import AppFormLists from '@/components/card-product/AppFormLists';
-import AppService from '@/components/card-product/AppService';
-import AppReviews from '@/components/card-product/AppReviews';
-import AppRating from '@/components/card-product/AppRating';
-import AppPopularCategoriesItems from '~/components/card-product/AppPopularCategoriesItems';
+import AppPopularCategoriesItems from '~/components/card-product/AppPopularCategoriesItems.vue';
 
 export default {
   name: 'IdPage',

@@ -68,12 +68,10 @@
 </template>
 
 <script>
+import OrderCancel from '@/components/OrderCancel.vue';
+import AppButton from '@/components/shared/AppButton.vue';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
-
-import AppButton from '@/components/shared/AppButton';
-import OrderCancel from '@/components/OrderCancel';
-
-import { useSizedImage, useFixedSumByKey, useGetPositionSizeText } from '~/helpers';
+import { useFixedSumByKey, useGetPositionSizeText, useSizedImage } from '~/helpers';
 
 export default {
   name: 'OrderDetails',
@@ -183,7 +181,6 @@ export default {
     &__discount,
     &__total {
       font-family: $golos-regular;
-      font-style: normal;
       font-size: 14px;
     }
 
@@ -191,9 +188,8 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      font-weight: 400;
       letter-spacing: -0.01em;
-      color: #7c7c7c;
+      color: $color-white-grey;
       padding-bottom: 16px;
       margin-bottom: 16px;
       border-bottom: 1px solid #eaeaea;
@@ -215,9 +211,8 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      font-weight: 400;
       letter-spacing: -0.01em;
-      color: #7c7c7c;
+      color: $color-white-grey;
 
       .total {
         color: $color-dark-grey;
@@ -273,8 +268,7 @@ export default {
     .items {
       font-weight: 400;
       letter-spacing: -0.01em;
-      color: #7c7c7c;
-
+      color: $color-white-grey;
       padding-bottom: 8px;
 
       &__top {
@@ -332,8 +326,6 @@ export default {
 
         &__item-title {
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           font-size: 14px;
           line-height: 20px;
           letter-spacing: -0.01em;
@@ -356,8 +348,6 @@ export default {
     margin-bottom: 12px;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;

@@ -15,13 +15,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
 // import AppFavorite from '@/components/header/AppFavorite';
 import AppCart from '@/components/header/AppCart.vue';
 import AppProfile from '@/components/header/profile/AppProfile.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppNavigationUser',
 
   components: {
@@ -31,9 +32,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ isUserData: 'user/isUserData' })
+    ...accessorMapper('user', ['isUserData'])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

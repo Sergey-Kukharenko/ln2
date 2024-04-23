@@ -7,11 +7,9 @@
 <style lang="scss" scoped>
 .title {
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 16px;
   line-height: 20px;
-  color: #1f2226;
+  color: $color-dark-grey;
   margin-bottom: 4px;
 
   @include lt-lg {

@@ -7,8 +7,6 @@
 <style lang="scss" scoped>
 .title {
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 18.2px;
   color: $color-dark-grey;

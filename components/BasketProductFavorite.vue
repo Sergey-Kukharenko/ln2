@@ -8,12 +8,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import Vue from 'vue';
 
-import AppLikeIcon from '~/components/shared/AppLikeIcon';
-import AppButton from '~/components/shared/AppButton';
+import AppButton from '~/components/shared/AppButton.vue';
+import AppLikeIcon from '~/components/shared/AppLikeIcon.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'BasketProductFavorite',
 
   components: { AppLikeIcon, AppButton },
@@ -43,10 +44,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      addToFavorites: 'favorites/addToFavorites',
-      removeFromFavorites: 'favorites/removeFromFavorites'
-    }),
+    ...accessorMapper('favorites', ['addToFavorites', 'removeFromFavorites']),
 
     toggleLike() {
       const action = this.like ? 'removeFromFavorites' : 'addToFavorites';
@@ -55,7 +53,7 @@ export default {
       this.like = !this.like;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

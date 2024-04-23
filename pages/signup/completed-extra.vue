@@ -56,8 +56,6 @@ export default {
 
     &__info-text {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 16px;
       line-height: 24px;
       color: #eaeaea;

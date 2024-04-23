@@ -30,10 +30,9 @@ export default {
 
   &__amount {
     font-family: $golos-regular;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    color: #7c7c7c;
+    color: $color-white-grey;
 
     @include lt-lg {
       line-height: 18px;

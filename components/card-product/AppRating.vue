@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import AppRatingList from '@/components/card-product/AppRatingList';
-import StarsRating from '@/components/shared/stars-rating/StarsRating';
-import AppButton from '@/components/shared/AppButton';
+import AppRatingList from '@/components/card-product/AppRatingList.vue';
+import AppButton from '@/components/shared/AppButton.vue';
+import StarsRating from '@/components/shared/stars-rating/StarsRating.vue';
 
 export default {
   name: 'AppRating',

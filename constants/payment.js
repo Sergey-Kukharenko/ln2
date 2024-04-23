@@ -20,7 +20,13 @@ const PAYMENT_STATUS_MAP = Object.freeze({
   order: 'ORDER',
   payment: 'PAYMENT',
   paid: 'PAID',
-  failPaid: 'FAIL_PAID'
+  confirmed: 'CONFIRMED',
+  packed: 'PACKED',
+  delivering: 'DELIVERING',
+  delivered: 'DELIVERED',
+  courierAssigned: 'COURIER_ASSIGNED',
+  failPaid: 'FAIL_PAID',
+  canceled: 'CANCELED'
 });
 
 const PAYMENT_ERROR_MESSAGE = 'Your payment has failed.\n Please, choose another payment method.';

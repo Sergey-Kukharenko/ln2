@@ -12,8 +12,8 @@ export default {
   name: 'UnsubscribeLayout',
 
   components: {
-    AppHeader: () => import('@/components/header/AppHeader'),
-    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile'),
+    AppHeader: () => import('@/components/header/AppHeader.vue'),
+    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile.vue'),
     AppFooterSubscribe: () => import('~/components/footer/AppFooterUnsubscribe.vue')
   }
 };

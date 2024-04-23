@@ -52,9 +52,8 @@ export default {
     position: relative;
     font-family: $golos-regular;
     font-size: 16px;
-    font-weight: 400;
     line-height: 16px;
-    color: #7c7c7c;
+    color: $color-white-grey;
 
     @include lt-lg {
       font-size: 12px;
@@ -90,7 +89,6 @@ export default {
     height: 20px;
     padding: 0 6px;
     font-family: $golos-regular;
-    font-weight: 400;
     font-size: 11px;
     line-height: 16px;
 

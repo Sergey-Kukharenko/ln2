@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
+import AppButton from '~/components/shared/AppButton.vue';
 import { ALL_CATEGORIES_BUTTON } from '~/constants';
 
 export default {

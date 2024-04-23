@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import AppModal from '~/components/shared/AppModal.vue';
 import AppButton from '~/components/shared/AppButton.vue';
+import AppModal from '~/components/shared/AppModal.vue';
 
 export default {
   name: 'ModalNotification',

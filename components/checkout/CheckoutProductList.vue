@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CheckoutProduct from '~/components/checkout/CheckoutProduct';
+import CheckoutProduct from '~/components/checkout/CheckoutProduct.vue';
 
 export default {
   name: 'CheckoutProductList',

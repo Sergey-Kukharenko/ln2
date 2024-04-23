@@ -123,20 +123,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import debounce from 'lodash.debounce';
-import AppInput from '~/components/shared/AppInput';
-// import AppTextarea from '~/components/shared/AppTextarea';
+import Vue from 'vue';
 
+import { idealPostcodesDetail, idealPostcodesList } from '@/services/idealPostcodesService';
+import AppInput from '~/components/shared/AppInput.vue';
 import {
-  CHECKOUT_INPUT_DELAY,
-  CHECK_ADDRESS_ERROR_DELAY,
   ADDRESS_MANUALLY_TEXT,
   ADDRESS_SEARCH_TEXT,
+  CHECKOUT_INPUT_DELAY,
+  CHECK_ADDRESS_ERROR_DELAY,
   SEARCH_INPUT_PLACEHOLDER
 } from '~/constants';
 import { LOCATION_NOT_FOUND_MESSAGE } from '~/messages';
-import { idealPostcodesList, idealPostcodesDetail } from '@/services/idealPostcodesService';
+import { accessorMapper } from '~/store';
 
 const isSuggestionsOptimizationEnabled = process.env.addressSuggestionsOptimization === 'true';
 const isExistAddress = (address = '', input = '') => {
@@ -146,11 +146,10 @@ const isExistAddress = (address = '', input = '') => {
   return address.includes(input);
 };
 
-export default {
+export default Vue.extend({
   name: 'CheckoutDelivery',
 
   components: {
-    // AppTextarea,
     AppInput
   },
 
@@ -195,10 +194,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      deliveryDetails: 'checkout/checkoutShippingAddress',
-      checkout: 'checkout/getCheckout'
-    }),
+    ...accessorMapper('checkout', ['checkoutShippingAddress']),
 
     fullAddress() {
       return `${this.addressForm.address1}, ${this.addressForm.address2}, ${this.addressForm.postalCode}`;
@@ -228,10 +224,6 @@ export default {
       return !this.addressForm.address1 && !this.manualMode;
     },
 
-    dateTimeIntervalData() {
-      return this.checkout?.interval;
-    },
-
     existAddressOrPostalCode() {
       return this.addressForm.address1 || this.addressForm.postalCode;
     }
@@ -239,6 +231,7 @@ export default {
 
   watch: {
     isClarified(val) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { error, ...fields } = this.addressForm;
 
       if (Object.values(fields).every((el) => !el) || val) {
@@ -300,12 +293,12 @@ export default {
 
     initDeleveryDetails() {
       Object.keys(this.addressForm).forEach((key) => {
-        if (this.deliveryDetails?.[key]) {
-          this.addressForm[key] = this.deliveryDetails[key];
+        if (this.checkoutShippingAddress?.[key]) {
+          this.addressForm[key] = this.checkoutShippingAddress[key];
         }
 
-        if (key === 'postalCode' && this.deliveryDetails?.postal_code) {
-          this.addressForm[key] = this.deliveryDetails.postal_code;
+        if (key === 'postalCode' && this.checkoutShippingAddress?.postal_code) {
+          this.addressForm[key] = this.checkoutShippingAddress.postal_code;
         }
       });
     },
@@ -339,7 +332,7 @@ export default {
 
       this.isManualBtnVisible = true;
 
-      if (isSuggestionsOptimizationEnabled && isExistAddress(this.deliveryDetails?.full_address, value)) {
+      if (isSuggestionsOptimizationEnabled && isExistAddress(this.checkoutShippingAddress?.full_address, value)) {
         return;
       }
 
@@ -385,7 +378,7 @@ export default {
         const line2 = line_2 ? line_2 + ', ' : '';
         // eslint-disable-next-line camelcase
         const line3 = line_3 ? line_3 + ', ' : '';
-        // eslint-disable-next-line camelcase
+
         this.addressForm.address1 = `${line3}${line2}${county}`;
         // eslint-disable-next-line camelcase
         this.addressForm.address2 = line_1;
@@ -450,9 +443,10 @@ export default {
         this.addressForm.latitude = null;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { postalCode, error, ...fields } = this.addressForm;
 
-      await this.$store.dispatch('checkout/setCheckoutAddress', {
+      await this.$accessor.checkout.setCheckoutAddress({
         ...fields,
         postal_code: postalCode,
         full_address: this.fullAddress
@@ -461,7 +455,7 @@ export default {
       this.$nuxt.$emit('set-intervals');
     }, CHECKOUT_INPUT_DELAY)
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -495,12 +489,10 @@ export default {
     height: 44px;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
-    color: #1f2226;
+    color: $color-dark-grey;
     user-select: none;
     cursor: default;
   }
@@ -514,7 +506,7 @@ export default {
 
     &.active {
       border-radius: 12px 12px 0 0;
-      border: 1px solid #f7f7f7;
+      border: 1px solid $bg-grey;
       border-bottom: none;
     }
   }
@@ -532,7 +524,6 @@ export default {
     border: 1px solid #f7f7f7;
     border-top: none;
     border-radius: 0 0 10px 10px;
-    padding-top: 10px;
     box-sizing: border-box;
 
     @include lt-md {
@@ -545,8 +536,6 @@ export default {
 
     &-item {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       border-radius: 8px;
@@ -667,7 +656,6 @@ export default {
 
     &-mode {
       font-family: $golos-regular;
-      font-weight: 400;
       font-size: 12px;
       line-height: 15.6px;
       letter-spacing: -0.24px;
@@ -679,8 +667,6 @@ export default {
 
   .error {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 12px;
     line-height: 16px;
     color: #db1838;

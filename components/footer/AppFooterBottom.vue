@@ -13,20 +13,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
 import AppPayment from '@/components/AppPayment.vue';
 import AppPolicy from '@/components/AppPolicy.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppFooterBottom',
 
   components: { AppPayment, AppPolicy },
 
   computed: {
-    ...mapGetters({ footer: 'layout/getFooter' })
+    ...accessorMapper('layout', ['footer'])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +56,7 @@ export default {
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.01em;
-  color: #7c7c7c;
+  color: $color-white-grey;
 
   @include gt-sm {
     text-align: right;

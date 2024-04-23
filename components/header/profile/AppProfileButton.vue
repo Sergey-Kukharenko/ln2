@@ -11,10 +11,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
+
 import { useToggleClassName } from '~/helpers';
 
-export default {
+export default Vue.extend({
   name: 'AppProfileButton',
 
   props: {
@@ -25,7 +26,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ isAuth: 'auth/isAuthorized' }),
+    isAuth() {
+      return this.$accessor.auth.isAuthorized;
+    },
 
     char() {
       return this.user?.name?.substring(0, 1);
@@ -50,7 +53,7 @@ export default {
       this.$emit('close');
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

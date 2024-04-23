@@ -63,10 +63,9 @@
 <script>
 import debounce from 'lodash.debounce';
 
-import AppCheckbox from '@/components/shared/AppCheckbox';
-import AppRadio from '@/components/shared/AppRadio';
-
-import { LIST_ITEM_VIEW_COUNT, FILTER_TYPES } from '~/constants';
+import AppCheckbox from '@/components/shared/AppCheckbox.vue';
+import AppRadio from '@/components/shared/AppRadio.vue';
+import { FILTER_TYPES, LIST_ITEM_VIEW_COUNT } from '~/constants';
 
 export default {
   name: 'CategoryFilterItem',
@@ -269,8 +268,6 @@ export default {
 
         .title {
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           font-size: 12px;
           line-height: 16px;
           letter-spacing: -0.154px;
@@ -326,8 +323,6 @@ export default {
     .show {
       margin-top: 10px;
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;

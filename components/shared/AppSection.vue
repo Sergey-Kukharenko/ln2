@@ -17,10 +17,9 @@
 </template>
 
 <script>
-import AppSectionHeader from '~/components/shared/AppSectionHeader.vue';
-import AppSectionGrid from '~/components/shared/AppSectionGrid.vue';
 import AppCard from '~/components/shared/AppCard.vue';
-
+import AppSectionGrid from '~/components/shared/AppSectionGrid.vue';
+import AppSectionHeader from '~/components/shared/AppSectionHeader.vue';
 import { CONSTRUCTOR_BLOCK_TITLE } from '~/constants';
 
 export default {

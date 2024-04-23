@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
+import AppButton from '~/components/shared/AppButton.vue';
+
 export default {
   name: 'AppFavoritesEmpty',
 

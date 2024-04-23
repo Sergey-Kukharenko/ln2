@@ -5,11 +5,11 @@
         <div class="multiply-navigation-list__item">
           <app-logo />
         </div>
-        <div class="multiply-navigation-list__item">
-          <app-trustbox />
-          <!--Временно скрыт-->
-          <!--<app-location />-->
-        </div>
+        <!--Временно скрыт-->
+        <!--        <div class="multiply-navigation-list__item">-->
+        <!--          <app-trustbox />-->
+        <!--          <app-location />-->
+        <!--        </div>-->
         <div class="multiply-navigation-list__item">
           <app-informer />
         </div>
@@ -22,18 +22,18 @@
 </template>
 
 <script>
-import AppLogo from '@/components/header/AppLogo';
+import AppInformer from '@/components/header/AppInformer.vue';
+import AppLogo from '@/components/header/AppLogo.vue';
 // import AppLocation from '@/components/header/location/AppLocation';
-import AppInformer from '@/components/header/AppInformer';
-import AppNavigationUser from '@/components/header/AppNavigationUser';
-import AppTrustbox from '~/components/ui/AppTrustbox.vue';
+// import AppTrustbox from '~/components/ui/AppTrustbox.vue';
+import AppNavigationUser from '@/components/header/AppNavigationUser.vue';
 
 export default {
   name: 'AppMenu',
 
   components: {
-    AppTrustbox,
     AppLogo,
+    // AppTrustbox,
     // AppLocation,
     AppInformer,
     AppNavigationUser
@@ -91,7 +91,7 @@ export default {
     }
 
     &:nth-child(3) {
-      margin: 0 78px 0 auto;
+      margin-left: auto;
     }
 
     //Временно скрыт

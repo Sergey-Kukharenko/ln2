@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { useClassNameProp } from '~/helpers';
 import AppBadge from '~/components/shared/AppBadge';
+import { useClassNameProp } from '~/helpers';
 
 export default {
   name: 'AppMenuSection',

@@ -13,7 +13,6 @@
 
 <script>
 import AppSearchBox from '~/components/header/search/AppSearchBox';
-
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 
 export default {

@@ -41,12 +41,11 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
-import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 import AppGalleryCard from '@/components/shared/AppGalleryCard.vue';
-
-import { useSizedImage } from '~/helpers';
 import AppCardTag from '~/components/shared/AppCardTag.vue';
 import AppCardTags from '~/components/shared/AppCardTags.vue';
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useSizedImage } from '~/helpers';
 
 const THUMBS_LOOP_LIMIT = 4;
 const THUMBS_CONTAINER_WIDTH = 276;

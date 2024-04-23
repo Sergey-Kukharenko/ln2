@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import { useSizedImage } from '~/helpers';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useSizedImage } from '~/helpers';
 
 export default {
   name: 'AppGalleryCard',

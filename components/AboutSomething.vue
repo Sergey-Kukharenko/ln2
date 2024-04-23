@@ -26,8 +26,7 @@
 </template>
 
 <script>
-import AppInfoCard from '~/components/info/AppInfoCard';
-
+import AppInfoCard from '~/components/info/AppInfoCard.vue';
 import { SOMETHING_IMPORTANT } from '~/data/about';
 
 export default {
@@ -89,8 +88,6 @@ export default {
   &__text {
     margin: 0;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -138,8 +135,6 @@ export default {
       &__text {
         margin: 0;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;

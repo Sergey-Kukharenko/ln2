@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader';
-import BasketInput from '~/components/BasketInput.vue';
 import BasketButton from '~/components/BasketButton.vue';
+import BasketInput from '~/components/BasketInput.vue';
+import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader.vue';
 
 export default {
   name: 'BasketProductCount',

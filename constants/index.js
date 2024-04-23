@@ -112,6 +112,12 @@ const ORDER_STATUS_TEXT = {
   failed: {
     title: 'Transaction failed',
     text: 'Please try again, or use a different payment method'
+  },
+  canceled: {
+    getTitle(orderId) {
+      return `The order #${orderId} is canceled`;
+    },
+    text: 'Please, try again'
   }
 };
 
@@ -289,6 +295,11 @@ const SUBSTITUTION_TEXT = `Our Bouquets are subject to availability. In the even
 The images of the Bouquets on our online shop are for illustrative purposes only. Although we have made every effort to display the colours accurately, we cannot guarantee that your computer's display of the colours accurately reflects the colour of the Bouquets. The colour of your Bouquet may vary slightly from those images.`;
 const SUBSTITUTION_TEXT_COUNT = { desktop: 251, mobile: 94 };
 
+const TOO_MANY_PROMOCODE_ATTEMPTS_MSG =
+  'There are too many failed attempts to enter a promo code. Try it in a minute, please.';
+
+const AB_TESTING_COOKIE = 'ab_testing';
+
 export {
   LIST_ITEM_VIEW_COUNT,
   FILTER_TYPES,
@@ -348,5 +359,7 @@ export {
   EMPTY_CART_MAP,
   EMPTY_GIFT_MAP,
   SUBSTITUTION_TEXT,
-  SUBSTITUTION_TEXT_COUNT
+  SUBSTITUTION_TEXT_COUNT,
+  TOO_MANY_PROMOCODE_ATTEMPTS_MSG,
+  AB_TESTING_COOKIE
 };

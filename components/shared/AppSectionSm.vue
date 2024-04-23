@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import AppSectionGridSm from '~/components/shared/AppSectionGridSm';
 import AppCardSm from '~/components/shared/AppCardSm';
+import AppSectionGridSm from '~/components/shared/AppSectionGridSm';
 import { useClassNameProp } from '~/helpers';
 
 export default {

@@ -8,10 +8,10 @@
 </template>
 
 <script>
+import AppCard from '@/components/shared/AppCard.vue';
+import AppSwiper from '@/components/ui/AppSwiper.vue';
 import dataBestsellers from '@/data/bestsellers';
 import AppSectionHeader from '~/components/shared/AppSectionHeader.vue';
-import AppSwiper from '@/components/ui/AppSwiper.vue';
-import AppCard from '@/components/shared/AppCard.vue';
 
 const { main, list } = dataBestsellers;
 

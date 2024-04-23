@@ -35,10 +35,10 @@
 </template>
 
 <script>
+import AppSizes from '@/components/card-product/AppSizes.vue';
+import AppBadges from '@/components/shared/AppBadges.vue';
+import AppButton from '@/components/shared/AppButton.vue';
 import { useToggleClassName } from '@/helpers';
-import AppSizes from '@/components/card-product/AppSizes';
-import AppButton from '@/components/shared/AppButton';
-import AppBadges from '@/components/shared/AppBadges';
 
 export default {
   name: 'AppFormSizes',

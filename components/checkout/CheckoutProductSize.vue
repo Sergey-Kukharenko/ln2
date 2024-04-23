@@ -18,11 +18,9 @@ export default {
 <style lang="scss" scoped>
 .size {
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  color: #7c7c7c;
+  color: $color-white-grey;
 
   @include lt-lg {
     font-size: 10px;

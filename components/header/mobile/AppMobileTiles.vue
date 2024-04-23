@@ -64,7 +64,7 @@ export default {
     width: 80px;
     height: 80px;
     text-align: center;
-    background: #f7f7f7;
+    background: $bg-grey;
     border-radius: 10px;
     padding: 11px 2px;
     box-sizing: border-box;

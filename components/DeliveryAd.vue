@@ -12,8 +12,7 @@
 </template>
 
 <script>
-import AppAdvertisingCard from '~/components/info/AppAdvertisingCard';
-
+import AppAdvertisingCard from '~/components/info/AppAdvertisingCard.vue';
 import { ADVERTISING } from '~/data/delivery';
 
 export default {

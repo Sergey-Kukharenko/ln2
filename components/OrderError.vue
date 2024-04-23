@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
+import AppButton from '~/components/shared/AppButton.vue';
 
 export default {
   name: 'OrderError',
@@ -79,8 +79,6 @@ export default {
 
   &__desc {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     text-align: center;

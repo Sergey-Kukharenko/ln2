@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AppEmailButton from '@/components/shared/AppEmailButton';
+import AppEmailButton from '@/components/shared/AppEmailButton.vue';
 
 export default {
   name: 'AppFooterFeedback',
@@ -100,10 +100,8 @@ export default {
 
   &__item-text {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     letter-spacing: -0.01em;
-    color: #7c7c7c;
+    color: $color-white-grey;
 
     @include gt-sm {
       font-size: 14px;

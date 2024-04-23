@@ -10,18 +10,23 @@ import BasketSwitch from '~/components/BasketSwitch.vue';
 
 export default {
   name: 'BasketProductLeaves',
+
   components: { BasketSwitch },
+
   model: {
     prop: 'value',
     event: 'change'
   },
+
   props: {
     value: {
       type: Boolean,
       default: false
     }
   },
+
   emits: ['change'],
+
   methods: {
     onChange() {
       this.$emit('change', !this.value);
@@ -38,8 +43,6 @@ export default {
   gap: 12px;
 
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   margin-top: 16px;

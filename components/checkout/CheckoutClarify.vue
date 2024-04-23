@@ -11,11 +11,13 @@
 </template>
 
 <script>
-import AppCheckbox from '~/components/shared/AppCheckbox';
+import Vue from 'vue';
+
+import AppCheckbox from '~/components/shared/AppCheckbox.vue';
 
 const CLARIFY_STATUS_NAME = 'clarify-status';
 
-export default {
+export default Vue.extend({
   CLARIFY_STATUS_NAME,
 
   name: 'CheckoutClarify',
@@ -49,8 +51,8 @@ export default {
 
   methods: {
     onChange(status) {
-      this.$store.dispatch('checkout/clarifyDelivery', { clarify_address: !!status });
+      this.$accessor.checkout.clarifyDelivery({ clarify_address: !!status });
     }
   }
-};
+});
 </script>

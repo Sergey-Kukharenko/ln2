@@ -32,13 +32,11 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
 import AppPersonalDataTerms from '~/components/header/auth/AppPersonalDataTerms';
+import AppButton from '~/components/shared/AppButton';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile';
-
+import { AUTH_REG_STEPS, AUTH_TYPES } from '~/constants/index';
 import authManager from '~/mixins/authManager';
-
-import { AUTH_TYPES, AUTH_REG_STEPS } from '~/constants/index';
 
 export default {
   name: 'AppNotReceived',
@@ -178,8 +176,6 @@ export default {
     .form {
       &__notice {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
@@ -212,8 +208,6 @@ export default {
           margin-bottom: 16px;
 
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           font-size: 14px;
           line-height: 20px;
           text-align: center;

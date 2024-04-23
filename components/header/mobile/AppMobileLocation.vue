@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import AppLocationButton from '@/components/header/location/AppLocationButton';
 import AppAddress from '@/components/header/address/AppAddress';
+import AppLocationButton from '@/components/header/location/AppLocationButton';
 import AppDrawerNested from '~/components/header/mobile/AppDrawerNested';
 
 export default {

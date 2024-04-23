@@ -13,9 +13,9 @@
       <checkout-final-details
         v-show="isFinalStep"
         :available-payment-methods="filteredAvailablePaymentMethods"
-        :payment-method="paymentMethod"
+        :payment-method="getPaymentMethod"
         :order-id="checkout?.id"
-        :price="checkoutPrice"
+        :price="checkoutCost"
         @addPayment="onAddPayment"
       />
     </div>
@@ -23,32 +23,33 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import Vue from 'vue';
 
-import CheckoutTitle from '~/components/checkout/CheckoutTitle';
-
-import authManager from '~/mixins/authManager';
+import CheckoutTitle from '~/components/checkout/CheckoutTitle.vue';
+import { EMPTY_CART_MAP } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtm from '~/mixins/gtm.vue';
 import * as paymentMethods from '~/data/payment-methods';
+import authManager from '~/mixins/authManager.vue';
+import gtm from '~/mixins/gtm.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutPage',
 
   components: {
     CheckoutTitle,
-    CheckoutDeliveryDetails: () => import('~/components/checkout/CheckoutDeliveryDetails'),
-    CheckoutFinalDetails: () => import('~/components/checkout/CheckoutFinalDetails')
+    CheckoutDeliveryDetails: () => import('~/components/checkout/CheckoutDeliveryDetails.vue'),
+    CheckoutFinalDetails: () => import('~/components/checkout/CheckoutFinalDetails.vue')
   },
 
   mixins: [authManager, gtm],
 
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave(to, _from, next) {
     const isStepChange = to.name === 'basket' && this.currCheckoutStep === 2;
 
     if (isStepChange) {
       next(false);
-      this.$store.dispatch('checkout/setCheckoutStep', 1);
+      this.$accessor.checkout.SET_STEP(1);
 
       return;
     }
@@ -67,29 +68,29 @@ export default {
 
   PAYMENT_METHODS: paymentMethods,
 
-  async fetch({ store }) {
+  async fetch({ app: { $accessor } }) {
     try {
-      await store.dispatch('checkout/fetchCheckout');
-      await store.dispatch('checkout/fetchIntervals');
-      await store.dispatch('payment/getClientIdPayPal');
+      await $accessor.checkout.fetchCheckout();
+      await $accessor.checkout.fetchIntervals();
+      await $accessor.payment.getClientIdPayPal();
     } catch (err) {
       console.error(err);
     }
   },
 
   computed: {
-    ...mapState('checkout', ['checkoutSteps', 'currCheckoutStep']),
-
-    ...mapGetters({
-      checkout: 'checkout/getCheckout',
-      checkoutPrice: 'checkout/checkoutCost',
-      isClarified: 'checkout/isClarified',
-      cart: 'cart/getCart',
-      todayDate: 'checkout/getTodayDate',
-      paymentMethod: 'payment/getPaymentMethod',
-      isDetailsStep: 'checkout/isDetailsStep',
-      isFinalStep: 'checkout/isFinalStep'
-    }),
+    ...accessorMapper('checkout', [
+      'checkoutSteps',
+      'currCheckoutStep',
+      'isClarified',
+      'isDetailsStep',
+      'isFinalStep',
+      'checkoutCost',
+      'checkout',
+      'todayDate'
+    ]),
+    ...accessorMapper('cart', ['getCart']),
+    ...accessorMapper('payment', ['getPaymentMethod']),
 
     isStatusPayment() {
       return this.checkout?.status === 'PAYMENT';
@@ -111,26 +112,20 @@ export default {
   },
 
   beforeDestroy() {
-    this.$store.dispatch('checkout/setCheckoutStep', 1);
+    this.$accessor.checkout.SET_STEP(1);
   },
 
   methods: {
-    ...mapActions({
-      setCheckoutToPay: 'checkout/setCheckoutToPay'
-    }),
-
-    initOrder() {
-      this.$fetch();
-    },
+    ...accessorMapper('checkout', ['setCheckoutToPay']),
 
     async submitCheckout() {
       await this.setCheckoutToPay();
 
-      this.$store.commit('cart/setCart', null);
+      this.$accessor.cart.SET_CART(EMPTY_CART_MAP);
     },
 
     gtmBeginCheckoutEvent() {
-      const items = this.cart.map((item) => ({
+      const items = this.getCart.map((item) => ({
         item_name: item.offer_title,
         item_id: item.offer_real_id,
         price: item.price,
@@ -157,7 +152,7 @@ export default {
       this.availablePaymentMethods[paymentMethodIndex].available = true;
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

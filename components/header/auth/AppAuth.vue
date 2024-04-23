@@ -30,13 +30,11 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
-import AppPersonalDataTerms from '~/components/header/auth/AppPersonalDataTerms';
-import AppGoBackMobile from '~/components/shared/AppGoBackMobile';
-
-import authManager from '~/mixins/authManager';
-
-import { AUTH_TYPES, AUTH_REG_STEPS } from '~/constants/index';
+import AppPersonalDataTerms from '~/components/header/auth/AppPersonalDataTerms.vue';
+import AppButton from '~/components/shared/AppButton.vue';
+import AppGoBackMobile from '~/components/shared/AppGoBackMobile.vue';
+import { AUTH_REG_STEPS, AUTH_TYPES } from '~/constants/index';
+import authManager from '~/mixins/authManager.vue';
 
 export default {
   name: 'AppAuth',
@@ -45,8 +43,8 @@ export default {
     AppButton,
     AppPersonalDataTerms,
     AppGoBackMobile,
-    AppNumberInput: () => import('~/components/shared/AppNumberInput'),
-    AppInput: () => import('~/components/shared/AppInput')
+    AppNumberInput: () => import('~/components/shared/AppNumberInput.vue'),
+    AppInput: () => import('~/components/shared/AppInput.vue')
   },
 
   mixins: [authManager],
@@ -108,7 +106,7 @@ export default {
       //   [this.currCodeType]: this.input.value,
       // });
 
-      // await this.$store.dispatch('auth/getOtp', payload);
+      // await this.$accessor.auth.getOtp(payload);
 
       this.changeStep({ status: AUTH_REG_STEPS.code.name, type: this.currCodeType });
       this.setReceiver(value);

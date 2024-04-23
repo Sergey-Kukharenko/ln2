@@ -26,7 +26,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #f7f7f7;
+  background: $bg-grey;
   border-radius: 10px;
   box-sizing: border-box;
   color: $color-dark-green;

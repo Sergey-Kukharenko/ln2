@@ -6,10 +6,12 @@
 </template>
 
 <script>
-import AppMobileList from '~/components/header/mobile/AppMobileList';
-import AppMobileSection from '~/components/header/mobile/AppMobileSection';
+import Vue from 'vue';
 
-export default {
+import AppMobileList from '~/components/header/mobile/AppMobileList.vue';
+import AppMobileSection from '~/components/header/mobile/AppMobileSection.vue';
+
+export default Vue.extend({
   name: 'AppMobileSubMenu',
 
   components: {
@@ -36,7 +38,7 @@ export default {
     },
 
     currSection() {
-      return this.$store.getters['category/getCategories']?.[this.sectionName];
+      return this.$accessor.category.getCategories?.[this.sectionName];
     }
   },
 
@@ -56,7 +58,7 @@ export default {
       });
     }
   }
-};
+});
 </script>
 
 <style lang="scss">

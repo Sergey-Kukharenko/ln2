@@ -72,39 +72,37 @@ export default {
     @include lt-md {
       margin-bottom: 4px;
     }
+  }
 
-    &-title {
-      font-family: $golos-regular;
-      font-weight: 400;
-      line-height: 20px;
-      color: $color-white-grey;
+  &__cost-title {
+    font-family: $golos-regular;
+    line-height: 20px;
+    color: $color-white-grey;
 
-      @include gt-sm {
-        font-size: 14px;
-        letter-spacing: -0.01em;
-      }
-
-      @include lt-md {
-        font-size: 12px;
-        letter-spacing: -0.02em;
-      }
+    @include gt-sm {
+      font-size: 14px;
+      letter-spacing: -0.01em;
     }
 
-    &-value {
-      font-family: $golos-medium;
-      font-weight: 400;
-      line-height: 20px;
-      color: $color-dark-grey;
+    @include lt-md {
+      font-size: 12px;
+      letter-spacing: -0.02em;
+    }
+  }
 
-      @include gt-sm {
-        font-size: 14px;
-        letter-spacing: -0.01em;
-      }
+  &__cost-value {
+    font-family: $golos-medium;
+    line-height: 20px;
+    color: $color-dark-grey;
 
-      @include lt-md {
-        font-size: 12px;
-        letter-spacing: -0.02em;
-      }
+    @include gt-sm {
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    @include lt-md {
+      font-size: 12px;
+      letter-spacing: -0.02em;
     }
   }
 
@@ -114,15 +112,15 @@ export default {
     border-top: 1px solid #dde0e6;
     padding-top: 16px;
     margin-top: 16px;
+  }
 
-    &-item {
-      font-family: $golos-medium;
-      font-size: 20px;
-      font-weight: 500;
-      line-height: 24px;
-      letter-spacing: -0.02em;
-      color: $color-dark-grey;
-    }
+  &__total-item {
+    font-family: $golos-medium;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    color: $color-dark-grey;
   }
 }
 </style>

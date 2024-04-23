@@ -22,10 +22,11 @@
 </template>
 
 <script>
-import AppList from './AppList';
+import AppList from './AppList.vue';
+
 import { woosMapService } from '@/services/woosMapService';
-import AppCitiesByDefault from '~/components/header/address/AppCitiesByDefault';
-import AppInput from '~/components/shared/AppInput';
+import AppCitiesByDefault from '~/components/header/address/AppCitiesByDefault.vue';
+import AppInput from '~/components/shared/AppInput.vue';
 
 export default {
   name: 'AppAddress',

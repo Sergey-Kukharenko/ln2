@@ -25,12 +25,11 @@
 </template>
 
 <script>
-import AppMenu from '~/components/header/menu/AppMenu';
-// import AppSearch from '~/components/header/search/AppSearch.vue';
-import AppCart from '@/components/header/AppCart.vue';
 import AppCall from '@/components/header/AppCall.vue';
-
+import AppCart from '@/components/header/AppCart.vue';
+import AppMenu from '~/components/header/menu/AppMenu.vue';
 import { desktopNavbar } from '~/data/nav-bar';
+// import AppSearch from '~/components/header/search/AppSearch.vue';
 
 export default {
   name: 'AppNavBar',

@@ -24,11 +24,13 @@
 </template>
 
 <script>
-import AppMenuDropdown from '~/components/header/menu/AppMenuDropdown';
-import AppMenuSections from '~/components/header/menu/AppMenuSections';
-import AppMenuSection from '~/components/header/menu/AppMenuSection';
+import Vue from 'vue';
 
-export default {
+import AppMenuDropdown from '~/components/header/menu/AppMenuDropdown.vue';
+import AppMenuSection from '~/components/header/menu/AppMenuSection.vue';
+import AppMenuSections from '~/components/header/menu/AppMenuSections.vue';
+
+export default Vue.extend({
   name: 'AppMenuNavigation',
 
   components: { AppMenuSection, AppMenuSections, AppMenuDropdown },
@@ -42,7 +44,7 @@ export default {
 
   computed: {
     categories() {
-      return this.$store.getters['category/getCategories'];
+      return this.$accessor.category.getCategories;
     }
   },
 
@@ -73,7 +75,7 @@ export default {
     getSection(title) {
       const name = title.toLowerCase().split(' ').join('-');
 
-      return this.$store.getters['category/getCategories']?.[name] ?? [];
+      return this.$accessor.category.getCategories?.[name] ?? [];
     },
 
     isSectionHasItems(title) {
@@ -84,7 +86,7 @@ export default {
       return this.getSection(title).some((el) => el.list);
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -137,7 +139,7 @@ export default {
   cursor: pointer;
 
   &.color-pink {
-    color: #f63866;
+    color: $color-link-pink;
   }
 
   &__icon {

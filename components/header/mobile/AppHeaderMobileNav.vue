@@ -15,21 +15,23 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
-export default {
+export default Vue.extend({
   name: 'AppHeaderMobileNav',
 
   inject: ['closeMenu'],
 
   computed: {
-    ...mapGetters({ navigation: 'layout/getNavigation' }),
+    navigation() {
+      return this.$accessor.layout.getNavigation;
+    },
 
     navigationList() {
       return [...this.navigation?.main, ...this.navigation?.other];
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import AppReviewsList from '@/components/card-product/AppReviewsList';
-import AppButton from '@/components/shared/AppButton';
+import AppReviewsList from '@/components/card-product/AppReviewsList.vue';
+import AppButton from '@/components/shared/AppButton.vue';
 import { useSortArrayBy, useToggleClassName } from '@/helpers';
 
 export default {

@@ -14,10 +14,8 @@ export default {
 <style lang="scss" scoped>
 .info {
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   text-align: center;
-  color: #7c7c7c;
+  color: $color-white-grey;
 
   @include gt-sm {
     font-size: 14px;

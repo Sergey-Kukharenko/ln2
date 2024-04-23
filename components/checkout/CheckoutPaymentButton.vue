@@ -5,9 +5,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import Vue from 'vue';
 
-export default {
+import { accessorMapper } from '~/store';
+
+export default Vue.extend({
   name: 'CheckoutPaymentButton',
 
   props: {
@@ -34,9 +36,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      setCheckoutToPay: 'checkout/setCheckoutToPay'
-    }),
+    ...accessorMapper('checkout', ['setCheckoutToPay']),
 
     async submitCheckout() {
       if (this.loading) {
@@ -48,7 +48,7 @@ export default {
       await this.$router.push({ name: 'payment-stripe' });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

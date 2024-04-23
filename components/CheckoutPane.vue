@@ -82,7 +82,6 @@ export default {
     color: $color-dark-green;
 
     font-family: $golos-regular;
-    font-weight: 400;
     font-size: 12px;
     line-height: 15.6px;
   }

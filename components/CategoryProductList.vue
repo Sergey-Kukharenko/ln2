@@ -20,18 +20,19 @@
 </template>
 
 <script>
-import AppPagination from '@/components/shared/AppPagination.vue';
-import AppGrid from '@/components/shared/AppGrid.vue';
-import AppCard from '@/components/shared/AppCard.vue';
+import Vue from 'vue';
 
-import { PAGINATION, CATEGORY_PRODUCT_TYPES } from '~/constants';
-import { usePaginationTotalPages } from '~/helpers';
+import AppCard from '@/components/shared/AppCard.vue';
+import AppGrid from '@/components/shared/AppGrid.vue';
+import AppPagination from '@/components/shared/AppPagination.vue';
+import { CATEGORY_PRODUCT_TYPES, PAGINATION } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
-import gtm from '~/mixins/gtm';
+import { usePaginationTotalPages } from '~/helpers';
+import gtm from '~/mixins/gtm.vue';
 
 const [CATEGORY] = CATEGORY_PRODUCT_TYPES;
 
-export default {
+export default Vue.extend({
   name: 'CategoryProductList',
 
   components: {
@@ -111,7 +112,7 @@ export default {
         }
       };
 
-      await this.$store.dispatch(`category/fetchCategory`, payload);
+      await this.$accessor.category.fetchCategory(payload);
 
       this.loading = false;
 
@@ -149,7 +150,7 @@ export default {
       this.gtmItemListEvent();
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

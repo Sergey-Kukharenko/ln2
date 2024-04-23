@@ -17,8 +17,6 @@ export default {
 <style lang="scss" scoped>
 .color {
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: $color-white-grey;

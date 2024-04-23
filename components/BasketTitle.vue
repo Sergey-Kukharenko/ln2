@@ -4,26 +4,21 @@
       <div class="title">
         <div class="title__label">Basket</div>
         <!--Временно скрыт-->
-        <div class="title__rating" style="display: none">
-          <div class="title__stars">
-            <svg-icon v-for="(_, index) in 5" :key="index" name="star" class="title__icon-star" />
-          </div>
-          <div class="title__star">
-            <img src="~/assets/sprite/svg/star.svg" width="16" height="16" alt="star" />
-            <div class="title__star-rating">{{ rating }}</div>
-          </div>
-          <div class="title__reviews">{{ reviews.toLocaleString('ru') }} reviews</div>
-        </div>
-        <app-fake-trustpilot v-if="$device.isMobileOrTablet" hide-text />
+        <!--<basket-rating :reviews="reviews" :rating="rating" />-->
+        <!--<app-fake-trustpilot v-if="$device.isMobileOrTablet" hide-text />-->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// import BasketRating from '~/components/BasketRating.vue';
+
 export default {
   name: 'BasketTitle',
-  components: { AppFakeTrustpilot: () => import('~/components/fake-trustpilot/AppFakeTrustpilot.vue') },
+
+  // components: { BasketRating, AppFakeTrustpilot: () => import('~/components/fake-trustpilot/AppFakeTrustpilot.vue') },
+
   data() {
     return {
       reviews: 13074,
@@ -65,66 +60,6 @@ export default {
       font-size: 20px;
       line-height: 24px;
     }
-  }
-
-  &__rating {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 12px;
-
-    @include lt-lg {
-      gap: 8px;
-    }
-  }
-
-  &__reviews {
-    font-family: $golos-regular;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 22px;
-    color: #7c7c7c;
-    letter-spacing: -0.01em;
-
-    @include lt-lg {
-      font-size: 12px;
-      line-height: 21px;
-    }
-  }
-
-  &__stars {
-    display: flex;
-    flex-direction: row;
-
-    @include lt-lg {
-      display: none;
-    }
-  }
-
-  &__star {
-    display: flex;
-    flex-direction: row;
-    gap: 2px;
-
-    & > img {
-      margin-top: 1px;
-    }
-
-    @include gt-md {
-      display: none;
-    }
-  }
-
-  &__star-rating {
-    font-family: $golos-bold;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-  }
-
-  &__icon-star {
-    width: 20px;
-    height: 20px;
   }
 }
 

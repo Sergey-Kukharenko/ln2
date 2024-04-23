@@ -7,21 +7,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
-import CheckoutProductList from '~/components/checkout/CheckoutProductList';
-import CheckoutOrderItems from '~/components/checkout/CheckoutOrderItems';
+import CheckoutOrderItems from '~/components/checkout/CheckoutOrderItems.vue';
+import CheckoutProductList from '~/components/checkout/CheckoutProductList.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutDetails',
 
   components: { CheckoutProductList, CheckoutOrderItems },
 
   computed: {
-    ...mapGetters({
-      checkoutPositions: 'checkout/checkoutPositions',
-      checkoutCost: 'checkout/checkoutCost'
-    }),
+    ...accessorMapper('checkout', ['checkoutPositions', 'checkoutCost']),
 
     positionsCount() {
       return this.checkoutPositions?.length;
@@ -38,7 +36,7 @@ export default {
       };
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

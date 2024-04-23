@@ -1,4 +1,4 @@
-import { API_URL, API_KEY } from '~/constants/locations';
+import { API_KEY, API_URL } from '~/constants/locations';
 import { changeSuggestionLine } from '~/helpers/locations';
 
 async function idealPostcodesList(query) {

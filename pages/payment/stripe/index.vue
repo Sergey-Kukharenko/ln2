@@ -36,23 +36,23 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import Vue from 'vue';
 
-import AppLogo from '~/components/header/AppLogo';
-import AppButton from '~/components/shared/AppButton';
-import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader';
-
-import { STRIPE } from '~/constants/payment';
 import PaymentErrorModal from '~/components/PaymentErrorModal.vue';
+import AppLogo from '~/components/header/AppLogo.vue';
+import AppButton from '~/components/shared/AppButton.vue';
+import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader.vue';
+import { STRIPE } from '~/constants/payment';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'StripePage',
 
   components: {
     PaymentErrorModal,
     StripeElementPayment: () =>
       import('@vue-stripe/vue-stripe').then(({ StripeElementPayment }) => StripeElementPayment),
-    AppLoadingDots: () => import('@/components/shared/AppLoadingDots'),
+    AppLoadingDots: () => import('@/components/shared/AppLoadingDots.vue'),
     AppSpinnerLoader,
     AppButton,
     AppLogo
@@ -113,7 +113,7 @@ export default {
   },
 
   computed: {
-    ...mapState('payment', ['paymentIntent']),
+    ...accessorMapper('payment', ['paymentIntent']),
 
     confirmParams() {
       return {
@@ -145,6 +145,8 @@ export default {
   },
 
   methods: {
+    ...accessorMapper('payment', ['fetchStripeClientSecret']),
+
     closePaymentErrorModal() {
       this.$router.push({ name: 'order-id', params: { id: this.orderId } });
     },
@@ -170,7 +172,7 @@ export default {
 
     async generatePaymentIntent() {
       try {
-        const { client_secret: clientSecret } = await this.$store.dispatch('payment/fetchStripeClientSecret');
+        const { client_secret: clientSecret } = await this.fetchStripeClientSecret();
 
         this.elementsOptions.clientSecret = clientSecret;
       } catch (err) {
@@ -202,7 +204,7 @@ export default {
       this.$router.push({ name: 'preorder-id', params: { id: this.orderId } });
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -241,30 +243,29 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 24px;
+  }
 
-    &-close-icon {
-      cursor: pointer;
-      height: 24px;
-      display: block;
-      padding-bottom: 16px;
-      width: 24px;
-      opacity: 0.5;
-      transition: 0.25s opacity ease-in;
+  &__logo-close-icon {
+    cursor: pointer;
+    height: 24px;
+    display: block;
+    padding-bottom: 16px;
+    width: 24px;
+    opacity: 0.5;
+    transition: 0.25s opacity ease-in;
 
-      &:hover {
-        opacity: 1;
-      }
+    &:hover {
+      opacity: 1;
+    }
 
-      @include lt-md {
-        opacity: 1;
-        margin-right: 17px;
-      }
+    @include lt-md {
+      opacity: 1;
+      margin-right: 17px;
     }
   }
 
   &__price {
     font-family: $golos-medium;
-    // font-size: ;
   }
 
   &__icon {

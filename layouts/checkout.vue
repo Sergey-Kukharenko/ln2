@@ -13,13 +13,14 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import Vue from 'vue';
 
-import CheckoutHeader from '~/components/checkout/CheckoutHeader';
-import CheckoutFooterBottom from '~/components/checkout/CheckoutFooterBottom';
 import CheckoutDetails from '~/components/checkout/CheckoutDetails.vue';
+import CheckoutFooterBottom from '~/components/checkout/CheckoutFooterBottom.vue';
+import CheckoutHeader from '~/components/checkout/CheckoutHeader.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutLayout',
 
   components: {
@@ -31,9 +32,9 @@ export default {
   middleware: ['auth'],
 
   computed: {
-    ...mapState('checkout', ['isDetailsVisible'])
+    ...accessorMapper('checkout', ['isDetailsVisible'])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

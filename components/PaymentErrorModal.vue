@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import AppModal from '~/components/shared/AppModal';
-import AppButton from '@/components/shared/AppButton';
+import AppButton from '@/components/shared/AppButton.vue';
+import AppModal from '~/components/shared/AppModal.vue';
 import { PAYMENT_ERROR_MESSAGE } from '~/constants/payment';
 
 export default {

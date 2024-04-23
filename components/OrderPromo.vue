@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import AppButton from '~/components/shared/AppButton';
-import AppStoreButton from '~/components/shared/AppStoreButton';
+import AppButton from '~/components/shared/AppButton.vue';
+import AppStoreButton from '~/components/shared/AppStoreButton.vue';
 
 export default {
   name: 'OrderPromo',
@@ -120,8 +120,6 @@ export default {
         align-items: center;
         gap: 4px;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
@@ -194,8 +192,6 @@ export default {
 
     max-width: 94px;
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 11px;
     line-height: 16px;
     letter-spacing: -0.01em;

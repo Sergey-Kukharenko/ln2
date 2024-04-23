@@ -125,11 +125,9 @@ export default {
     display: none;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 20px;
     line-height: 16px;
-    color: #1f2226;
+    color: $color-dark-grey;
 
     @include lt-lg {
       display: flex;

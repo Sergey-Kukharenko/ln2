@@ -42,9 +42,9 @@
 </template>
 
 <script>
+import dataCategoryFilters from '~/data/category-filters';
 import dataCategoryProducts from '~/data/category-products';
 import dataCategorySorting from '~/data/category-sorting';
-import dataCategoryFilters from '~/data/category-filters';
 
 export default {
   name: 'CategoryPage',
@@ -189,8 +189,6 @@ export default {
 
       &__header-title {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;

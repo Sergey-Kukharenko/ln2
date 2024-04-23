@@ -42,7 +42,7 @@ export default {
   },
 
   methods: {
-    goToPath(path) {
+    goToPath(_path) {
       // Временно скрыт
       // this.$router.push({ path });
     }

@@ -20,14 +20,15 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import Vue from 'vue';
 
-import AppLogo from '~/components/header/AppLogo';
-import CheckoutGoBackButton from '~/components/checkout/CheckoutGoBackButton';
-import CheckoutTotal from '~/components/checkout/CheckoutTotal';
-import CheckoutDetailsButton from '~/components/checkout/CheckoutDetailsButton';
+import CheckoutDetailsButton from '~/components/checkout/CheckoutDetailsButton.vue';
+import CheckoutGoBackButton from '~/components/checkout/CheckoutGoBackButton.vue';
+import CheckoutTotal from '~/components/checkout/CheckoutTotal.vue';
+import AppLogo from '~/components/header/AppLogo.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'CheckoutHeader',
 
   components: {
@@ -45,10 +46,9 @@ export default {
   },
 
   computed: {
-    ...mapState('checkout', ['currCheckoutStep', 'checkoutSteps']),
-    ...mapGetters({ checkoutCost: 'checkout/checkoutCost' })
+    ...accessorMapper('checkout', ['currCheckoutStep', 'checkoutSteps', 'checkoutCost'])
   }
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -3,13 +3,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import CategoryWrapper from '~/components/CategoryWrapper';
+import Vue from 'vue';
+
+import CategoryWrapper from '~/components/CategoryWrapper.vue';
 import { CATEGORY_PRODUCT_TYPES, PAGINATION } from '~/constants';
+import { accessorMapper } from '~/store';
 
 const [CATEGORY] = CATEGORY_PRODUCT_TYPES;
 
-export default {
+export default Vue.extend({
   name: 'CategoryPage',
 
   components: {
@@ -20,7 +22,7 @@ export default {
     const { slug } = this.$route.params;
     const type = CATEGORY.toLocaleLowerCase();
 
-    await this.$store.dispatch('category/fetchCategory', {
+    await this.$accessor.category.fetchCategory({
       type,
       slug,
       params: {
@@ -45,13 +47,11 @@ export default {
   CATEGORY,
 
   computed: {
-    ...mapGetters({
-      getCategory: 'category/getCategory'
-    }),
+    ...accessorMapper('category', ['getCategory']),
 
     categorySeo() {
       return this.getCategory?.seo;
     }
   }
-};
+});
 </script>

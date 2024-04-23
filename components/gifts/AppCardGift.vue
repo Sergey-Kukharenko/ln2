@@ -13,7 +13,6 @@
     </div>
     <div class="card-gift__content">
       <div class="card-gift__price">£ {{ gift.price }}</div>
-
       <basket-product-count
         v-if="isQty"
         :is-loading="isLoading"
@@ -27,14 +26,16 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import AppButton from '~/components/shared/AppButton.vue';
+import Vue from 'vue';
+
 import BasketProductCount from '~/components/BasketProductCount.vue';
-import { useSizedImage } from '~/helpers';
+import AppButton from '~/components/shared/AppButton.vue';
 import AppImage from '~/components/shared/AppImage.vue';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useSizedImage } from '~/helpers';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppCardGift',
 
   components: { AppImage, AppButton, BasketProductCount },
@@ -47,8 +48,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isLoadingHttp']),
-
     changeableStretch() {
       return this.$device.isMobileOrTablet ? 'full' : 'fix';
     },
@@ -75,7 +74,7 @@ export default {
     },
 
     isLoading() {
-      return this.isLoadingHttp(`/basket/${this.gift.id}/${this.gift.position_name}`);
+      return this.$accessor.isLoadingHttp(`/basket/${this.gift.id}/${this.gift.position_name}`);
     },
 
     imgSize() {
@@ -85,11 +84,9 @@ export default {
 
   methods: {
     useSizedImage,
-    ...mapActions({
-      addToCart: 'cart/addToCart',
-      removeFromCart: 'cart/removeFromCart',
-      fetchGifts: 'gifts/fetchGifts'
-    }),
+
+    ...accessorMapper('cart', ['addToCart', 'removeFromCart']),
+    ...accessorMapper('gifts', ['fetchGifts']),
 
     async onAddGift() {
       const payload = {
@@ -103,7 +100,7 @@ export default {
   },
 
   IMG_SIZES_MAP
-};
+});
 </script>
 
 <style scoped lang="scss">

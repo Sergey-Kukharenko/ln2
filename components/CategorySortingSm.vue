@@ -23,7 +23,8 @@
 <script>
 import vClickOutside from 'v-click-outside';
 import Teleport from 'vue2-teleport';
-import AppRadio from '~/components/shared/AppRadio';
+
+import AppRadio from '~/components/shared/AppRadio.vue';
 
 export default {
   name: 'CategorySortingSm',
@@ -114,12 +115,10 @@ export default {
 
         height: 64px;
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
-        color: #1f2226;
+        color: $color-dark-grey;
         user-select: none;
         cursor: default;
 

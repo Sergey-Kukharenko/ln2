@@ -121,8 +121,6 @@ export default {
 
   &__body {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -131,7 +129,7 @@ export default {
     margin-top: 8px;
 
     @include lt-md {
-      color: #7c7c7c;
+      color: $color-white-grey;
     }
   }
 

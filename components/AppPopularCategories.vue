@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import AppTimer from '@/components/shared/AppTimer';
+import AppTimer from '@/components/shared/AppTimer.vue';
 
 export default {
   components: {

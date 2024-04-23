@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CheckoutSteps from '~/components/checkout/CheckoutSteps';
+import CheckoutSteps from '~/components/checkout/CheckoutSteps.vue';
 
 export default {
   name: 'CheckoutTotal',

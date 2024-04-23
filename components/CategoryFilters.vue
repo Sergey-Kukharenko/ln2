@@ -15,7 +15,6 @@
 
 <script>
 import { FILTER_TYPES } from '~/constants';
-
 import dataCategoryFilters from '~/data/category-filters';
 
 export default {

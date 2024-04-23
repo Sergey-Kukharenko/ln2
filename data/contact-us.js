@@ -44,7 +44,7 @@ const SOMETHING_IMPORTANT = {
     {
       social: [
         {
-          url: 'https://www.facebook.com/MyFlowersUK/?mibextid=ZbWKwL',
+          url: 'https://www.facebook.com/myflowers.co.uk/',
           icon: 'social-facebook'
         },
         // {

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import pathToImage from '~/mixins/pathToImage';
+import pathToImage from '~/mixins/pathToImage.vue';
 
 const IMAGE_INITIAL_SIZES = {
   desktop: {
@@ -134,8 +134,6 @@ export default {
 
     &__text {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;
@@ -168,8 +166,6 @@ export default {
           box-sizing: border-box;
           padding: 8px 16px;
           font-family: $golos-regular;
-          font-style: normal;
-          font-weight: 400;
           font-size: 14px;
           line-height: 20px;
           letter-spacing: -0.01em;

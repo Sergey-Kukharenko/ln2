@@ -9,14 +9,15 @@
 </template>
 
 <script>
-import AppFooter from '@/components/footer/AppFooter';
-import AppNotification from '~/components/header/AppNotification';
+import AppFooter from '@/components/footer/AppFooter.vue';
+import AppNotification from '~/components/header/AppNotification.vue';
+
 export default {
   name: 'CustomLayout',
 
   components: {
-    AppHeader: () => import('@/components/header/AppHeader'),
-    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile'),
+    AppHeader: () => import('@/components/header/AppHeader.vue'),
+    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile.vue'),
     AppFooter,
     AppNotification
   }

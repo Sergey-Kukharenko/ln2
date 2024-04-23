@@ -96,6 +96,15 @@ export const actions = {
       console.error(e);
     }
   },
+
+  async fetchPopularCategories({ commit }) {
+    try {
+      const popularCategories = await this.$http.$get('/v1/popular-categories/');
+      commit('setField', { name: 'popularCategories', value: popularCategories });
+    } catch (e) {
+      console.error(e);
+    }
+  },
   // Home page - end
 
   // Checkout - start
@@ -106,6 +115,32 @@ export const actions = {
     } catch (err) {
       console.error(err);
     }
-  }
+  },
   // Checkout - end
+
+  // Product - start
+  async fetchSimilarBouquets({ commit }) {
+    try {
+      const similarBouquets = await this.$http.$get('/v1/similar-bouquets/');
+      commit('setField', { name: 'similarBouquets', value: similarBouquets });
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  // Product - end
+
+  // User - start
+  setAuthData({ commit }, payload) {
+    commit('setField', { name: 'authorized', value: true });
+    commit('setField', { name: 'user', value: payload });
+  },
+
+  logout({ commit }) {
+    commit('setField', { name: 'authorized', value: false });
+  },
+
+  setRecipient({ commit }, payload) {
+    commit('setField', { name: 'recipient', value: payload });
+  }
+  // User  - end
 };

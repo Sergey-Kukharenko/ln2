@@ -1,6 +1,8 @@
-import { useSizedImage } from '../helpers';
 import { IMG_SIZES_MAP } from '../constants/image-sizes';
+import { useSizedImage } from '../helpers';
+
 import env from './env';
+
 const axios = require('axios');
 
 const getHttpEndpoint = async (path) => {

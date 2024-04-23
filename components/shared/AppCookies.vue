@@ -10,12 +10,12 @@
             <div class="figcaption-container">
               <div class="figcaption-container__title" @click.stop>Our cookie usage</div>
               <div class="figcaption-container__text" @click.stop>
-                Using our site means you agree with our
+                By clicking ACCEPT , you agree with our
                 <a href="/files/cookie-policy.pdf" target="_blank" class="link">Cookie Policy</a> and
-                <a href="/privacy-policy" target="_blank" class="link">Privacy Policy</a> (Click to read).
+                <a href="/privacy-policy" target="_blank" class="link">Privacy Policy</a>
               </div>
             </div>
-            <app-button theme="yellow-whitely" size="x-lg" class="cookies-button">Close</app-button>
+            <app-button theme="yellow-whitely" size="x-lg" class="cookies-button">Accept</app-button>
           </div>
         </div>
       </div>
@@ -31,9 +31,28 @@ export default {
 
   components: { AppButton },
 
+  mounted() {
+    this.addGtagScript();
+  },
+
   methods: {
     setCookie() {
       this.$emit('setCookie');
+    },
+
+    addGtagScript() {
+      const head = document.head;
+      const script = document.createElement('script');
+
+      script.innerHTML = `
+        gtag('consent', 'default', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+          });
+      `;
+      head.appendChild(script);
     }
   }
 };

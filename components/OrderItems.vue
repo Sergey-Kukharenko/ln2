@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { useSizedImage } from '~/helpers';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useSizedImage } from '~/helpers';
 
 export default {
   name: 'OrderItems',
@@ -66,10 +66,7 @@ export default {
 
     &__text {
       flex: 1;
-
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.01em;

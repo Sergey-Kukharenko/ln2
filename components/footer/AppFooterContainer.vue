@@ -37,14 +37,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
-import AppFooterSection from '@/components/footer/AppFooterSection';
-import AppFooterFeedback from '@/components/footer/AppFooterFeedback';
-import AppEmailButton from '@/components/shared/AppEmailButton';
+import AppFooterFeedback from '@/components/footer/AppFooterFeedback.vue';
+import AppFooterSection from '@/components/footer/AppFooterSection.vue';
+import AppEmailButton from '@/components/shared/AppEmailButton.vue';
 import AppBestOffer from '~/components/AppBestOffer.vue';
+import { accessorMapper } from '~/store';
 
-export default {
+export default Vue.extend({
   name: 'AppFooterContainer',
 
   components: {
@@ -55,9 +56,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ footer: 'layout/getFooter' })
+    ...accessorMapper('layout', ['footer'])
   }
-};
+});
 </script>
 
 <style scoped lang="scss">
@@ -133,8 +134,6 @@ export default {
 
     &__text {
       font-family: $golos-regular;
-      font-style: normal;
-      font-weight: 400;
       font-size: 12px;
       line-height: 16px;
       text-align: center;
@@ -152,7 +151,6 @@ export default {
 
   &__text {
     font-family: $golos-regular;
-    font-weight: 400;
 
     @include gt-xs {
       max-width: 214px;
@@ -195,9 +193,10 @@ export default {
 
 .group-lists {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
 
   @include gt-sm {
+    gap: 50px;
     flex-basis: 482px;
   }
 
@@ -210,8 +209,8 @@ export default {
     display: block;
   }
 
-  &__item:not(:first-child) {
-    display: none;
-  }
+  // &__item:last-child {
+  //   display: none;
+  // }
 }
 </style>

@@ -31,8 +31,8 @@
   </div>
 </template>
 <script>
-import AppStars from '@/components/shared/AppStars';
 import AppLike from '@/components/shared/AppLike';
+import AppStars from '@/components/shared/AppStars';
 
 export default {
   name: 'AppReviewsList',

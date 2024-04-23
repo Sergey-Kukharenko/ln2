@@ -36,6 +36,7 @@
 
 <script>
 import vClickOutside from 'v-click-outside';
+
 import { useScrollLockToggle } from '~/helpers';
 
 export default {
@@ -108,7 +109,7 @@ export default {
     close(event) {
       if (
         !event ||
-        !['app-select__field', 'app-select__label', 'app-select__choose'].includes(event.target.classList[0])
+        !['app-select__field', 'app-select__label', 'app-select__choose'].includes(event.target.classList?.[0])
       ) {
         this.isOpened = false;
       }
@@ -144,8 +145,6 @@ export default {
     user-select: none;
 
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;

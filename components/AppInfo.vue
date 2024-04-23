@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { useObjectNotEmpty, useDeepCopyObject } from '~/helpers';
+import { useDeepCopyObject, useObjectNotEmpty } from '~/helpers';
 
 export default {
   name: 'AppInfo',
@@ -131,8 +131,6 @@ ul {
 
   &__head-list {
     font-family: $golos-regular;
-    font-style: normal;
-    font-weight: 400;
     color: $color-dark-grey;
 
     @include gt-sm {
@@ -200,10 +198,8 @@ ul {
           display: flex;
           justify-content: space-between;
           align-items: center;
-
           font-size: 14px;
           line-height: 20px;
-
           margin-bottom: 8px;
         }
       }
@@ -223,11 +219,8 @@ ul {
 
       &__text {
         font-family: $golos-regular;
-        font-style: normal;
-        font-weight: 400;
         color: $color-dark-grey;
         white-space: pre-line;
-
         margin-bottom: 8px;
 
         @include gt-sm {

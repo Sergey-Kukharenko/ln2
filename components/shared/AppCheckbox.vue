@@ -73,8 +73,6 @@ export default {
   max-width: 100%;
 
   font-family: $golos-regular;
-  font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.01em;
