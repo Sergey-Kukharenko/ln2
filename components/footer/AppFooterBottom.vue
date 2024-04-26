@@ -1,6 +1,6 @@
 <template>
   <div class="footer-bottom">
-    <div class="layout layout--horizontal-dt">
+    <div class="layout-footer layout--horizontal-dt">
       <div class="footer-bottom__content">
         <app-payment />
         <div>
@@ -49,6 +49,11 @@ export default Vue.extend({
       align-items: center;
     }
   }
+}
+
+.layout-footer {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .text {

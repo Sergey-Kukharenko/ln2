@@ -74,6 +74,7 @@ export default {
     flex-direction: column;
 
     @include gt-sm {
+      margin-top: 6px;
       gap: 16px;
     }
 

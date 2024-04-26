@@ -1,6 +1,6 @@
 <template>
   <div class="footer-main">
-    <div class="layout layout--horizontal-dt">
+    <div class="layout-footer layout--horizontal-dt">
       <div class="footer-container container">
         <div class="email-form">
           <app-best-offer rounded-top />
@@ -68,11 +68,17 @@ export default Vue.extend({
   }
 }
 
+.layout-footer {
+  max-width: 1190px;
+  margin: 0 auto;
+}
+
 .footer-container {
   @include gt-sm {
     display: flex;
     justify-content: space-between;
     padding: 48px 0 24px;
+    gap: 64px;
   }
 
   @include lt-md {
@@ -142,6 +148,12 @@ export default Vue.extend({
     }
   }
 
+  &__logo {
+    @include gt-xs {
+      margin-top: 7px;
+    }
+  }
+
   &__logo-icon {
     @include gt-xs {
       width: 133.96px;
@@ -154,9 +166,10 @@ export default Vue.extend({
 
     @include gt-xs {
       max-width: 214px;
-      font-size: 15px;
-      line-height: 24px;
-      margin-top: 9px;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: -0.01em;
+      margin-top: 15px;
     }
 
     @include lt-md {
@@ -193,11 +206,10 @@ export default Vue.extend({
 
 .group-lists {
   display: flex;
-  // justify-content: space-between;
 
   @include gt-sm {
+    flex: 1;
     gap: 50px;
-    flex-basis: 482px;
   }
 
   @include sm {

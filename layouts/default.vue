@@ -40,7 +40,7 @@ export default Vue.extend({
 
   data() {
     return {
-      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate']
+      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount']
     };
   },
 

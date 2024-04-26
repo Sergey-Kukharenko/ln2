@@ -25,8 +25,8 @@ export default {
 
   @include gt-sm {
     align-items: center;
-    margin-bottom: 2px;
-    column-gap: 12px;
+    column-gap: 36px;
+    margin: 0 20px 2px 0;
   }
 
   @include lt-md {

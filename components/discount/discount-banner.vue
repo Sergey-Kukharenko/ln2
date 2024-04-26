@@ -46,6 +46,7 @@ export default {
   display: flex;
   align-items: center;
   height: 100%;
+  box-sizing: border-box;
 
   @include lt-sm {
     padding: 0 16px;

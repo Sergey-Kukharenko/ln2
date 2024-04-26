@@ -47,19 +47,18 @@ export default {
 
   &__title {
     font-family: $golos-bold;
-    letter-spacing: 0.03px;
+    font-size: 16px;
 
     @include gt-xs {
-      font-size: 20px;
-      line-height: 24px;
+      line-height: 20px;
     }
 
     @include xs {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 16px;
       cursor: pointer;
+      letter-spacing: 0.03px;
 
       &:after {
         content: '';
@@ -115,14 +114,12 @@ export default {
   &__item {
     display: block;
     font-family: $golos-regular;
-    font-size: 14px;
-    line-height: 20px;
     letter-spacing: -0.01em;
     color: $color-dark-grey;
 
     @include gt-xs {
-      font-size: 15px;
-      line-height: 24px;
+      font-size: 14px;
+      line-height: 20px;
       padding: 6px 0;
     }
 

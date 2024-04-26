@@ -29,7 +29,16 @@ const useSortArrayBy = (array, value, prop) => {
 };
 
 const useBreadCrumbs = (route) => {
-  const unusedRoutes = ['index', 'category-slug', 'filter-slug', 'delivery', 'gifts', 'become-affiliate'];
+  const unusedRoutes = [
+    'index',
+    'category-slug',
+    'filter-slug',
+    'delivery',
+    'gifts',
+    'become-affiliate',
+    'youthdiscount',
+    'seniordiscount'
+  ];
   const replacementPathList = ['product', 'articles'];
   const replacePath = (array, path, newPath) => (array.includes(path) ? newPath : path);
 
