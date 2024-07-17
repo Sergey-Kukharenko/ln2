@@ -1,13 +1,13 @@
 <template>
   <div class="card-gift">
-    <nuxt-link :to="{ name: 'product-id', params: { id: gift.slug } }" class="card-gift__figure">
+    <div class="card-gift__figure">
       <app-image
         :path="useSizedImage({ realId: gift.real_id, sizeName: imgSize, imgName: gift.img })"
         :alt="gift.title"
         lazy
         class="card-gift__figure-image"
       />
-    </nuxt-link>
+    </div>
     <div class="card-gift__title">
       {{ gift.title }}
     </div>
@@ -19,6 +19,8 @@
         :count.sync="count"
         theme="turquoise"
         advanced-styles-theme="gift"
+        :disable-increment="gift.is_free_gift"
+        green-input
       />
       <app-button v-else theme="turquoise" size="xs" :stretch="changeableStretch" @click="onAddGift">Add</app-button>
     </div>

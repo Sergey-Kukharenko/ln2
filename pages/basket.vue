@@ -34,5 +34,9 @@ export default Vue.extend({
   computed: {
     ...accessorMapper('cart', ['cartPending', 'isCartExist'])
   }
+
+  // created() {
+  //   this.$accessor.gifts.fetchGiftCards();
+  // }
 });
 </script>

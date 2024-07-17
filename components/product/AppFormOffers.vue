@@ -13,8 +13,8 @@
     <div class="form__footer">
       <div class="form__footer-price">
         <div class="price">
-          <div v-if="offer?.price" class="price__current">£{{ offer.price }}</div>
-          <div v-if="offer?.price.old" class="price__old">£{{ offer.price.old }}</div>
+          <div v-if="offer?.price" class="price__current">{{ priceWithSign }}</div>
+          <div v-if="isOldPriceExist" class="price__old">{{ oldPriceWithSign }}</div>
         </div>
         <app-badges v-if="product.badges" :badges="product.badges" />
       </div>
@@ -78,6 +78,18 @@ export default Vue.extend({
   computed: {
     changeableStretch() {
       return this.$device.isMobileOrTablet ? 'full' : 'fix';
+    },
+
+    isOldPriceExist() {
+      return Boolean(this.offer.old_price || this.offer.price?.old);
+    },
+
+    priceWithSign() {
+      return `£ ${this.offer.price}`;
+    },
+
+    oldPriceWithSign() {
+      return `£ ${this.offer.old_price || this.offer.price.old}`;
     }
   },
 
@@ -112,8 +124,7 @@ export default Vue.extend({
 
     onSetOffer(payload) {
       this.offer = payload;
-      const { title, price } = payload;
-      this.$emit('setProductOffer', { title, price });
+      this.$emit('setProductOffer', payload);
     },
 
     toggleLike() {
@@ -130,11 +141,12 @@ export default Vue.extend({
       };
 
       this.addToCart(payload);
-      this.$router.push({ name: 'gifts' });
 
       this.gtmClearItemEvent();
       this.dataLayerSetOriginalUrl();
       this.gtmAddToCartEvent();
+
+      this.$router.push({ name: 'gifts' });
     },
 
     gtmAddToCartEvent() {
@@ -268,14 +280,7 @@ export default Vue.extend({
 .price {
   flex-shrink: 0;
   display: flex;
-
-  @include gt-sm {
-    align-items: baseline;
-  }
-
-  @include lt-sm {
-    align-items: center;
-  }
+  align-items: baseline;
 
   &__current {
     color: #000000;
@@ -301,11 +306,11 @@ export default Vue.extend({
     letter-spacing: -0.01em;
     color: $color-white-grey;
 
-    @include gt-sm {
+    @include gt-md {
       margin-left: 10px;
     }
 
-    @include lt-sm {
+    @include lt-md {
       margin: 0 0 -8px 6px;
     }
 
@@ -320,7 +325,7 @@ export default Vue.extend({
       left: -2px;
       right: -2px;
       margin: auto;
-      transform: rotate(-26.07deg);
+      transform: rotate(-10deg);
     }
 
     &:before {

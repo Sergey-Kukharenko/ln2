@@ -32,7 +32,9 @@
     <transition>
       <div v-show="!isClarified" class="checkout-intervals__delivery-text delivery-text">
         <div class="delivery-text__row">Same day delivery from £6</div>
-        <div class="delivery-text__row">Next day delivery is <span class="delivery-text__free">Free</span></div>
+        <div class="delivery-text__row">
+          Next day delivery starts from <span class="delivery-text__free">Free</span>
+        </div>
       </div>
     </transition>
   </div>
@@ -43,7 +45,7 @@ import Vue from 'vue';
 
 import CheckoutCurrentIntervals from '~/components/checkout/CheckoutCurrentIntervals.vue';
 import CheckoutIntervalsGroup from '~/components/checkout/CheckoutIntervalsGroup.vue';
-import { AB_TESTING_COOKIE } from '~/constants';
+import { AB_TESTING_COOKIE, AC_TESTING_COOKIE } from '~/constants';
 import { useFormattedDateForBackend, useGetDateByTimeZone } from '~/helpers';
 import { INTERVAL_VALIDATE_MESSAGES } from '~/messages/index';
 import { accessorMapper } from '~/store';
@@ -104,7 +106,7 @@ export default Vue.extend({
     },
 
     timeIntervalLabel() {
-      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.checkoutIntervalData?.time) {
+      if (this.isABTesting && !this.checkoutIntervalData?.time) {
         return '';
       }
 
@@ -120,7 +122,7 @@ export default Vue.extend({
     },
 
     dateIntervalLabel() {
-      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.checkoutIntervalData?.date) {
+      if (this.isABTesting && !this.checkoutIntervalData?.date) {
         return '';
       }
 
@@ -167,6 +169,10 @@ export default Vue.extend({
           error: this.errors.time
         }
       ];
+    },
+
+    isABTesting() {
+      return this.$cookies.get(AB_TESTING_COOKIE) && !this.$cookies.get(AC_TESTING_COOKIE);
     }
   },
 
@@ -174,12 +180,12 @@ export default Vue.extend({
     isClarified(val) {
       if (!val) {
         const time = this.checkoutIntervalData?.time ?? this.firstAvalibleIterval?.label;
-        !this.$cookies.get(AB_TESTING_COOKIE) && this.setInterval({ date: null, time });
+        !this.isABTesting && this.setInterval({ date: null, time });
 
         return;
       }
 
-      !this.$cookies.get(AB_TESTING_COOKIE) && this.setInterval({ date: null, time: null });
+      !this.isABTesting && this.setInterval({ date: null, time: null });
     }
   },
 
@@ -187,7 +193,7 @@ export default Vue.extend({
     this.$nuxt.$on('set-intervals', this.initSelectedIntervals);
     this.$nuxt.$on('set-interval-validation-error', this.setIntervalValidationError);
 
-    if (this.$cookies.get(AB_TESTING_COOKIE)) {
+    if (this.isABTesting) {
       return;
     }
 
@@ -232,7 +238,7 @@ export default Vue.extend({
     },
 
     onIntervalsModalToggle() {
-      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.checkoutIntervalData.date) {
+      if (this.isABTesting && !this.checkoutIntervalData.date) {
         this.errors.date = INTERVAL_VALIDATE_MESSAGES.date;
 
         return;
@@ -258,7 +264,7 @@ export default Vue.extend({
     async initSelectedIntervals() {
       const intervals = await this.$accessor.checkout.fetchIntervals();
 
-      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.dateIntervalLabel) {
+      if (this.isABTesting && !this.dateIntervalLabel) {
         return;
       }
 
@@ -290,7 +296,10 @@ export default Vue.extend({
 
     async setInterval({ date = null, time = null }) {
       try {
-        if (!date && !this.$cookies.get(AB_TESTING_COOKIE)) {
+        const isDateNotExistInRegularMode = !date && !this.isABTesting;
+        const isDateNotExistABTestMode = !date && this.checkoutIntervalDate && this.isABTesting;
+
+        if (isDateNotExistInRegularMode || isDateNotExistABTestMode) {
           date = useFormattedDateForBackend(this.checkoutIntervalDate);
         }
 
@@ -301,7 +310,7 @@ export default Vue.extend({
         await this.$accessor.checkout.setCheckoutInterval({ date, time });
         this.$accessor.checkout.fetchCheckout();
 
-        if (this.$cookies.get(AB_TESTING_COOKIE)) {
+        if (this.isABTesting) {
           this.errors.date = '';
           this.errors.time = '';
         }

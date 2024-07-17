@@ -14,7 +14,7 @@
       v-model="passedCount"
       align="center"
       type="number"
-      :theme="theme"
+      :theme="inputTheme"
       :advanced-styles-theme="advancedStylesTheme"
       size="small"
       :min="0"
@@ -25,6 +25,7 @@
       :advanced-styles-theme="advancedStylesTheme"
       size="small"
       :icon-only="true"
+      :disabled="disableIncrement"
       @click="increment"
     >
       <svg-icon class="count__icon count__icon-plus" name="plus" />
@@ -69,10 +70,18 @@ export default {
       default: 1
     },
 
-    isLoading: Boolean
+    isLoading: Boolean,
+
+    disableIncrement: Boolean,
+
+    greenInput: Boolean
   },
 
   computed: {
+    inputTheme() {
+      return this.greenInput && this.$route.name === 'gifts' ? 'green' : this.theme;
+    },
+
     classes() {
       return {
         [`count--theme-${this.theme}`]: true,

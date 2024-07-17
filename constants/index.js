@@ -161,11 +161,11 @@ const SEARCH_INPUT_PLACEHOLDER = {
 };
 
 const RELOAD_ORDER_DELAY = {
-  1: 3000,
-  2: 5000,
-  3: 7000,
-  4: 15000,
-  5: 30000
+  1: 1000,
+  2: 1000,
+  3: 2000,
+  4: 4000,
+  5: 8000
 };
 
 const OUR_COOKIE = 'our-cookie';
@@ -291,6 +291,8 @@ const EMPTY_GIFT_MAP = {
   is_basket_has_gift: false
 };
 
+const DESCRIPTION_TEXT =
+  'Please note, the selected arrangement is available for Same-Day delivery only within London; To any  address in the UK will be delivered next day';
 const SUBSTITUTION_TEXT = `Our Bouquets are subject to availability. In the event of any supply difficulties, we reserve the right to substitute with a product of equivalent value and/or quality without notice. Where possible we may contact you to agree a suitable substitution.\n
 The images of the Bouquets on our online shop are for illustrative purposes only. Although we have made every effort to display the colours accurately, we cannot guarantee that your computer's display of the colours accurately reflects the colour of the Bouquets. The colour of your Bouquet may vary slightly from those images.`;
 const SUBSTITUTION_TEXT_COUNT = { desktop: 251, mobile: 94 };
@@ -298,7 +300,17 @@ const SUBSTITUTION_TEXT_COUNT = { desktop: 251, mobile: 94 };
 const TOO_MANY_PROMOCODE_ATTEMPTS_MSG =
   'There are too many failed attempts to enter a promo code. Try it in a minute, please.';
 
+const MIN_SCROLL_TO_UP_BUTTON = 50;
 const AB_TESTING_COOKIE = 'ab_testing';
+const AC_TESTING_COOKIE = 'ac_testing';
+
+const PRODUCT_SIZE = {
+  constructor: ['short', 'long'],
+  regular: ['small', 'medium', 'large', 'extra large']
+};
+
+const GIFT_CARD_COOKIE = 'gift_card_from_basket';
+const GIFT_CARD_POLICY_ID = 3;
 
 export {
   LIST_ITEM_VIEW_COUNT,
@@ -358,8 +370,14 @@ export {
   MAIN_PAGE_LIMIT,
   EMPTY_CART_MAP,
   EMPTY_GIFT_MAP,
+  DESCRIPTION_TEXT,
   SUBSTITUTION_TEXT,
   SUBSTITUTION_TEXT_COUNT,
   TOO_MANY_PROMOCODE_ATTEMPTS_MSG,
-  AB_TESTING_COOKIE
+  MIN_SCROLL_TO_UP_BUTTON,
+  AB_TESTING_COOKIE,
+  AC_TESTING_COOKIE,
+  PRODUCT_SIZE,
+  GIFT_CARD_COOKIE,
+  GIFT_CARD_POLICY_ID
 };

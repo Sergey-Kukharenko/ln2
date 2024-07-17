@@ -37,8 +37,11 @@ const useBreadCrumbs = (route) => {
     'gifts',
     'become-affiliate',
     'youthdiscount',
-    'seniordiscount'
+    'seniordiscount',
+    'giftbox1',
+    'giftbox2'
   ];
+
   const replacementPathList = ['product', 'articles'];
   const replacePath = (array, path, newPath) => (array.includes(path) ? newPath : path);
 

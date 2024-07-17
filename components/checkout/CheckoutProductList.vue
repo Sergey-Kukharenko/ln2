@@ -15,6 +15,10 @@
       :is-liked="product.like"
       :real-id="product.offer_real_id"
       :category-name="product.category_name"
+      :policy-id="product.policy_id"
+      :is-bouquet="product.is_bouquet"
+      :old-price="product.old_price"
+      :discount="product.discount"
     />
   </div>
 </template>

@@ -12,8 +12,10 @@
     </div>
 
     <div class="service__container container">
-      <div class="container__text">{{ description }}</div>
-
+      <div class="container__text">
+        {{ description }}
+        {{ $options.DESCRIPTION_TEXT }}
+      </div>
       <div class="container__text">
         <div class="container__title">Substitution</div>
         {{ substitutionText }}
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-import { SUBSTITUTION_TEXT, SUBSTITUTION_TEXT_COUNT } from '~/constants';
+import { DESCRIPTION_TEXT, SUBSTITUTION_TEXT, SUBSTITUTION_TEXT_COUNT } from '~/constants';
 
 export default {
   name: 'AppService',
@@ -88,7 +90,9 @@ export default {
       this.isShowMore = !this.isShowMore;
       this.toggleText = this.isShowMore ? 'Hide' : 'Show more';
     }
-  }
+  },
+
+  DESCRIPTION_TEXT
 };
 </script>
 

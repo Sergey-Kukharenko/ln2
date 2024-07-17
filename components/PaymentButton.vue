@@ -6,11 +6,11 @@
       @close-modal="closePaymentErrorModal"
     />
     <app-button
-      v-show="isStripeRedirectPayment"
+      v-show="isStripeRedirectPayment || isCheckoutComRedirectPayment"
       size="full"
       theme="green"
       :class="{ loading }"
-      @click="submitCheckoutByStripe"
+      @click="submitOrder"
     >
       <template v-if="loading"> <app-loading-dots /></template>
       <template v-else>Go to payment</template>
@@ -27,7 +27,7 @@ import Vue from 'vue';
 import PaymentErrorModal from '~/components/PaymentErrorModal.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import { APPLE_PAY, GOOGLE_PAY, LINK_PAY } from '~/constants';
-import { ORDER_ALREADY_PAID, PAYMENT_ERROR_MESSAGE } from '~/constants/payment';
+import { CHECKOUT_COM_PAYMENT_METHOD, ORDER_ALREADY_PAID, PAYMENT_ERROR_MESSAGE } from '~/constants/payment';
 import { PAYPAL_PAYMENT_METHOD, STRIPE_PAYMENT_METHOD } from '~/data/payment-methods';
 import { useObjectNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';
@@ -76,7 +76,9 @@ export default Vue.extend({
         isVisible: false,
         redirect: {},
         message: ''
-      }
+      },
+
+      queueAction: ''
     };
   },
 
@@ -107,6 +109,10 @@ export default Vue.extend({
       return this.paymentMethod === STRIPE_PAYMENT_METHOD.name;
     },
 
+    isCheckoutComRedirectPayment() {
+      return this.paymentMethod === CHECKOUT_COM_PAYMENT_METHOD.name;
+    },
+
     isPayPalPayment() {
       return this.paymentMethod === PAYPAL_PAYMENT_METHOD.name && this.isPayPalLoaded;
     },
@@ -129,6 +135,14 @@ export default Vue.extend({
 
     isEmailNotExist() {
       return this.isCheckout && !this.isEmailExist;
+    },
+
+    paymentPathName() {
+      return this.isCheckoutComRedirectPayment ? 'payment' : 'payment-stripe';
+    },
+
+    isOrderLoading() {
+      return this.$accessor.checkout.isPending;
     }
   },
 
@@ -141,6 +155,12 @@ export default Vue.extend({
       document.getElementById('paypal-button-container').innerHTML = '';
 
       this.initPayPalButton();
+    },
+
+    isOrderLoading(val) {
+      if (val === false && this.queueAction) {
+        this[this.queueAction]();
+      }
     }
   },
 
@@ -156,10 +176,11 @@ export default Vue.extend({
     this.clientSecret = '';
     this.stripe = null;
     this.paymentRequest = null;
+    this.queueAction = '';
 
     this.removePaymentError();
 
-    this.SET_PAYMENT_METHOD('stripe');
+    this.setDefaultPaymentMethod();
     // this.$nuxt.$off('set-email-status', this.setEmailStatus);
   },
 
@@ -170,7 +191,7 @@ export default Vue.extend({
       'createPaymentPayPal',
       'approvePaymentPayPal',
       'fetchStripeClientSecret',
-      'SET_PAYMENT_METHOD'
+      'setDefaultPaymentMethod'
     ]),
 
     closePaymentErrorModal() {
@@ -186,9 +207,16 @@ export default Vue.extend({
       this.isEmailExist = status;
     },
 
-    async submitCheckoutByStripe() {
+    async submitOrder() {
       try {
-        if (this.loading) {
+        if (this.isOrderLoading) {
+          this.queueAction = 'submitOrder';
+          this.loading = true;
+
+          return;
+        }
+
+        if (this.loading && !this.queueAction) {
           return;
         }
 
@@ -208,7 +236,7 @@ export default Vue.extend({
           this.$emit('clear-time-id');
         }
 
-        this.$router.push({ name: 'payment-stripe' });
+        this.$router.push({ name: this.paymentPathName });
       } catch (err) {
         this.loading = false;
         console.error(err);

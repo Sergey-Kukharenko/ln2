@@ -265,8 +265,13 @@ export default {
 
   &--disabled {
     color: #ffffff;
-    background-color: #ccc;
+    background-color: #f7f7f7;
+    opacity: 0.4;
     cursor: none;
+
+    &:hover {
+      cursor: none;
+    }
   }
 
   &--not-clickable {

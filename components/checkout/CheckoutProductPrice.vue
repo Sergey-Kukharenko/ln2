@@ -1,30 +1,35 @@
 <template>
   <div class="product-price">
-    <div v-if="oldPrice" class="product-price__old">
-      <div class="product-price__old-price">£ {{ oldPrice }}</div>
-      <div class="product-price__old-percent">-{{ percent.toFixed(0) }}%</div>
-    </div>
-    <div class="product-price__price">£ {{ price }}</div>
+    <div class="product-price__price">{{ priceWithSign }}</div>
+    <div v-if="isOldPriceExist" class="product-price__old-price">{{ oldPriceWithSign }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'BasketProductPrice',
+  name: 'CheckoutProductPrice',
   props: {
     price: {
       type: String,
       default: ''
     },
+
     oldPrice: {
-      type: String,
-      default: ''
+      type: [String, null],
+      default: null
     }
   },
   computed: {
-    percent() {
-      if (!this.oldPrice) return 0;
-      return 100 - (this.price / this.oldPrice) * 100;
+    priceWithSign() {
+      return `£${this.price}`;
+    },
+
+    isOldPriceExist() {
+      return Boolean(this.oldPrice);
+    },
+
+    oldPriceWithSign() {
+      return `£${this.oldPrice}`;
     }
   }
 };
@@ -33,19 +38,12 @@ export default {
 <style lang="scss" scoped>
 .product-price {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
   align-items: flex-end;
+  gap: 4px;
+  line-height: 1;
 
   @include lt-lg {
-    flex-direction: row-reverse;
     gap: 6px;
-  }
-
-  &__old {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
   }
 
   &__old-price {
@@ -60,40 +58,27 @@ export default {
       line-height: 16px;
     }
 
-    &:before {
+    &:before,
+    &:after {
       content: '';
-      position: absolute;
-      z-index: 100;
-      left: -2px;
-      top: 8px;
-      width: 120%;
+      display: block;
       height: 1px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #db1838;
-      transform: rotate(-26.07deg);
-
-      @include lt-lg {
-        left: -1px;
-        width: 110%;
-      }
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -2px;
+      right: -2px;
+      margin: auto;
+      transform: rotate(-10deg);
     }
-  }
 
-  &__old-percent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #db1838;
-    color: #ffffff;
-    border-radius: 8px;
-    height: 20px;
-    padding: 0 6px;
-    font-family: $golos-regular;
-    font-size: 11px;
-    line-height: 16px;
+    &:before {
+      top: -1px;
+      background: #fff;
+    }
 
-    @include lt-lg {
-      display: none;
+    &:after {
+      background: #db1838;
     }
   }
 
@@ -102,12 +87,11 @@ export default {
     font-family: $golos-medium;
     font-weight: 500;
     font-size: 24px;
-    line-height: 24px;
+    line-height: 1;
 
     @include lt-lg {
       font-size: 16px;
-      line-height: 17.6px;
-      letter-spacing: -0.02rem;
+      line-height: 18px;
     }
   }
 }

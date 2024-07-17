@@ -1,5 +1,12 @@
 <template>
   <div v-observe-visibility="onVisibility" :class="classes">
+    <app-discount-badge
+      v-if="isDiscountAvailable"
+      :scale="badgeScale"
+      :offset-left="badgeOffsetLeft"
+      :offset-top="badgeOffsetTop"
+    />
+
     <div class="card__hint">
       <div class="hint">
         <svg-icon name="truck-hint" class="hint__icon" />
@@ -45,9 +52,11 @@
 
         <div class="content">
           <div class="price">
-            <div class="price__current"><span v-if="hasFrom" class="price__from">From </span> £ {{ slide.price }}</div>
-            <div v-if="slide.sale" class="group">
-              <div class="price__old">£ {{ slide.price }}</div>
+            <div class="price__current">
+              <span v-if="hasFrom && !isOldPriceExist" class="price__from"> From </span> {{ priceWithSign }}
+            </div>
+            <div v-if="slide.sale || isOldPriceExist" class="group">
+              <div class="price__old">{{ oldPrice }}</div>
               <div class="group__badge">
                 <!--Временно скрыт-->
                 <!-- <app-badge theme="red">
@@ -90,6 +99,7 @@ export default Vue.extend({
     AppCardTag,
     AppCardTags,
     AppCardColorsList: () => import('~/components/shared/AppCardColorsList.vue'),
+    AppDiscountBadge: () => import('~/components/shared/AppDiscountBadge.vue'),
     AppImage,
     // AppLikeIcon,
     // AppBadge,
@@ -189,6 +199,38 @@ export default Vue.extend({
 
     getProductSlug() {
       return this.isConstructor ? this.selectedProduct?.offer_slug : this.slide.slug;
+    },
+
+    badgeScale() {
+      return this.$device.isMobileOrTablet ? '0.7' : '1';
+    },
+
+    badgeOffsetLeft() {
+      return this.$device.isMobileOrTablet ? '-7' : '6';
+    },
+
+    badgeOffsetTop() {
+      return this.$device.isMobileOrTablet ? '-1' : '6';
+    },
+
+    isDiscountAvailable() {
+      return Boolean(this.slide.discount);
+    },
+
+    isOldPriceExist() {
+      return Boolean(this.slide.old_price);
+    },
+
+    priceWithSign() {
+      return `£ ${this.slide.price}`;
+    },
+
+    oldPriceWithSign() {
+      return `£ ${this.slide.old_price}`;
+    },
+
+    oldPrice() {
+      return this.isOldPriceExist ? this.oldPriceWithSign : this.priceWithSign;
     }
   },
 

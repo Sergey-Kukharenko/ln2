@@ -7,20 +7,23 @@
     <Nuxt />
     <app-footer v-if="!isBasket" />
     <app-footer-bottom v-else />
-    <client-only>
-      <transition v-if="isDefaultRoute" name="slide-fade">
-        <app-cookies v-if="getCookie" @setCookie="onSetCookie" />
-      </transition>
-    </client-only>
+    <transition v-if="isDefaultRoute" name="slide-fade">
+      <app-cookies v-if="getCookie" @setCookie="onSetCookie" />
+    </transition>
+    <transition name="scrolling">
+      <app-button-scroll-to-top v-show="isVisibleButtonScrollToTop" />
+    </transition>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash.debounce';
 import Vue from 'vue';
 
 import AppNotification from '~/components/header/AppNotification.vue';
 import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs.vue';
-import { OUR_COOKIE } from '~/constants';
+import AppButtonScrollToTop from '~/components/ui/AppButtonScrollToTop.vue';
+import { MIN_SCROLL_TO_UP_BUTTON, OUR_COOKIE } from '~/constants';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -33,14 +36,17 @@ export default Vue.extend({
     AppFooterBottom: () => import('@/components/footer/AppFooterBottom.vue'),
     AppFooter: () => import('@/components/footer/AppFooter.vue'),
     AppBreadcrumbs,
-    AppNotification
+    AppNotification,
+    AppButtonScrollToTop
   },
 
   middleware: ['cookie'],
 
   data() {
     return {
-      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount']
+      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount'],
+      handleDebouncedScroll: null,
+      isVisibleButtonScrollToTop: false
     };
   },
 
@@ -73,11 +79,25 @@ export default Vue.extend({
     payload && this.addCookie(payload);
   },
 
+  mounted() {
+    this.setDisplayButtonScrollToTop();
+    this.handleDebouncedScroll = debounce(this.setDisplayButtonScrollToTop, 100);
+    window.addEventListener('scroll', this.handleDebouncedScroll);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleDebouncedScroll);
+  },
+
   methods: {
     ...accessorMapper('cookie', ['addCookie']),
 
     onSetCookie() {
       this.addCookie(false);
+    },
+
+    setDisplayButtonScrollToTop() {
+      this.isVisibleButtonScrollToTop = window.scrollY > MIN_SCROLL_TO_UP_BUTTON;
     }
   }
 });
@@ -122,6 +142,21 @@ export default Vue.extend({
       padding-left: 16px;
       padding-right: 16px;
     }
+  }
+}
+
+.scrolling-enter-active {
+  animation: scroll-in 0.3s;
+}
+
+@keyframes scroll-in {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 </style>

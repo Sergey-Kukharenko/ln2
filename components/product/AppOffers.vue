@@ -17,14 +17,18 @@
             <span class="badge__text">{{ item.sale.text }}</span>
           </app-badge>
         </div>
-        <div class="price">£ {{ item.price }}</div>
+        <div class="price">
+          {{ getPriceWithSign(item) }}
+          <span v-if="isOldPriceExist(item)" class="price__old">{{ getOldPriceWithSign(item) }}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import AppBadge from '@/components/shared/AppBadge';
+import AppBadge from '@/components/shared/AppBadge.vue';
+import { PRODUCT_SIZE } from '~/constants';
 
 export default {
   name: 'AppOffers',
@@ -40,11 +44,33 @@ export default {
 
   data() {
     return {
-      selectedOffer: 0
+      selectedOffer: this.getSelectedOffer()
     };
   },
 
+  computed: {
+    sizeQueryParam() {
+      return this.$route.query.size?.toLowerCase()?.split('%20')?.join(' ');
+    },
+
+    hasSizeQueryParam() {
+      return PRODUCT_SIZE.regular.includes(this.sizeQueryParam);
+    }
+  },
+
   methods: {
+    getSelectedOffer() {
+      if (!this.hasSizeQueryParam) {
+        return 0;
+      }
+
+      const prepareSizeParam = (param = '') => param.toLowerCase()[0];
+      const idx = this.offers.findIndex(
+        (offer) => prepareSizeParam(offer.title) === prepareSizeParam(this.sizeQueryParam)
+      );
+      return idx === -1 ? 0 : idx;
+    },
+
     onChange(item, idx) {
       this.selectedOffer = idx;
       this.$emit('setOffer', item);
@@ -56,6 +82,18 @@ export default {
 
     standardOfferText() {
       return this.isStandard && '(Оn the picture)';
+    },
+
+    isOldPriceExist(item) {
+      return Boolean(item.old_price);
+    },
+
+    getPriceWithSign(item) {
+      return `£${item.price}`;
+    },
+
+    getOldPriceWithSign(item) {
+      return `£${item.old_price}`;
     }
   }
 };
@@ -178,11 +216,32 @@ export default {
 
   @include gt-sm {
     font-family: $golos-medium;
-    margin-right: 38px;
   }
 
   @include lt-md {
     font-family: $golos-regular;
+  }
+
+  &__old {
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    color: $color-white-grey;
+    margin: 0 0 0 5px;
+
+    &:before {
+      content: '';
+      display: block;
+      height: 1px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      transform: rotate(-10deg);
+      background: #db1838;
+    }
   }
 }
 

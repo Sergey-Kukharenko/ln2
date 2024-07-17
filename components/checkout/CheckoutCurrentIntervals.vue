@@ -3,7 +3,8 @@
     <div v-for="(item, index) in list" :key="index" class="time-interval" @click="$emit('set-time-interval', item)">
       <div class="time-interval__label">
         <app-radio v-model="passedTime" :name="item.label" />
-        {{ item.label }}
+        <div class="time">{{ item.label }}</div>
+        <div class="badge">{{ badgeTexts[item.delivery_type] }}</div>
       </div>
       <div class="time-interval__delivery-amount">
         {{ showDeliveryPrice(item) }}
@@ -38,6 +39,13 @@ export default {
       set(newTime) {
         this.$emit('update:time', newTime);
       }
+    },
+
+    badgeTexts() {
+      return {
+        MAIL: 'Post',
+        COURIER: 'Hand-to-hand'
+      };
     }
   },
 
@@ -46,7 +54,7 @@ export default {
       const price = item.delivery_amount;
 
       if (!price) {
-        return 'Free delivery';
+        return 'Free';
       }
 
       return `£ ${price}`;
@@ -75,7 +83,6 @@ export default {
   &__label {
     display: flex;
     align-items: center;
-    gap: 8px;
     font-family: $golos-regular;
     color: $color-dark-grey;
 
@@ -105,6 +112,39 @@ export default {
       line-height: 14px;
       letter-spacing: -0.01em;
     }
+  }
+}
+
+.time {
+  @include gt-md {
+    min-width: 132px;
+    margin: 0 4px;
+  }
+
+  @include lt-lg {
+    min-width: 116px;
+  }
+}
+
+.badge {
+  color: $color-white-grey;
+  background: $bg-grey;
+  border-radius: 16px;
+
+  @include gt-md {
+    font-family: $golos-regular;
+    font-size: 12px;
+    line-height: 22px;
+    letter-spacing: -0.24px;
+    padding: 0 8px;
+  }
+
+  @include lt-lg {
+    font-family: $golos-medium;
+    font-size: 10px;
+    line-height: 130%;
+    letter-spacing: -0.2px;
+    padding: 4px 8px;
   }
 }
 </style>

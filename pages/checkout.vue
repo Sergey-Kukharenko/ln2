@@ -29,6 +29,7 @@ import CheckoutTitle from '~/components/checkout/CheckoutTitle.vue';
 import { EMPTY_CART_MAP } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import * as paymentMethods from '~/data/payment-methods';
+import addGtag from '~/mixins/addGtag.vue';
 import authManager from '~/mixins/authManager.vue';
 import gtm from '~/mixins/gtm.vue';
 import { accessorMapper } from '~/store';
@@ -42,7 +43,7 @@ export default Vue.extend({
     CheckoutFinalDetails: () => import('~/components/checkout/CheckoutFinalDetails.vue')
   },
 
-  mixins: [authManager, gtm],
+  mixins: [authManager, gtm, addGtag],
 
   beforeRouteLeave(to, _from, next) {
     const isStepChange = to.name === 'basket' && this.currCheckoutStep === 2;
@@ -105,10 +106,15 @@ export default Vue.extend({
     }
   },
 
+  created() {
+    this.$accessor.gifts.fetchGiftCards();
+  },
+
   mounted() {
     this.gtmClearItemEvent();
     this.dataLayerSetOriginalUrl();
     this.gtmBeginCheckoutEvent();
+    this.onAddGtagScript();
   },
 
   beforeDestroy() {
@@ -117,6 +123,7 @@ export default Vue.extend({
 
   methods: {
     ...accessorMapper('checkout', ['setCheckoutToPay']),
+    ...accessorMapper('payment', ['setDefaultPaymentMethod']),
 
     async submitCheckout() {
       await this.setCheckoutToPay();

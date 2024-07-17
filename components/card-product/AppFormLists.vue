@@ -31,7 +31,11 @@
           <app-tooltip :icon="tooltip.icon" :content="tooltip.content" />
         </div>
         <div class="item__body">
-          <app-list-types :list="product.heights" @setItem="onSetFlowersHeight" />
+          <app-list-types
+            :list="product.heights"
+            :has-size-query-param="hasSizeQueryParam"
+            @setItem="onSetFlowersHeight"
+          />
         </div>
       </div>
 
@@ -66,9 +70,8 @@
     <div class="form__footer">
       <div class="form__footer-price notranslate">
         <div class="price">
-          <div class="price__current">£{{ currentProductPrice }}</div>
-          <!-- Временно скрыт -->
-          <!-- <div class="price__old">{{ product.currency }}{{ product.price.old }}</div> -->
+          <div class="price__current">{{ currentProductPriceWithSign }}</div>
+          <div v-if="currentProductOldPriceWithSign" class="price__old">{{ currentProductOldPriceWithSign }}</div>
         </div>
         <!-- Временно скрыт -->
         <!-- <app-badges :badges="product.badges" /> -->
@@ -98,7 +101,8 @@ import { useToggleClassName } from '@/helpers';
 import AppListNumbers from '~/components/card-product/AppListNumbers.vue';
 import AppListTypes from '~/components/card-product/AppListTypes.vue';
 import AppTooltip from '~/components/card-product/AppTooltip.vue';
-import { CONSTRUCTOR_HEIGHT_COOKIE, CONSTRUCTOR_PACKAGE_COOKIE } from '~/constants';
+import { CONSTRUCTOR_HEIGHT_COOKIE, CONSTRUCTOR_PACKAGE_COOKIE, PRODUCT_SIZE } from '~/constants';
+import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import gtm from '~/mixins/gtm.vue';
 import { accessorMapper } from '~/store';
 
@@ -142,10 +146,21 @@ export default Vue.extend({
       return useToggleClassName(this.like, 'like', 'active');
     },
 
-    currentProductPrice() {
+    currentProductPriceWithSign() {
       const packagePrice = this.itemPackage.price;
       const heightsPrice = this.currentProductVariant?.heights?.[this.itemFlowersHeight.id]?.price;
-      return parseFloat(packagePrice + heightsPrice).toFixed(2);
+      const num = parseFloat(packagePrice + heightsPrice).toFixed(2);
+      return `£${num}`;
+    },
+
+    currentProductOldPriceWithSign() {
+      const oldPrice = this.currentProductVariant?.heights?.[this.itemFlowersHeight.id]?.old_price;
+
+      if (!oldPrice) {
+        return '';
+      }
+
+      return `£${oldPrice}`;
     },
 
     currentProductVariant() {
@@ -154,6 +169,19 @@ export default Vue.extend({
 
     buttonSize() {
       return this.$device.isMobile ? 'full' : 'fix';
+    },
+
+    hasSizeQueryParam() {
+      return PRODUCT_SIZE.constructor.includes(this.$route.query.size);
+    }
+  },
+
+  watch: {
+    currentProductOldPriceWithSign: {
+      handler(v) {
+        this.$emit('update-discount', v.replace('£', ''));
+      },
+      immediate: true
     }
   },
 
@@ -184,16 +212,20 @@ export default Vue.extend({
     },
 
     getFlowersHeight() {
-      const heightCookieId = this.$cookies.get(CONSTRUCTOR_HEIGHT_COOKIE);
+      const queryParam = this.$route.query.size;
+      const heightCookieId = this.hasSizeQueryParam ? queryParam : this.$cookies.get(CONSTRUCTOR_HEIGHT_COOKIE);
       const isFLowersHeightExist = !!heightCookieId;
       const [firstHeight] = this.product?.heights;
 
       if (!isFLowersHeightExist) {
         this.$cookies.set(CONSTRUCTOR_HEIGHT_COOKIE, firstHeight?.id);
-
         this.SET_ACTIVE_TYPE(firstHeight?.id);
 
         return firstHeight;
+      }
+
+      if (this.hasSizeQueryParam) {
+        this.$cookies.set(CONSTRUCTOR_HEIGHT_COOKIE, queryParam);
       }
 
       const idx = this.product?.heights.findIndex((el) => el.id === heightCookieId);
@@ -298,7 +330,31 @@ export default Vue.extend({
       };
 
       this.addToCartConstructor(payload);
+
+      this.gtmClearItemEvent();
+      this.dataLayerSetOriginalUrl();
+      this.gtmAddToCartEvent();
+
       this.$router.push({ name: 'gifts' });
+    },
+
+    gtmAddToCartEvent() {
+      const item = {
+        item_name: this.product.title,
+        item_id: this.product.real_id,
+        price: this.currentProductPriceWithSign,
+        item_brand: 'myflowers',
+        item_category: this.product.category_name,
+        item_variant: this.itemFlowersHeight.title,
+        quantity: 1
+      };
+
+      this.$gtm.push({
+        event: GTM_EVENTS_MAP.addToCart,
+        ecommerce: {
+          items: [item]
+        }
+      });
     }
   }
 });
@@ -494,10 +550,10 @@ export default Vue.extend({
       position: absolute;
       top: 0;
       bottom: 0;
-      left: -2px;
-      right: -2px;
+      left: 0;
+      right: 0;
       margin: auto;
-      transform: rotate(-26.07deg);
+      transform: rotate(-10deg);
     }
 
     &:before {

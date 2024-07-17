@@ -9,6 +9,7 @@ import * as checkout from '~/store/checkout';
 import * as cookie from '~/store/cookie';
 import * as favorites from '~/store/favorites';
 import * as gifts from '~/store/gifts';
+import * as gtag from '~/store/gtag';
 import * as home from '~/store/home';
 import * as layout from '~/store/layout';
 import * as order from '~/store/order';
@@ -75,6 +76,7 @@ export const accessorType = getAccessorType({
   modules: {
     auth,
     gifts,
+    gtag,
     cookie,
     favorites,
     order,

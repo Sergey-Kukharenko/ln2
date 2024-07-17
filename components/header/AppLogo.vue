@@ -1,18 +1,28 @@
 <template>
-  <nuxt-link to="/" class="logo">
+  <nuxt-link :class="{ 'logo--cursor-default': isMainPage }" to="/" class="logo">
     <svg-icon name="logo" class="logo__img" />
   </nuxt-link>
 </template>
 
 <script>
 export default {
-  name: 'AppLogo'
+  name: 'AppLogo',
+
+  computed: {
+    isMainPage() {
+      return this.$route.name === 'index';
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .logo {
   display: block;
+
+  &--cursor-default {
+    cursor: default;
+  }
 
   @include lt-md {
     margin-right: auto;

@@ -1,3 +1,24 @@
+const CHECKOUT_COM_PAYMENT_METHOD = {
+  available: true,
+  title: 'CheckoutCom',
+  icon: 'credit-card-bold',
+  iconSelect: 'credit-card-small',
+  name: 'checkout-com',
+  label: 'Debit/Credit card, Apple Pay, Google Pay',
+  variantIcons: [
+    {
+      name: 'mastercard',
+      desktop: { width: '25.71px', height: '16.11px' },
+      mobile: { width: '18.46px', height: '12px' }
+    },
+    {
+      name: 'visa',
+      desktop: { width: '29.57px', height: '9.63px' },
+      mobile: { width: '24.57px', height: '8px' }
+    }
+  ]
+};
+
 // STRIPE
 const STRIPE = {
   publicKey: process.env.stripePublicKey,
@@ -37,4 +58,11 @@ const ORDER_ALREADY_PAID = {
 
 const STRIPE_ERROR_CODE = 'card_declined';
 
-export { STRIPE, PAYMENT_STATUS_MAP, PAYMENT_ERROR_MESSAGE, STRIPE_ERROR_CODE, ORDER_ALREADY_PAID };
+export {
+  CHECKOUT_COM_PAYMENT_METHOD,
+  STRIPE,
+  PAYMENT_STATUS_MAP,
+  PAYMENT_ERROR_MESSAGE,
+  STRIPE_ERROR_CODE,
+  ORDER_ALREADY_PAID
+};

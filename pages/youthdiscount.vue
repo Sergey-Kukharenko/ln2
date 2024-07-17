@@ -1,17 +1,20 @@
 <template>
   <div class="youth-discount">
-    <!--    <iframe-->
-    <!--      frameborder="0"-->
-    <!--      height="850px"-->
-    <!--      id="ourframe"-->
-    <!--      scrolling="no"-->
-    <!--      src="https://www.youthdiscount.com/youth_id/gateway/f7e5ed8596fb710b7362260946985b41/embedded?default_country=GB"-->
-    <!--      style="overflow: hidden; display: block; border: none"-->
-    <!--      width="100%"-->
-    <!--    ></iframe>-->
+    <iframe
+      v-show="wasClickedOnButton"
+      frameborder="0"
+      height="850px"
+      id="ourframe"
+      scrolling="no"
+      src="https://www.youthdiscount.com/youth_id/gateway/f7e5ed8596fb710b7362260946985b41/embedded?default_country=GB"
+      style="overflow: hidden; display: block; border: none"
+      width="100%"
+    ></iframe>
 
-    <discount-banner :banner="banner" />
-    <discount-content :content="content" />
+    <div v-show="!wasClickedOnButton">
+      <discount-banner :banner="banner" />
+      <discount-content :content="content" @set-click="setClick" />
+    </div>
   </div>
 </template>
 
@@ -30,7 +33,8 @@ export default {
   data() {
     return {
       banner,
-      content
+      content,
+      wasClickedOnButton: false
     };
   },
 
@@ -42,6 +46,12 @@ export default {
         }
       ]
     };
+  },
+
+  methods: {
+    setClick() {
+      this.wasClickedOnButton = true;
+    }
   }
 };
 </script>

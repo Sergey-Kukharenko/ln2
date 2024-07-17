@@ -15,7 +15,7 @@
 @font-face {
   font-family: 'Golos-DemiBold';
   src: url('../fonts/Golos-Text_DemiBold.woff2') format('woff2'),
-    url('../fonts/Golos-Text_DemiBold.woff') format('woff');
+  url('../fonts/Golos-Text_DemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
 }
@@ -31,6 +31,14 @@
   font-family: 'sana-black';
   src: url('../fonts/sana-black.eot');
   src: url('../fonts/sana-black.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/sana-black.woff2') format('woff2'), url('../fonts/sana-black.woff') format('woff'),
-    url('../fonts/sana-black.ttf') format('truetype');
+  url('../fonts/sana-black.woff2') format('woff2'), url('../fonts/sana-black.woff') format('woff'),
+  url('../fonts/sana-black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sf-pro-display-medium';
+  src: url('../fonts/SFProDisplay-Medium.woff2') format('woff2'),
+  url('../fonts/SFProDisplay-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
 }

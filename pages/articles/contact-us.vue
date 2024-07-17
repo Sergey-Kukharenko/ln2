@@ -15,8 +15,8 @@
     <!--Временно скрыт-->
     <!-- <div class="split-line layout" /> -->
     <app-info-something theme="extended" :content="$options.SOMETHING_IMPORTANT" />
-    <div class="split-line layout" />
-    <delivery-ad />
+    <!--    <div class="split-line layout" />-->
+    <!--    <delivery-ad />-->
   </div>
 </template>
 
@@ -24,7 +24,7 @@
 // import AppInfoBanner from '~/components/info/AppInfoBanner';
 // import AppInfoTextSection from '~/components/info/AppInfoTextSection';
 
-import DeliveryAd from '~/components/DeliveryAd.vue';
+// import DeliveryAd from '~/components/DeliveryAd.vue';
 import AppInfoSomething from '~/components/info/AppInfoSomething.vue';
 import { PROMO, SOMETHING_IMPORTANT, TEXT_INFO } from '~/data/contact-us';
 
@@ -32,7 +32,7 @@ export default {
   name: 'ContactPage',
 
   components: {
-    DeliveryAd,
+    // DeliveryAd,
     AppInfoSomething
     // AppInfoBanner,
     // AppInfoTextSection

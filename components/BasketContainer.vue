@@ -3,6 +3,12 @@
     <section class="basket-container__layout basket-container__wrapper">
       <div class="basket-container__main">
         <basket-product-list />
+        <!-- <gift-card-item v-if="isGiftCardItemVisible" @open-modal="openGiftCardModal" />
+        <gift-card-modal
+          :is-visible="isGiftCardModalVisible"
+          @create="closeGiftCardModal"
+          @close-modal="closeGiftCardModal"
+        /> -->
       </div>
       <basket-order />
     </section>
@@ -21,9 +27,37 @@ import promotions from '~/mocks/promotions';
 
 export default {
   name: 'BasketContainer',
-  components: { AppPromotions, BasketOrder, BasketProductList },
+  components: {
+    AppPromotions,
+    BasketOrder,
+    BasketProductList
+    // GiftCardItem: () => import('~/components/giftcard/GiftCardItem.vue'),
+    // GiftCardModal: () => import('~/components/giftcard/GiftCardModal.vue')
+  },
 
-  PROMOTIONS: promotions
+  PROMOTIONS: promotions,
+
+  data() {
+    return {
+      isGiftCardModalVisible: false
+    };
+  },
+
+  computed: {
+    isGiftCardItemVisible() {
+      return !this.$accessor.cart.getGiftCard?.offer_id;
+    }
+  },
+
+  methods: {
+    openGiftCardModal() {
+      this.isGiftCardModalVisible = true;
+    },
+
+    closeGiftCardModal() {
+      this.isGiftCardModalVisible = false;
+    }
+  }
 
   // Временно скрыт
   // mounted() {
@@ -58,10 +92,6 @@ export default {
   &__layout {
     max-width: 1080px;
     margin: 0 auto;
-
-    @include lt-lg {
-      padding: 0 16px;
-    }
   }
 
   &__wrapper {

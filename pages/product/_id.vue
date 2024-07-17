@@ -2,6 +2,8 @@
   <div class="layout layout-dt product-page">
     <div class="product-page__row">
       <div class="product-page__col">
+        <div v-if="isDiscountAvailable" class="product-page__discount"></div>
+
         <app-gallery :slides="sliderImages" :type-name="type_name" />
 
         <div class="additional-group" style="display: none">
@@ -14,10 +16,13 @@
         </div>
       </div>
       <div class="product-page__col">
-        <h1 class="product-page__title">{{ getProductTitle }}</h1>
+        <h1 class="product-page__title">
+          {{ getProductTitle
+          }}<span v-if="isDiscountAvailable" class="product-page__title-additional"> +FREE chocolates</span>
+        </h1>
         <app-form-offers v-if="!isListsPage" :product="getProduct" @setProductOffer="onSetProductOffer" />
         <keep-alive v-else>
-          <app-form-lists :product="cardProductSettings" />
+          <app-form-lists :product="cardProductSettings" @update-discount="onUpdateDiscount" />
         </keep-alive>
         <app-service :description="getProductDescription" />
       </div>
@@ -106,6 +111,12 @@ export default Vue.extend({
     return data;
   },
 
+  data() {
+    return {
+      offerDiscount: null
+    };
+  },
+
   head() {
     return {
       title: this.seo.title,
@@ -177,6 +188,19 @@ export default Vue.extend({
       'popularCategoriesItems',
       'recentlyViewed'
     ]),
+
+    discountValue: {
+      get() {
+        return this.offerDiscount || this.discount;
+      },
+      set(v) {
+        this.offerDiscount = v;
+      }
+    },
+
+    isDiscountAvailable() {
+      return Boolean(this.discountValue);
+    },
 
     isListsPage() {
       return !!this.cardProductSettings?.colors?.length;
@@ -259,6 +283,10 @@ export default Vue.extend({
   methods: {
     ...accessorMapper('product', ['fetchCardProductPage', 'CLEAR_PRODUCT_SETTINGS']),
 
+    onUpdateDiscount(v) {
+      this.discountValue = v;
+    },
+
     gtmViewItemEvent(title, realId, price, categoryName, positionName) {
       const item = {
         item_name: title,
@@ -277,7 +305,8 @@ export default Vue.extend({
       });
     },
 
-    onSetProductOffer({ title, price }) {
+    onSetProductOffer({ title, price, discount }) {
+      this.discountValue = discount;
       this.gtmClearItemEvent();
       this.gtmViewItemEvent(this.title, this.real_id, price, this.category_name, title);
     },
@@ -303,6 +332,26 @@ export default Vue.extend({
   &__row {
     @include gt-sm {
       display: flex;
+      align-items: flex-start;
+    }
+  }
+
+  &__discount {
+    position: absolute;
+    bottom: 88px;
+    right: 24px;
+    width: 148px;
+    height: 148px;
+    background-image: url('/images/card-product/badges/badge-chocolate.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 5;
+
+    @include lt-md {
+      bottom: 6px;
+      right: -6px;
+      width: 90px;
+      height: 90px;
     }
   }
 
@@ -330,6 +379,15 @@ export default Vue.extend({
 
     @include lt-sm {
       margin-top: 22px;
+    }
+  }
+
+  &__title-additional {
+    font-size: 36px;
+    font-weight: normal;
+
+    @include lt-sm {
+      font-size: 22px;
     }
   }
 

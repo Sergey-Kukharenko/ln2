@@ -2,6 +2,8 @@
   <div class="order-items">
     <div v-for="(item, index) in list" :key="index" class="item">
       <div class="item__picture">
+        <app-discount-badge v-if="isDiscountAvailable(item)" scale="0.35" offset-top="-10" offset-left="-24" />
+
         <img
           :src="
             useSizedImage({
@@ -26,6 +28,10 @@ import { useSizedImage } from '~/helpers';
 export default {
   name: 'OrderItems',
 
+  components: {
+    AppDiscountBadge: () => import('~/components/shared/AppDiscountBadge.vue')
+  },
+
   props: {
     list: {
       type: Array,
@@ -34,7 +40,11 @@ export default {
   },
 
   methods: {
-    useSizedImage
+    useSizedImage,
+
+    isDiscountAvailable(item) {
+      return Boolean(item.discount);
+    }
   },
 
   IMG_SIZES_MAP
@@ -54,6 +64,7 @@ export default {
     gap: 8px;
 
     &__picture {
+      position: relative;
       width: 48px;
       height: 48px;
     }

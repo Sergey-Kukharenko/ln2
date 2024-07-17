@@ -4,7 +4,14 @@
     <!--<app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />-->
     <app-promotions :promotions="$options.PROMOTIONS" />
     <app-popular-categories :popular-categories="$options.POPULAR_CATEGORIES" />
-    <app-section :section="$options.CONSTRUCTOR_BLOCK" name="constructor" theme="constructor" is-constructor has-from />
+    <app-section
+      v-if="isConstructorBlockExist"
+      :section="constructorBlock"
+      name="constructor"
+      theme="constructor"
+      is-constructor
+      has-from
+    />
     <app-section
       v-if="isSpecialOffers"
       :section="getDataByDevice(specialOffers, 11)"
@@ -50,7 +57,6 @@ import AppSeo from '~/components/seo/AppSeo.vue';
 import { useArrayNotEmpty, useDeepCopyObject } from '~/helpers';
 import gtm from '~/mixins/gtm.vue';
 import benefits from '~/mocks/benefits';
-import constructorBlock from '~/mocks/constructor-block';
 import faq from '~/mocks/faq';
 import info from '~/mocks/info';
 import pickBouquet from '~/mocks/pick-bouquet';
@@ -78,11 +84,10 @@ export default Vue.extend({
   },
   mixins: [gtm],
 
-  middleware: ['ab-testing'],
+  middleware: ['testing'],
 
   PROMOTIONS: promotions,
   POPULAR_CATEGORIES: popularCategories,
-  CONSTRUCTOR_BLOCK: constructorBlock,
   RECIPIENT: recipient,
   SHOP_BY_PRICE: shopByPrice,
   BENEFITS: benefits,
@@ -114,8 +119,13 @@ export default Vue.extend({
       'baseRoses',
       'newBouquets',
       'letterboxBouquets',
-      'trendyBouquets'
+      'trendyBouquets',
+      'constructorBlock'
     ]),
+
+    isConstructorBlockExist() {
+      return useArrayNotEmpty(this.constructorBlock);
+    },
 
     isSpecialOffers() {
       return useArrayNotEmpty(this.specialOffers?.list);

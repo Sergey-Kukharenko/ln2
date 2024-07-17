@@ -124,7 +124,7 @@ import OrderTitle from '~/components/OrderTitle.vue';
 import PaymentItem from '~/components/PaymentItem.vue';
 import AppModal from '~/components/shared/AppModal.vue';
 import AppRadio from '~/components/shared/AppRadio.vue';
-import { AUTH_WITHOUT_SMS_COOKIE, PAYMENT_METHOD_COOKIE, RELOAD_ORDER_DELAY } from '~/constants';
+import { AUTH_WITHOUT_SMS_COOKIE, GIFT_CARD_COOKIE, PAYMENT_METHOD_COOKIE, RELOAD_ORDER_DELAY } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import { PAYMENT_STATUS_MAP } from '~/constants/payment';
 import * as paymentMethods from '~/data/payment-methods';
@@ -266,7 +266,10 @@ export default Vue.extend({
     },
 
     isPaymentInProcess() {
-      return Boolean((this.$route.query.payment_intent || this.$route.query.paypal_redirect) && !this.isPaid);
+      return Boolean(
+        (this.$route.query.payment_intent || this.$route.query.paypal_redirect || this.$route.query.order_paid) &&
+          !this.isPaid
+      );
     },
 
     isPaymentElementsVisible() {
@@ -386,7 +389,7 @@ export default Vue.extend({
     }
 
     this.$cookies.remove(PAYMENT_METHOD_COOKIE);
-    this.SET_PAYMENT_METHOD('stripe');
+    this.setDefaultPaymentMethod();
 
     this.clearTimeId();
   },
@@ -395,9 +398,11 @@ export default Vue.extend({
     useSizedImage,
 
     ...accessorMapper('order', ['fetchOrder']),
-    ...accessorMapper('payment', ['getClientIdPayPal', 'SET_PAYMENT_METHOD']),
+    ...accessorMapper('payment', ['getClientIdPayPal', 'SET_PAYMENT_METHOD', 'setDefaultPaymentMethod']),
 
     async executeScriptEvents() {
+      this.$cookies.remove(GIFT_CARD_COOKIE);
+
       if (this.hasGoogleAdsFired) {
         return;
       }

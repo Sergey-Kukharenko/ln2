@@ -301,7 +301,7 @@ export default Vue.extend({
         return;
       }
 
-      await this.$accessor.order.createOrder();
+      await this.$accessor.checkout.createOrder();
       await this.$router.push({ name: 'checkout' });
     }
   }
@@ -378,7 +378,7 @@ export default Vue.extend({
   @include lt-lg {
     border: none;
     width: 100%;
-    padding: 0;
+    padding: 0 16px;
   }
 
   &__title {

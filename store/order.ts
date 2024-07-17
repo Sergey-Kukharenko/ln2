@@ -25,14 +25,6 @@ export const actions = actionTree(
       } catch (err) {
         console.error(err);
       }
-    },
-
-    createOrder(_) {
-      try {
-        return this.app.$http.$post(`/v1/order/`);
-      } catch (err) {
-        console.error(err);
-      }
     }
   }
 );

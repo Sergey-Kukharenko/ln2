@@ -1,17 +1,20 @@
 import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
 import {
+  CheckoutComPaymentSessionResponse,
   PaymentMethod,
   PaypalCaptureResponse,
   PaypalClientResponse,
   PaypalCreateResponse,
   StripeIntentResponse
 } from '~/@types/api/payment';
+import { STRIPE_PAYMENT_METHOD } from '~/data/payment-methods';
 
 export const state = () => ({
   paymentIntent: '' as StripeIntentResponse['data']['client_secret'],
-  paymentMethod: 'stripe' as PaymentMethod,
-  paypalClientId: '' as PaypalClientResponse['data']['client-id']
+  paymentMethod: STRIPE_PAYMENT_METHOD.name as PaymentMethod,
+  paypalClientId: '' as PaypalClientResponse['data']['client-id'],
+  paymentSession: '' as CheckoutComPaymentSessionResponse['data']['payment_session_token']
 });
 
 type PaymentState = ReturnType<typeof state>;
@@ -25,15 +28,33 @@ export const mutations = mutationTree(state, {
   },
   SET_PAYMENT_METHOD(state, payload: PaymentState['paymentMethod']) {
     state.paymentMethod = payload;
+  },
+  SET_CHECKOUT_PAYMENT_SESSION(state, payload: PaymentState['paymentSession']) {
+    state.paymentSession = payload;
   }
 });
 
 export const actions = actionTree(
   { state },
   {
+    setDefaultPaymentMethod({ commit }) {
+      commit('SET_PAYMENT_METHOD', STRIPE_PAYMENT_METHOD.name);
+    },
+
+    async fetchCheckoutPaymentData({ commit }) {
+      try {
+        const { data } = await this.app.$http.$post<CheckoutComPaymentSessionResponse>(
+          '/v1/payment/checkout-com/session/'
+        );
+        commit('SET_CHECKOUT_PAYMENT_SESSION', data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     async fetchStripeClientSecret({ commit }) {
       try {
-        const { data } = await this.app.$http.$post<StripeIntentResponse>(`/v1/payment/stripe/intent/`);
+        const { data } = await this.app.$http.$post<StripeIntentResponse>('/v1/payment/stripe/intent/');
         commit('SET_STRIPE_PAYMENT_INTENT', data);
 
         return data;

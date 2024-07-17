@@ -11,15 +11,15 @@ export default {
     {
       type: '££',
       prefix: 'filter',
-      slug: 'bouquets-ps30-ps50',
-      title: 'Bouquets £30 – £50',
+      slug: 'bouquets-ps30-ps60',
+      title: 'Bouquets £30 – £60',
       link: 'Shop'
     },
     {
       type: '£££+',
       prefix: 'filter',
-      slug: 'bouquets-ps80',
-      title: 'Bouquets £80+',
+      slug: 'bouquets-ps60',
+      title: 'Bouquets £60+',
       link: 'Shop'
     }
   ]

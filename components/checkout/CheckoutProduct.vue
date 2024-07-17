@@ -5,7 +5,15 @@
       target="_blank"
       rel="noopener"
       class="product__figure"
+      :class="{ 'product__figure--not-clickable': isGiftCart }"
     >
+      <app-discount-badge
+        v-if="isDiscountAvailable"
+        :scale="badgeScale"
+        :offset-top="badgeOffsetTop"
+        :offset-left="badgeOffsetLeft"
+      />
+
       <checkout-product-image
         :url="useSizedImage({ realId: realId, sizeName: imgSize, imgName: image.filename })"
         class="product__figure-image"
@@ -17,7 +25,7 @@
           <div class="product__title">
             <checkout-product-title>{{ title }}</checkout-product-title>
           </div>
-          <checkout-product-size :value="size" />
+          <checkout-product-size v-show="!isGiftCart && isBouquet" :value="size" />
         </div>
       </div>
       <div class="product__leaves-desktop">
@@ -40,6 +48,7 @@ import CheckoutProductImage from '~/components/checkout/CheckoutProductImage.vue
 import CheckoutProductPrice from '~/components/checkout/CheckoutProductPrice.vue';
 import CheckoutProductSize from '~/components/checkout/CheckoutProductSize.vue';
 import CheckoutProductTitle from '~/components/checkout/CheckoutProductTitle.vue';
+import { GIFT_CARD_POLICY_ID } from '~/constants';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 import { useSizedImage } from '~/helpers';
 import gtm from '~/mixins/gtm.vue';
@@ -52,7 +61,9 @@ export default {
     BasketProductLeaves,
     CheckoutProductSize,
     CheckoutProductTitle,
-    CheckoutProductImage
+    CheckoutProductImage,
+
+    AppDiscountBadge: () => import('~/components/shared/AppDiscountBadge.vue')
   },
 
   mixins: [gtm],
@@ -84,11 +95,6 @@ export default {
     },
 
     price: {
-      type: String,
-      default: ''
-    },
-
-    oldPrice: {
       type: String,
       default: ''
     },
@@ -136,6 +142,26 @@ export default {
     index: {
       type: Number,
       default: 0
+    },
+
+    policyId: {
+      type: [String, Number],
+      default: 0
+    },
+
+    isBouquet: {
+      type: Boolean,
+      default: false
+    },
+
+    oldPrice: {
+      type: [String, null],
+      default: null
+    },
+
+    discount: {
+      type: [String, null],
+      default: null
     }
   },
 
@@ -146,6 +172,22 @@ export default {
   },
 
   computed: {
+    badgeScale() {
+      return this.$device.isMobileOrTablet ? '0.35' : '0.38';
+    },
+
+    badgeOffsetTop() {
+      return this.$device.isMobileOrTablet ? '-10' : '-8';
+    },
+
+    badgeOffsetLeft() {
+      return this.$device.isMobileOrTablet ? '-24' : '-20';
+    },
+
+    isDiscountAvailable() {
+      return Boolean(this.discount);
+    },
+
     count() {
       return this.qty;
     },
@@ -162,6 +204,10 @@ export default {
           .map((el) => el?.toLowerCase())
           .join('-')
       );
+    },
+
+    isGiftCart() {
+      return this.policyId === GIFT_CARD_POLICY_ID;
     }
   },
 
@@ -192,6 +238,7 @@ export default {
   }
 
   &__figure {
+    position: relative;
     flex-shrink: 0;
     border-radius: 12px;
     overflow: hidden;
@@ -210,6 +257,10 @@ export default {
       .product__figure-image {
         transform: scale(1.1);
       }
+    }
+
+    &--not-clickable {
+      pointer-events: none;
     }
   }
 

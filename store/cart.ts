@@ -1,7 +1,7 @@
 import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
 import { CartResponse } from '~/@types/api/cart';
-import { EMPTY_CART_MAP } from '~/constants';
+import { EMPTY_CART_MAP, GIFT_CARD_POLICY_ID } from '~/constants';
 import { useFixedSumByKey } from '~/helpers';
 
 export const state = () => ({
@@ -37,14 +37,16 @@ export const actions = actionTree(
       }
     },
 
-    async addToCart({ state, commit }, { productId, positionSlug }) {
+    async addToCart({ state, commit }, { productId, positionSlug, giftText = null }) {
       const isCartEmpty = !state.cart.positions.length;
 
       try {
         if (isCartEmpty) {
           commit('SET_PENDING_STATUS', true);
         }
-        const { data } = await this.app.$http.$post<CartResponse>(`/v1/basket/${productId}/${positionSlug}`);
+
+        const payload = giftText ? { gift_card_text: giftText } : '';
+        const { data } = await this.app.$http.$post<CartResponse>(`/v1/basket/${productId}/${positionSlug}`, payload);
         commit('SET_CART', data);
       } catch (e) {
         console.error(e);
@@ -89,5 +91,6 @@ export const getters = getterTree(state, {
   getCost: (state) => state.cart.position_cost,
   getTotal: (state) => state.cart.total_cost,
   getDiscount: (state) => Number(state.cart?.promo_code?.discount ?? 0),
-  isDiscountExist: (state) => Number(state.cart.promo_code?.discount) > 0
+  isDiscountExist: (state) => Number(state.cart.promo_code?.discount) > 0,
+  getGiftCard: (state) => state.cart?.positions?.find((position) => position?.policy_id === GIFT_CARD_POLICY_ID)
 });

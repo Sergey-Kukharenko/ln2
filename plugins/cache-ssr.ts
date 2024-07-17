@@ -12,11 +12,10 @@ export type httpSSRCache = ({
   payload?: $ReplaceItType;
 }) => Promise<$ReplaceItType>;
 
-const TIME_OFFSET: number = 1000 * 60 * 10;
-const getCacheSsrOffset = (): number => new Date().getTime() + TIME_OFFSET;
+const TEN_MINUTES_IN_MS: number = 1000 * 60 * 10;
+const getCacheSsrOffset = (): number => new Date().getTime() + TEN_MINUTES_IN_MS;
 
 class CacheSSR {
-  private timeWhenSet: Nullable<number>;
   private data: $ReplaceItType;
   private datetime: number;
 
@@ -26,7 +25,7 @@ class CacheSSR {
   }
 
   getDataFromScope(scope: string, field: string) {
-    if (this.timeWhenSet && this.timeWhenSet <= this.datetime) {
+    if (new Date().getTime() <= this.datetime) {
       return this.data?.[scope]?.[field];
     }
 
@@ -34,17 +33,15 @@ class CacheSSR {
   }
 
   setDataToScope(scope: string, field: string, value: $ReplaceItType) {
-    this.timeWhenSet = new Date().getTime();
+    this.datetime = getCacheSsrOffset();
 
-    if (this.timeWhenSet < this.datetime) {
-      this.data = {
-        ...this.data,
-        [scope]: {
-          ...this.data?.[scope],
-          [field]: value
-        }
-      };
-    }
+    this.data = {
+      ...this.data,
+      [scope]: {
+        ...this.data?.[scope],
+        [field]: value
+      }
+    };
   }
 
   clearData() {
@@ -88,7 +85,6 @@ const cacheSSRPlugin: Plugin = ({ app: { $http } }, inject) => {
 
         const res = await $http.$get(url, payload);
         cacheSSR.setDataToScope(scope, field, res);
-
         return res;
       }
 

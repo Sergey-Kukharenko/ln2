@@ -53,6 +53,7 @@ export default {
   methods: {
     handleClick(idx) {
       this.selectedIdx = idx;
+      this.$emit('set-click');
     }
   }
 };

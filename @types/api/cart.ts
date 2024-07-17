@@ -24,6 +24,7 @@ interface Position {
   quantity: number;
   height?: string;
   package?: string;
+  policy_id?: string | number;
 }
 
 interface PromoCode {

@@ -1,12 +1,26 @@
 <template>
   <div>
     <div class="product">
-      <nuxt-link :to="{ name: 'product-id', params: { id: slug } }" class="product__figure">
+      <component
+        :is="componentTag"
+        class="product__figure"
+        :class="{ 'product__figure--not-clickable': isGiftCart }"
+        v-bind="{
+          ...(!isFree && { to: { name: 'product-id', params: { id: slug } } })
+        }"
+      >
+        <app-discount-badge
+          v-if="isDiscountAvailable"
+          :scale="badgeScale"
+          :offset-top="badgeOffsetTop"
+          :offset-left="badgeOffsetLeft"
+        />
+
         <basket-product-image
           :url="useSizedImage({ realId: realId, sizeName: imgSize, imgName: image.filename })"
           class="product__figure-image"
         />
-      </nuxt-link>
+      </component>
       <div class="product__info">
         <div class="product__info-price">
           <div>
@@ -15,14 +29,18 @@
               <basket-product-rating :value="rating" style="display: none" />
               <basket-product-title>{{ title }}</basket-product-title>
             </div>
-            <basket-product-size :value="size" />
-            <basket-product-color :value="color" />
-            <basket-product-package :value="pack" />
+            <basket-product-text v-if="isGiftCart" :value="giftCardText || ''" @edit="openEditModal" />
+            <template v-else-if="isBouquet">
+              <basket-product-size :value="size" />
+              <basket-product-color :value="color" />
+              <basket-product-package :value="pack" />
+            </template>
           </div>
           <div class="product__price-main">
             <basket-product-price :price="price" :old-price="oldPrice" />
             <div class="product__items">
-              <basket-product-count :count.sync="count" />
+              <basket-product-remove v-if="isGiftCart" :count.sync="count" :is-loading="isLoading" />
+              <basket-product-count v-else :disable-increment="isFree" :count.sync="count" />
             </div>
           </div>
         </div>
@@ -30,14 +48,26 @@
           <basket-product-leaves v-if="leaves" v-model="leavesSwitch" />
         </div>
         <div class="product__favorite-count">
-          <basket-product-favorite :id="id" :is-liked="isLiked" />
-          <basket-product-count :count.sync="count" :is-loading="isLoading" />
+          <template v-if="isGiftCart">
+            <basket-product-edit @edit="openEditModal" />
+            <basket-product-remove :count.sync="count" :is-loading="isLoading" />
+          </template>
+          <template v-else>
+            <basket-product-favorite :id="id" :is-liked="isLiked" />
+            <basket-product-count :disable-increment="isFree" :count.sync="count" :is-loading="isLoading" />
+          </template>
         </div>
       </div>
     </div>
     <div class="product__leaves-mobile">
       <basket-product-leaves v-if="leaves" v-model="leavesSwitch" />
     </div>
+    <gift-card-modal
+      :product="{ ...$props }"
+      :is-visible="isGiftCartModalVisible"
+      @create="closeEditModal"
+      @close-modal="closeEditModal"
+    />
   </div>
 </template>
 
@@ -45,8 +75,6 @@
 import Vue from 'vue';
 
 import BasketProductColor from '~/components/BasketProductColor.vue';
-import BasketProductCount from '~/components/BasketProductCount.vue';
-import BasketProductFavorite from '~/components/BasketProductFavorite.vue';
 import BasketProductImage from '~/components/BasketProductImage.vue';
 import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
 import BasketProductPackage from '~/components/BasketProductPackage.vue';
@@ -54,6 +82,7 @@ import BasketProductPrice from '~/components/BasketProductPrice.vue';
 import BasketProductRating from '~/components/BasketProductRating.vue';
 import BasketProductSize from '~/components/BasketProductSize.vue';
 import BasketProductTitle from '~/components/BasketProductTitle.vue';
+import { GIFT_CARD_POLICY_ID } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 import { useSizedImage } from '~/helpers';
@@ -63,16 +92,21 @@ import { accessorMapper } from '~/store';
 export default Vue.extend({
   name: 'BasketProduct',
   components: {
-    BasketProductFavorite,
+    BasketProductFavorite: () => import('~/components/BasketProductFavorite.vue'),
     BasketProductLeaves,
-    BasketProductCount,
+    BasketProductCount: () => import('~/components/BasketProductCount.vue'),
     BasketProductPrice,
     BasketProductPackage,
     BasketProductColor,
     BasketProductSize,
     BasketProductTitle,
     BasketProductRating,
-    BasketProductImage
+    BasketProductImage,
+    BasketProductText: () => import('~/components/BasketProductText.vue'),
+    BasketProductEdit: () => import('~/components/BasketProductEdit.vue'),
+    BasketProductRemove: () => import('~/components/BasketProductRemove.vue'),
+    GiftCardModal: () => import('~/components/giftcard/GiftCardModal.vue'),
+    AppDiscountBadge: () => import('~/components/shared/AppDiscountBadge.vue')
   },
 
   mixins: [gtm],
@@ -104,11 +138,6 @@ export default Vue.extend({
     },
 
     price: {
-      type: String,
-      default: ''
-    },
-
-    oldPrice: {
       type: String,
       default: ''
     },
@@ -151,16 +180,67 @@ export default Vue.extend({
     categoryName: {
       type: String,
       default: ''
+    },
+
+    giftCardText: {
+      type: String,
+      default: ''
+    },
+
+    policyId: {
+      type: [String, Number],
+      default: 0
+    },
+
+    isBouquet: {
+      type: Boolean,
+      default: false
+    },
+
+    oldPrice: {
+      type: [String, null],
+      default: null
+    },
+
+    discount: {
+      type: [String, null],
+      default: null
     }
   },
 
   data() {
     return {
-      leavesSwitch: false
+      leavesSwitch: false,
+
+      isGiftCartModalVisible: false
     };
   },
 
   computed: {
+    isFree() {
+      return Number(this.price) === 0;
+    },
+
+    componentTag() {
+      return this.isFree ? 'div' : 'nuxt-link';
+    },
+
+    badgeScale() {
+      return this.$device.isMobileOrTablet ? '0.38' : '0.85';
+    },
+
+    badgeOffsetTop() {
+      return this.$device.isMobileOrTablet ? '-10' : '2';
+    },
+
+    badgeOffsetLeft() {
+      return this.$device.isMobileOrTablet ? '-22' : '0';
+    },
+
+    isDiscountAvailable() {
+      return Boolean(this.discount);
+    },
+
     count: {
       get() {
         return this.qty;
@@ -187,6 +267,10 @@ export default Vue.extend({
 
     imgSize() {
       return this.$device.isMobileOrTablet ? IMG_SIZES_MAP.size10 : IMG_SIZES_MAP.size50;
+    },
+
+    isGiftCart() {
+      return this.policyId === GIFT_CARD_POLICY_ID;
     }
   },
 
@@ -231,6 +315,14 @@ export default Vue.extend({
       });
     },
 
+    openEditModal() {
+      this.isGiftCartModalVisible = true;
+    },
+
+    closeEditModal() {
+      this.isGiftCartModalVisible = false;
+    },
+
     useSizedImage
   },
 
@@ -250,6 +342,7 @@ export default Vue.extend({
   }
 
   &__figure {
+    position: relative;
     flex-shrink: 0;
     border-radius: 12px;
     overflow: hidden;
@@ -267,6 +360,16 @@ export default Vue.extend({
     &:hover {
       .product__figure-image {
         transform: scale(1.1);
+      }
+    }
+
+    &--not-clickable {
+      pointer-events: none;
+
+      & .image {
+        background-size: 75%;
+        background-position: bottom;
+        background-color: #f7f7f7;
       }
     }
   }

@@ -128,6 +128,25 @@ export default {
     }
   }
 
+  &--mobile-full {
+    @include lt-md {
+      & .modal__content {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        margin: 0;
+      }
+
+      & {
+        z-index: 10;
+      }
+
+      .modal__layout {
+        height: 100%;
+      }
+    }
+  }
+
   &--centered {
     & .modal__content {
       position: relative;

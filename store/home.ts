@@ -4,6 +4,7 @@ import { CategoryResponse } from '~/@types/api/category';
 import { MAIN_PAGE_LIMIT } from '~/constants';
 
 export const state = () => ({
+  constructorBlock: {} as CategoryResponse,
   specialOffers: {} as CategoryResponse,
   underPounds: {} as CategoryResponse,
   baseRoses: {} as CategoryResponse,
@@ -13,6 +14,10 @@ export const state = () => ({
 });
 
 export const mutations = mutationTree(state, {
+  SET_CONSTRUCTOR_BLOCK(state, payload: CategoryResponse) {
+    state.constructorBlock = payload;
+  },
+
   SET_SPECIAL_OFFERS(state, payload: CategoryResponse) {
     state.specialOffers = payload;
   },
@@ -43,6 +48,7 @@ export const actions = actionTree(
   {
     async fetchMainPageServerSide() {
       await Promise.allSettled([
+        this.app.$accessor.home.fetchConstructorBouquets(),
         this.app.$accessor.home.fetchSpecialOffers(),
         this.app.$accessor.home.fetchUnderPounds(),
         this.app.$accessor.home.fetchBasedRoses(),
@@ -64,6 +70,20 @@ export const actions = actionTree(
     // fetchMainPageClientSide() {
     // Возможно запросы с клиента еще будут
     // },
+
+    async fetchConstructorBouquets({ commit }) {
+      try {
+        const constructorBlock = await this.app.$httpSSRCache({
+          scope: 'home',
+          field: 'constructorBlock',
+          url: '/v1/main-page/constructor-block/'
+        });
+
+        commit('SET_CONSTRUCTOR_BLOCK', constructorBlock);
+      } catch (e) {
+        console.error(e);
+      }
+    },
 
     async fetchSpecialOffers({ commit }) {
       try {

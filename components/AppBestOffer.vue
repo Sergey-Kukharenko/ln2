@@ -4,8 +4,8 @@
     <div class="best-offer__panel" :style="panelStyles">
       <div class="best-offer__panel-col info">
         <div class="info__text">
-          Get the latest special <a href="#" class="link">offers</a> from <a href="#" class="link">MyFlowers</a> in your
-          inbox.
+          Get the latest special <a href="#" class="link">offers</a> from
+          <nuxt-link to="/" class="link">MyFlowers</nuxt-link> in your inbox.
         </div>
       </div>
 

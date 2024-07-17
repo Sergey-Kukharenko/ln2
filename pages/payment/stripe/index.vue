@@ -16,7 +16,7 @@
         <stripe-element-payment
           ref="paymentRef"
           locale="en"
-          :pk="$options.STRIPE.publicKey"
+          :pk="publicKey"
           :elements-options="elementsOptions"
           :hide-postal-code="true"
           :confirm-params="confirmParams"
@@ -42,7 +42,6 @@ import PaymentErrorModal from '~/components/PaymentErrorModal.vue';
 import AppLogo from '~/components/header/AppLogo.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader.vue';
-import { STRIPE } from '~/constants/payment';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -58,7 +57,7 @@ export default Vue.extend({
     AppLogo
   },
 
-  layout: 'stripe-payment',
+  layout: 'payment',
 
   // middleware: [
   //   async function ({ redirect, store }) {
@@ -86,8 +85,6 @@ export default Vue.extend({
   //   }
   // ],
 
-  STRIPE,
-
   data() {
     return {
       elementsOptions: {
@@ -103,6 +100,7 @@ export default Vue.extend({
           }
         }
       },
+      publicKey: '',
 
       isMounted: false,
       submitLoading: false,
@@ -172,9 +170,10 @@ export default Vue.extend({
 
     async generatePaymentIntent() {
       try {
-        const { client_secret: clientSecret } = await this.fetchStripeClientSecret();
+        const { client_secret: clientSecret, public_key: publicKey } = await this.fetchStripeClientSecret();
 
         this.elementsOptions.clientSecret = clientSecret;
+        this.publicKey = publicKey;
       } catch (err) {
         console.error('Generate payment intent error - stripe:generatePaymentIntent [157]', err);
       }

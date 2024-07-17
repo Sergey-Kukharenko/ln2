@@ -17,7 +17,7 @@ export default {
           text: 'I’m a student'
         },
         {
-          text: 'I’m have student'
+          text: 'I have Student Discount'
         },
         {
           text: 'I have Youth ID'
@@ -41,7 +41,7 @@ export default {
     content: {
       title: 'Exclusive MyFlowers discount codes',
       description:
-        'Key workers can now benefit from up to 30% off. Verify your employment to get your Bloom & Wild Key Worker & NHS discount.',
+        'Key workers can now benefit from up to 30% off. Verify your employment to get your Key Worker & NHS discount.',
       buttons: [
         {
           text: 'I’m a Key Worker'

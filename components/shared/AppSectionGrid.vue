@@ -1,6 +1,6 @@
 <template>
   <div :class="classNames">
-    <div v-for="(slide, idx) in slides" :key="idx" class="grid__item">
+    <div v-for="(slide, idx) in slides" :key="`${slide.id}_${idx}`" class="grid__item">
       <slot v-bind="{ ...slide }"></slot>
     </div>
 

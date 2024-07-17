@@ -12,6 +12,8 @@
         <div class="items__body goods" :class="{ active: itemsVisibility }">
           <div v-for="(item, idx) in orderItems" :key="idx" class="goods__item">
             <div class="goods__item-picture">
+              <app-discount-badge v-if="isDiscountAvailable(item)" scale="0.3" offset-left="-26" offset-top="-12" />
+
               <img
                 :src="
                   useSizedImage({
@@ -26,7 +28,7 @@
             </div>
             <div class="goods__item-title">
               {{ item.offer_title }}
-              <small>{{ useGetPositionSizeText(item.title, item.is_bouquet) }}</small>
+              <small v-if="item.is_bouquet">{{ useGetPositionSizeText(item.title, item.is_bouquet) }}</small>
             </div>
           </div>
         </div>
@@ -77,7 +79,9 @@ export default {
   name: 'OrderDetails',
 
   components: {
-    AppButton
+    AppButton,
+
+    AppDiscountBadge: () => import('~/components/shared/AppDiscountBadge.vue')
   },
 
   props: {
@@ -124,6 +128,10 @@ export default {
 
     cancelOrder() {
       this.$emit('cancel', OrderCancel.name);
+    },
+
+    isDiscountAvailable(item) {
+      return Boolean(item.discount);
     }
   },
 
@@ -314,6 +322,7 @@ export default {
         }
 
         &__item-picture {
+          position: relative;
           width: 48px;
           height: 48px;
 

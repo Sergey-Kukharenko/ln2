@@ -40,6 +40,11 @@ export default {
     list: {
       type: Array,
       default: () => []
+    },
+
+    hasSizeQueryParam: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -60,7 +65,10 @@ export default {
 
   methods: {
     getSelectedItemIndex() {
-      const idx = this.list.findIndex((c) => c.id === this.$cookies.get(CONSTRUCTOR_HEIGHT_COOKIE));
+      const targetValue = this.hasSizeQueryParam
+        ? this.$route.query.size
+        : this.$cookies.get(CONSTRUCTOR_HEIGHT_COOKIE);
+      const idx = this.list.findIndex((c) => c.id === targetValue);
       return idx !== -1 ? idx : 0;
     },
 

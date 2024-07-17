@@ -3,7 +3,7 @@ import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 import type { CheckoutStep, DailyIterval, Interval, IntervalResponse } from '~/@types/api/checkout';
 import type { OrderResponse } from '~/@types/api/order';
 
-import { AB_TESTING_COOKIE, CHECKOUT_STEPS, EMPTY_CART_MAP } from '~/constants';
+import { AB_TESTING_COOKIE, AC_TESTING_COOKIE, CHECKOUT_STEPS, EMPTY_CART_MAP, GIFT_CARD_POLICY_ID } from '~/constants';
 
 const GET_INTERVALS_IRI = '/v1/intervals/get-delivery-intervals-for-date/';
 const checkIntervalsForDisable = (intervals: IntervalResponse<DailyIterval>['data']['intervals']) =>
@@ -25,7 +25,8 @@ export const state = () => ({
   todayDate: null as Nullable<string>,
   isDetailsVisible: false as boolean,
   currCheckoutStep: 1 as CheckoutStep['id'],
-  checkoutSteps: CHECKOUT_STEPS as CheckoutStep[]
+  checkoutSteps: CHECKOUT_STEPS as CheckoutStep[],
+  isPending: false as boolean
 });
 
 type CheckoutState = ReturnType<typeof state>;
@@ -53,20 +54,16 @@ export const mutations = mutationTree(state, {
 
   SET_CHECKOUT(state, payload: CheckoutState['checkout']) {
     state.checkout = payload;
+  },
+
+  SET_PENDING_STATUS(state, payload: CheckoutState['isPending']) {
+    state.isPending = payload;
   }
 });
 
 export const actions = actionTree(
   { state },
   {
-    setPromoCode(_, payload: { promo_code: string }) {
-      try {
-        return this.app.$http.$post('/v1/order/promocode/', payload);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
     async fetchCheckout({ commit }) {
       try {
         const { data } = await this.app.$http.$get<OrderResponse>('/v1/order/');
@@ -75,6 +72,44 @@ export const actions = actionTree(
         commit('SET_SELF_RECIPIENT', data?.self_recipient ?? false);
 
         return data;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        commit('SET_PENDING_STATUS', false);
+      }
+    },
+
+    async createOrder({ commit }) {
+      try {
+        const { data } = await this.app.$http.$post<OrderResponse>(`/v1/order/`);
+
+        commit('SET_CHECKOUT', data);
+        commit('SET_SELF_RECIPIENT', data?.self_recipient ?? false);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        commit('SET_PENDING_STATUS', false);
+      }
+    },
+
+    async updateCheckout({ commit }) {
+      try {
+        const { data } = await this.app.$http.$post<OrderResponse>('/v1/order/update/');
+
+        commit('SET_CHECKOUT', data);
+        commit('SET_SELF_RECIPIENT', data?.self_recipient ?? false);
+
+        return data;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        commit('SET_PENDING_STATUS', false);
+      }
+    },
+
+    setPromoCode(_, payload: { promo_code: string }) {
+      try {
+        return this.app.$http.$post('/v1/order/promocode/', payload);
       } catch (err) {
         console.error(err);
       }
@@ -101,7 +136,9 @@ export const actions = actionTree(
           '/v1/intervals/get-delivery-intervals-for-date-range/',
           {
             params: {
-              ...(this.app.$cookies.get(AB_TESTING_COOKIE) && { is_4_ab: 1 })
+              ...((this.app.$cookies.get(AB_TESTING_COOKIE) || this.app.$cookies.get(AC_TESTING_COOKIE)) && {
+                is_4_ab: 1
+              })
             }
           }
         );
@@ -121,7 +158,9 @@ export const actions = actionTree(
         const { data } = await this.app.$http.$get<IntervalResponse<DailyIterval>>(GET_INTERVALS_IRI, {
           params: {
             intervals_date: date,
-            ...(this.app.$cookies.get(AB_TESTING_COOKIE) && { is_4_ab: 1 })
+            ...((this.app.$cookies.get(AB_TESTING_COOKIE) || this.app.$cookies.get(AC_TESTING_COOKIE)) && {
+              is_4_ab: 1
+            })
           }
         });
 
@@ -168,7 +207,9 @@ export const actions = actionTree(
       try {
         return this.app.$http.$post<IntervalResponse<DailyIterval>>('/v1/order/interval/', {
           ...interval,
-          ...(this.app.$cookies.get(AB_TESTING_COOKIE) && { is_4_ab: true })
+          ...((this.app.$cookies.get(AB_TESTING_COOKIE) || this.app.$cookies.get(AC_TESTING_COOKIE)) && {
+            is_4_ab: true
+          })
         });
       } catch (err) {
         console.error(err);
@@ -195,5 +236,6 @@ export const getters = getterTree(state, {
   checkoutPositions: (state) => state.checkout?.positions || [],
   checkoutPromocode: (state) => state.checkout?.promo_code?.code || '',
   isDetailsStep: (state) => state.currCheckoutStep === 1,
-  isFinalStep: (state) => state.currCheckoutStep === 2
+  isFinalStep: (state) => state.currCheckoutStep === 2,
+  getGiftCard: (state) => state.checkout?.positions?.find((position) => position?.policy_id === GIFT_CARD_POLICY_ID)
 });

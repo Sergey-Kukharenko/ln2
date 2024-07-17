@@ -25,34 +25,22 @@
 
 <script>
 import AppButton from '~/components/shared/AppButton.vue';
+import addGtag from '~/mixins/addGtag.vue';
 
 export default {
   name: 'AppCookies',
 
   components: { AppButton },
 
+  mixins: [addGtag],
+
   mounted() {
-    this.addGtagScript();
+    this.onAddGtagScript();
   },
 
   methods: {
     setCookie() {
       this.$emit('setCookie');
-    },
-
-    addGtagScript() {
-      const head = document.head;
-      const script = document.createElement('script');
-
-      script.innerHTML = `
-        gtag('consent', 'default', {
-          'ad_storage': 'granted',
-          'ad_user_data': 'granted',
-          'ad_personalization': 'granted',
-          'analytics_storage': 'granted'
-          });
-      `;
-      head.appendChild(script);
     }
   }
 };

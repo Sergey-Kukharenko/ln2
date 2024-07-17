@@ -27,6 +27,11 @@ export default {
       default: ''
     },
 
+    initialIconName: {
+      type: String,
+      default: 'checkbox-off'
+    },
+
     size: {
       type: String,
       default: '',
@@ -56,7 +61,7 @@ export default {
     checkboxState() {
       return (Array.isArray(this.value) && this.value.includes(this.name)) || this.name === this.value
         ? { value: null, icon: 'checkbox-on' }
-        : { value: this.name, icon: 'checkbox-off' };
+        : { value: this.name, icon: this.initialIconName };
     }
   }
 };

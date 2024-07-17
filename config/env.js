@@ -21,5 +21,8 @@ module.exports = {
   imgCDN: process.env.IMG_CDN,
   addressSuggestionsOptimization: process.env.ADDRESS_SUGGESTIONS_OPTIMIZATION,
   sessionCookieDomain: process.env.SESSION_COOKIE_DOMAIN,
-  ABTesting: process.env.AB_TESTING
+  ABTesting: process.env.AB_TESTING,
+  ACTesting: process.env.AC_TESTING,
+  checkoutComPublicKey: process.env.CHECKOUT_COM_PUBLIC_KEY,
+  checkoutComEnviroment: process.env.CHECKOUT_COM_ENVIROMENT
 };
