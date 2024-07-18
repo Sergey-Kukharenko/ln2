@@ -2,73 +2,172 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
-  },
-  parser: 'vue-eslint-parser',
-  parserOptions: {
-    parser: '@typescript-eslint/parser'
+    es6: true,
+    node: true,
   },
   extends: [
     '@nuxtjs/eslint-config-typescript',
-    '@nuxtjs',
     'plugin:nuxt/recommended',
     'plugin:prettier/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/recommended'
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
-  plugins: ['import'],
+  plugins: ['vue', '@typescript-eslint', 'unused-imports', 'vitest', 'no-param-reassign-allow-reduce'],
   rules: {
-    'no-console': 0,
+    'no-redeclare': 'off',
+    '@typescript-eslint/no-redeclare': 'warn',
+    'unused-imports/no-unused-imports': 'error',
+    'no-console': ['error', { allow: ['error', 'time', 'timeEnd'] }],
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'linebreak-style': ['error', 'unix'],
+    'import/no-unresolved': 'error',
+    'import/extensions': [
+      'error',
+      'never',
+      {
+        svg: 'always',
+        png: 'always',
+      },
+    ],
+    'no-param-reassign-allow-reduce/allow-reduce': 2,
+    'no-param-reassign-allow-reduce/no-reduce-identifiers': 2,
+    'no-plusplus': 'off',
+    '@typescript-eslint/no-shadow': ['error', { ignoreTypeValueShadow: true }],
+    'no-empty': 'error',
+    'default-case': 'off',
     'vue/multi-word-component-names': [
       'error',
       {
-        ignores: ['empty']
-      }
+        ignores: ['error', 'index'],
+      },
+    ],
+    'vue/html-indent': [
+      'error',
+      2,
+      {
+        attribute: 1,
+        baseIndent: 1,
+        closeBracket: 0,
+        alignAttributesVertically: true,
+        ignores: [],
+      },
+    ],
+    'vue/component-api-style': ['error', ['script-setup', 'composition']],
+    'vue/attributes-order': [
+      'error',
+      {
+        order: [
+          'DEFINITION',
+          'LIST_RENDERING',
+          'CONDITIONALS',
+          'RENDER_MODIFIERS',
+          'GLOBAL',
+          ['UNIQUE', 'SLOT'],
+          'TWO_WAY_BINDING',
+          'OTHER_DIRECTIVES',
+          'OTHER_ATTR',
+          'EVENTS',
+          'CONTENT',
+        ],
+        alphabetical: false,
+      },
+    ],
+    'vue/order-in-components': [
+      'error',
+      {
+        order: [
+          'el',
+          'name',
+          'key',
+          'parent',
+          'functional',
+          ['delimiters', 'comments'],
+          ['components', 'directives', 'filters'],
+          'extends',
+          'mixins',
+          ['provide', 'inject'],
+          'ROUTER_GUARDS',
+          'layout',
+          'middleware',
+          'validate',
+          'scrollToTop',
+          'transition',
+          'loading',
+          'inheritAttrs',
+          'model',
+          ['props', 'propsData'],
+          'emits',
+          'setup',
+          'asyncData',
+          'data',
+          'fetch',
+          'head',
+          'computed',
+          'watch',
+          'watchQuery',
+          'LIFECYCLE_HOOKS',
+          'methods',
+          ['template', 'render'],
+          'renderError',
+        ],
+      },
+    ],
+    'vue/require-default-prop': 'error',
+    'vue/no-v-html': 'off',
+    'vue/no-multiple-template-root': 'off',
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+      {
+        registeredComponentsOnly: false,
+        ignores: [],
+      },
+    ],
+    'vue/max-attributes-per-line': [
+      'error',
+      {
+        singleline: {
+          max: 5,
+        },
+        multiline: {
+          max: 1,
+        },
+      },
+    ],
+    'vue/singleline-html-element-content-newline': 'off',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'any',
+          normal: 'any',
+          component: 'always',
+        },
+        svg: 'always',
+        math: 'always',
+      },
     ],
     'prettier/prettier': [
       'error',
       {
-        endOfLine: 'auto'
-      }
+        endOfLine: 'lf',
+        printWidth: 120,
+        singleQuote: true,
+        trailingComma: 'all',
+        bracketSpacing: true,
+        tabWidth: 2,
+        semi: true,
+        singleAttributePerLine: true,
+      },
     ],
-    semi: ['error', 'always'],
-    '@typescript-eslint/no-explicit-any': 'warn',
-    'import/order': [
-      'error',
-      {
-        groups: ['builtin', 'external', 'parent', 'sibling', 'index', 'type'],
-        pathGroups: [
-          {
-            pattern: '@custom-lib/**',
-            group: 'external',
-            position: 'after'
-          }
-        ],
-        pathGroupsExcludedImportTypes: ['builtin'],
-        alphabetize: {
-          order: 'asc'
-        },
-        'newlines-between': 'always'
-      }
-    ],
-    'sort-imports': [
-      'error',
-      {
-        allowSeparatedGroups: true,
-        ignoreDeclarationSort: true
-      }
-    ],
-    'no-duplicate-imports': 'error',
-    'no-multiple-empty-lines': [
-      'error',
-      {
-        max: 1,
-        maxEOF: 0,
-        maxBOF: 0
-      }
-    ],
-    'import/first': 'error',
-    'import/newline-after-import': 'error',
-    'import/no-duplicates': 'error'
-  }
+  },
+  overrides: [
+    {
+      files: ['./pages/**/*.vue', './layouts/**/*.vue'],
+      rules: {
+        'vue/multi-word-component-names': 'off',
+      },
+    },
+  ],
 };

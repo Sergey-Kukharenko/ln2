@@ -1,252 +1,209 @@
 <template>
   <main>
-    <!--Временно скрыт-->
-    <!--<app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />-->
-    <app-promotions :promotions="$options.PROMOTIONS" />
-    <app-popular-categories :popular-categories="$options.POPULAR_CATEGORIES" />
-    <app-section
-      v-if="isConstructorBlockExist"
-      :section="constructorBlock"
-      name="constructor"
-      theme="constructor"
-      is-constructor
-      has-from
-    />
-    <app-section
-      v-if="isSpecialOffers"
-      :section="getDataByDevice(specialOffers, 11)"
-      theme="custom"
-      name="special-offers"
-    />
-    <app-shop-by-price :shop-by-price="$options.SHOP_BY_PRICE" />
-    <app-section v-if="isBaseRoses" :section="getDataByDevice(baseRoses)" theme="custom" name="base-roses" />
-    <app-section v-if="isUnderPounds" :section="getDataByDevice(underPounds)" theme="custom" name="under-pounds" />
-    <app-section-sm :section="$options.RECIPIENT" use-without-image-size name="recipient" />
-    <app-section v-if="isNewBouquets" :section="getDataByDevice(newBouquets)" theme="custom" name="new-bouquets" />
-    <app-section
-      v-if="isLetterboxBouquets"
-      :section="getDataByDevice(letterboxBouquets)"
-      theme="custom"
-      name="letterbox-bouquets"
-    />
-    <app-section
-      v-if="isTrendyBouquets"
-      :section="getDataByDevice(trendyBouquets)"
-      theme="custom"
-      name="trendy-bouquets"
-    />
-    <app-benefits :benefits="$options.BENEFITS" />
-    <app-section-sm :section="$options.PICK_BOUQUET" name="pick-bouquet" theme="custom" />
-    <app-faq :faq="$options.FAQ" />
-    <app-info :info="$options.INFO" />
-    <app-notice v-if="$device.isMobileOrTablet" />
-    <app-seo :html="$options.INFO.seo.bottom_text" has-layout page-theme="home" />
+    <!-- Mobile layout -->
+    <template v-if="isMobile">
+      <div class="container mx-auto mt-3">
+        <GeoSelect
+          mobile
+          @click="openCityBurger"
+        />
+      </div>
+      <div class="flex flex-col">
+        <div class="app__category container mx-auto mt-3 p-6 !pb-6">
+          <div class="dfm mt-7 flex flex-col items-center">
+            <h5 class="ui-text-ru-title-5">Внутри можно выбрать</h5>
+            <p class="ui-text-ru-caption">• Количество роз <span class="mx-2">• Цвет</span> • Упаковку</p>
+          </div>
+          <div
+            class="mt-6 grid grid-cols-4 gap-3"
+            :class="{ '!grid-cols-2': isMobile }"
+          >
+            <ProductCard
+              v-for="product in products"
+              :key="product.id"
+              small
+              slider
+              :product="product"
+              :category="'Preview'"
+            />
+          </div>
+        </div>
+        <div class="container mx-auto">
+          <PromoBlock class="!mt-2" />
+        </div>
+      </div>
+      <p
+        v-if="currentCity"
+        class="ui-text-ru-description dmb container !mt-8"
+        style="margin-bottom: -2rem"
+      >
+        {{ mainPageStore.seoData?.heading }}
+      </p>
+      <div
+        v-for="(category, index) in mainPageStore.data?.offersBlocks"
+        :key="category.categoryId"
+      >
+        <ProductCategory
+          :category="category"
+          :max="10"
+        />
+        <ReviewsBlock
+          v-if="index === 0"
+          :reviews="mainPageStore.reviews"
+        />
+        <CategoryBlock
+          v-if="index === 1"
+          class="dbm !mt-10"
+        />
+        <SelectionBlock
+          v-if="index === 2"
+          class="!mt-6"
+        />
+        <HomeSwiper v-if="index === 3" />
+      </div>
+      <FlowersCategories :flowers="mainPageStore.categories" />
+      <QuestionBlock />
+    </template>
+
+    <!-- Desktop layout -->
+    <template v-else>
+      <div>
+        <div
+          v-if="currentCity"
+          class="container mx-auto mt-4 flex items-center justify-center"
+        >
+          <p class="ui-text-ru-caption-1 text-blackGrey">{{ mainPageStore.seoData?.heading }}</p>
+        </div>
+        <div class="container mx-auto">
+          <PromoBlock class="!mt-4" />
+        </div>
+        <CategoryBlock class="mt-8" />
+        <div class="app__category container mx-auto mt-8 p-6">
+          <div class="dnm flex w-full items-center">
+            <p class="ui-text-ru-title-3 w-full text-center">
+              Соберите свой букет роз.<br />
+              Внутри вы можете указать длину, упаковку и цвет
+            </p>
+          </div>
+          <div class="dfm mt-5 flex flex-col items-center">
+            <h5 class="ui-text-ru-title-5">Внутри можно выбрать</h5>
+            <p>• Количество роз • Цвет • Упаковку</p>
+          </div>
+          <div class="mt-6 grid grid-cols-4 gap-2">
+            <ProductCard
+              v-for="product in products"
+              :key="product.id"
+              small
+              :product="product"
+              slider
+              category="main"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        v-for="(category, index) in mainPageStore.data?.offersBlocks"
+        :key="category.categoryId"
+      >
+        <ProductCategory
+          :category="category"
+          :max="7"
+        />
+        <ReviewsBlock
+          v-if="index === 0"
+          :reviews="mainPageStore.reviews"
+          class="mt-8"
+        />
+        <div class="!mt-8">
+          <SelectionBlock v-if="index === 1" />
+        </div>
+        <HomeSlider
+          v-if="index === 2"
+          class="mt-8"
+        />
+      </div>
+      <div class="container mx-auto">
+        <EmailSection
+          class="mt-8"
+          :mobile="false"
+        />
+      </div>
+      <FlowersCategories
+        class="mt-8"
+        :flowers="mainPageStore.categories"
+      />
+      <QuestionBlock class="mt-8" />
+    </template>
   </main>
+
+  <AppCityModal
+    :opened="cityModal"
+    @close="cityModal = false"
+  />
 </template>
 
-<script>
-import Vue from 'vue';
+<script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useCityStore } from '@/store/city';
+import { useMainPageStore } from '~~/store/mainPage';
 
-import AppBenefits from '~/components/AppBenefits.vue';
-import AppFaq from '~/components/AppFaq.vue';
-import AppInfo from '~/components/AppInfo.vue';
-import AppPopularCategories from '~/components/AppPopularCategories.vue';
-import AppPromotions from '~/components/AppPromotions.vue';
-import AppShopByPrice from '~/components/AppShopByPrice.vue';
-import AppSeo from '~/components/seo/AppSeo.vue';
-import { useArrayNotEmpty, useDeepCopyObject } from '~/helpers';
-import gtm from '~/mixins/gtm.vue';
-import benefits from '~/mocks/benefits';
-import faq from '~/mocks/faq';
-import info from '~/mocks/info';
-import pickBouquet from '~/mocks/pick-bouquet';
-import popularCategories from '~/mocks/popular-categories';
-import promotions from '~/mocks/promotions';
-import recipient from '~/mocks/recipient';
-import shopByPrice from '~/mocks/shop-by-price';
-import { accessorMapper } from '~/store';
+import PromoBlock from '@/components/home/PromoBlock.vue';
+import CategoryBlock from '@/components/home/CategoryBlock.vue';
+import ProductCard from '@/components/ProductCard.vue';
+import ProductCategory from '@/components/home/ProductCategory.vue';
+import ReviewsBlock from '@/components/home/ReviewsBlock.vue';
+import SelectionBlock from '@/components/home/SelectionBlock.vue';
+import EmailSection from '@/components/home/EmailSection.vue';
+import FlowersCategories from '@/components/home/FlowersCategories.vue';
+import QuestionBlock from '@/components/home/QuestionBlock.vue';
+import GeoSelect from '@/components/GeoSelect.vue';
+import HomeSwiper from '@/components/home/HomeSwiper.vue';
 
-export default Vue.extend({
-  name: 'IndexPage',
+import { useMainStore } from '@/store/main';
+const mainStore = useMainStore();
+const mainPageStore = useMainPageStore();
+const { isMobile } = storeToRefs(mainStore);
 
-  components: {
-    AppInfo,
-    AppFaq,
-    AppBenefits,
-    AppShopByPrice,
-    AppPopularCategories,
-    AppPromotions,
-    AppSeo,
-    // AppTrustbox: () => import('~/components/ui/AppTrustbox.vue'),
-    AppNotice: () => import('@/components/shared/AppNotice.vue'),
-    AppSection: () => import('@/components/shared/AppSection.vue'),
-    AppSectionSm: () => import('@/components/shared/AppSectionSm.vue')
-  },
-  mixins: [gtm],
+const cityStore = useCityStore();
 
-  middleware: ['testing'],
+const { currentCity } = storeToRefs(cityStore);
 
-  PROMOTIONS: promotions,
-  POPULAR_CATEGORIES: popularCategories,
-  RECIPIENT: recipient,
-  SHOP_BY_PRICE: shopByPrice,
-  BENEFITS: benefits,
-  PICK_BOUQUET: pickBouquet,
-  FAQ: faq,
-  INFO: info,
+const cityModal = ref<boolean>(false);
 
-  async fetch() {
-    await this.$accessor.home.fetchMainPageServerSide();
-  },
-
-  head() {
-    return {
-      title: this.seoTitle,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: this.seoDescription
-        }
-      ]
-    };
-  },
-
-  computed: {
-    ...accessorMapper('home', [
-      'specialOffers',
-      'underPounds',
-      'baseRoses',
-      'newBouquets',
-      'letterboxBouquets',
-      'trendyBouquets',
-      'constructorBlock'
-    ]),
-
-    isConstructorBlockExist() {
-      return useArrayNotEmpty(this.constructorBlock);
-    },
-
-    isSpecialOffers() {
-      return useArrayNotEmpty(this.specialOffers?.list);
-    },
-
-    isUnderPounds() {
-      return useArrayNotEmpty(this.underPounds?.list);
-    },
-
-    isBaseRoses() {
-      return useArrayNotEmpty(this.baseRoses?.list);
-    },
-
-    isNewBouquets() {
-      return useArrayNotEmpty(this.newBouquets?.list);
-    },
-
-    isLetterboxBouquets() {
-      return useArrayNotEmpty(this.letterboxBouquets?.list);
-    },
-
-    isTrendyBouquets() {
-      return useArrayNotEmpty(this.trendyBouquets?.list);
-    },
-
-    seoTitle() {
-      return info.seo?.title;
-    },
-
-    seoDescription() {
-      return info.seo?.description;
-    }
-  },
-
-  methods: {
-    getDataByDevice(obj, limit = null) {
-      const copyObj = useDeepCopyObject(obj);
-      const PAGE_LIMIT = limit || 7;
-      const list = copyObj?.list || [];
-      const isAvalible = this.$device.isMobileOrTablet && list.length === PAGE_LIMIT;
-
-      if (isAvalible) {
-        list.pop();
-      }
-
-      return {
-        ...copyObj,
-        list
-      };
-    }
-  }
+const products = computed(() => {
+  return mainPageStore.data?.bestOffers;
 });
+
+const mainP = await useAsyncData(() => mainPageStore.getMainPageData());
+useHead({
+  title: mainP.data.value?.seoData.pageTitle,
+  meta: mainP.data.value?.seoData.metaTags.map((tag) => {
+    return { [tag.attribute]: tag.name, content: tag.content };
+  }),
+});
+
+useAsyncData(() => {
+  return Promise.any([mainPageStore.getFilters(), mainPageStore.getReviews()]);
+});
+
+const openCityBurger = inject('openCityBurger', () => {});
 </script>
 
-<style lang="scss" scoped>
-main {
-  @include lt-md {
-    display: flex;
-    flex-direction: column;
+<style scoped lang="scss">
+.delivery {
+  width: 100%;
+  height: 68px;
 
-    .trustbox {
-      margin: 12px auto;
-    }
-
-    .promotion {
-      order: 0;
-    }
-
-    .constructor {
-      order: 1;
-    }
-
-    .special-offers {
-      order: 2;
-    }
-
-    .shop-by-price {
-      order: 3;
-    }
-    .base-roses {
-      order: 4;
-    }
-
-    .under-pounds {
-      order: 5;
-    }
-    .popular-categories {
-      order: 6;
-    }
-
-    .new-bouquets {
-      order: 7;
-    }
-
-    .letterbox-bouquets {
-      order: 8;
-    }
-
-    .trendy-bouquets {
-      order: 9;
-    }
-
-    .recipient,
-    .reviews,
-    .autumn-collection,
-    .benefits,
-    .pick-bouquet,
-    .discount,
-    .faq,
-    .info,
-    .seo {
-      order: 10;
-    }
-  }
-
-  > section,
-  > .layout {
-    @include lt-md {
-      width: 100%;
-      box-sizing: border-box;
-    }
+  background: #ebfaf0;
+  box-shadow: 0px 6px 16px rgba(51, 51, 50, 0.08);
+  border-radius: 24px;
+}
+.app__category {
+  background: #f7f7f7;
+  border-radius: 24px;
+  @include mobile {
+    border-radius: 16px;
+    background: linear-gradient(180deg, #f7f7f7 0%, rgba(247, 247, 247, 0) 79.8%, rgba(247, 247, 247, 0) 79.8%);
   }
 }
 </style>

@@ -1,162 +1,176 @@
 <template>
-  <div :class="classNames">
-    <app-notification v-if="isDefaultRoute" />
-    <app-header-mobile v-if="$device.isMobileOrTablet" />
-    <app-header v-else />
-    <app-breadcrumbs v-if="isDefaultRoute" />
-    <Nuxt />
-    <app-footer v-if="!isBasket" />
-    <app-footer-bottom v-else />
-    <transition v-if="isDefaultRoute" name="slide-fade">
-      <app-cookies v-if="getCookie" @setCookie="onSetCookie" />
-    </transition>
-    <transition name="scrolling">
-      <app-button-scroll-to-top v-show="isVisibleButtonScrollToTop" />
-    </transition>
+  <div
+    id="main"
+    class="main"
+    :class="{ 'is-mobile': isMobile, 'main--loading': !DOMLoaded || loading }"
+  >
+    <div
+      v-if="!isMobile"
+      class="bg-pink header__message flex items-center justify-center"
+    >
+      <p class="ui-text-ru-title-5 banner__text text-white">Цветы простоят 5 дней! Или заменим букет!</p>
+    </div>
+    <Transition>
+      <div
+        v-if="isMobile"
+        class="menu__overlay"
+        :class="{ '--opened': burgerOpen }"
+        @click="setBurger(false)"
+      ></div>
+    </Transition>
+    <BurgerMenu
+      v-if="isMobile"
+      ref="burger"
+      :opened="burgerOpen"
+      @login="loginModal = true"
+      @open="burgerOpen = true"
+    />
+    <AppHeader
+      :is-mobile="isMobileState"
+      @login="loginModal = true"
+    />
+    <slot />
+
+    <AppShortFooter v-if="isShortFooter" />
+    <AppFooter
+      v-else
+      :is-mobile="isMobileState"
+    />
+
+    <AppNotifications />
+
+    <AppLoginFrom
+      :opened="loginModal"
+      :is-mobile="isMobile"
+      @close="loginModal = false"
+    />
+
+    <AppNoProductModal
+      :opened="cityStore.noProductModal"
+      :is-mobile="isMobile"
+      @close="cityStore.closeNoProductModal"
+    />
+
+    <!-- <AppCookie
+      v-if="!cookieSeen"
+      :is-mobile="isMobileState"
+    /> -->
   </div>
+  <Transition>
+    <div
+      v-if="!DOMLoaded || filterStore.loading || loading"
+      class="loader__layout"
+    >
+      <AppLoader />
+    </div>
+  </Transition>
 </template>
 
-<script>
-import debounce from 'lodash.debounce';
-import Vue from 'vue';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
-import AppNotification from '~/components/header/AppNotification.vue';
-import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs.vue';
-import AppButtonScrollToTop from '~/components/ui/AppButtonScrollToTop.vue';
-import { MIN_SCROLL_TO_UP_BUTTON, OUR_COOKIE } from '~/constants';
-import { accessorMapper } from '~/store';
+import AppFooter from '@/components/AppFooter.vue';
+import AppShortFooter from '~~/components/AppShortFooter.vue';
+import AppHeader from '@/components/AppHeader.vue';
+import AppLoginFrom from '@/components/AppLoginForm.vue';
+import AppLoader from '@/components/AppLoader.vue';
+import BurgerMenu from '@/components/BurgerMenu.vue';
+// import AppCookie from '~~/components/AppCookie.vue';
+import AppNotifications from '@/components/AppNotifications.vue';
+import AppNoProductModal from '~~/components/AppNoProductModal.vue';
 
-export default Vue.extend({
-  name: 'DefaultLayout',
+import { useMainStore } from '@/store/main';
+import { useFilterStore } from '~~/store/filters';
+import { useCityStore } from '~~/store/city';
 
-  components: {
-    AppCookies: () => import('@/components/shared/AppCookies.vue'),
-    AppHeader: () => import('@/components/header/AppHeader.vue'),
-    AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile.vue'),
-    AppFooterBottom: () => import('@/components/footer/AppFooterBottom.vue'),
-    AppFooter: () => import('@/components/footer/AppFooter.vue'),
-    AppBreadcrumbs,
-    AppNotification,
-    AppButtonScrollToTop
-  },
+const route = useRoute();
 
-  middleware: ['cookie'],
+const mainStore = useMainStore();
+const filterStore = useFilterStore();
+const cityStore = useCityStore();
 
-  data() {
-    return {
-      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount'],
-      handleDebouncedScroll: null,
-      isVisibleButtonScrollToTop: false
-    };
-  },
+const { isMobile, burgerOpen, DOMLoaded, loading } = storeToRefs(mainStore);
+const { setBurger } = mainStore;
 
-  computed: {
-    ...accessorMapper('cookie', ['getCookie']),
+const isMobileState = ref<boolean>(false);
 
-    getRouteName() {
-      return this.$route.name;
-    },
-
-    isBasket() {
-      return this.getRouteName === 'basket';
-    },
-
-    isDefaultRoute() {
-      return !this.routeNames.includes(this.getRouteName);
-    },
-
-    classNames() {
-      return this.isDefaultRoute ? 'default-layout' : [`${this.getRouteName}-layout`];
-    }
-  },
-
-  created() {
-    if (process.server) {
-      return;
-    }
-
-    const payload = !this.$cookies.get(OUR_COOKIE);
-    payload && this.addCookie(payload);
-  },
-
-  mounted() {
-    this.setDisplayButtonScrollToTop();
-    this.handleDebouncedScroll = debounce(this.setDisplayButtonScrollToTop, 100);
-    window.addEventListener('scroll', this.handleDebouncedScroll);
-  },
-
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleDebouncedScroll);
-  },
-
-  methods: {
-    ...accessorMapper('cookie', ['addCookie']),
-
-    onSetCookie() {
-      this.addCookie(false);
-    },
-
-    setDisplayButtonScrollToTop() {
-      this.isVisibleButtonScrollToTop = window.scrollY > MIN_SCROLL_TO_UP_BUTTON;
-    }
-  }
+const isShortFooter = computed(() => {
+  return route.path === '/cart' || route.path === '/checkout';
 });
+
+const loginModal = ref<boolean>(false);
+const cookieSeen = ref<boolean>(true);
+onMounted(() => {
+  cookieSeen.value = !!localStorage.getItem('cookieSeen');
+});
+
+const burger = ref(null);
+const openCityBurger = () => {
+  burgerOpen.value = true;
+  if (burger.value) {
+    // @ts-ignore
+    burger.value.openCity();
+  }
+};
+provide('openCityBurger', openCityBurger);
+
+const openLogin = () => {
+  loginModal.value = true;
+};
+provide('openLogin', openLogin);
 </script>
 
-<style lang="scss" scoped>
-.default-layout {
-  @include lt-md {
-    display: flex;
-    flex-direction: column;
+<style scoped lang="scss">
+.menu__overlay {
+  position: fixed;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 0;
 
-    & .header-group {
-      order: 0;
-    }
+  transition: 0.3s;
 
-    & .notification {
-      order: 1;
-    }
-
-    & main,
-    & > .layout {
-      order: 2;
-    }
-
-    & footer {
-      order: 3;
-    }
+  pointer-events: none;
+  touch-action: none;
+  &.--opened {
+    z-index: 100;
+    opacity: 0.7;
+    pointer-events: auto;
+    touch-action: auto;
   }
 }
 
-.basket-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.header__message {
+  height: 40px;
+  width: 100%;
+  z-index: 101;
+}
 
-  & .footer-bottom {
-    @include gt-sm {
-      margin-top: auto;
-    }
-
-    @include lt-md {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
+.banner__text {
+  @include mobile {
+    font-weight: 500;
+    font-size: rem(13) !important;
+    line-height: rem(16) !important;
   }
 }
 
-.scrolling-enter-active {
-  animation: scroll-in 0.3s;
+.loader__layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
 }
 
-@keyframes scroll-in {
-  0% {
-    transform: translateY(-20px);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.main {
+  transition: 0.3s;
+  opacity: 1;
+}
+
+.main--loading {
+  filter: blur(2px);
 }
 </style>

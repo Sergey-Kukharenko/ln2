@@ -1,34 +1,21 @@
-$golos-regular: 'Golos-Regular'; // 400
-$golos-medium: 'Golos-Medium'; // 500
-$golos-bold: 'Golos-DemiBold'; // 600
-$golos-extra-bold: 'Golos-Bold'; // 700
+:root {
+  --colorDarkGreen: #009959;
+  --colorGreen: #26AD4F;
+  --colorLightGreen: #EAFBEB;
+  --colorRed: #DB1838;
+  --colorPink: #F73866;
+  --colorLightPink: #FFEFF0;
+  --colorBlack: #000000;
+  --colorDarkGrey: #1F2226;
+  --colorGrey: #7C7C7C;
+  --colorMidGrey: #EAEAEA;
+  --colorLightGrey: #F7F7F7;
+  --colorWhite: #FFFFFF;
+  --colorYellow: #FFCD1E;
+  --colorLightYellow: #FDDF76;
+  --colorSand: #FFEEC6;
+  --colorTitle: #010810;
+  --colorBorderGrey: #CCCCCC;
 
-$lora: 'Lora', serif;
-
-$Literata: 'Literata', serif;
-
-$sana-black: 'sana-black';
-
-$sf-pro-medium: 'sf-pro-display-medium';
-
-$color-light-grey: #979797;
-$color-white-grey: #7c7c7c;
-$color-grey: #99a2ad;
-$color-dark-grey: #1f2226;
-$color-dark-green: #009959;
-$color-green: #26ad4f;
-
-$color-red: #d82f4b;
-$color-pink: #ff217f;
-$color-link-pink: #f63866;
-$color-favorite: #f73866;
-$color-like-active: #db1838;
-
-$bg-grey: #f7f7f7;
-$bg-green: #ebfaf0;
-
-$gap-ds: 24px;
-$gap-mb: 16px;
-
-$border-radius-ds: 24px;
-$border-radius-mb: 16px;
+  --gray-600: #9296A0;
+}
