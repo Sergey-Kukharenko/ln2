@@ -37,6 +37,14 @@ export default {
       default: false
     },
 
+    size: {
+      type: String,
+      default: 'large',
+      validate(value) {
+        return ['medium, large'].includes(value);
+      }
+    },
+
     slug: {
       type: String,
       default: ''
@@ -58,7 +66,8 @@ export default {
       return {
         grid: true,
         [`grid--${this.theme}`]: this.theme,
-        'grid--stretch': this.stretch
+        'grid--stretch': this.stretch,
+        [`grid--${this.size}`]: this.size
       };
     },
 
@@ -82,15 +91,33 @@ export default {
   z-index: 1;
 
   @include gt-sm {
-    grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));
     grid-gap: 16px;
     row-gap: 40px;
   }
 
   @include lt-md {
-    grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
     grid-gap: 8px;
     row-gap: 8px;
+  }
+
+  &--large {
+    @include gt-sm {
+      grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));
+    }
+
+    @include lt-md {
+      grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+    }
+  }
+
+  &--medium {
+    @include gt-sm {
+      grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    }
+
+    @include lt-md {
+      grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+    }
   }
 
   &--custom {

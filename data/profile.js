@@ -70,6 +70,68 @@ export default {
           title: 'some'
         }
       ]
+    },
+    favorites: {
+      head: {
+        title: 'My favorites',
+        view: {
+          to: '/profile/favorites',
+          label: 'View all'
+        }
+      },
+      list: [
+        {
+          id: 'eWYB37nB4YXy1oPG',
+          real_id: 177,
+          title: 'Feelings',
+          img: '1.webp',
+          slug: 'feelings',
+          rating: '5.00',
+          reviews: 500,
+          like: true,
+          price: '28.90',
+          position_name: 'small',
+          is_new: false,
+          category_name: 'Roses',
+          type_name: 'Hand-tied',
+          old_price: null,
+          discount: null
+        },
+        {
+          id: 'm58xJBM9j3n71jlZ',
+          real_id: 289,
+          title: 'Whisper',
+          img: '1.webp',
+          slug: 'whisper',
+          rating: '5.00',
+          reviews: 500,
+          like: true,
+          price: '39.90',
+          position_name: 'small',
+          is_new: false,
+          category_name: null,
+          type_name: 'Hand-tied',
+          old_price: null,
+          discount: null
+        },
+        {
+          id: 'LPOR04bNl5MGaQgy',
+          real_id: 254,
+          title: 'Sparkle Bouquet',
+          img: '1.webp',
+          slug: 'sparkle-bouquet',
+          rating: '5.00',
+          reviews: 500,
+          like: true,
+          price: '47.90',
+          position_name: 'small',
+          is_new: false,
+          category_name: null,
+          type_name: 'Hand-tied',
+          old_price: null,
+          discount: null
+        }
+      ]
     }
   }
 };

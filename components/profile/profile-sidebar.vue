@@ -36,6 +36,7 @@ export default Vue.extend({
   box-sizing: border-box;
 
   @include gt-sm {
+    flex-shrink: 0;
     width: 344px;
     min-height: 430px;
     padding: 24px;

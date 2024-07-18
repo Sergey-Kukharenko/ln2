@@ -6,6 +6,8 @@
         v-slot="slotProps"
         :slides="getSlides"
         :theme="theme"
+        :stretch="stretch"
+        :size="size"
         :prefix="section?.main?.prefix ?? ''"
         :slug="section?.main?.slug ?? ''"
         :total="section?.pagination?.total"
@@ -47,6 +49,19 @@ export default {
       default: '',
       validate(value) {
         return ['custom', 'constructor'].includes(value);
+      }
+    },
+
+    stretch: {
+      type: Boolean,
+      default: false
+    },
+
+    size: {
+      type: String,
+      default: 'large',
+      validate(value) {
+        return ['medium, large'].includes(value);
       }
     },
 

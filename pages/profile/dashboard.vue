@@ -1,7 +1,10 @@
 <template>
   <div class="dashboard">
-    <profile-section :head="head" preview>
-      <profile-orders-list :list="list" preview />
+    <profile-section :head="orders.head" preview>
+      <profile-orders-list :list="orders.list" preview />
+    </profile-section>
+    <profile-section :head="favorites.head" preview>
+      <app-section v-if="favorites.list.length > 0" stretch size="medium" :section="favorites" name="favorites" />
     </profile-section>
   </div>
 </template>
@@ -13,17 +16,23 @@ import ProfileOrdersList from '~/components/profile/profile-orders-list.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 
-const { head, list } = profile.pages.orders;
+const { orders, favorites } = profile.pages;
 export default Vue.extend({
   name: 'DashboardPage',
-  components: { ProfileOrdersList, ProfileSection },
+  components: { ProfileOrdersList, ProfileSection, AppSection: () => import('~/components/shared/AppSection.vue') },
 
   layout: 'profile',
 
   data() {
     return {
-      head,
-      list
+      orders: {
+        head: orders.head,
+        list: orders.list
+      },
+      favorites: {
+        head: favorites.head,
+        list: favorites.list
+      }
     };
   }
 });
@@ -31,5 +40,9 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .dashboard {
+}
+
+.favorites {
+  padding: 0;
 }
 </style>
