@@ -1,19 +1,8 @@
 <template>
-  <div class="dashboard-page">
+  <div class="favorites-page">
     <profile-content>
-      <profile-section :head="orders.head" preview>
-        <profile-orders-list :list="orders.list" preview />
-      </profile-section>
-      <profile-section :head="favoritesHead" preview>
-        <app-section
-          v-if="isFavorites"
-          show-list-only
-          stretch
-          size="medium"
-          :section="favorites"
-          name="favorites"
-          preview
-        />
+      <profile-section :head="favoritesHead">
+        <app-section v-if="isFavorites" show-list-only stretch size="medium" :section="favorites" name="favorites" />
       </profile-section>
     </profile-content>
   </div>
@@ -23,18 +12,16 @@
 import Vue from 'vue';
 
 import ProfileContent from '~/components/profile/profile-content.vue';
-import ProfileOrdersList from '~/components/profile/profile-orders-list.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';
 
-const { orders, favorites: dataFavorites } = profile.pages;
+const { head: favoritesHead } = profile.pages.favorites;
 export default Vue.extend({
-  name: 'DashboardPage',
+  name: 'FavoritesPage',
   components: {
     ProfileContent,
-    ProfileOrdersList,
     ProfileSection,
     AppSection: () => import('~/components/shared/AppSection.vue')
   },
@@ -43,11 +30,7 @@ export default Vue.extend({
 
   data() {
     return {
-      orders: {
-        head: orders.head,
-        list: orders.list
-      },
-      favoritesHead: dataFavorites.head
+      favoritesHead
     };
   },
 
@@ -62,7 +45,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.dashboard-page {
+.favorites-page {
   display: flex;
 }
 

@@ -78,6 +78,11 @@ export default {
     hasFrom: {
       type: Boolean,
       default: false
+    },
+
+    preview: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -91,8 +96,12 @@ export default {
       return { ...sectionMain, ...this.section?.pagination };
     },
 
+    getPreviewSlides() {
+      return this.section?.list.filter((_, idx) => idx < 3);
+    },
+
     getSlides() {
-      return this.isConstructor ? this.section : this.section?.list;
+      return this.isConstructor ? this.section : this.preview ? this.getPreviewSlides : this.section?.list;
     },
 
     notShowHeader() {

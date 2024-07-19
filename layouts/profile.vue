@@ -73,9 +73,11 @@ export default Vue.extend({
   display: flex;
 
   @include gt-sm {
-    gap: 24px;
+    max-width: 1070px;
+    align-items: flex-start;
+    gap: 32px;
     width: 100%;
-    margin-top: 24px;
+    margin: 24px auto 0;
   }
 
   @include lt-md {

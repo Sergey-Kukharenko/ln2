@@ -1,7 +1,7 @@
 <template>
   <div class="profile-sidebar">
     <profile-sidebar-user :name="name" />
-    <profile-sidebar-nav :list="nav" />
+    <profile-sidebar-nav :list="filteredNav" />
     <button class="button">
       <svg-icon v-if="$device.isMobile" name="profile-logout" class="icon" />
       Log out
@@ -15,6 +15,7 @@ import Vue from 'vue';
 import profile from '@/data/profile';
 import ProfileSidebarNav from '~/components/profile/profile-sidebar-nav.vue';
 import ProfileSidebarUser from '~/components/profile/profile-sidebar-user.vue';
+import { accessorMapper } from '~/store';
 
 const { name, nav } = profile.sidebar;
 
@@ -27,6 +28,22 @@ export default Vue.extend({
       name,
       nav
     };
+  },
+
+  computed: {
+    ...accessorMapper('favorites', ['favorites']),
+
+    filteredNav() {
+      const MAP_NAV = {
+        favorites: this.favorites?.list.length,
+        orders: 2
+      };
+
+      return this.nav.map((item) => ({
+        ...item,
+        count: MAP_NAV[item.type]
+      }));
+    }
   }
 });
 </script>

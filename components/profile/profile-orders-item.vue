@@ -3,10 +3,11 @@
     <div class="figure">
       <img :src="item.img" :alt="item.title" />
     </div>
-    <div class="content">
+    <div class="content" :class="{ grey: item.date }">
       Order <span :class="{ 'color-green': !item.date }">{{ item.orderNumber }}</span> <span>{{ item.status }}</span>
+      <span v-if="item.date">{{ item.date }}</span>
     </div>
-    <div v-if="$device.isDesktopOrTablet" class="button">
+    <div v-if="item.date && $device.isDesktopOrTablet" class="button">
       <svg-icon name="profile-basket" class="icon" />
     </div>
   </div>
@@ -71,6 +72,7 @@ img {
 
 .content {
   font-family: $golos-medium;
+  color: $color-dark-grey;
 
   @include gt-sm {
     font-size: 16px;
@@ -82,6 +84,10 @@ img {
     line-height: 18.2px;
     letter-spacing: -0.01em;
     max-width: 170px;
+  }
+
+  &.grey {
+    color: #7c7c7c;
   }
 }
 
