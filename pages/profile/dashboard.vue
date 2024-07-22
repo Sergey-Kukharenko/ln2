@@ -1,21 +1,14 @@
 <template>
   <div class="dashboard-page">
-    <profile-content>
-      <profile-section :head="orders.head" preview>
+    <profile-content v-if="!isDataExists">
+      <profile-section v-if="isOrders" :head="orders.head" preview>
         <profile-orders-list :list="orders.list" preview />
       </profile-section>
-      <profile-section :head="favoritesHead" preview>
-        <app-section
-          v-if="isFavorites"
-          show-list-only
-          stretch
-          size="medium"
-          :section="favorites"
-          name="favorites"
-          preview
-        />
+      <profile-section v-if="isFavorites" :head="favorites.head" preview>
+        <app-section show-list-only stretch size="medium" :section="favorites" name="favorites" preview />
       </profile-section>
     </profile-content>
+    <profile-empty v-else />
   </div>
 </template>
 
@@ -23,16 +16,18 @@
 import Vue from 'vue';
 
 import ProfileContent from '~/components/profile/profile-content.vue';
+import ProfileEmpty from '~/components/profile/profile-empty.vue';
 import ProfileOrdersList from '~/components/profile/profile-orders-list.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
-import { accessorMapper } from '~/store';
+// import { accessorMapper } from '~/store';
 
-const { orders, favorites: dataFavorites } = profile.pages;
+const { orders, favorites } = profile.pages;
 export default Vue.extend({
   name: 'DashboardPage',
   components: {
+    ProfileEmpty,
     ProfileContent,
     ProfileOrdersList,
     ProfileSection,
@@ -47,15 +42,26 @@ export default Vue.extend({
         head: orders.head,
         list: orders.list
       },
-      favoritesHead: dataFavorites.head
+      favorites: {
+        head: favorites.head,
+        list: favorites.list
+      }
     };
   },
 
   computed: {
-    ...accessorMapper('favorites', ['favorites']),
+    // ...accessorMapper('favorites', ['favorites']),
+
+    isOrders() {
+      return useArrayNotEmpty(this.orders?.list);
+    },
 
     isFavorites() {
       return useArrayNotEmpty(this.favorites?.list);
+    },
+
+    isDataExists() {
+      return this.isOrders && this.isFavorites;
     }
   }
 });

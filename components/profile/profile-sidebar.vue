@@ -15,9 +15,10 @@ import Vue from 'vue';
 import profile from '@/data/profile';
 import ProfileSidebarNav from '~/components/profile/profile-sidebar-nav.vue';
 import ProfileSidebarUser from '~/components/profile/profile-sidebar-user.vue';
-import { accessorMapper } from '~/store';
+// import { accessorMapper } from '~/store';
 
 const { name, nav } = profile.sidebar;
+const { favorites } = profile.pages;
 
 export default Vue.extend({
   name: 'ProfileSidebar',
@@ -31,11 +32,11 @@ export default Vue.extend({
   },
 
   computed: {
-    ...accessorMapper('favorites', ['favorites']),
+    // ...accessorMapper('favorites', ['favorites']),
 
     filteredNav() {
       const MAP_NAV = {
-        favorites: this.favorites?.list.length,
+        favorites: favorites?.list.length,
         orders: 2
       };
 

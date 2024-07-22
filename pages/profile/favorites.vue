@@ -1,7 +1,7 @@
 <template>
   <div class="favorites-page">
     <profile-content>
-      <profile-section :head="favoritesHead">
+      <profile-section :head="favorites.head">
         <app-section v-if="isFavorites" show-list-only stretch size="medium" :section="favorites" name="favorites" />
       </profile-section>
     </profile-content>
@@ -15,9 +15,9 @@ import ProfileContent from '~/components/profile/profile-content.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
-import { accessorMapper } from '~/store';
+// import { accessorMapper } from '~/store';
 
-const { head: favoritesHead } = profile.pages.favorites;
+const { favorites } = profile.pages;
 export default Vue.extend({
   name: 'FavoritesPage',
   components: {
@@ -30,12 +30,15 @@ export default Vue.extend({
 
   data() {
     return {
-      favoritesHead
+      favorites: {
+        head: favorites.head,
+        list: favorites.list
+      }
     };
   },
 
   computed: {
-    ...accessorMapper('favorites', ['favorites']),
+    // ...accessorMapper('favorites', ['favorites']),
 
     isFavorites() {
       return useArrayNotEmpty(this.favorites?.list);
