@@ -1,5 +1,5 @@
 <template>
-  <div class="layout profile-empty">
+  <div class="profile-empty">
     <div class="profile-empty__container">
       <div class="title profile-empty__title">It's empty here :(</div>
 

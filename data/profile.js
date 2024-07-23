@@ -31,8 +31,8 @@ export default {
       },
       {
         label: 'Notification settings',
-        type: 'notification',
-        to: '/profile/notification',
+        type: 'notification-settings',
+        to: '/profile/notification-settings',
         icon: 'profile-notification'
       }
     ]
@@ -186,6 +186,24 @@ export default {
           type_name: 'Hand-tied',
           old_price: null,
           discount: null
+        }
+      ]
+    },
+    notifications: {
+      head: {
+        title: 'Notification settings',
+        view: null
+      },
+      list: [
+        {
+          id: 1,
+          value: false,
+          label: 'Receive emails with promotions by e-mail'
+        },
+        {
+          id: 2,
+          value: false,
+          label: 'Receive SMS notifications'
         }
       ]
     }

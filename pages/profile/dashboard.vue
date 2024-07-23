@@ -8,13 +8,17 @@
         <app-section show-list-only stretch size="medium" :section="favorites" name="favorites" preview />
       </profile-section>
     </profile-content>
-    <profile-empty v-else />
+    <template v-else>
+      <profile-alert />
+      <profile-empty />
+    </template>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 
+import ProfileAlert from '~/components/profile/profile-alert.vue';
 import ProfileContent from '~/components/profile/profile-content.vue';
 import ProfileEmpty from '~/components/profile/profile-empty.vue';
 import ProfileOrdersList from '~/components/profile/profile-orders-list.vue';
@@ -27,6 +31,7 @@ const { orders, favorites } = profile.pages;
 export default Vue.extend({
   name: 'DashboardPage',
   components: {
+    ProfileAlert,
     ProfileEmpty,
     ProfileContent,
     ProfileOrdersList,
@@ -70,6 +75,15 @@ export default Vue.extend({
 <style scoped lang="scss">
 .dashboard-page {
   display: flex;
+  flex-direction: column;
+
+  @include gt-sm {
+    gap: 24px;
+  }
+
+  @include lt-md {
+    gap: 18px;
+  }
 }
 
 .favorites {
