@@ -92,7 +92,7 @@ export default {
   }
 
   @include lt-md {
-    flex-direction: row-reverse;
+    //flex-direction: row-reverse;
     justify-content: space-between;
     line-height: 18px;
     padding: 16px;

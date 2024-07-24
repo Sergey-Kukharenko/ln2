@@ -1,12 +1,10 @@
 <template>
-  <div class="counter">
+  <div class="counter" :class="classes">
     <div class="counter__number">{{ count }}</div>
   </div>
 </template>
 
 <script>
-import { useClassName } from '~/helpers';
-
 export default {
   name: 'AppCounter',
 
@@ -14,12 +12,31 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+
+    size: {
+      type: String,
+      default: 'small',
+      validate(value) {
+        return ['small', 'medium'].includes(value);
+      }
+    },
+
+    theme: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['flat'].includes(value);
+      }
     }
   },
 
   computed: {
-    classNames() {
-      return useClassName(this.count, 'counter');
+    classes() {
+      return {
+        [`counter--size-${this.size}`]: true,
+        [`counter--theme-${this.theme}`]: true
+      };
     }
   }
 };
@@ -31,12 +48,9 @@ export default {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -4px;
-  right: -11px;
   width: 20px;
   height: 20px;
   font-family: $golos-medium;
-  font-size: 9px;
   line-height: 12px;
   border: 2px solid #fff;
   border-radius: 50%;
@@ -44,6 +58,18 @@ export default {
 
   &__number {
     color: #ffffff;
+  }
+
+  &--size-small {
+    font-size: 9px;
+  }
+
+  &--size-medium {
+    font-size: 10px;
+  }
+
+  &--theme-flat {
+    border: none;
   }
 }
 </style>

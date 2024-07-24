@@ -117,6 +117,8 @@ export default Vue.extend({
   }
 
   &__counter {
+    top: -4px;
+    right: -11px;
     background: currentColor;
   }
 

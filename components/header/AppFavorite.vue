@@ -78,6 +78,8 @@ export default {
   }
 
   &__counter {
+    top: -4px;
+    right: -11px;
     background: currentColor;
   }
 

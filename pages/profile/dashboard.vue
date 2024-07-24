@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-page">
-    <profile-content v-if="!isDataExists">
+    <profile-content v-if="isDataExists">
       <profile-section v-if="isOrders" :head="orders.head" preview>
         <profile-orders-list :list="orders.list" preview />
       </profile-section>

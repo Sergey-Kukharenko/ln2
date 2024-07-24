@@ -7,12 +7,15 @@
       :class="{ active: item.to === $route.path }"
       @click="onMoveToPage(item.to)"
     >
-      <svg-icon :name="item.icon" class="icon" />
+      <svg-icon :name="item.icon" class="item-icon" />
 
       <div class="content">
         <div class="label">{{ item.label }}</div>
 
-        <div v-if="item.count" class="count">{{ item.count }}</div>
+        <div class="container">
+          <div v-if="item.count" class="count">{{ item.count }}</div>
+          <svg-icon name="profile-arrow" class="arrow" />
+        </div>
       </div>
     </div>
   </div>
@@ -43,10 +46,6 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.profile-sidebar-nav {
-  margin: 8px 0;
-}
-
 .item {
   flex-shrink: 0;
   display: flex;
@@ -72,7 +71,7 @@ export default Vue.extend({
   flex-shrink: 0;
 }
 
-.icon {
+.item-icon {
   width: 24px;
   height: 24px;
   fill: currentColor;
@@ -87,15 +86,27 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 0 15px 0;
+  padding: 18px 0 17px 0;
   border-bottom: 1px solid #cccccc;
 }
 
 .label {
   flex: 1;
   font-family: $golos-regular;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.arrow {
+  width: 6px;
+  height: 14px;
+  color: #ccc;
 }
 
 .count {

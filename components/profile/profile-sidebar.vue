@@ -1,6 +1,7 @@
 <template>
   <div class="profile-sidebar">
     <profile-sidebar-user :name="name" />
+    <profile-orders-item v-if="$device.isMobile" class="order" :item="foundCollectedOrder" background="white" />
     <profile-sidebar-nav :list="filteredNav" />
     <button class="button">
       <svg-icon v-if="$device.isMobile" name="profile-logout" class="icon" />
@@ -13,16 +14,17 @@
 import Vue from 'vue';
 
 import profile from '@/data/profile';
+import ProfileOrdersItem from '~/components/profile/profile-orders-item.vue';
 import ProfileSidebarNav from '~/components/profile/profile-sidebar-nav.vue';
 import ProfileSidebarUser from '~/components/profile/profile-sidebar-user.vue';
 // import { accessorMapper } from '~/store';
 
 const { name, nav } = profile.sidebar;
-const { favorites } = profile.pages;
+const { favorites, orders } = profile.pages;
 
 export default Vue.extend({
   name: 'ProfileSidebar',
-  components: { ProfileSidebarNav, ProfileSidebarUser },
+  components: { ProfileOrdersItem, ProfileSidebarNav, ProfileSidebarUser },
 
   data() {
     return {
@@ -40,10 +42,16 @@ export default Vue.extend({
         orders: 2
       };
 
-      return this.nav.map((item) => ({
+      const newNav = this.$device.isMobile ? this.nav.filter((item) => item.type !== 'dashboard') : this.nav;
+
+      return newNav.map((item) => ({
         ...item,
         count: MAP_NAV[item.type]
       }));
+    },
+
+    foundCollectedOrder() {
+      return orders.list.find((item) => !item.date);
     }
   }
 });
@@ -67,12 +75,17 @@ export default Vue.extend({
   }
 }
 
+.order {
+  gap: 10px;
+  margin: 10px 0 8px;
+}
+
 .button {
-  font-family: $golos-bold;
-  font-size: 16px;
+  font-family: $golos-regular;
+  font-size: 14px;
   line-height: 20px;
   color: $color-like-active;
-  margin-top: 72px;
+  margin-top: 57px;
 
   @include gt-sm {
     &:hover {

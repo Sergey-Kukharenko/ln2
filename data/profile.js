@@ -7,7 +7,8 @@ export default {
         label: 'Dashboard',
         type: 'dashboard',
         to: '/profile/dashboard',
-        icon: 'profile-dashboard'
+        icon: 'profile-dashboard',
+        arrow: 'profile-arrow'
       },
       {
         label: 'My orders',
@@ -50,7 +51,6 @@ export default {
         {
           id: 1,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
-          count: 3,
           orderNumber: 'No. 2352-083',
           status: 'is being collected',
           date: null,

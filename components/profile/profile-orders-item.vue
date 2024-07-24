@@ -1,7 +1,8 @@
 <template>
-  <div class="profile-orders-item">
+  <div class="profile-orders-item" :class="classes">
     <div class="figure">
       <img :src="item.img" :alt="item.title" />
+      <app-counter v-if="item.count" :count="item.count" theme="flat" class="counter" />
     </div>
     <div class="content" :class="{ grey: item.date }">
       Order <span :class="{ 'color-green': !item.date }">{{ item.orderNumber }}</span> <span>{{ item.status }}</span>
@@ -16,13 +17,32 @@
 <script>
 import Vue from 'vue';
 
+import AppCounter from '~/components/shared/AppCounter.vue';
+
 export default Vue.extend({
   name: 'ProfileOrdersItem',
+  components: { AppCounter },
 
   props: {
     item: {
       type: Object,
       default: () => ({})
+    },
+
+    background: {
+      type: String,
+      default: 'grey',
+      validate(value) {
+        return ['grey', 'white'].includes(value);
+      }
+    }
+  },
+
+  computed: {
+    classes() {
+      return {
+        [`background-${this.background}`]: this.background
+      };
     }
   }
 });
@@ -47,15 +67,21 @@ export default Vue.extend({
   }
 }
 
+.background-grey {
+  background: $bg-grey;
+}
+
+.background-white {
+  background: white;
+}
+
 .figure {
   flex-shrink: 0;
   position: relative;
-  overflow: hidden;
 
   @include gt-sm {
     width: 48px;
     height: 48px;
-    border-radius: 16px;
   }
 
   @include lt-md {
@@ -68,6 +94,13 @@ export default Vue.extend({
 img {
   display: block;
   width: 100%;
+  border-radius: 16px;
+}
+
+.counter {
+  bottom: -4px;
+  right: -4px;
+  background: $color-green;
 }
 
 .content {
