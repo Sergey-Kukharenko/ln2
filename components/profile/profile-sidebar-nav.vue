@@ -14,7 +14,7 @@
 
         <div class="container">
           <div v-if="item.count" class="count">{{ item.count }}</div>
-          <svg-icon name="profile-arrow" class="arrow" />
+          <svg-icon v-if="$device.isMobile" name="profile-arrow" class="arrow" />
         </div>
       </div>
     </div>
@@ -46,6 +46,15 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.profile-sidebar-nav {
+  @include gt-sm {
+    margin-top: 8px;
+  }
+
+  @include lt-md {
+  }
+}
+
 .item {
   flex-shrink: 0;
   display: flex;
@@ -86,15 +95,30 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 0 17px 0;
   border-bottom: 1px solid #cccccc;
+
+  @include gt-sm {
+    padding: 16px 0 15px 0;
+  }
+
+  @include lt-md {
+    padding: 18px 0 17px 0;
+  }
 }
 
 .label {
   flex: 1;
   font-family: $golos-regular;
-  font-size: 14px;
-  line-height: 20px;
+
+  @include gt-sm {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  @include lt-md {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 
 .container {

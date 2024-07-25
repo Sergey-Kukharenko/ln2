@@ -3,13 +3,14 @@
     <div class="figure">
       <img :src="item.img" :alt="item.title" />
       <app-counter v-if="item.count" :count="item.count" theme="flat" class="counter" />
+      <svg-icon v-if="$device.isMobile && !item.date" name="profile-collected" class="collected-icon" />
     </div>
     <div class="content" :class="{ grey: item.date }">
       Order <span :class="{ 'color-green': !item.date }">{{ item.orderNumber }}</span> <span>{{ item.status }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
-    <div v-if="item.date && $device.isDesktopOrTablet" class="button">
-      <svg-icon name="profile-basket" class="icon" />
+    <div v-if="$device.isDesktopOrTablet && item.date" class="button">
+      <svg-icon name="profile-basket" class="basket-icon" />
     </div>
   </div>
 </template>
@@ -135,7 +136,7 @@ img {
   margin-left: auto;
 }
 
-.icon {
+.basket-icon {
   width: 100%;
   height: 100%;
   color: #cccccc;
@@ -143,5 +144,13 @@ img {
   &:hover {
     color: $color-like-active;
   }
+}
+
+.collected-icon {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 0;
+  right: -2px;
 }
 </style>

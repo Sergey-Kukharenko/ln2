@@ -15,9 +15,24 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['grey', 'green-whitely', 'grey-whitely', 'ghost', 'yellow', 'yellow-whitely', 'turquoise'].includes(
-          value
-        );
+        return [
+          'grey',
+          'green-whitely',
+          'grey-whitely',
+          'ghost',
+          'yellow',
+          'yellow-whitely',
+          'turquoise',
+          'transparent'
+        ].includes(value);
+      }
+    },
+
+    behavior: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['custom'].includes(value);
       }
     },
 
@@ -79,6 +94,14 @@ export default {
 
   &--rounded {
     border-radius: 18px;
+  }
+
+  &--custom {
+    @include lt-md {
+      min-height: 36px;
+      font-size: 14px;
+      line-height: 24px;
+    }
   }
 
   &--grey {
@@ -236,6 +259,23 @@ export default {
     @include gt-sm {
       &:hover:not(:disabled) {
         box-shadow: 2px 4px 7px darken(#ebfaf0, 10%);
+        cursor: pointer;
+      }
+
+      &:active:not(:disabled) {
+        box-shadow: 0 0 0 #ebfaf0;
+      }
+    }
+  }
+
+  &--transparent {
+    color: #000;
+    background: none;
+
+    @include gt-sm {
+      &:hover:not(:disabled) {
+        background: $bg-grey;
+        box-shadow: 2px 4px 7px darken($bg-grey, 10%);
         cursor: pointer;
       }
 
