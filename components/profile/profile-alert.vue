@@ -1,13 +1,23 @@
 <template>
   <div class="profile-alert">
-    <svg-icon name="profile-check" class="icon" />
-    Your account was successfully registered with us.
+    <svg-icon :name="icon" class="icon" />
+    {{ label }}
   </div>
 </template>
 
 <script>
+import profile from '~/data/profile';
+
+const { icon, label } = profile.alert;
 export default {
-  name: 'ProfileAlert'
+  name: 'ProfileAlert',
+
+  data() {
+    return {
+      icon,
+      label
+    };
+  }
 };
 </script>
 

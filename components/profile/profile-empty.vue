@@ -1,21 +1,31 @@
 <template>
   <div class="profile-empty">
     <div class="profile-empty__container">
-      <div class="title profile-empty__title">It's empty here :(</div>
+      <div class="title profile-empty__title">{{ title }}</div>
 
       <div class="profile-empty__caption">
-        <div class="profile-empty__caption-text">You do not have active orders and products you like!</div>
-        <div class="profile-empty__caption-text">You can use the search to find everything you need.</div>
+        <div v-for="text in texts" :key="text" class="profile-empty__caption-text">{{ text }}</div>
       </div>
 
-      <nuxt-link to="/" class="profile-empty__button"> Go to shopping</nuxt-link>
+      <nuxt-link :to="button.to" class="profile-empty__button">{{ button.label }}</nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
+import profile from '~/data/profile';
+
+const { title, texts, button } = profile.pages.empty;
 export default {
-  name: 'ProfileEmpty'
+  name: 'ProfileEmpty',
+
+  data() {
+    return {
+      title,
+      texts,
+      button
+    };
+  }
 };
 </script>
 

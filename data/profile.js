@@ -26,8 +26,8 @@ export default {
       },
       {
         label: 'Personal data',
-        type: 'personal',
-        to: '/profile/personal',
+        type: 'personal-data',
+        to: '/profile/personal-data',
         icon: 'profile-personal'
       },
       {
@@ -187,7 +187,14 @@ export default {
           old_price: null,
           discount: null
         }
-      ]
+      ],
+      empty: {
+        img: {
+          src: '/images/favorites/favorites-empty.jpg',
+          alt: 'favorites-empty'
+        },
+        figcaption: "You don't have any products in your Favorites. Add products and they will appear here"
+      }
     },
     notifications: {
       head: {
@@ -206,6 +213,70 @@ export default {
           label: 'Receive SMS notifications'
         }
       ]
+    },
+    personal: {
+      personal: {
+        title: 'Personal data',
+        form: {
+          name: {
+            placeholder: 'Name',
+            value: ''
+          },
+          buttons: [
+            {
+              icon: '/icons/genders/female.png',
+              value: 'female',
+              label: 'Female'
+            },
+            {
+              icon: '/icons/genders/male.png',
+              value: 'male',
+              label: 'Male'
+            },
+            {
+              value: 'prefer_not_say',
+              label: 'Prefer not to say'
+            }
+          ]
+        }
+      },
+      birth: {
+        title: 'Date of birth',
+        form: {
+          select: {
+            placeholder: 'Select',
+            value: ''
+          }
+        }
+      },
+      contacts: {
+        title: 'Contacts',
+        form: {
+          phone: {
+            placeholder: 'Name',
+            value: '+7 (995) 905-48-02'
+          },
+          email: {
+            placeholder: 'E-mail',
+            value: ''
+          }
+        }
+      }
+    },
+    empty: {
+      title: "It's empty here :(",
+      texts: [
+        'You do not have active orders and products you like!',
+        'You can use the search to find everything you need.'
+      ],
+      button: {
+        to: '/',
+        label: 'Go to shopping'
+      }
     }
+  },
+  alert: {
+    icon: 'profile-check',
+    label: 'Your account was successfully registered with us.'
   }
 };

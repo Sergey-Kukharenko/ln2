@@ -7,7 +7,7 @@
 <script>
 import Vue from 'vue';
 
-import ProfileOrdersItem from '~/components/profile/profile-orders-item.vue';
+import ProfileOrdersItem from '~/components/profile/profile-orders/profile-orders-item.vue';
 
 export default Vue.extend({
   name: 'ProfileOrdersList',

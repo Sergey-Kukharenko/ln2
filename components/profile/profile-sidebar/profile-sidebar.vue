@@ -14,11 +14,11 @@
 <script>
 import Vue from 'vue';
 
-import profile from '@/data/profile';
 import ProfileModal from '~/components/profile/profile-modal.vue';
-import ProfileOrdersItem from '~/components/profile/profile-orders-item.vue';
-import ProfileSidebarNav from '~/components/profile/profile-sidebar-nav.vue';
-import ProfileSidebarUser from '~/components/profile/profile-sidebar-user.vue';
+import ProfileOrdersItem from '~/components/profile/profile-orders/profile-orders-item.vue';
+import ProfileSidebarNav from '~/components/profile/profile-sidebar/profile-sidebar-nav.vue';
+import ProfileSidebarUser from '~/components/profile/profile-sidebar/profile-sidebar-user.vue';
+import profile from '~/data/profile';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 // import { accessorMapper } from '~/store';
 

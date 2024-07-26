@@ -48,8 +48,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped lang="scss">
-.notification-settings {
-}
-</style>

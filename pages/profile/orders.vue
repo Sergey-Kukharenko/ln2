@@ -9,7 +9,7 @@
 <script>
 import Vue from 'vue';
 
-import ProfileOrdersList from '~/components/profile/profile-orders-list.vue';
+import ProfileOrdersList from '~/components/profile/profile-orders/profile-orders-list.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 
@@ -28,8 +28,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped lang="scss">
-.dashboard {
-}
-</style>

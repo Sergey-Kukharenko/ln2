@@ -3,6 +3,7 @@
     <profile-content>
       <profile-section :head="favorites.head">
         <app-section v-if="isFavorites" show-list-only stretch size="medium" :section="favorites" name="favorites" />
+        <profile-favorites-empty v-else />
       </profile-section>
     </profile-content>
   </div>
@@ -12,6 +13,7 @@
 import Vue from 'vue';
 
 import ProfileContent from '~/components/profile/profile-content.vue';
+import ProfileFavoritesEmpty from '~/components/profile/profile-favorites-empty.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
@@ -21,6 +23,7 @@ const { favorites } = profile.pages;
 export default Vue.extend({
   name: 'FavoritesPage',
   components: {
+    ProfileFavoritesEmpty,
     ProfileContent,
     ProfileSection,
     AppSection: () => import('~/components/shared/AppSection.vue')

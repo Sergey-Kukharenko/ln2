@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-page">
-    <profile-content v-if="isDataExists">
+    <profile-content v-if="!isDataExists">
       <profile-section v-if="isOrders" :head="orders.head" preview>
         <profile-orders-list :list="orders.list" preview />
       </profile-section>
@@ -21,7 +21,7 @@ import Vue from 'vue';
 import ProfileAlert from '~/components/profile/profile-alert.vue';
 import ProfileContent from '~/components/profile/profile-content.vue';
 import ProfileEmpty from '~/components/profile/profile-empty.vue';
-import ProfileOrdersList from '~/components/profile/profile-orders-list.vue';
+import ProfileOrdersList from '~/components/profile/profile-orders/profile-orders-list.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
