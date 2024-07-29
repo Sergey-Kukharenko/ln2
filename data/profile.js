@@ -214,55 +214,55 @@ export default {
         }
       ]
     },
-    personal: {
-      personal: {
-        title: 'Personal data',
-        form: {
-          name: {
-            placeholder: 'Name',
-            value: ''
-          },
-          buttons: [
-            {
-              icon: '/icons/genders/female.png',
-              value: 'female',
-              label: 'Female'
-            },
-            {
-              icon: '/icons/genders/male.png',
-              value: 'male',
-              label: 'Male'
-            },
-            {
-              value: 'prefer_not_say',
-              label: 'Prefer not to say'
-            }
-          ]
-        }
-      },
-      birth: {
-        title: 'Date of birth',
-        form: {
-          select: {
-            placeholder: 'Select',
-            value: ''
-          }
-        }
-      },
-      contacts: {
-        title: 'Contacts',
-        form: {
-          phone: {
-            placeholder: 'Name',
-            value: '+7 (995) 905-48-02'
-          },
-          email: {
-            placeholder: 'E-mail',
-            value: ''
-          }
-        }
-      }
-    },
+    // personal: {
+    //   personal: {
+    //     title: 'Personal data',
+    //     form: {
+    //       name: {
+    //         placeholder: 'Name',
+    //         value: ''
+    //       },
+    //       buttons: [
+    //         {
+    //           icon: '/icons/genders/female.png',
+    //           value: 'female',
+    //           label: 'Female'
+    //         },
+    //         {
+    //           icon: '/icons/genders/male.png',
+    //           value: 'male',
+    //           label: 'Male'
+    //         },
+    //         {
+    //           value: 'prefer_not_say',
+    //           label: 'Prefer not to say'
+    //         }
+    //       ]
+    //     }
+    //   },
+    //   birth: {
+    //     title: 'Date of birth',
+    //     form: {
+    //       select: {
+    //         placeholder: 'Select',
+    //         value: ''
+    //       }
+    //     }
+    //   },
+    //   contacts: {
+    //     title: 'Contacts',
+    //     form: {
+    //       phone: {
+    //         placeholder: 'Name',
+    //         value: '+7 (995) 905-48-02'
+    //       },
+    //       email: {
+    //         placeholder: 'E-mail',
+    //         value: ''
+    //       }
+    //     }
+    //   }
+    // },
     empty: {
       title: "It's empty here :(",
       texts: [
@@ -278,5 +278,21 @@ export default {
   alert: {
     icon: 'profile-check',
     label: 'Your account was successfully registered with us.'
-  }
+  },
+  gender: [
+    {
+      icon: '/icons/genders/female.png',
+      value: 'female',
+      label: 'Female'
+    },
+    {
+      icon: '/icons/genders/male.png',
+      value: 'male',
+      label: 'Male'
+    },
+    {
+      value: 'prefer_not_say',
+      label: 'Prefer not to say'
+    }
+  ]
 };

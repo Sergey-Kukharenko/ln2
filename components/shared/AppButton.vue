@@ -1,5 +1,5 @@
 <template>
-  <button :class="classNames" v-on="$listeners">
+  <button :class="classNames" :disabled="disabled" v-on="$listeners">
     <slot />
   </button>
 </template>
@@ -11,6 +11,10 @@ export default {
   name: 'AppButton',
 
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     theme: {
       type: String,
       default: '',
@@ -23,7 +27,8 @@ export default {
           'yellow',
           'yellow-whitely',
           'turquoise',
-          'transparent'
+          'transparent',
+          'text-only'
         ].includes(value);
       }
     },
@@ -281,6 +286,23 @@ export default {
 
       &:active:not(:disabled) {
         box-shadow: 0 0 0 #ebfaf0;
+      }
+    }
+  }
+
+  &--text-only {
+    color: $color-like-active;
+    background: none;
+
+    @include gt-sm {
+      &:hover:not(:disabled) {
+        background: none;
+        box-shadow: none;
+        cursor: pointer;
+      }
+
+      &:active:not(:disabled) {
+        box-shadow: none;
       }
     }
   }

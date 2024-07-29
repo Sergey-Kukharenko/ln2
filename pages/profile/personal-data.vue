@@ -1,26 +1,27 @@
 <template>
   <div class="personal-data">
-    <div class="section">
-      <div class="column">
-        <div class="title">{{ personal.title }}</div>
+    <profile-personal-section title="Personal data">
+      <app-input placeholder="Name" value="" size="x-large" />
+      <profile-button-list :selected="selectedGender" :list="gender" @set-item="onSetGender" />
+    </profile-personal-section>
+    <profile-personal-section title="Date of birth">
+      <app-input placeholder="Select" value="" size="x-large" />
+    </profile-personal-section>
+    <profile-personal-section title="Contacts">
+      <app-input placeholder="+7 (995) 905-48-02" size="x-large" value="">
+        <template #right>
+          <svg-icon name="profile-pencil" />
+        </template>
+      </app-input>
+      <app-input placeholder="Email" value="" size="x-large" />
+      <div class="form group">
+        <app-button :disabled="true">Save</app-button>
+        <app-button theme="text-only">Delete account</app-button>
       </div>
-      <div class="column">
-        <div class="form">
-          <app-input :placeholder="personal.form.name.placeholder" value="" size="x-large" />
-          <profile-button-list :buttons="personal.form.buttons" />
-        </div>
+      <div class="text">
+        By clicking on the button, you agree to the <a href="" class="text-link">Terms of personal data processing</a>
       </div>
-    </div>
-    <div class="section">
-      <div class="column">
-        <div class="title">{{ birth.title }}</div>
-      </div>
-      <div class="column">
-        <div class="form">
-          <app-input :placeholder="birth.form.select.placeholder" value="" size="x-large" />
-        </div>
-      </div>
-    </div>
+    </profile-personal-section>
   </div>
 </template>
 
@@ -28,55 +29,40 @@
 import Vue from 'vue';
 
 import ProfileButtonList from '~/components/profile/profile-button-list.vue';
+import ProfilePersonalSection from '~/components/profile/profile-personal-section.vue';
+import AppButton from '~/components/shared/AppButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
 import profile from '~/data/profile';
 
-const { personal, birth } = profile.pages.personal;
+const { gender } = profile;
 export default Vue.extend({
   name: 'PersonalDataPage',
-  components: { ProfileButtonList, AppInput },
+  components: { AppButton, ProfilePersonalSection, ProfileButtonList, AppInput },
 
   layout: 'profile',
 
   data() {
     return {
-      personal,
-      birth
+      gender,
+      selectedGender: 'prefer_not_say'
     };
+  },
+
+  methods: {
+    onSetGender(payload) {
+      this.selectedGender = payload;
+    }
   }
 });
 </script>
 
 <style scoped lang="scss">
 .personal-data {
-}
-
-.section {
-  display: flex;
-  padding: 32px 0;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid #eaeaea;
+  @include lt-md {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-}
-
-.column {
-  width: 50%;
-}
-
-.title {
-  font-family: $Literata;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 28px;
 }
 
 .icon {
@@ -84,9 +70,38 @@ export default Vue.extend({
   height: 24px;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.group {
+  & button {
+    width: 100%;
+  }
+
+  @include gt-sm {
+    margin: 26px 0 12px;
+  }
+
+  @include lt-md {
+    gap: 8px;
+    margin: 37px 0 12px;
+  }
+}
+
+.text {
+  font-family: $golos-regular;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: $color-white-grey;
+
+  @include gt-sm {
+    text-align: center;
+  }
+
+  @include lt-md {
+    text-align: left;
+  }
+}
+
+.text-link {
+  color: $color-green;
 }
 </style>
