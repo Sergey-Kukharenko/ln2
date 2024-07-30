@@ -3,23 +3,18 @@
     <profile-sidebar-user :name="name" />
     <profile-orders-item v-if="$device.isMobile" class="order" :item="foundCollectedOrder" background="white" />
     <profile-sidebar-nav :list="filteredNav" />
-    <button class="button" @click="open">
-      <svg-icon v-if="$device.isMobile" name="profile-logout" class="icon" />
-      Log out
-    </button>
-    <profile-modal :is-visible="isVisible" @close-modal="close" />
+    <profile-log-out />
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 
-import ProfileModal from '~/components/profile/profile-modal.vue';
+import ProfileLogOut from '~/components/profile/profile-log-out.vue';
 import ProfileOrdersItem from '~/components/profile/profile-orders/profile-orders-item.vue';
 import ProfileSidebarNav from '~/components/profile/profile-sidebar/profile-sidebar-nav.vue';
 import ProfileSidebarUser from '~/components/profile/profile-sidebar/profile-sidebar-user.vue';
 import profile from '~/data/profile';
-import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 // import { accessorMapper } from '~/store';
 
 const { name, nav } = profile.sidebar;
@@ -27,13 +22,12 @@ const { favorites, orders } = profile.pages;
 
 export default Vue.extend({
   name: 'ProfileSidebar',
-  components: { ProfileModal, ProfileOrdersItem, ProfileSidebarNav, ProfileSidebarUser },
+  components: { ProfileLogOut, ProfileOrdersItem, ProfileSidebarNav, ProfileSidebarUser },
 
   data() {
     return {
       name,
-      nav,
-      isVisible: false
+      nav
     };
   },
 
@@ -56,18 +50,6 @@ export default Vue.extend({
 
     foundCollectedOrder() {
       return orders.list.find((item) => !item.date);
-    }
-  },
-
-  methods: {
-    open() {
-      this.isVisible = true;
-      disableScroll();
-    },
-
-    close() {
-      this.isVisible = false;
-      enableScroll();
     }
   }
 });
@@ -94,34 +76,5 @@ export default Vue.extend({
 .order {
   gap: 10px;
   margin: 10px 0 8px;
-}
-
-.button {
-  color: $color-like-active;
-  line-height: 20px;
-  font-family: $golos-bold;
-
-  @include gt-sm {
-    font-size: 16px;
-    margin-top: 80px;
-
-    &:hover {
-      color: $color-dark-green;
-    }
-  }
-
-  @include lt-md {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-family: $golos-regular;
-    font-size: 14px;
-    margin-top: 57px;
-  }
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
 }
 </style>

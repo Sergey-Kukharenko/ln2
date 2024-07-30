@@ -1,10 +1,14 @@
 <template>
   <app-modal center :visible="isVisible" class="modal" @close="$emit('close-modal')">
     <div class="profile-container">
-      <div class="title">Are you sure you want to log out of your account?</div>
+      <div class="title">
+        <slot name="title" />
+      </div>
+      <div class="description">
+        <slot name="description" />
+      </div>
       <div class="buttons">
-        <app-button behavior="custom">Exit</app-button>
-        <app-button theme="transparent" behavior="custom">Cancel</app-button>
+        <slot name="buttons" />
       </div>
     </div>
   </app-modal>
@@ -13,13 +17,12 @@
 <script>
 import Vue from 'vue';
 
-import AppButton from '~/components/shared/AppButton.vue';
 import AppModal from '~/components/shared/AppModal.vue';
 
 export default Vue.extend({
   name: 'ProfileModal',
 
-  components: { AppButton, AppModal },
+  components: { AppModal },
 
   props: {
     isVisible: {
@@ -34,6 +37,7 @@ export default Vue.extend({
 .profile-container {
   display: flex;
   flex-direction: column;
+  text-align: center;
   box-sizing: border-box;
 
   @include gt-sm {
@@ -50,7 +54,6 @@ export default Vue.extend({
 
 .title {
   font-family: $golos-bold;
-  text-align: center;
 
   @include gt-sm {
     max-width: 292px;
@@ -64,6 +67,12 @@ export default Vue.extend({
     font-size: 16px;
     line-height: 20px;
   }
+}
+
+.description {
+  font-family: $golos-regular;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .buttons {

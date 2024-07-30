@@ -288,6 +288,10 @@ export default {
         box-shadow: 0 0 0 #ebfaf0;
       }
     }
+
+    @include lt-md {
+      background: $bg-grey;
+    }
   }
 
   &--text-only {

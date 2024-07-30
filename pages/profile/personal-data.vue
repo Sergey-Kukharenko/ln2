@@ -15,8 +15,8 @@
       </app-input>
       <app-input placeholder="Email" value="" size="x-large" />
       <div class="form group">
-        <app-button :disabled="true">Save</app-button>
-        <app-button theme="text-only">Delete account</app-button>
+        <app-button :disabled="fieldsNotFilled">Save</app-button>
+        <profile-delete-account />
       </div>
       <div class="text">
         By clicking on the button, you agree to the <a href="" class="text-link">Terms of personal data processing</a>
@@ -29,6 +29,7 @@
 import Vue from 'vue';
 
 import ProfileButtonList from '~/components/profile/profile-button-list.vue';
+import ProfileDeleteAccount from '~/components/profile/profile-delete-account.vue';
 import ProfilePersonalSection from '~/components/profile/profile-personal-section.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
@@ -37,14 +38,15 @@ import profile from '~/data/profile';
 const { gender } = profile;
 export default Vue.extend({
   name: 'PersonalDataPage',
-  components: { AppButton, ProfilePersonalSection, ProfileButtonList, AppInput },
+  components: { ProfileDeleteAccount, AppButton, ProfilePersonalSection, ProfileButtonList, AppInput },
 
   layout: 'profile',
 
   data() {
     return {
       gender,
-      selectedGender: 'prefer_not_say'
+      selectedGender: 'prefer_not_say',
+      fieldsNotFilled: false
     };
   },
 
