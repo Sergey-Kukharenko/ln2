@@ -1,7 +1,13 @@
 <template>
   <div class="personal-data">
     <profile-personal-section title="Personal data">
-      <app-input placeholder="Name" value="" size="x-large" />
+      <app-input
+        v-model="form.name.value"
+        :error="form.name.errorMsg"
+        placeholder="Name"
+        pattern="[a-zA-Z]*"
+        size="x-large"
+      />
       <profile-button-list :selected="selectedGender" :list="gender" @set-item="onSetGender" />
     </profile-personal-section>
     <profile-personal-section title="Date of birth">
@@ -15,7 +21,7 @@
       </app-input>
       <app-input placeholder="Email" value="" size="x-large" />
       <div class="form group">
-        <app-button :disabled="fieldsNotFilled">Save</app-button>
+        <app-button :disabled="fieldsNotFilled" @click="onSubmit">Save</app-button>
         <profile-delete-account />
       </div>
       <div class="text">
@@ -46,13 +52,33 @@ export default Vue.extend({
     return {
       gender,
       selectedGender: 'prefer_not_say',
-      fieldsNotFilled: false
+      fieldsNotFilled: false,
+      form: {
+        name: {
+          value: '',
+          errorMsg: ''
+        },
+        phone: {
+          errorMsg: '',
+          value: ''
+        },
+
+        errorMsg: ''
+      }
     };
   },
 
   methods: {
     onSetGender(payload) {
       this.selectedGender = payload;
+    },
+
+    onSubmit() {
+      if (!this.form.name.value) {
+        this.form.name.errorMsg = 'field is empty';
+      } else {
+        this.form.name.errorMsg = '';
+      }
     }
   }
 });

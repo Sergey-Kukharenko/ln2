@@ -74,7 +74,15 @@ export default {
           date: '5 may!',
           title: 'some'
         }
-      ]
+      ],
+      empty: {
+        img: {
+          src: '/images/orders/profile-empty.jpg',
+          alt: 'profiles-empty'
+        },
+        title: "It's still empty here",
+        description: 'The dashboard will fill up when you start shopping'
+      }
     },
     favorites: {
       head: {
@@ -214,55 +222,6 @@ export default {
         }
       ]
     },
-    // personal: {
-    //   personal: {
-    //     title: 'Personal data',
-    //     form: {
-    //       name: {
-    //         placeholder: 'Name',
-    //         value: ''
-    //       },
-    //       buttons: [
-    //         {
-    //           icon: '/icons/genders/female.png',
-    //           value: 'female',
-    //           label: 'Female'
-    //         },
-    //         {
-    //           icon: '/icons/genders/male.png',
-    //           value: 'male',
-    //           label: 'Male'
-    //         },
-    //         {
-    //           value: 'prefer_not_say',
-    //           label: 'Prefer not to say'
-    //         }
-    //       ]
-    //     }
-    //   },
-    //   birth: {
-    //     title: 'Date of birth',
-    //     form: {
-    //       select: {
-    //         placeholder: 'Select',
-    //         value: ''
-    //       }
-    //     }
-    //   },
-    //   contacts: {
-    //     title: 'Contacts',
-    //     form: {
-    //       phone: {
-    //         placeholder: 'Name',
-    //         value: '+7 (995) 905-48-02'
-    //       },
-    //       email: {
-    //         placeholder: 'E-mail',
-    //         value: ''
-    //       }
-    //     }
-    //   }
-    // },
     empty: {
       title: "It's empty here :(",
       texts: [

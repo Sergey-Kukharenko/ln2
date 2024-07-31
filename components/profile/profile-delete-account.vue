@@ -28,7 +28,7 @@ export default {
     return {
       button: 'Delete account',
       modal: {
-        title: 'Are you sure you want to log out of your account?',
+        title: 'Are you sure you want to delete this account?',
         description: 'This is an irreversible action',
         buttons: {
           delete: 'Delete account',
