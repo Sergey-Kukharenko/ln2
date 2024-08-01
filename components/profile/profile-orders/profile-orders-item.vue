@@ -6,7 +6,9 @@
       <svg-icon v-if="$device.isMobile && !item.date" name="profile-collected" class="collected-icon" />
     </div>
     <div class="content" :class="{ grey: item.date }">
-      Order <span :class="{ 'color-green': !item.date }">{{ item.orderNumber }}</span> <span>{{ item.status }}</span>
+      Order
+      <nuxt-link :to="item.to" :class="{ active: !item.date }">{{ item.orderNumber }}</nuxt-link>
+      <span>{{ item.status }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
     <div v-if="$device.isDesktopOrTablet && item.date" class="button">
@@ -121,12 +123,21 @@ img {
   }
 
   &.grey {
-    color: #7c7c7c;
+    color: $color-white-grey;
   }
 }
 
-.color-green {
-  color: $color-dark-green;
+a {
+  color: inherit;
+
+  &:not(.active) {
+    cursor: default;
+  }
+
+  &.active {
+    color: $color-dark-green;
+    cursor: pointer;
+  }
 }
 
 .button {

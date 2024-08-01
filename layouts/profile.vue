@@ -4,13 +4,16 @@
     <!--    <app-header v-else />-->
 
     <div class="layout layout-dt profile-container" :class="{ move }">
-      <profile-sidebar />
-      <div class="profile-page">
-        <div v-if="$device.isMobile" class="button" @click="move = false">
-          <svg-icon name="profile-back" class="icon" />
+      <template>
+        <profile-sidebar v-if="!isProfileOrder" />
+        <div class="profile-page">
+          <div v-if="!isProfileOrder && $device.isMobile" class="button" @click="move = false">
+            <svg-icon name="profile-back" class="icon" />
+          </div>
+          <Nuxt />
         </div>
-        <Nuxt />
-      </div>
+        <profile-aside v-if="isProfileOrder" />
+      </template>
     </div>
 
     <!--    <app-footer-bottom class="footer" />-->
@@ -22,12 +25,14 @@ import Vue from 'vue';
 // import AppFooterBottom from '~/components/footer/AppFooterBottom.vue';
 // import AppHeader from '~/components/header/AppHeader.vue';
 // import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile.vue';
+import ProfileAside from '~/components/profile/profile-aside.vue';
 import ProfileSidebar from '~/components/profile/profile-sidebar/profile-sidebar.vue';
 
 export default Vue.extend({
-  name: 'CheckoutLayout',
+  name: 'ProfileLayout',
 
   components: {
+    ProfileAside,
     // AppFooterBottom,
     // AppHeader,
     // AppHeaderMobile,
@@ -44,6 +49,12 @@ export default Vue.extend({
     return {
       move: false
     };
+  },
+
+  computed: {
+    isProfileOrder() {
+      return this.$route.name === 'profile-order-id';
+    }
   },
 
   methods: {

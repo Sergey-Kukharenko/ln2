@@ -54,7 +54,8 @@ export default {
           orderNumber: 'No. 2352-083',
           status: 'is being collected',
           date: null,
-          title: 'some'
+          title: 'some',
+          to: '/profile/order/2352-083'
         },
         {
           id: 2,
@@ -63,7 +64,8 @@ export default {
           orderNumber: 'No. 2352-083',
           status: 'delivered',
           date: '10 june!',
-          title: 'some'
+          title: 'some',
+          to: ''
         },
         {
           id: 3,
@@ -72,7 +74,8 @@ export default {
           orderNumber: 'No. 2352-083',
           status: 'delivered',
           date: '5 may!',
-          title: 'some'
+          title: 'some',
+          to: ''
         }
       ],
       empty: {

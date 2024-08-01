@@ -10,8 +10,8 @@
 <script>
 import Vue from 'vue';
 
+import ProfileOrdersEmpty from '~/components/profile/profile-orders/profile-orders-empty.vue';
 import ProfileOrdersList from '~/components/profile/profile-orders/profile-orders-list.vue';
-import ProfileOrdersEmpty from '~/components/profile/profile-orders-empty.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
