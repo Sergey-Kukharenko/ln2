@@ -38,6 +38,26 @@ export default {
       }
     ]
   },
+  alert: {
+    icon: 'profile-check',
+    label: 'Your account was successfully registered with us.'
+  },
+  gender: [
+    {
+      icon: '/icons/genders/female.png',
+      value: 'female',
+      label: 'Female'
+    },
+    {
+      icon: '/icons/genders/male.png',
+      value: 'male',
+      label: 'Male'
+    },
+    {
+      value: 'prefer_not_say',
+      label: 'Prefer not to say'
+    }
+  ],
   pages: {
     orders: {
       head: {
@@ -235,26 +255,7 @@ export default {
         to: '/',
         label: 'Go to shopping'
       }
-    }
-  },
-  alert: {
-    icon: 'profile-check',
-    label: 'Your account was successfully registered with us.'
-  },
-  gender: [
-    {
-      icon: '/icons/genders/female.png',
-      value: 'female',
-      label: 'Female'
     },
-    {
-      icon: '/icons/genders/male.png',
-      value: 'male',
-      label: 'Male'
-    },
-    {
-      value: 'prefer_not_say',
-      label: 'Prefer not to say'
-    }
-  ]
+    order: {}
+  }
 };
