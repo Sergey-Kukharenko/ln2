@@ -8,7 +8,7 @@
     <div class="content" :class="{ grey: item.date }">
       Order
       <nuxt-link :to="item.to" :class="{ active: !item.date }">{{ item.orderNumber }}</nuxt-link>
-      <span>{{ item.status }}</span>
+      <span>{{ item.statusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
     <div v-if="$device.isDesktopOrTablet && item.date" class="button">

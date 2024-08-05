@@ -72,7 +72,8 @@ export default {
           id: 1,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
           orderNumber: 'No. 2352-083',
-          status: 'is being collected',
+          status: 'collected',
+          statusText: 'is being collected',
           date: null,
           title: 'some',
           to: '/profile/order/2352-083'
@@ -83,6 +84,7 @@ export default {
           count: 2,
           orderNumber: 'No. 2352-083',
           status: 'delivered',
+          statusText: 'delivered',
           date: '10 june!',
           title: 'some',
           to: ''
@@ -93,6 +95,7 @@ export default {
           count: 2,
           orderNumber: 'No. 2352-083',
           status: 'delivered',
+          statusText: 'delivered',
           date: '5 may!',
           title: 'some',
           to: ''
