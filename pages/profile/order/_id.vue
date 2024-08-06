@@ -27,7 +27,7 @@ import Vue from 'vue';
 
 import OrderPanel from '~/components/OrderPanel.vue';
 import OrderPanelBody from '~/components/OrderPanelBody.vue';
-import ProfileAside from '~/components/profile/profile-aside.vue';
+import ProfileAside from '~/components/profile/profile-aside/profile-aside.vue';
 
 export default Vue.extend({
   name: 'OrderPage',

@@ -1,7 +1,7 @@
 <template>
   <div class="profile-aside">
     <div class="title">Order details</div>
-    <profile-aside-steps />
+
     <div class="group" style="display: none">
       <a
         href="https://api.whatsapp.com/send?phone=447300887398"
@@ -14,16 +14,44 @@
       </a>
       <app-button theme="text-only" stretch="full" behavior="custom">Cancel the order</app-button>
     </div>
+    <profile-aside-steps />
+    <profile-aside-order-contents>
+      <profile-aside-order-row :item="order.sale" color="green" />
+      <profile-aside-order-row :item="order.delivery" />
+      <profile-aside-order-row :item="order.total" size="large" />
+    </profile-aside-order-contents>
   </div>
 </template>
 
 <script>
-import ProfileAsideSteps from '~/components/profile/profile-aside-steps.vue';
+import ProfileAsideOrderContents from '~/components/profile/profile-aside/profile-aside-order-contents.vue';
+import ProfileAsideOrderRow from '~/components/profile/profile-aside/profile-aside-order-row.vue';
+import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-steps.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 
 export default {
   name: 'ProfileAside',
-  components: { AppButton, ProfileAsideSteps }
+
+  components: { ProfileAsideOrderRow, ProfileAsideOrderContents, AppButton, ProfileAsideSteps },
+
+  data() {
+    return {
+      order: {
+        sale: {
+          label: 'Sale',
+          value: '- £ 8'
+        },
+        delivery: {
+          label: 'Delivery',
+          value: 'Free'
+        },
+        total: {
+          label: 'Total',
+          value: '£ 86'
+        }
+      }
+    };
+  }
 };
 </script>
 

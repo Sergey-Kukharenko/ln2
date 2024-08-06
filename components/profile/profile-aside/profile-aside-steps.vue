@@ -1,6 +1,6 @@
 <template>
   <div class="profile-aside-steps">
-    <div v-for="(step, idx) in getSteps" :key="idx" class="step" :class="{ active: step.active }">
+    <div v-for="(step, idx) in result" :key="idx" class="step" :class="{ success: step.success, danger: step.danger }">
       <div class="dash" />
       <div class="circle">
         <div class="border" />
@@ -27,23 +27,24 @@ export default {
       steps: [
         {
           icon: 'profile-dollar',
-          active: false
+          success: false
         },
         {
           icon: 'profile-checking',
-          active: false
+          success: false
         },
         {
           icon: 'profile-processing',
-          active: false
+          success: false
         },
         {
           icon: 'profile-courier',
-          active: false
+          success: false
         },
         {
           icon: 'profile-flag',
-          active: false
+          success: false,
+          danger: false
         }
       ],
       status: 'created'
@@ -51,23 +52,35 @@ export default {
   },
 
   computed: {
-    getSelectedStepsNumber() {
+    successElementsIndex() {
       return MAP_STATUSES[this.status];
     },
 
-    transformedSteps() {
+    processing() {
       return this.steps.map((step, idx) =>
-        idx <= this.getSelectedStepsNumber
+        idx <= this.successElementsIndex
           ? {
               ...step,
-              active: true
+              success: true
             }
           : step
       );
     },
 
-    getSteps() {
-      return this.getSelectedStepsNumber === undefined ? this.steps : this.transformedSteps;
+    canceled() {
+      return this.steps.map((step, idx) =>
+        idx === this.steps.length - 1
+          ? {
+              ...step,
+              icon: 'profile-cancel',
+              danger: true
+            }
+          : step
+      );
+    },
+
+    result() {
+      return this.successElementsIndex === undefined ? this.canceled : this.processing;
     }
   }
 };
@@ -89,7 +102,7 @@ export default {
     }
   }
 
-  &.active {
+  &.success {
     & .circle {
       color: $color-green;
       background: #ebfaf0;
@@ -108,6 +121,16 @@ export default {
 
     & .icon {
       fill: currentColor;
+    }
+  }
+
+  &.danger {
+    & .circle {
+      background: #ffeff0;
+    }
+
+    & .border {
+      border: 2px solid $color-like-active;
     }
   }
 }

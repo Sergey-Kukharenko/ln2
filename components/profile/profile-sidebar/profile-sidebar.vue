@@ -2,7 +2,7 @@
   <div class="profile-sidebar">
     <profile-sidebar-user :name="name" />
     <profile-orders-item v-if="$device.isMobile" class="order" :item="foundCollectedOrder" background="white" />
-    <profile-sidebar-nav :list="filteredNav" />
+    <profile-sidebar-nav :list="transformedNav" />
     <profile-log-out />
   </div>
 </template>
@@ -20,6 +20,11 @@ import profile from '~/data/profile';
 const { name, nav } = profile.sidebar;
 const { favorites, orders } = profile.pages;
 
+const MAP_NAV = {
+  favorites: favorites?.list.length,
+  orders: 2
+};
+
 export default Vue.extend({
   name: 'ProfileSidebar',
   components: { ProfileLogOut, ProfileOrdersItem, ProfileSidebarNav, ProfileSidebarUser },
@@ -35,14 +40,11 @@ export default Vue.extend({
     // ...accessorMapper('favorites', ['favorites']),
 
     filteredNav() {
-      const MAP_NAV = {
-        favorites: favorites?.list.length,
-        orders: 2
-      };
+      return this.$device.isMobile ? this.nav.filter((item) => item.type !== 'dashboard') : this.nav;
+    },
 
-      const newNav = this.$device.isMobile ? this.nav.filter((item) => item.type !== 'dashboard') : this.nav;
-
-      return newNav.map((item) => ({
+    transformedNav() {
+      return this.filteredNav.map((item) => ({
         ...item,
         count: MAP_NAV[item.type]
       }));
