@@ -90,6 +90,7 @@ export default Vue.extend({
 
 .container {
   display: flex;
+  align-items: flex-start;
   gap: 32px;
   margin-top: 32px;
 }

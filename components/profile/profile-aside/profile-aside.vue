@@ -2,7 +2,15 @@
   <div class="profile-aside">
     <div class="title">Order details</div>
 
-    <div class="group" style="display: none">
+    <profile-aside-steps />
+    <profile-aside-order-contents>
+      <profile-aside-order-list :contents="order.contents" />
+      <profile-aside-order-row :item="order.sale" color="green" />
+      <profile-aside-order-row :item="order.delivery" />
+      <profile-aside-order-row :item="order.total" size="large" />
+    </profile-aside-order-contents>
+
+    <div class="group">
       <a
         href="https://api.whatsapp.com/send?phone=447300887398"
         target="_blank"
@@ -14,17 +22,12 @@
       </a>
       <app-button theme="text-only" stretch="full" behavior="custom">Cancel the order</app-button>
     </div>
-    <profile-aside-steps />
-    <profile-aside-order-contents>
-      <profile-aside-order-row :item="order.sale" color="green" />
-      <profile-aside-order-row :item="order.delivery" />
-      <profile-aside-order-row :item="order.total" size="large" />
-    </profile-aside-order-contents>
   </div>
 </template>
 
 <script>
 import ProfileAsideOrderContents from '~/components/profile/profile-aside/profile-aside-order-contents.vue';
+import ProfileAsideOrderList from '~/components/profile/profile-aside/profile-aside-order-list.vue';
 import ProfileAsideOrderRow from '~/components/profile/profile-aside/profile-aside-order-row.vue';
 import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-steps.vue';
 import AppButton from '~/components/shared/AppButton.vue';
@@ -32,11 +35,26 @@ import AppButton from '~/components/shared/AppButton.vue';
 export default {
   name: 'ProfileAside',
 
-  components: { ProfileAsideOrderRow, ProfileAsideOrderContents, AppButton, ProfileAsideSteps },
+  components: { ProfileAsideOrderList, ProfileAsideOrderRow, ProfileAsideOrderContents, AppButton, ProfileAsideSteps },
 
   data() {
     return {
       order: {
+        contents: {
+          list: [
+            {
+              id: 0,
+              img: 'https://cdn.myflowers.co.uk/media/images/offers/id289/size10/1.webp',
+              title: 'Whisper'
+            },
+            {
+              id: 1,
+              img: 'https://cdn.myflowers.co.uk/media/images/offers/id141/size10/1.webp',
+              title: 'Chocolate Selection 125g'
+            }
+          ],
+          price: '£ 94'
+        },
         sale: {
           label: 'Sale',
           value: '- £ 8'
@@ -65,7 +83,6 @@ export default {
     flex-direction: column;
     gap: 24px;
     width: 344px;
-    min-height: 430px;
     padding: 24px 23px;
     border: 1px solid #eaeaea;
     border-radius: 32px;

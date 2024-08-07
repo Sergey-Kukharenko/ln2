@@ -15,5 +15,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
 }
 </style>
