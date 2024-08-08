@@ -1,12 +1,7 @@
 <template>
-  <a
-    href="https://api.whatsapp.com/send?phone=447300887398"
-    target="_blank"
-    rel="nofollow noopener"
-    class="link-button"
-  >
+  <a :href="href" :target="target" :rel="rel" class="link-button">
     <svg-icon name="whatsapp-outline-green" />
-    Having issues? Write us on whatsapp
+    {{ label }}
   </a>
 </template>
 
