@@ -1,9 +1,9 @@
 <template>
-  <div class="profile-layout">
+  <div class="profile-layout" :class="{ static: $device.isMobile && isProfileOrder }">
     <!--    <app-header-mobile v-if="$device.isMobileOrTablet" />-->
     <!--    <app-header v-else />-->
 
-    <div class="layout layout-dt profile-container" :class="{ move }">
+    <div class="layout layout-dt profile-container" :class="{ move, 'not-smooth': notSmooth }">
       <template>
         <profile-sidebar v-if="!isProfileOrder" />
         <div class="profile-page">
@@ -44,7 +44,9 @@ export default Vue.extend({
 
   data() {
     return {
-      move: false
+      move: false,
+      notSmooth: false,
+      timerId: null
     };
   },
 
@@ -52,6 +54,24 @@ export default Vue.extend({
     isProfileOrder() {
       return this.$route.name === 'profile-order-id';
     }
+  },
+
+  watch: {
+    $route(_, prevValue) {
+      if (prevValue.name !== 'profile-order-id') {
+        return;
+      }
+
+      this.notSmooth = true;
+
+      this.timerId = setTimeout(() => {
+        this.notSmooth = false;
+      }, 100);
+    }
+  },
+
+  beforeDestroy() {
+    clearInterval(this.timerId);
   },
 
   methods: {
@@ -71,9 +91,39 @@ export default Vue.extend({
     flex-direction: column;
   }
 
-  @include lt-md {
-    background: $bg-grey;
-    overflow: hidden;
+  &:not(.static) {
+    @include lt-md {
+      background: $bg-grey;
+      overflow: hidden;
+    }
+
+    .profile-page {
+      @include lt-md {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  &.static {
+    .profile-container {
+      @include lt-md {
+        transform: none;
+        transition: none;
+      }
+
+      &.move {
+        @include lt-md {
+          transform: none;
+          transition: none;
+        }
+      }
+    }
   }
 }
 
@@ -94,7 +144,15 @@ export default Vue.extend({
   }
 
   &.move {
-    transform: translateX(-100%);
+    @include lt-md {
+      transform: translateX(-100%);
+    }
+  }
+
+  &.not-smooth {
+    @include lt-md {
+      transition: none;
+    }
   }
 }
 
@@ -103,16 +161,6 @@ export default Vue.extend({
 
   @include gt-sm {
     flex: 1;
-  }
-
-  @include lt-md {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 100%;
-    padding: 16px;
-    box-sizing: border-box;
   }
 }
 

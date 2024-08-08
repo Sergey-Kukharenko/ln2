@@ -12,14 +12,27 @@
 
     <div v-show="visibility" class="list">
       <div v-for="item in contents.list" :key="item.id" class="item">
-        <img :src="item.img" alt="item.title" />
-        <div class="tiltle">{{ item.title }}</div>
+        <img
+          :src="
+            useSizedImage({
+              realId: item.offer_real_id,
+              sizeName: $options.IMG_SIZES_MAP.size10,
+              imgName: item.image.filename
+            })
+          "
+          :alt="item.image.alt_text"
+        />
+
+        <div class="title">{{ item.offer_title }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { IMG_SIZES_MAP } from '~/constants/image-sizes';
+import { useSizedImage } from '~/helpers';
+
 export default {
   name: 'ProfileAsideOrderList',
 
@@ -48,7 +61,11 @@ export default {
     getItems() {
       return this.getItemsCount + this.getItemsWord;
     }
-  }
+  },
+
+  methods: { useSizedImage },
+
+  IMG_SIZES_MAP
 };
 </script>
 

@@ -5,7 +5,7 @@
       <div v-if="orderItems.length" class="panel__items items">
         <div class="items__top">
           <div class="items__top-column" @click="toggleItems">
-            {{ itemsCount }} <svg-icon name="arrow-grey" class="items__icon" />
+            <svg-icon name="arrow-grey" class="items__icon" />
           </div>
           <div class="items__top-column items__price">£ {{ orderCost.positionsCost }}</div>
         </div>
