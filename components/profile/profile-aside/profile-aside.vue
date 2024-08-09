@@ -22,7 +22,7 @@ import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-
 import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
 import profile from '~/data/profile';
 
-const { positions } = profile.pages.order;
+const { positions, totalCost } = profile.pages.order;
 export default {
   name: 'ProfileAside',
 
@@ -51,7 +51,7 @@ export default {
         },
         total: {
           label: 'Total',
-          value: '£ 86'
+          value: '£ ' + totalCost
         }
       }
     };

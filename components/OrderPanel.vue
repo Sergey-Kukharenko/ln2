@@ -1,6 +1,6 @@
 <template>
   <div class="order-panel--wrapper">
-    <div class="order-panel" :class="{ toggled: toggleStatus }">
+    <div class="order-panel" :class="classes">
       <div>
         <svg-icon class="order-panel__icon" :name="icon" />
       </div>
@@ -47,6 +47,23 @@ export default {
     toggleStatus: {
       type: Boolean,
       default: false
+    },
+
+    size: {
+      type: String,
+      default: 'medium',
+      validate(value) {
+        return ['small', 'medium'].includes(value);
+      }
+    }
+  },
+
+  computed: {
+    classes() {
+      return {
+        toggled: this.toggleStatus,
+        [`size-${this.size}`]: this.size
+      };
     }
   }
 };
@@ -56,14 +73,6 @@ export default {
 .order-panel {
   display: flex;
   justify-content: center;
-
-  @include gt-sm {
-    gap: 17px;
-  }
-
-  @include lt-md {
-    gap: 16px;
-  }
 
   &.toggled {
     .order-panel__toggle-icon {
@@ -164,6 +173,27 @@ export default {
 
     @include lt-md {
       width: 10.5px;
+    }
+  }
+
+  &.size-medium {
+    @include gt-sm {
+      gap: 17px;
+    }
+
+    @include lt-md {
+      gap: 16px;
+    }
+  }
+
+  &.size-small {
+    @include lt-md {
+      gap: 12px;
+    }
+
+    .order-panel__icon {
+      width: 24px;
+      height: 24px;
     }
   }
 }

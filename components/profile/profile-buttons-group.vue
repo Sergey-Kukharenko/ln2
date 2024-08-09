@@ -1,6 +1,6 @@
 <template>
   <div class="profile-buttons-group">
-    <app-link-button :href="link.href" :target="link.target" :rel="link.rel" :icon="link.icon" :label="link.label" />
+    <app-link-button :link="link">{{ link.label }}</app-link-button>
     <app-button theme="text-only" stretch="full" behavior="custom">{{ button.label }}</app-button>
   </div>
 </template>
@@ -36,6 +36,13 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 24px;
+
+  @include gt-sm {
+    margin-top: 24px;
+  }
+
+  @include lt-md {
+    margin-top: 16px;
+  }
 }
 </style>

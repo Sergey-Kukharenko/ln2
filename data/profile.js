@@ -276,7 +276,7 @@ export default {
         phone: '21122121',
         email: 'alex@gmail.com'
       },
-      total_cost: '139.60',
+      totalCost: '86',
       deliveryAmount: '11.00',
       positions_cost: '128.60',
       cashback: '0.00',

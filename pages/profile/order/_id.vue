@@ -4,27 +4,40 @@
     <profile-aside-steps v-if="$device.isMobile" />
     <div class="container">
       <div class="content">
-        <order-panel title="Recipient" icon="user-outline">
-          <template #default>
-            <order-panel-body name="recipient" :pairs="recipientDetails" />
-          </template>
-        </order-panel>
-        <order-panel title="Delivery" icon="place-outline">
-          <template #default>
-            <order-panel-body name="recipient-delivery" :pairs="deliveryDetails" />
-          </template>
-        </order-panel>
-        <order-panel title="Payment methods" icon="money-circle-outline">
-          <p>By Debit/Credit card (Apple/Google pay)</p>
-        </order-panel>
-        <order-panel
-          v-if="$device.isMobile && orderSplitedItems.length"
-          class="order-composition"
-          title="Order composition"
-          icon="flower-box"
-        >
-          <order-items :list="orderSplitedItems" />
-        </order-panel>
+        <div class="section">
+          <order-panel title="Recipient" icon="user-outline" :size="toggleableSize">
+            <template #default>
+              <order-panel-body name="recipient" :pairs="recipientDetails" />
+            </template>
+          </order-panel>
+        </div>
+        <div class="section">
+          <order-panel title="Delivery" icon="place-outline" :size="toggleableSize">
+            <template #default>
+              <order-panel-body name="recipient-delivery" :pairs="deliveryDetails" />
+            </template>
+          </order-panel>
+        </div>
+        <div class="section">
+          <order-panel title="Payment methods" icon="money-circle-outline" :size="toggleableSize">
+            <p>By Debit/Credit card (Apple/Google pay)</p>
+          </order-panel>
+        </div>
+        <div class="section">
+          <order-panel
+            v-if="$device.isMobile && orderSplitedItems.length"
+            class="order-composition"
+            title="Order composition"
+            icon="flower-box"
+            :size="toggleableSize"
+          >
+            <order-items :list="orderSplitedItems" />
+          </order-panel>
+        </div>
+        <div v-if="$device.isMobile" class="section">
+          <profile-aside-order-row :item="total" size="large" apply-to-all />
+          <profile-buttons-group />
+        </div>
       </div>
       <profile-aside v-if="$device.isDesktopOrTablet" />
     </div>
@@ -37,15 +50,25 @@ import Vue from 'vue';
 import OrderItems from '~/components/OrderItems.vue';
 import OrderPanel from '~/components/OrderPanel.vue';
 import OrderPanelBody from '~/components/OrderPanelBody.vue';
+import ProfileAsideOrderRow from '~/components/profile/profile-aside/profile-aside-order-row.vue';
 import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-steps.vue';
 import ProfileAside from '~/components/profile/profile-aside/profile-aside.vue';
+import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
 import profile from '~/data/profile';
 
-const { recipient, shippingAddress, interval, deliveryAmount, positions } = profile.pages.order;
+const { recipient, shippingAddress, interval, deliveryAmount, positions, totalCost } = profile.pages.order;
 export default Vue.extend({
   name: 'OrderPage',
 
-  components: { ProfileAsideSteps, OrderItems, OrderPanelBody, OrderPanel, ProfileAside },
+  components: {
+    ProfileAsideOrderRow,
+    ProfileButtonsGroup,
+    ProfileAsideSteps,
+    OrderItems,
+    OrderPanelBody,
+    OrderPanel,
+    ProfileAside
+  },
 
   layout: 'profile',
 
@@ -55,11 +78,19 @@ export default Vue.extend({
       shippingAddress,
       interval,
       deliveryAmount,
-      positions
+      positions,
+      total: {
+        label: 'Total',
+        value: '£ ' + totalCost
+      }
     };
   },
 
   computed: {
+    toggleableSize() {
+      return this.$device.isMobile ? 'small' : 'medium';
+    },
+
     recipientDetails() {
       return {
         name: this.recipient?.name,
@@ -130,12 +161,25 @@ export default Vue.extend({
     gap: 32px;
     margin-top: 32px;
   }
+
+  @include lt-md {
+    margin-top: 20px;
+  }
 }
 
 .content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  @include gt-sm {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.section {
+  @include lt-md {
+    padding: 16px 0;
+    border-top: 1px solid #eaeaea;
+  }
 }
 </style>

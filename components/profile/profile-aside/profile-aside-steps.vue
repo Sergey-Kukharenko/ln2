@@ -91,7 +91,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 29px;
+
+  @include gt-sm {
+    margin-top: 29px;
+  }
+
+  @include lt-md {
+    margin-top: 20px;
+  }
 }
 
 .step {

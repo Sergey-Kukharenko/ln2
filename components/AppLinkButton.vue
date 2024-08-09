@@ -1,7 +1,7 @@
 <template>
-  <a :href="href" :target="target" :rel="rel" class="link-button">
+  <a :href="link.href" :target="link.target" :rel="link.rel" class="link-button" :class="classes">
     <svg-icon name="whatsapp-outline-green" />
-    {{ label }}
+    <slot />
   </a>
 </template>
 
@@ -10,29 +10,25 @@ export default {
   name: 'AppLinkButton',
 
   props: {
-    href: {
-      type: String,
-      default: ''
+    link: {
+      type: Object,
+      default: () => ({})
     },
 
-    target: {
+    color: {
       type: String,
-      default: ''
-    },
+      default: 'green',
+      validate(value) {
+        return ['green'].includes(value);
+      }
+    }
+  },
 
-    rel: {
-      type: String,
-      default: ''
-    },
-
-    icon: {
-      type: String,
-      default: ''
-    },
-
-    label: {
-      type: String,
-      default: ''
+  computed: {
+    classes() {
+      return {
+        [`color-${this.color}`]: this.color
+      };
     }
   }
 };
@@ -46,12 +42,25 @@ export default {
   gap: 8px;
   min-height: 44px;
   padding: 0 6px;
-  color: $color-green;
-  border: 1px solid $color-green;
-  border-radius: 12px;
   font-family: $golos-medium;
-  font-size: 14px;
-  line-height: 24px;
+
+  @include gt-sm {
+    font-size: 14px;
+    line-height: 24px;
+    border-radius: 12px;
+  }
+
+  @include lt-md {
+    font-size: 13px;
+    line-height: 17px;
+    letter-spacing: -0.01em;
+    border-radius: 8px;
+  }
+
+  &.color-green {
+    color: $color-green;
+    border: 1px solid $color-green;
+  }
 
   .icon {
     width: 20px;
