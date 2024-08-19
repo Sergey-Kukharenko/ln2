@@ -2,7 +2,7 @@
   <div class="profile-aside">
     <div class="title">Order details</div>
 
-    <profile-aside-steps />
+    <profile-aside-steps :status="order.status" />
     <profile-aside-order-contents>
       <profile-aside-order-list :contents="order.contents" />
       <profile-aside-order-row :item="order.sale" color="green" />
@@ -10,7 +10,7 @@
     </profile-aside-order-contents>
     <profile-aside-order-row :item="order.total" size="large" />
 
-    <profile-buttons-group />
+    <profile-buttons-group :status="order.status" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-
 import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
 import profile from '~/data/profile';
 
-const { positions, totalCost } = profile.pages.order;
+const { positions, totalCost, status } = profile.pages.order;
 export default {
   name: 'ProfileAside',
 
@@ -52,7 +52,8 @@ export default {
         total: {
           label: 'Total',
           value: '£ ' + totalCost
-        }
+        },
+        status
       }
     };
   }

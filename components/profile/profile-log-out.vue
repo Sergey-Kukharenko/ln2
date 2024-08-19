@@ -7,8 +7,8 @@
     <profile-modal :is-visible="isVisible" @close-modal="close">
       <template #title>{{ modal.title }}</template>
       <template #buttons>
-        <app-button behavior="custom">{{ modal.buttons.exit }}</app-button>
-        <app-button theme="transparent" behavior="custom">{{ modal.buttons.cancel }}</app-button>
+        <app-button behavior="custom" @click="close">{{ modal.buttons.exit }}</app-button>
+        <app-button theme="transparent" behavior="custom" @click="close">{{ modal.buttons.cancel }}</app-button>
       </template>
     </profile-modal>
   </div>

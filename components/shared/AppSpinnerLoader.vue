@@ -5,6 +5,7 @@
 <script>
 export default {
   name: 'AppSpinnerLoader',
+
   props: {
     size: {
       type: [String, Number],

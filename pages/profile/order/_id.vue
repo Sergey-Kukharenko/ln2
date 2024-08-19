@@ -24,15 +24,14 @@
           </order-panel>
         </div>
         <div class="section">
-          <order-panel
+          <profile-slide-toggle
             v-if="$device.isMobile && orderSplitedItems.length"
-            class="order-composition"
             title="Order composition"
             icon="flower-box"
-            :size="toggleableSize"
+            is-visible
           >
             <order-items :list="orderSplitedItems" />
-          </order-panel>
+          </profile-slide-toggle>
         </div>
         <div v-if="$device.isMobile" class="section">
           <profile-aside-order-row :item="total" size="large" apply-to-all />
@@ -54,6 +53,7 @@ import ProfileAsideOrderRow from '~/components/profile/profile-aside/profile-asi
 import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-steps.vue';
 import ProfileAside from '~/components/profile/profile-aside/profile-aside.vue';
 import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
+import ProfileSlideToggle from '~/components/profile/profile-slide-toggle.vue';
 import profile from '~/data/profile';
 
 const { recipient, shippingAddress, interval, deliveryAmount, positions, totalCost } = profile.pages.order;
@@ -61,6 +61,7 @@ export default Vue.extend({
   name: 'OrderPage',
 
   components: {
+    ProfileSlideToggle,
     ProfileAsideOrderRow,
     ProfileButtonsGroup,
     ProfileAsideSteps,
@@ -82,6 +83,14 @@ export default Vue.extend({
       total: {
         label: 'Total',
         value: '£ ' + totalCost
+      },
+
+      item: {
+        product_id: 205,
+        name: '5 Mixed Chrysanthemum',
+        quantity: 1,
+        price: '39.90',
+        images: ['https://cdn.myflowers.co.uk/media/images/offers/id205/max/1.webp']
       }
     };
   },

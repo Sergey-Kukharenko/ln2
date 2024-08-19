@@ -69,36 +69,26 @@ export default {
       },
       list: [
         {
-          id: 1,
+          order_id: 1,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
-          orderNumber: 'No. 2352-083',
+          amount_prod: null,
           status: 'collected',
-          statusText: 'is being collected',
-          date: null,
-          title: 'some',
-          to: '/profile/order/2352-083'
+          date: null
         },
         {
-          id: 2,
+          order_id: 2,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
-          count: 2,
-          orderNumber: 'No. 2352-083',
+          amount_prod: 2,
           status: 'delivered',
-          statusText: 'delivered',
-          date: '10 june!',
-          title: 'some',
-          to: ''
+          date: '10 june!'
         },
         {
-          id: 3,
+          order_id: 3,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
-          count: 2,
-          orderNumber: 'No. 2352-083',
+          amount_prod: 2,
           status: 'delivered',
           statusText: 'delivered',
-          date: '5 may!',
-          title: 'some',
-          to: ''
+          date: '5 may!'
         }
       ],
       empty: {
@@ -235,18 +225,18 @@ export default {
         title: 'Notification settings',
         view: null
       },
-      list: [
-        {
-          id: 1,
+      list: {
+        email_subscription: {
+          name: 'email_subscription',
           value: false,
           label: 'Receive emails with promotions by e-mail'
         },
-        {
-          id: 2,
+        sms_subscription: {
+          name: 'sms_subscription',
           value: false,
           label: 'Receive SMS notifications'
         }
-      ]
+      }
     },
     empty: {
       title: "It's empty here :(",
@@ -265,7 +255,7 @@ export default {
       id: '58xJBM9RWRDn71jl',
       real_id: '2352-083',
       real_user_id: 175567,
-      status: 'PAYMENT',
+      status: 'created',
       recipient: {
         name: 'Maria Sazontova',
         phone: '+7 (999) 123-45-67'

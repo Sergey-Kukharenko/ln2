@@ -3,8 +3,8 @@
     <profile-section :head="head">
       <app-list-switch>
         <app-item-switch
-          v-for="item in list"
-          :key="item.id"
+          v-for="item in transformedList"
+          :key="item.name"
           v-model="item.value"
           :label="item.label"
           background="grey"
@@ -35,15 +35,31 @@ export default Vue.extend({
   data() {
     return {
       head,
-      list
+      list,
+
+      dataFromBackend: {
+        email_subscription: false,
+        sms_subscription: true
+      },
+      transformedList: {}
     };
+  },
+
+  // todo перенести логику в store notification, как будет готов backend
+  created() {
+    this.onTransformList();
   },
 
   methods: {
     onChange(item) {
-      console.log('-------');
       console.log(item.value, item.label);
-      console.log('-------');
+    },
+
+    onTransformList() {
+      this.transformedList = Object.entries(this.dataFromBackend).map(([key, value]) => ({
+        ...list[key],
+        value
+      }));
     }
   }
 });

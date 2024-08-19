@@ -2,13 +2,13 @@
   <div class="profile-orders-item" :class="classes">
     <div class="figure">
       <img :src="item.img" :alt="item.title" />
-      <app-counter v-if="item.count" :count="item.count" theme="flat" class="counter" />
+      <app-counter v-if="item.amount_prod" :count="item.amount_prod" theme="flat" class="counter" />
       <svg-icon v-if="$device.isMobile && !item.date" name="profile-collected" class="collected-icon" />
     </div>
     <div class="content" :class="{ grey: item.date }">
       Order
-      <nuxt-link :to="item.to" :class="{ active: !item.date }">{{ item.orderNumber }}</nuxt-link>
-      <span>{{ item.statusText }}</span>
+      <nuxt-link :to="pathToOrder" :class="{ active: !item.date }">No. {{ item.order_id }}</nuxt-link>
+      <span>{{ statusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
     <div v-if="$device.isDesktopOrTablet && item.date" class="button">
@@ -21,9 +21,11 @@
 import Vue from 'vue';
 
 import AppCounter from '~/components/shared/AppCounter.vue';
+import { PROFILE_STATUSES } from '~/constants';
 
 export default Vue.extend({
   name: 'ProfileOrdersItem',
+
   components: { AppCounter },
 
   props: {
@@ -41,11 +43,21 @@ export default Vue.extend({
     }
   },
 
+  PROFILE_STATUSES,
+
   computed: {
     classes() {
       return {
         [`background-${this.background}`]: this.background
       };
+    },
+
+    statusText() {
+      return this.item.status === PROFILE_STATUSES.collected ? 'is being  ' + this.item.status : this.item.status;
+    },
+
+    pathToOrder() {
+      return this.item.status === PROFILE_STATUSES.collected ? 'order/' + this.item.order_id : '';
     }
   }
 });

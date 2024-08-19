@@ -1,6 +1,6 @@
 <template>
   <div class="profile-orders-list">
-    <profile-orders-item v-for="item in filteredList" :key="item.id" :item="item" />
+    <profile-orders-item v-for="item in filteredList" :key="item.order_id" :item="item" />
   </div>
 </template>
 

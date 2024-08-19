@@ -19,7 +19,7 @@ import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
 // import { accessorMapper } from '~/store';
 
-const { favorites } = profile.pages;
+const { head, list } = profile.pages.favorites;
 export default Vue.extend({
   name: 'FavoritesPage',
   components: {
@@ -34,8 +34,8 @@ export default Vue.extend({
   data() {
     return {
       favorites: {
-        head: favorites.head,
-        list: favorites.list
+        head,
+        list
       }
     };
   },

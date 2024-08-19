@@ -311,6 +311,13 @@ const PRODUCT_SIZE = {
 
 const GIFT_CARD_COOKIE = 'gift_card_from_basket';
 const GIFT_CARD_POLICY_ID = 3;
+const PROFILE_STATUSES = {
+  created: 'created',
+  confirmed: 'confirmed',
+  collected: 'collected',
+  courier: 'courier',
+  delivered: 'delivered'
+};
 
 export {
   LIST_ITEM_VIEW_COUNT,
@@ -379,5 +386,6 @@ export {
   AC_TESTING_COOKIE,
   PRODUCT_SIZE,
   GIFT_CARD_COOKIE,
-  GIFT_CARD_POLICY_ID
+  GIFT_CARD_POLICY_ID,
+  PROFILE_STATUSES
 };

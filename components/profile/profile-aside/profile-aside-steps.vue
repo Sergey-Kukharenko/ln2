@@ -22,6 +22,13 @@ const MAP_STATUSES = {
 export default {
   name: 'ProfileAsideSteps',
 
+  props: {
+    status: {
+      type: String,
+      default: ''
+    }
+  },
+
   data() {
     return {
       steps: [
@@ -46,8 +53,7 @@ export default {
           success: false,
           danger: false
         }
-      ],
-      status: 'created'
+      ]
     };
   },
 
