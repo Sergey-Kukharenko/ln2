@@ -1,5 +1,6 @@
 <template>
   <div class="notification-settings-page">
+    <pre>{{ notifications }}</pre>
     <profile-section :head="head">
       <app-list-switch>
         <app-item-switch
@@ -24,6 +25,7 @@ import ProfileSection from '~/components/profile/profile-section.vue';
 import AppItemSwitch from '~/components/shared/switch/app-item-switch.vue';
 import AppListSwitch from '~/components/shared/switch/app-list-switch.vue';
 import profile from '~/data/profile';
+import { accessorMapper } from '~/store';
 
 const { head, list } = profile.pages.notifications;
 export default Vue.extend({
@@ -35,31 +37,43 @@ export default Vue.extend({
   data() {
     return {
       head,
-      list,
+      list
 
-      dataFromBackend: {
-        email_subscription: false,
-        sms_subscription: true
-      },
-      transformedList: {}
+      // dataFromBackend: {
+      //   email_subscription: false,
+      //   sms_subscription: true
+      // },
+      // transformedList: {}
     };
   },
 
-  // todo перенести логику в store notification, как будет готов backend
-  created() {
-    this.onTransformList();
+  fetch() {
+    this.fetchNotifications();
+  },
+
+  computed: {
+    ...accessorMapper('notifications', ['notifications']),
+
+    transformedList() {
+      const res = [];
+      for (const [key] of Object.entries(this.notifications)) {
+        list[key] && res.push(list[key]);
+      }
+      return res;
+    }
   },
 
   methods: {
-    onChange(item) {
-      console.log(item.value, item.label);
-    },
+    ...accessorMapper('notifications', ['fetchNotifications', 'updateNotifications']),
 
-    onTransformList() {
-      this.transformedList = Object.entries(this.dataFromBackend).map(([key, value]) => ({
-        ...list[key],
-        value
-      }));
+    onChange(item) {
+      // console.log(item.name, item.value);
+      const payload = {
+        ...this.notifications,
+        [item.name]: item.value
+      };
+
+      this.updateNotifications(payload);
     }
   }
 });

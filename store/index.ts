@@ -12,6 +12,7 @@ import * as gifts from '~/store/gifts';
 import * as gtag from '~/store/gtag';
 import * as home from '~/store/home';
 import * as layout from '~/store/layout';
+import * as notifications from '~/store/notifications';
 import * as order from '~/store/order';
 import * as payment from '~/store/payment';
 import * as product from '~/store/product';
@@ -88,7 +89,8 @@ export const accessorType = getAccessorType({
     checkout,
     user,
     search,
-    cart
+    cart,
+    notifications
   }
 });
 
