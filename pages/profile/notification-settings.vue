@@ -1,6 +1,5 @@
 <template>
   <div class="notification-settings-page">
-    <pre>{{ notifications }}</pre>
     <profile-section :head="head">
       <app-list-switch>
         <app-item-switch
@@ -38,12 +37,6 @@ export default Vue.extend({
     return {
       head,
       list
-
-      // dataFromBackend: {
-      //   email_subscription: false,
-      //   sms_subscription: true
-      // },
-      // transformedList: {}
     };
   },
 
@@ -52,19 +45,17 @@ export default Vue.extend({
   },
 
   computed: {
-    ...accessorMapper('notifications', ['notifications']),
+    ...accessorMapper('profile-notifications', ['notifications']),
 
     transformedList() {
-      const res = [];
-      for (const [key] of Object.entries(this.notifications)) {
-        list[key] && res.push(list[key]);
-      }
-      return res;
+      return Object.entries(this.notifications)
+        .filter(([key]) => list[key])
+        .map(([key, value]) => ({ ...list[key], value }));
     }
   },
 
   methods: {
-    ...accessorMapper('notifications', ['fetchNotifications', 'updateNotifications']),
+    ...accessorMapper('profile-notifications', ['fetchNotifications', 'updateNotifications']),
 
     onChange(item) {
       // console.log(item.name, item.value);

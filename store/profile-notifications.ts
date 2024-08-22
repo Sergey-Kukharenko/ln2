@@ -1,4 +1,4 @@
-import { actionTree, getterTree, mutationTree } from 'typed-vuex';
+import { actionTree, mutationTree } from 'typed-vuex';
 
 import type { NotificationsResponse } from '~/@types/api/notifications';
 
@@ -26,7 +26,7 @@ export const actions = actionTree(
           data: {
             email: null,
             email_subscription: false,
-            sms_subscription: false,
+            sms_subscription: true,
             push_subscription: true
           }
         };
@@ -52,9 +52,3 @@ export const actions = actionTree(
     }
   }
 );
-
-export const getters = getterTree(state, {
-  getNotificationsList: (state) => {
-    return state.notifications;
-  }
-});

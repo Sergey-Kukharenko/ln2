@@ -40,6 +40,7 @@ import ProfilePersonalSection from '~/components/profile/profile-personal-sectio
 import AppButton from '~/components/shared/AppButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
 import profile from '~/data/profile';
+import { accessorMapper } from '~/store';
 
 const { gender } = profile;
 export default Vue.extend({
@@ -68,7 +69,23 @@ export default Vue.extend({
     };
   },
 
+  fetch() {
+    this.fetchPersonal();
+    const { user } = this.personal;
+    this.form.name.value = user.name;
+  },
+
+  computed: {
+    ...accessorMapper('profile-personal', ['personal']),
+
+    getUser() {
+      return this.personal.user;
+    }
+  },
+
   methods: {
+    ...accessorMapper('profile-personal', ['fetchPersonal', 'updatePersonal']),
+
     onSetGender(payload) {
       this.selectedGender = payload;
     },

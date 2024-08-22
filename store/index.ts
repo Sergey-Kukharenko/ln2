@@ -12,10 +12,11 @@ import * as gifts from '~/store/gifts';
 import * as gtag from '~/store/gtag';
 import * as home from '~/store/home';
 import * as layout from '~/store/layout';
-import * as notifications from '~/store/notifications';
 import * as order from '~/store/order';
 import * as payment from '~/store/payment';
 import * as product from '~/store/product';
+import * as notifications from '~/store/profile-notifications';
+import * as personal from '~/store/profile-personal';
 import * as search from '~/store/search';
 import * as user from '~/store/user';
 
@@ -90,7 +91,8 @@ export const accessorType = getAccessorType({
     user,
     search,
     cart,
-    notifications
+    notifications,
+    personal
   }
 });
 
