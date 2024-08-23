@@ -1,25 +1,26 @@
 <template>
   <div class="personal-data">
+    <pre>
+    {{ getUser.name }}
+    {{ getUser.phone }}
+    {{ getUser.gender }}
+    {{ getUser.birth }}
+    {{ getUser.email }}
+    </pre>
     <profile-personal-section title="Personal data">
-      <app-input
-        v-model="form.name.value"
-        :error="form.name.errorMsg"
-        placeholder="Name"
-        pattern="[a-zA-Z]*"
-        size="x-large"
-      />
-      <profile-button-list :selected="selectedGender" :list="gender" @set-item="onSetGender" />
+      <app-input v-model="user.name" placeholder="Name" pattern="[a-zA-Z]*" size="x-large" />
+      <profile-button-list :selected="user.gender" :list="gender" @set-item="onSetGender" />
     </profile-personal-section>
     <profile-personal-section title="Date of birth">
-      <app-input placeholder="Select" value="" size="x-large" />
+      <app-input v-model="user.birth" placeholder="Select" size="x-large" />
     </profile-personal-section>
     <profile-personal-section title="Contacts">
-      <app-input placeholder="+7 (995) 905-48-02" size="x-large" value="">
+      <app-input v-model="user.phone" placeholder="+7 (995) 905-48-02" size="x-large">
         <template #right>
           <svg-icon name="profile-pencil" />
         </template>
       </app-input>
-      <app-input placeholder="Email" value="" size="x-large" />
+      <app-input v-model="user.email" placeholder="Email" size="x-large" />
       <div class="form group">
         <app-button :disabled="fieldsNotFilled" @click="onSubmit">Save</app-button>
         <profile-delete-account />
@@ -52,27 +53,21 @@ export default Vue.extend({
   data() {
     return {
       gender,
-      selectedGender: 'prefer_not_say',
-      fieldsNotFilled: false,
-      form: {
-        name: {
-          value: '',
-          errorMsg: ''
-        },
-        phone: {
-          errorMsg: '',
-          value: ''
-        },
-
-        errorMsg: ''
-      }
+      user: {
+        name: '',
+        phone: '',
+        birth: '',
+        email: '',
+        gender: ''
+      },
+      fieldsNotFilled: false
     };
   },
 
   fetch() {
     this.fetchPersonal();
-    const { user } = this.personal;
-    this.form.name.value = user.name;
+
+    this.user = { ...this.personal.user };
   },
 
   computed: {
@@ -86,16 +81,14 @@ export default Vue.extend({
   methods: {
     ...accessorMapper('profile-personal', ['fetchPersonal', 'updatePersonal']),
 
-    onSetGender(payload) {
-      this.selectedGender = payload;
+    onSetGender(gender) {
+      this.user.gender = gender;
     },
 
     onSubmit() {
-      if (!this.form.name.value) {
-        this.form.name.errorMsg = 'field is empty';
-      } else {
-        this.form.name.errorMsg = '';
-      }
+      const payload = { ...this.personal, user: this.user };
+
+      this.updatePersonal(payload);
     }
   }
 });
