@@ -1,7 +1,7 @@
 <template>
   <div class="orders">
     <profile-section :head="head">
-      <profile-orders-list v-if="isOrders" :list="list" />
+      <profile-orders-list v-if="isOrders" :list="orders.current" />
       <profile-orders-empty v-else />
     </profile-section>
   </div>
@@ -15,8 +15,9 @@ import ProfileOrdersList from '~/components/profile/profile-orders/profile-order
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
+import { accessorMapper } from '~/store';
 
-const { head, list } = profile.pages.orders;
+const { head } = profile.pages.orders;
 export default Vue.extend({
   name: 'OrdersPage',
   components: { ProfileOrdersEmpty, ProfileOrdersList, ProfileSection },
@@ -25,15 +26,24 @@ export default Vue.extend({
 
   data() {
     return {
-      head,
-      list
+      head
     };
   },
 
+  fetch() {
+    this.fetchOrders();
+  },
+
   computed: {
+    ...accessorMapper('profile-orders', ['orders']),
+
     isOrders() {
-      return useArrayNotEmpty(list);
+      return useArrayNotEmpty(this.orders?.current);
     }
+  },
+
+  methods: {
+    ...accessorMapper('profile-orders', ['fetchOrders', 'deleteOrder'])
   }
 });
 </script>

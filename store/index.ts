@@ -16,6 +16,7 @@ import * as order from '~/store/order';
 import * as payment from '~/store/payment';
 import * as product from '~/store/product';
 import * as notifications from '~/store/profile-notifications';
+import * as orders from '~/store/profile-orders';
 import * as personal from '~/store/profile-personal';
 import * as search from '~/store/search';
 import * as user from '~/store/user';
@@ -92,6 +93,7 @@ export const accessorType = getAccessorType({
     search,
     cart,
     notifications,
+    orders,
     personal
   }
 });

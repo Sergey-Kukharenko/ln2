@@ -1,12 +1,5 @@
 <template>
   <div class="personal-data">
-    <pre>
-    {{ getUser.name }}
-    {{ getUser.phone }}
-    {{ getUser.gender }}
-    {{ getUser.birth }}
-    {{ getUser.email }}
-    </pre>
     <profile-personal-section title="Personal data">
       <app-input v-model="user.name" placeholder="Name" pattern="[a-zA-Z]*" size="x-large" />
       <profile-button-list :selected="user.gender" :list="gender" @set-item="onSetGender" />
@@ -71,11 +64,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...accessorMapper('profile-personal', ['personal']),
-
-    getUser() {
-      return this.personal.user;
-    }
+    ...accessorMapper('profile-personal', ['personal'])
   },
 
   methods: {
