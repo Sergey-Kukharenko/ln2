@@ -252,10 +252,10 @@ export default {
 
     order: {
       object: 'Order',
-      id: '58xJBM9RWRDn71jl',
+      id: '2352-083',
       real_id: '2352-083',
       real_user_id: 175567,
-      status: 'created',
+      status: 'CONFIRMED',
       recipient: {
         name: 'Maria Sazontova',
         phone: '+7 (999) 123-45-67'

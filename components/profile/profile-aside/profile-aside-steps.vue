@@ -12,8 +12,8 @@
 
 <script>
 const MAP_STATUSES = {
-  created: 0,
-  confirmed: 1,
+  PAYMENT: 0,
+  CONFIRMED: 1,
   collected: 2,
   courier: 3,
   delivered: 4

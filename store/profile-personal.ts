@@ -57,11 +57,10 @@ export const actions = actionTree(
       }
     },
 
-    deletePersonal({ commit }, payload) {
+    async deletePersonal({ commit }) {
       try {
-        // const personal = await this.app.$http.$delete<PersonalResponse>(`/v1/mobile-api/user/personal-data/`);
-        // commit('SET_PERSONAL', personal);
-        commit('SET_PERSONAL', payload);
+        const personal = await this.app.$http.$delete<PersonalResponse>(`/v1/mobile-api/user/personal-data/`);
+        commit('SET_PERSONAL', personal);
       } catch (e) {
         console.error(e);
       }

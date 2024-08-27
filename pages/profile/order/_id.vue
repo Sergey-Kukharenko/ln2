@@ -1,6 +1,6 @@
 <template>
   <div class="order">
-    <div class="title">Your order №. 2352-083 was created!</div>
+    <div class="title">{{ getTitle }}</div>
     <profile-aside-steps v-if="$device.isMobile" />
     <div class="container">
       <div class="content">
@@ -56,7 +56,7 @@ import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue'
 import ProfileSlideToggle from '~/components/profile/profile-slide-toggle.vue';
 import profile from '~/data/profile';
 
-const { recipient, shippingAddress, interval, deliveryAmount, positions, totalCost } = profile.pages.order;
+const { recipient, shippingAddress, interval, deliveryAmount, positions, status, id, totalCost } = profile.pages.order;
 export default Vue.extend({
   name: 'OrderPage',
 
@@ -80,22 +80,32 @@ export default Vue.extend({
       interval,
       deliveryAmount,
       positions,
+      status,
+      id,
       total: {
         label: 'Total',
         value: '£ ' + totalCost
-      },
-
-      item: {
-        product_id: 205,
-        name: '5 Mixed Chrysanthemum',
-        quantity: 1,
-        price: '39.90',
-        images: ['https://cdn.myflowers.co.uk/media/images/offers/id205/max/1.webp']
       }
     };
   },
 
   computed: {
+    getTitle() {
+      const MAP_TITLE_STATUSES = {
+        PAYMENT: `Your order №. ${this.id} was created`,
+        PAID: `Your order №. ${this.id} was created`,
+        FAIL_PAID: `Your order №. ${this.id} was created`,
+        CONFIRMED: `Your order №. ${this.id} was confirmed`,
+        PACKED: `Your order №. ${this.id} is being collecting`,
+        COURIER_ASSIGNED: `Your order №. ${this.id} was assembled and waiting for the courier`,
+        DELIVERING: `Your order №. ${this.id} delivered to the courier`,
+        DELIVERED: `Your order №. ${this.id} was delivered`,
+        CANCELED: `Your order №. ${this.id} was canceled`
+      };
+
+      return MAP_TITLE_STATUSES[this.status];
+    },
+
     toggleableSize() {
       return this.$device.isMobile ? 'small' : 'medium';
     },

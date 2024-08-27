@@ -54,11 +54,10 @@ export const actions = actionTree(
       }
     },
 
-    deleteOrder({ commit }, payload) {
+    async deleteOrder({ commit }, payload) {
       try {
-        // const personal = await this.app.$http.$put<ProfileOrdersResponse>(`/v1/mobile-api/order/${payload}`);
-        // commit('SET_ORDERS', personal);
-        commit('SET_ORDERS', payload);
+        const orders = await this.app.$http.$put<ProfileOrdersResponse>(`/v1/mobile-api/order/${payload}`);
+        commit('SET_ORDERS', orders);
       } catch (e) {
         console.error(e);
       }
