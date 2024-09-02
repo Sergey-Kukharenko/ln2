@@ -27,21 +27,21 @@ export const actions = actionTree(
               order_id: 1,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: null,
-              status: 'collected',
+              status: 'PACKED',
               date: null
             },
             {
               order_id: 2,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: 2,
-              status: 'delivered',
+              status: 'DELIVERED',
               date: '10 june!'
             },
             {
               order_id: 3,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: 2,
-              status: 'delivered',
+              status: 'DELIVERED',
               statusText: 'delivered',
               date: '5 may!'
             }

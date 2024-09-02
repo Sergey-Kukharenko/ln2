@@ -1,6 +1,6 @@
 <template>
   <div class="order">
-    <div class="title">{{ getTitle }}</div>
+    <div class="title">Your order №. {{ id }} {{ getStatusText }}</div>
     <profile-aside-steps v-if="$device.isMobile" />
     <div class="container">
       <div class="content">
@@ -54,6 +54,7 @@ import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-
 import ProfileAside from '~/components/profile/profile-aside/profile-aside.vue';
 import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
 import ProfileSlideToggle from '~/components/profile/profile-slide-toggle.vue';
+import { MAP_PROFILE_STATUSES } from '~/constants';
 import profile from '~/data/profile';
 
 const { recipient, shippingAddress, interval, deliveryAmount, positions, status, id, totalCost } = profile.pages.order;
@@ -89,21 +90,11 @@ export default Vue.extend({
     };
   },
 
-  computed: {
-    getTitle() {
-      const MAP_TITLE_STATUSES = {
-        PAYMENT: `Your order №. ${this.id} was created`,
-        PAID: `Your order №. ${this.id} was created`,
-        FAIL_PAID: `Your order №. ${this.id} was created`,
-        CONFIRMED: `Your order №. ${this.id} was confirmed`,
-        PACKED: `Your order №. ${this.id} is being collecting`,
-        COURIER_ASSIGNED: `Your order №. ${this.id} was assembled and waiting for the courier`,
-        DELIVERING: `Your order №. ${this.id} delivered to the courier`,
-        DELIVERED: `Your order №. ${this.id} was delivered`,
-        CANCELED: `Your order №. ${this.id} was canceled`
-      };
+  MAP_PROFILE_STATUSES,
 
-      return MAP_TITLE_STATUSES[this.status];
+  computed: {
+    getStatusText() {
+      return MAP_PROFILE_STATUSES[this.status];
     },
 
     toggleableSize() {

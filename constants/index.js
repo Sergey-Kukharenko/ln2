@@ -311,12 +311,17 @@ const PRODUCT_SIZE = {
 
 const GIFT_CARD_COOKIE = 'gift_card_from_basket';
 const GIFT_CARD_POLICY_ID = 3;
-const PROFILE_STATUSES = {
-  created: 'created',
-  confirmed: 'confirmed',
-  collected: 'collected',
-  courier: 'courier',
-  delivered: 'delivered'
+
+const MAP_PROFILE_STATUSES = {
+  PAYMENT: 'was created',
+  PAID: 'was created',
+  FAIL_PAID: 'was created',
+  CONFIRMED: 'was confirmed',
+  PACKED: 'is being collecting',
+  COURIER_ASSIGNED: 'was assembled and waiting for the courier',
+  DELIVERING: 'delivered to the courier',
+  DELIVERED: 'was delivered',
+  CANCELED: 'was canceled'
 };
 
 export {
@@ -387,5 +392,5 @@ export {
   PRODUCT_SIZE,
   GIFT_CARD_COOKIE,
   GIFT_CARD_POLICY_ID,
-  PROFILE_STATUSES
+  MAP_PROFILE_STATUSES
 };

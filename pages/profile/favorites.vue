@@ -50,7 +50,7 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('profile-favorites', ['fetchFavorites', 'removeFromFavorites'])
+    ...accessorMapper('profile-favorites', ['fetchFavorites'])
   }
 });
 </script>

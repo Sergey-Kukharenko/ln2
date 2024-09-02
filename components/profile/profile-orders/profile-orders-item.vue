@@ -8,7 +8,7 @@
     <div class="content" :class="{ grey: item.date }">
       Order
       <nuxt-link :to="pathToOrder" :class="{ active: !item.date }">No. {{ item.order_id }}</nuxt-link>
-      <span>{{ statusText }}</span>
+      <span>{{ getStatusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
     <div v-if="$device.isDesktopOrTablet && item.date" class="button">
@@ -21,7 +21,7 @@
 import Vue from 'vue';
 
 import AppCounter from '~/components/shared/AppCounter.vue';
-import { PROFILE_STATUSES } from '~/constants';
+import { MAP_PROFILE_STATUSES } from '~/constants';
 
 export default Vue.extend({
   name: 'ProfileOrdersItem',
@@ -43,7 +43,7 @@ export default Vue.extend({
     }
   },
 
-  PROFILE_STATUSES,
+  MAP_PROFILE_STATUSES,
 
   computed: {
     classes() {
@@ -52,12 +52,15 @@ export default Vue.extend({
       };
     },
 
-    statusText() {
-      return this.item.status === PROFILE_STATUSES.collected ? 'is being  ' + this.item.status : this.item.status;
+    getStatusText() {
+      console.log('==============');
+      console.log(this.item.status);
+      console.log('==============');
+      return MAP_PROFILE_STATUSES[this.item.status];
     },
 
     pathToOrder() {
-      return this.item.status === PROFILE_STATUSES.collected ? 'order/' + this.item.order_id : '';
+      return this.item.status === 'PACKED' ? 'order/' + this.item.order_id : '';
     }
   }
 });

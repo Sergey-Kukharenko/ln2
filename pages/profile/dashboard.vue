@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-page">
     <profile-content v-if="isDataExists">
-      <profile-section v-if="isOrders" :head="orders.head" preview>
-        <profile-orders-list :list="orders.list" preview />
+      <profile-section v-if="isOrder" :head="ordersHead" preview>
+        <profile-orders-list :list="[order]" preview />
       </profile-section>
-      <profile-section v-if="isFavorites" :head="favorites.head" preview>
+      <profile-section v-if="isFavorites" :head="favoritesHead" preview>
         <app-section show-list-only stretch size="medium" :section="favorites" name="favorites" preview />
       </profile-section>
     </profile-content>
@@ -24,7 +24,8 @@ import ProfileEmpty from '~/components/profile/profile-empty.vue';
 import ProfileOrdersList from '~/components/profile/profile-orders/profile-orders-list.vue';
 import ProfileSection from '~/components/profile/profile-section.vue';
 import profile from '~/data/profile';
-import { useArrayNotEmpty } from '~/helpers';
+import { useArrayNotEmpty, useObjectNotEmpty } from '~/helpers';
+import { accessorMapper } from '~/store';
 // import { accessorMapper } from '~/store';
 
 const { orders, favorites } = profile.pages;
@@ -43,22 +44,22 @@ export default Vue.extend({
 
   data() {
     return {
-      orders: {
-        head: orders.head,
-        list: orders.list
-      },
-      favorites: {
-        head: favorites.head,
-        list: favorites.list
-      }
+      ordersHead: orders.head,
+      favoritesHead: favorites.head
     };
   },
 
-  computed: {
-    // ...accessorMapper('favorites', ['favorites']),
+  fetch() {
+    this.fetchOrder();
+    this.fetchFavorites();
+  },
 
-    isOrders() {
-      return useArrayNotEmpty(this.orders?.list);
+  computed: {
+    ...accessorMapper('profile-order', ['order']),
+    ...accessorMapper('profile-favorites', ['favorites']),
+
+    isOrder() {
+      return useObjectNotEmpty(this.order);
     },
 
     isFavorites() {
@@ -66,8 +67,13 @@ export default Vue.extend({
     },
 
     isDataExists() {
-      return this.isOrders && this.isFavorites;
+      return this.isOrder && this.isFavorites;
     }
+  },
+
+  methods: {
+    ...accessorMapper('profile-order', ['fetchOrder']),
+    ...accessorMapper('profile-favorites', ['fetchFavorites'])
   }
 });
 </script>

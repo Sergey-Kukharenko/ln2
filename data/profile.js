@@ -72,21 +72,21 @@ export default {
           order_id: 1,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
           amount_prod: null,
-          status: 'collected',
+          status: 'PACKED',
           date: null
         },
         {
           order_id: 2,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
           amount_prod: 2,
-          status: 'delivered',
+          status: 'DELIVERED',
           date: '10 june!'
         },
         {
           order_id: 3,
           img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
           amount_prod: 2,
-          status: 'delivered',
+          status: 'DELIVERED',
           statusText: 'delivered',
           date: '5 may!'
         }
@@ -255,7 +255,7 @@ export default {
       id: '2352-083',
       real_id: '2352-083',
       real_user_id: 175567,
-      status: 'CONFIRMED',
+      status: 'PACKED',
       recipient: {
         name: 'Maria Sazontova',
         phone: '+7 (999) 123-45-67'

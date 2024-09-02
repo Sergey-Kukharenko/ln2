@@ -1,6 +1,11 @@
 <template>
   <div class="profile-aside-steps">
-    <div v-for="(step, idx) in result" :key="idx" class="step" :class="{ success: step.success, danger: step.danger }">
+    <div
+      v-for="(step, idx) in result"
+      :key="idx"
+      class="step"
+      :class="{ success: step.success, half: step.half, danger: step.danger }"
+    >
       <div class="dash" />
       <div class="circle">
         <div class="border" />
@@ -12,11 +17,53 @@
 
 <script>
 const MAP_STATUSES = {
-  PAYMENT: 0,
-  CONFIRMED: 1,
-  collected: 2,
-  courier: 3,
-  delivered: 4
+  PAYMENT: 'CREATED',
+  PAID: 'CREATED',
+  FAIL_PAID: 'CREATED',
+  CONFIRMED: 'CONFIRMED',
+  PACKED: 'COLLECTING',
+  COURIER_ASSIGNED: 'COURIER',
+  DELIVERING: 'COURIER',
+  DELIVERED: 'DELIVERED',
+  CANCELED: 'CANCELED'
+};
+
+const MAP_ITEMS = {
+  CREATED: {
+    0: { half: true }
+  },
+  CONFIRMED: {
+    0: { success: true },
+    1: { success: true }
+  },
+  COLLECTING: {
+    0: { success: true },
+    1: { success: true },
+    2: { success: true }
+  },
+  COURIER: {
+    0: { success: true },
+    1: { success: true },
+    2: { success: true },
+    3: { half: true }
+  },
+  DELIVERING: {
+    0: { success: true },
+    1: { success: true },
+    2: { success: true },
+    3: { success: true },
+    4: { half: true }
+  },
+  DELIVERED: {
+    0: { success: true },
+    1: { success: true },
+    2: { success: true },
+    3: { success: true },
+    4: { success: true }
+  },
+  CANCELED: {
+    4: { icon: 'profile-cancel', danger: true }
+  }
 };
 
 export default {
@@ -34,23 +81,32 @@ export default {
       steps: [
         {
           icon: 'profile-dollar',
-          success: false
+          success: false,
+          half: false,
+          danger: false
         },
         {
           icon: 'profile-checking',
-          success: false
+          success: false,
+          half: false,
+          danger: false
         },
         {
           icon: 'profile-processing',
-          success: false
+          success: false,
+          half: false,
+          danger: false
         },
         {
           icon: 'profile-courier',
-          success: false
+          success: false,
+          half: false,
+          danger: false
         },
         {
           icon: 'profile-flag',
           success: false,
+          half: false,
           danger: false
         }
       ]
@@ -58,35 +114,20 @@ export default {
   },
 
   computed: {
-    successElementsIndex() {
+    getStatus() {
       return MAP_STATUSES[this.status];
     },
 
-    processing() {
-      return this.steps.map((step, idx) =>
-        idx <= this.successElementsIndex
-          ? {
-              ...step,
-              success: true
-            }
-          : step
-      );
-    },
-
-    canceled() {
-      return this.steps.map((step, idx) =>
-        idx === this.steps.length - 1
-          ? {
-              ...step,
-              icon: 'profile-cancel',
-              danger: true
-            }
-          : step
-      );
+    changedItemsObj() {
+      return MAP_ITEMS[this.getStatus];
     },
 
     result() {
-      return this.successElementsIndex === undefined ? this.canceled : this.processing;
+      return this.steps.map((item, index) => {
+        const changedItem = this.changedItemsObj[index];
+
+        return changedItem ? { ...item, ...changedItem } : item;
+      });
     }
   }
 };
@@ -113,6 +154,28 @@ export default {
   &:first-child {
     & .dash {
       display: none;
+    }
+  }
+
+  &.half {
+    & .circle {
+      color: $color-green;
+      background: #ebfaf0;
+    }
+
+    & .dash {
+      background: $color-green;
+    }
+
+    & .border {
+      border: 2px solid $color-green;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      transform: rotate(45deg);
+    }
+
+    & .icon {
+      fill: currentColor;
     }
   }
 
