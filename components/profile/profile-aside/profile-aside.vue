@@ -1,7 +1,6 @@
 <template>
   <div class="profile-aside">
     <div class="title">Order details</div>
-
     <profile-aside-steps :status="order.status" />
     <profile-aside-order-contents>
       <profile-aside-order-list :contents="order.contents" />

@@ -1,7 +1,7 @@
 <template>
   <div class="order">
     <div class="title">Your order №. {{ id }} {{ getStatusText }}</div>
-    <profile-aside-steps v-if="$device.isMobile" />
+    <profile-aside-steps v-if="$device.isMobile" :status="status" />
     <div class="container">
       <div class="content">
         <div class="section">
@@ -20,7 +20,7 @@
         </div>
         <div class="section">
           <order-panel title="Payment methods" icon="money-circle-outline" :size="toggleableSize">
-            <p>By Debit/Credit card (Apple/Google pay)</p>
+            <p>{{ getPaymentText }}</p>
           </order-panel>
         </div>
         <div class="section">
@@ -86,6 +86,21 @@ export default Vue.extend({
       total: {
         label: 'Total',
         value: '£ ' + totalCost
+      },
+
+      some: {
+        recipient: {
+          name: 'Maria Sazontova',
+          phone: '+7 (999) 123-45-67'
+        },
+        delivery: {
+          delivery_address: 'London, 15 Westferry Road, E14 8FQ',
+          delivery_date: '2024-08-08',
+          delivery_time: '12:00 pm - 3:00 pm'
+        },
+        payment_methods: {
+          payment_type_id: 'card'
+        }
       }
     };
   },
@@ -93,6 +108,15 @@ export default Vue.extend({
   MAP_PROFILE_STATUSES,
 
   computed: {
+    getPaymentText() {
+      const MAP_PAYMENTS = {
+        card: 'By card online',
+        paypal: 'By PayPal account'
+      };
+
+      return MAP_PAYMENTS[this.some.payment_methods.payment_type_id];
+    },
+
     getStatusText() {
       return MAP_PROFILE_STATUSES[this.status];
     },
