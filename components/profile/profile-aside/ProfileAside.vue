@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import ProfileAsideOrderContents from '~/components/profile/profile-aside/profile-aside-order-contents.vue';
-import ProfileAsideOrderList from '~/components/profile/profile-aside/profile-aside-order-list.vue';
-import ProfileAsideOrderRow from '~/components/profile/profile-aside/profile-aside-order-row.vue';
-import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-steps.vue';
-import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
+import ProfileButtonsGroup from '~/components/profile/ProfileButtonsGroup.vue';
+import ProfileAsideOrderContents from '~/components/profile/profile-aside/ProfileAsideOrderContents.vue';
+import ProfileAsideOrderList from '~/components/profile/profile-aside/ProfileAsideOrderList.vue';
+import ProfileAsideOrderRow from '~/components/profile/profile-aside/ProfileAsideOrderRow.vue';
+import ProfileAsideSteps from '~/components/profile/profile-aside/ProfileAsideSteps.vue';
 import profile from '~/data/profile';
 
-const { positions, totalCost, status } = profile.pages.order;
+const { products, totalCost, status } = profile.pages.order;
 export default {
   name: 'ProfileAside',
 
@@ -37,7 +37,7 @@ export default {
     return {
       order: {
         contents: {
-          list: positions,
+          list: products,
           price: '£ 94'
         },
         sale: {

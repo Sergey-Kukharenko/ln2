@@ -18,8 +18,8 @@
 
 <script>
 import AppLinkButton from '~/components/AppLinkButton.vue';
-import ProfileModalProcessing from '~/components/profile/profile-modal-processing.vue';
-import ProfileModal from '~/components/profile/profile-modal.vue';
+import ProfileModal from '~/components/profile/ProfileModal.vue';
+import ProfileModalProcessing from '~/components/profile/ProfileModalProcessing.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 

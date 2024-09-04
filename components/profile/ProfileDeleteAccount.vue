@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ProfileModal from '~/components/profile/profile-modal.vue';
+import ProfileModal from '~/components/profile/ProfileModal.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 

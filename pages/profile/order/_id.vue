@@ -30,7 +30,7 @@
             icon="flower-box"
             is-visible
           >
-            <order-items :list="orderSplitedItems" />
+            <profile-order-items :list="orderSplitedItems" />
           </profile-slide-toggle>
         </div>
         <div v-if="$device.isMobile" class="section">
@@ -46,27 +46,29 @@
 <script>
 import Vue from 'vue';
 
-import OrderItems from '~/components/OrderItems.vue';
 import OrderPanel from '~/components/OrderPanel.vue';
 import OrderPanelBody from '~/components/OrderPanelBody.vue';
-import ProfileAsideOrderRow from '~/components/profile/profile-aside/profile-aside-order-row.vue';
-import ProfileAsideSteps from '~/components/profile/profile-aside/profile-aside-steps.vue';
-import ProfileAside from '~/components/profile/profile-aside/profile-aside.vue';
-import ProfileButtonsGroup from '~/components/profile/profile-buttons-group.vue';
-import ProfileSlideToggle from '~/components/profile/profile-slide-toggle.vue';
+import ProfileButtonsGroup from '~/components/profile/ProfileButtonsGroup.vue';
+import ProfileOrderItems from '~/components/profile/ProfileOrderItems.vue';
+import ProfileSlideToggle from '~/components/profile/ProfileSlideToggle.vue';
+import ProfileAside from '~/components/profile/profile-aside/ProfileAside.vue';
+import ProfileAsideOrderRow from '~/components/profile/profile-aside/ProfileAsideOrderRow.vue';
+import ProfileAsideSteps from '~/components/profile/profile-aside/ProfileAsideSteps.vue';
 import { MAP_PROFILE_STATUSES } from '~/constants';
 import profile from '~/data/profile';
 
-const { recipient, shippingAddress, interval, deliveryAmount, positions, status, id, totalCost } = profile.pages.order;
+// eslint-disable-next-line camelcase
+const { recipient, shippingAddress, interval, deliveryAmount, status, products, id, payment_methods, totalCost } =
+  profile.pages.order;
 export default Vue.extend({
   name: 'OrderPage',
 
   components: {
+    ProfileOrderItems,
     ProfileSlideToggle,
     ProfileAsideOrderRow,
     ProfileButtonsGroup,
     ProfileAsideSteps,
-    OrderItems,
     OrderPanelBody,
     OrderPanel,
     ProfileAside
@@ -80,27 +82,14 @@ export default Vue.extend({
       shippingAddress,
       interval,
       deliveryAmount,
-      positions,
       status,
+      products,
       id,
+      // eslint-disable-next-line camelcase
+      payment_methods,
       total: {
         label: 'Total',
         value: '£ ' + totalCost
-      },
-
-      some: {
-        recipient: {
-          name: 'Maria Sazontova',
-          phone: '+7 (999) 123-45-67'
-        },
-        delivery: {
-          delivery_address: 'London, 15 Westferry Road, E14 8FQ',
-          delivery_date: '2024-08-08',
-          delivery_time: '12:00 pm - 3:00 pm'
-        },
-        payment_methods: {
-          payment_type_id: 'card'
-        }
       }
     };
   },
@@ -114,7 +103,7 @@ export default Vue.extend({
         paypal: 'By PayPal account'
       };
 
-      return MAP_PAYMENTS[this.some.payment_methods.payment_type_id];
+      return MAP_PAYMENTS[this.payment_methods.payment_type_id];
     },
 
     getStatusText() {
@@ -163,7 +152,7 @@ export default Vue.extend({
     },
 
     orderItems() {
-      return this?.positions || [];
+      return this?.products || [];
     },
 
     orderSplitedItems() {

@@ -46,15 +46,6 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.profile-sidebar-nav {
-  @include gt-sm {
-    margin-top: 8px;
-  }
-
-  @include lt-md {
-  }
-}
-
 .item {
   flex-shrink: 0;
   display: flex;

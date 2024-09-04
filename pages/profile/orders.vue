@@ -10,9 +10,9 @@
 <script>
 import Vue from 'vue';
 
-import ProfileOrdersEmpty from '~/components/profile/profile-orders/profile-orders-empty.vue';
-import ProfileOrdersList from '~/components/profile/profile-orders/profile-orders-list.vue';
-import ProfileSection from '~/components/profile/profile-section.vue';
+import ProfileSection from '~/components/profile/ProfileSection.vue';
+import ProfileOrdersEmpty from '~/components/profile/profile-orders/ProfileOrdersEmpty.vue';
+import ProfileOrdersList from '~/components/profile/profile-orders/ProfileOrdersList.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';

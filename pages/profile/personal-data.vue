@@ -28,9 +28,9 @@
 <script>
 import Vue from 'vue';
 
-import ProfileButtonList from '~/components/profile/profile-button-list.vue';
-import ProfileDeleteAccount from '~/components/profile/profile-delete-account.vue';
-import ProfilePersonalSection from '~/components/profile/profile-personal-section.vue';
+import ProfileButtonList from '~/components/profile/ProfileButtonList.vue';
+import ProfileDeleteAccount from '~/components/profile/ProfileDeleteAccount.vue';
+import ProfilePersonalSection from '~/components/profile/ProfilePersonalSection.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
 import profile from '~/data/profile';

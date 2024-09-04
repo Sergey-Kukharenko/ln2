@@ -12,9 +12,9 @@
 <script>
 import Vue from 'vue';
 
-import ProfileContent from '~/components/profile/profile-content.vue';
-import ProfileFavoritesEmpty from '~/components/profile/profile-favorites-empty.vue';
-import ProfileSection from '~/components/profile/profile-section.vue';
+import ProfileContent from '~/components/profile/ProfileContent.vue';
+import ProfileFavoritesEmpty from '~/components/profile/ProfileFavoritesEmpty.vue';
+import ProfileSection from '~/components/profile/ProfileSection.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';

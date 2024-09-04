@@ -20,7 +20,7 @@
 <script>
 import Vue from 'vue';
 
-import ProfileSection from '~/components/profile/profile-section.vue';
+import ProfileSection from '~/components/profile/ProfileSection.vue';
 import AppItemSwitch from '~/components/shared/switch/app-item-switch.vue';
 import AppListSwitch from '~/components/shared/switch/app-list-switch.vue';
 import profile from '~/data/profile';

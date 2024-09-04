@@ -1,6 +1,7 @@
 <template>
   <div class="profile-sidebar">
     <profile-sidebar-user :name="name" />
+    <profile-bonus-card />
     <profile-orders-item v-if="$device.isMobile" class="order" :item="foundCollectedOrder" background="white" />
     <profile-sidebar-nav :list="transformedNav" />
     <profile-log-out />
@@ -10,10 +11,11 @@
 <script>
 import Vue from 'vue';
 
-import ProfileLogOut from '~/components/profile/profile-log-out.vue';
-import ProfileOrdersItem from '~/components/profile/profile-orders/profile-orders-item.vue';
-import ProfileSidebarNav from '~/components/profile/profile-sidebar/profile-sidebar-nav.vue';
-import ProfileSidebarUser from '~/components/profile/profile-sidebar/profile-sidebar-user.vue';
+import ProfileLogOut from '~/components/profile/ProfileLogOut.vue';
+import ProfileOrdersItem from '~/components/profile/profile-orders/ProfileOrdersItem.vue';
+import ProfileBonusCard from '~/components/profile/profile-sidebar/ProfileSidebarBonuses.vue';
+import ProfileSidebarNav from '~/components/profile/profile-sidebar/ProfileSidebarNav.vue';
+import ProfileSidebarUser from '~/components/profile/profile-sidebar/ProfileSidebarUser.vue';
 import profile from '~/data/profile';
 // import { accessorMapper } from '~/store';
 
@@ -27,7 +29,7 @@ const MAP_NAV = {
 
 export default Vue.extend({
   name: 'ProfileSidebar',
-  components: { ProfileLogOut, ProfileOrdersItem, ProfileSidebarNav, ProfileSidebarUser },
+  components: { ProfileBonusCard, ProfileLogOut, ProfileOrdersItem, ProfileSidebarNav, ProfileSidebarUser },
 
   data() {
     return {

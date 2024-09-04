@@ -18,11 +18,11 @@
 <script>
 import Vue from 'vue';
 
-import ProfileAlert from '~/components/profile/profile-alert.vue';
-import ProfileContent from '~/components/profile/profile-content.vue';
-import ProfileEmpty from '~/components/profile/profile-empty.vue';
-import ProfileOrdersList from '~/components/profile/profile-orders/profile-orders-list.vue';
-import ProfileSection from '~/components/profile/profile-section.vue';
+import ProfileAlert from '~/components/profile/ProfileAlert.vue';
+import ProfileContent from '~/components/profile/ProfileContent.vue';
+import ProfileEmpty from '~/components/profile/ProfileEmpty.vue';
+import ProfileSection from '~/components/profile/ProfileSection.vue';
+import ProfileOrdersList from '~/components/profile/profile-orders/ProfileOrdersList.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty, useObjectNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';
