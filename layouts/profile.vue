@@ -24,7 +24,7 @@ import Vue from 'vue';
 // import AppFooterBottom from '~/components/footer/AppFooterBottom.vue';
 // import AppHeader from '~/components/header/AppHeader.vue';
 // import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile.vue';
-import ProfileSidebar from '~/components/profile/ProfileBonusCard.vue';
+import ProfileSidebar from '~/components/profile/profile-sidebar/ProfileSidebar.vue';
 
 export default Vue.extend({
   name: 'ProfileLayout',

@@ -12,8 +12,8 @@
 import Vue from 'vue';
 
 import ProfileLogOut from '~/components/profile/ProfileLogOut.vue';
+import ProfileBonusCard from '~/components/profile/profile-bonus/ProfileBonusCard.vue';
 import ProfileOrdersItem from '~/components/profile/profile-orders/ProfileOrdersItem.vue';
-import ProfileBonusCard from '~/components/profile/profile-sidebar/ProfileSidebarBonuses.vue';
 import ProfileSidebarNav from '~/components/profile/profile-sidebar/ProfileSidebarNav.vue';
 import ProfileSidebarUser from '~/components/profile/profile-sidebar/ProfileSidebarUser.vue';
 import profile from '~/data/profile';

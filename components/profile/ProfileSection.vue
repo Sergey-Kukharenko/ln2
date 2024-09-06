@@ -1,7 +1,7 @@
 <template>
   <div class="profile-section">
     <div class="head">
-      <div class="title" :class="{ large: !preview }">{{ head.title }}</div>
+      <profile-title :title="head.title" :large="!preview" />
       <nuxt-link v-if="preview" :to="head.view.to" class="link">{{ head.view.label }}</nuxt-link>
     </div>
     <div class="container">
@@ -13,8 +13,11 @@
 <script>
 import Vue from 'vue';
 
+import ProfileTitle from '~/components/profile/ProfileTitle.vue';
+
 export default Vue.extend({
   name: 'ProfileSection',
+  components: { ProfileTitle },
 
   props: {
     head: {
@@ -52,30 +55,6 @@ export default Vue.extend({
 
   @include lt-md {
     margin-left: 36px;
-  }
-}
-
-.title {
-  font-family: $Literata;
-  font-weight: 700;
-
-  &:not(.large) {
-    font-size: 24px;
-    line-height: 29px;
-    letter-spacing: -0.01em;
-  }
-
-  &.large {
-    @include gt-sm {
-      font-size: 32px;
-      line-height: 32px;
-    }
-
-    @include lt-md {
-      font-size: 20px;
-      line-height: 24px;
-      letter-spacing: -0.01em;
-    }
   }
 }
 

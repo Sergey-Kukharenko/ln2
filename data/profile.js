@@ -60,7 +60,42 @@ export default {
   ],
   pages: {
     bonuses: {
-      count: 43
+      count: 43,
+      title: 'Bonus account history',
+      list: [
+        {
+          title: 'Receiving a sweet gift',
+          description: null,
+          decrement: null,
+          increment: null,
+          expirationDate: null,
+          date: '12.12.24'
+        },
+        {
+          title: 'Free shipping',
+          description: null,
+          decrement: null,
+          increment: null,
+          expirationDate: null,
+          date: '11.12.24'
+        },
+        {
+          title: 'Deduction',
+          description: 'Order #123234 from 12.12.24',
+          decrement: '- £ 5',
+          increment: null,
+          expirationDate: null,
+          date: '12.12.24'
+        },
+        {
+          title: 'Accrual',
+          description: 'Order #123234 from 12.12.24',
+          decrement: null,
+          increment: '+ £ 3',
+          expirationDate: '12.12.25',
+          date: '12.12.24'
+        }
+      ]
     },
     orders: {
       head: {
