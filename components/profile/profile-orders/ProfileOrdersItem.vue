@@ -53,9 +53,6 @@ export default Vue.extend({
     },
 
     getStatusText() {
-      console.log('==============');
-      console.log(this.item.status);
-      console.log('==============');
       return MAP_PROFILE_STATUSES[this.item.status];
     },
 

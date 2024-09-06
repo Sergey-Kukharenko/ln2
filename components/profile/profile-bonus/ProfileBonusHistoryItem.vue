@@ -38,11 +38,13 @@ export default Vue.extend({
 <style scoped lang="scss">
 .profile-bonus-history-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: #f7f7f7;
-  border-radius: 16px;
-  padding: 16px;
+
+  @include gt-sm {
+    padding: 16px;
+    background: $bg-grey;
+    border-radius: 16px;
+  }
 }
 
 .col {
@@ -58,13 +60,25 @@ export default Vue.extend({
 .title {
   font-family: $golos-medium;
   color: $color-dark-grey;
+
+  @include lt-md {
+    font-size: 14px;
+  }
 }
 
 .date,
 .description {
   font-family: $golos-regular;
-  font-size: 14px;
   color: $color-white-grey;
+
+  @include gt-sm {
+    font-size: 14px;
+  }
+
+  @include lt-md {
+    font-size: 11px;
+    letter-spacing: -0.01em;
+  }
 }
 
 .description {
@@ -81,6 +95,10 @@ export default Vue.extend({
 
 .price {
   font-family: $golos-bold;
+
+  @include lt-md {
+    font-size: 14px;
+  }
 
   &.green {
     color: #06ad5d;

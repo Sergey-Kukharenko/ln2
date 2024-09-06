@@ -27,6 +27,13 @@ export default Vue.extend({
 .profile-bonus-history {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+
+  @include gt-sm {
+    gap: 12px;
+  }
+
+  @include lt-md {
+    gap: 20px;
+  }
 }
 </style>

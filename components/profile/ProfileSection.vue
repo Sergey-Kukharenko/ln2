@@ -52,10 +52,6 @@ export default Vue.extend({
     align-items: baseline;
     justify-content: space-between;
   }
-
-  @include lt-md {
-    margin-left: 36px;
-  }
 }
 
 .link {

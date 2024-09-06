@@ -24,22 +24,17 @@
 <script>
 import Vue from 'vue';
 
+import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
+
 export default Vue.extend({
   name: 'ProfileSidebarNav',
 
-  inject: ['moveToPage'],
+  mixins: [profileMoveToPage],
 
   props: {
     list: {
       type: Array,
       default: () => []
-    }
-  },
-
-  methods: {
-    onMoveToPage(to) {
-      this.$router.push(to);
-      this.$device.isMobile && this.moveToPage(true);
     }
   }
 });

@@ -45,5 +45,9 @@ export default Vue.extend({
       letter-spacing: -0.01em;
     }
   }
+
+  @include lt-md {
+    margin-left: 36px;
+  }
 }
 </style>

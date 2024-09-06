@@ -1,10 +1,10 @@
 <template>
   <div class="profile-bonus-card">
     <div>
-      <nuxt-link to="/profile/bonuses" class="title">
+      <div class="title" @click="onMoveToPage('/profile/bonuses')">
         Your points
         <svg-icon name="arrow-left" class="arrow" />
-      </nuxt-link>
+      </div>
       <div class="description">1 points = 1 £</div>
     </div>
     <div class="container">
@@ -18,10 +18,13 @@
 import Vue from 'vue';
 
 import profile from '~/data/profile';
+import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
 
 const { count } = profile.pages.bonuses;
 export default Vue.extend({
   name: 'ProfileBonusCard',
+
+  mixins: [profileMoveToPage],
 
   data() {
     return {
@@ -55,6 +58,7 @@ export default Vue.extend({
   font-size: 24px;
   line-height: normal;
   color: inherit;
+  cursor: pointer;
 }
 
 .arrow {
