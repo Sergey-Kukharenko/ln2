@@ -1,15 +1,21 @@
 <template>
-  <div class="profile-bonus-card">
+  <div class="profile-bonus-card" :class="type">
     <div>
-      <div class="title" @click="onMoveToPage('/profile/bonuses')">
-        Your points
-        <svg-icon name="arrow-left" class="arrow" />
+      <div class="header">
+        <div class="col">
+          <div class="title" @click="onMoveToPage('/profile/bonuses')">Cashback 5%</div>
+          <profile-bonus-button> Based</profile-bonus-button>
+        </div>
+        <div class="col">
+          <div class="title">£ {{ price }}</div>
+          <div class="text">Your balance</div>
+        </div>
       </div>
-      <div class="description">1 points = 1 £</div>
     </div>
     <div class="container">
-      <svg-icon name="profile-coins" class="coins" />
-      <div class="points">{{ count }}</div>
+      <div class="text">{{ level }}</div>
+      <profile-bonus-slider :type="type" />
+      <div class="text description">{{ description }}</div>
     </div>
   </div>
 </template>
@@ -17,18 +23,27 @@
 <script>
 import Vue from 'vue';
 
+import ProfileBonusButton from '~/components/profile/profile-bonus/ProfileBonusButton.vue';
+import ProfileBonusSlider from '~/components/profile/profile-bonus/ProfileBonusSlider.vue';
 import profile from '~/data/profile';
 import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
 
 const { count } = profile.pages.bonuses;
 export default Vue.extend({
   name: 'ProfileBonusCard',
+  components: { ProfileBonusSlider, ProfileBonusButton },
 
   mixins: [profileMoveToPage],
 
   data() {
     return {
-      count
+      count,
+
+      cashback: '5%',
+      price: '15',
+      type: 'based',
+      level: '£ 10 / 29.9 pounds left to the next level',
+      description: 'Make a collective purchase of £ 29.9 and upgrade your package to “Gold”.'
     };
   }
 });
@@ -40,63 +55,75 @@ export default Vue.extend({
   flex-direction: column;
   justify-content: space-between;
   max-width: 296px;
-  min-height: 149px;
+  min-height: 182px;
   padding: 16px;
   border-radius: 16px;
   box-sizing: border-box;
   color: #fff;
-  background: linear-gradient(112.2deg, #ffca54 0%, #ffd372 44.06%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05));
+  background: #ccc;
   margin: 24px 0;
+
+  &.based {
+    background: #5f88f1;
+  }
+
+  &.gold {
+    background: #ffc85c;
+  }
+
+  &.platinum {
+    background: #f86465;
+  }
+
+  &.vip {
+    background: #15ad70;
+  }
 }
 
-.title {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: $golos-medium;
-  font-size: 24px;
-  line-height: normal;
   color: inherit;
-  cursor: pointer;
 }
 
-.arrow {
-  width: 24px;
-  height: 24px;
-  color: white;
-  transform: rotate(-180deg);
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  &:first-child {
+    align-items: flex-start;
+  }
+
+  &:last-child {
+    align-items: flex-end;
+    gap: 4px;
+  }
 }
 
-.description {
-  font-family: $golos-regular;
-  font-size: 14px;
+.title {
+  font-family: $golos-medium;
+  font-size: 20px;
   line-height: normal;
+  letter-spacing: -0.02em;
+  color: inherit;
+}
+
+.text {
+  font-family: $golos-regular;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: -0.01em;
-  margin-top: 5px;
 }
 
 .container {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
+  flex-direction: column;
+  gap: 9px;
 }
 
-.arrow {
-  width: 24px;
-  height: 24px;
-}
-
-.coins {
-  width: 40px;
-  height: 40px;
-}
-
-.points {
-  font-family: $golos-bold;
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
+.description {
+  margin-top: 2px;
 }
 </style>
