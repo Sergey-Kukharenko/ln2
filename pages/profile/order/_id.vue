@@ -55,11 +55,8 @@ import ProfileAside from '~/components/profile/profile-aside/ProfileAside.vue';
 import ProfileAsideOrderRow from '~/components/profile/profile-aside/ProfileAsideOrderRow.vue';
 import ProfileAsideSteps from '~/components/profile/profile-aside/ProfileAsideSteps.vue';
 import { MAP_PROFILE_STATUSES } from '~/constants';
-import profile from '~/data/profile';
+import { accessorMapper } from '~/store';
 
-// eslint-disable-next-line camelcase
-const { recipient, shippingAddress, interval, deliveryAmount, status, products, id, payment_methods, totalCost } =
-  profile.pages.order;
 export default Vue.extend({
   name: 'OrderPage',
 
@@ -76,27 +73,58 @@ export default Vue.extend({
 
   layout: 'profile',
 
-  data() {
-    return {
-      recipient,
-      shippingAddress,
-      interval,
-      deliveryAmount,
-      status,
-      products,
-      id,
-      // eslint-disable-next-line camelcase
-      payment_methods,
-      total: {
-        label: 'Total',
-        value: '£ ' + totalCost
-      }
-    };
-  },
-
   MAP_PROFILE_STATUSES,
 
+  fetch() {
+    this.fetchOrder();
+  },
+
   computed: {
+    ...accessorMapper('profile-order', ['order']),
+
+    recipient() {
+      return this.order.recipient;
+    },
+
+    shippingAddress() {
+      return this.order.shippingAddress;
+    },
+
+    interval() {
+      return this.order.interval;
+    },
+
+    deliveryAmount() {
+      return this.order.deliveryAmount;
+    },
+
+    status() {
+      return this.order.status;
+    },
+
+    products() {
+      return this.order.products;
+    },
+
+    id() {
+      return this.order.id;
+    },
+
+    payment_methods() {
+      return this.order.payment_methods;
+    },
+
+    totalCost() {
+      return this.order.totalCost;
+    },
+
+    total() {
+      return {
+        label: 'Total',
+        value: '£ ' + this.totalCost
+      };
+    },
+
     getPaymentText() {
       const MAP_PAYMENTS = {
         card: 'By card online',
@@ -158,6 +186,10 @@ export default Vue.extend({
     orderSplitedItems() {
       return this.orderItems.flatMap((e) => Array(e.quantity).fill({ ...e, quantity: 1 }));
     }
+  },
+
+  methods: {
+    ...accessorMapper('profile-order', ['fetchOrder'])
   }
 });
 </script>

@@ -1,4 +1,4 @@
-import { actionTree, mutationTree } from 'typed-vuex';
+import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
 import { PersonalResponse } from '~/@types/api/personal';
 
@@ -24,6 +24,7 @@ export const actions = actionTree(
         const personal = {
           auth: true,
           real_id: 186352,
+          id: 1,
           user: {
             id: 'Dy6pLbl0RZobWPl1',
             name: 'John',
@@ -34,9 +35,11 @@ export const actions = actionTree(
             unfinished_orders_count: 1,
             favorites_count: 0,
             order: {
-              id: 273765,
-              status: 'PAYMENT',
-              img: 'https://cdn.myflowers.co.uk/media/images/offers/id92/max/1.webp'
+              id: 1,
+              img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
+              amount_prod: null,
+              status: 'PACKED',
+              date: null
             }
           }
         };
@@ -51,6 +54,7 @@ export const actions = actionTree(
       try {
         // const personal = await this.app.$http.$post<PersonalResponse>(`/v1/mobile-api/user/personal-data/${payload}`);
         // commit('SET_PERSONAL', personal);
+
         commit('SET_PERSONAL', payload);
       } catch (e) {
         console.error(e);
@@ -67,3 +71,8 @@ export const actions = actionTree(
     }
   }
 );
+
+export const getters = getterTree(state, {
+  // personalUser: (state) => state.personal?.user,
+  personalOrder: (state) => state.personal?.user?.order
+});

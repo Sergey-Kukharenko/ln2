@@ -2,7 +2,7 @@
   <div class="dashboard-page">
     <profile-content v-if="isDataExists">
       <profile-section v-if="isOrder" :head="ordersHead" preview>
-        <profile-orders-list :list="[order]" preview />
+        <profile-orders-list :list="[personalOrder]" preview />
       </profile-section>
       <profile-section v-if="isFavorites" :head="favoritesHead" preview>
         <app-section show-list-only stretch size="medium" :section="favorites" name="favorites" preview />
@@ -50,16 +50,16 @@ export default Vue.extend({
   },
 
   fetch() {
-    this.fetchOrder();
+    this.fetchPersonal();
     this.fetchFavorites();
   },
 
   computed: {
-    ...accessorMapper('profile-order', ['order']),
+    ...accessorMapper('profile-personal', ['personalOrder']),
     ...accessorMapper('profile-favorites', ['favorites']),
 
     isOrder() {
-      return useObjectNotEmpty(this.order);
+      return useObjectNotEmpty(this.personalOrder);
     },
 
     isFavorites() {
@@ -72,7 +72,7 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('profile-order', ['fetchOrder']),
+    ...accessorMapper('profile-personal', ['fetchPersonal']),
     ...accessorMapper('profile-favorites', ['fetchFavorites'])
   }
 });

@@ -75,7 +75,11 @@ export default Vue.extend({
     },
 
     onSubmit() {
-      const payload = { ...this.personal, user: this.user };
+      const payload = {
+        ...this.personal,
+        id: this.id,
+        user: { ...this.user }
+      };
 
       this.updatePersonal(payload);
     }

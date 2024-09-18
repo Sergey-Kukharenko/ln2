@@ -1,15 +1,14 @@
 <template>
   <div class="profile-bonus-card" :class="type">
-    <div>
-      <div class="header">
-        <div class="col">
-          <div class="title" @click="onMoveToPage('/profile/bonuses')">Cashback 5%</div>
-          <profile-bonus-button> Based</profile-bonus-button>
-        </div>
-        <div class="col">
-          <div class="title">£ {{ price }}</div>
-          <div class="text">Your balance</div>
-        </div>
+    <svg-icon :name="getIconStyles.path" :style="getIconStyles.size" />
+    <div class="header">
+      <div class="col">
+        <div class="title">Cashback 5%</div>
+        <profile-bonus-button @click="onMoveToPage('/profile/bonuses')">{{ type }}</profile-bonus-button>
+      </div>
+      <div class="col">
+        <div class="title">£ {{ price }}</div>
+        <div class="text">Your balance</div>
       </div>
     </div>
     <div class="container">
@@ -28,7 +27,7 @@ import ProfileBonusSlider from '~/components/profile/profile-bonus/ProfileBonusS
 import profile from '~/data/profile';
 import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
 
-const { count } = profile.pages.bonuses;
+const { cashback, price, type, level, description } = profile.pages.bonuses;
 export default Vue.extend({
   name: 'ProfileBonusCard',
   components: { ProfileBonusSlider, ProfileBonusButton },
@@ -37,14 +36,49 @@ export default Vue.extend({
 
   data() {
     return {
-      count,
-
-      cashback: '5%',
-      price: '15',
-      type: 'based',
-      level: '£ 10 / 29.9 pounds left to the next level',
-      description: 'Make a collective purchase of £ 29.9 and upgrade your package to “Gold”.'
+      cashback,
+      price,
+      type,
+      level,
+      description
     };
+  },
+
+  computed: {
+    getIconStyles() {
+      const MAP_ICONS = {
+        based: {
+          path: 'profile-based',
+          size: {
+            width: 207,
+            height: 181
+          }
+        },
+        gold: {
+          path: 'profile-gold',
+          size: {
+            width: 182,
+            height: 181
+          }
+        },
+        platinum: {
+          path: 'profile-platinum',
+          size: {
+            width: 203,
+            height: 181
+          }
+        },
+        vip: {
+          path: 'profile-vip',
+          size: {
+            width: 198,
+            height: 161
+          }
+        }
+      };
+
+      return MAP_ICONS[this.type];
+    }
   }
 });
 </script>
@@ -56,12 +90,14 @@ export default Vue.extend({
   justify-content: space-between;
   max-width: 296px;
   min-height: 182px;
+  position: relative;
   padding: 16px;
   border-radius: 16px;
   box-sizing: border-box;
   color: #fff;
   background: #ccc;
   margin: 24px 0;
+  overflow: hidden;
 
   &.based {
     background: #5f88f1;
@@ -80,11 +116,20 @@ export default Vue.extend({
   }
 }
 
+.icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+}
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: inherit;
+  position: relative;
+  z-index: 2;
 }
 
 .col {
@@ -121,6 +166,8 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 9px;
+  position: relative;
+  z-index: 2;
 }
 
 .description {

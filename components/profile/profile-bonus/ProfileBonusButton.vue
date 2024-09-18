@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-bonus-button">
+  <div class="profile-bonus-button" v-on="$listeners">
     <slot />
     <svg-icon name="arrow-left" />
   </div>
@@ -26,6 +26,8 @@ export default Vue.extend({
   font-family: $golos-regular;
   font-size: 12px;
   letter-spacing: 0.01em;
+  text-transform: capitalize;
+  cursor: pointer;
 }
 
 .icon {
