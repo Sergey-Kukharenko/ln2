@@ -41,14 +41,13 @@
 <script>
 import BasketButton from '~/components/BasketButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
-import authManager from '~/mixins/authManager.vue';
 import subscribe from '~/mixins/subscribe.vue';
 
 export default {
   name: 'AppBestOffer',
   components: { BasketButton, AppInput },
 
-  mixins: [authManager, subscribe],
+  mixins: [subscribe],
 
   props: {
     roundedTop: {

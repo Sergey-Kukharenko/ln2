@@ -9,7 +9,7 @@
       v-show="isStripeRedirectPayment || isCheckoutComRedirectPayment"
       size="full"
       theme="green"
-      :class="{ loading }"
+      :loading="loading"
       @click="submitOrder"
     >
       <template v-if="loading"> <app-loading-dots /></template>
@@ -458,11 +458,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .payment__button {
   z-index: 1;
-}
-
-.loading {
-  pointer-events: none;
-  user-select: none;
 }
 
 .loading-text {

@@ -138,7 +138,6 @@ export default {
         };
 
         const callback = (entries, _observer) => {
-          console.log('entries', entries);
           if (entries[0].isIntersecting) {
             this.fetchMore();
           }

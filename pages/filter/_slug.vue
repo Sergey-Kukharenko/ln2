@@ -21,16 +21,20 @@ export default Vue.extend({
   middleware: ['redirect'],
 
   async fetch() {
-    const { slug } = this.$route.params;
-    const type = FILTER.toLocaleLowerCase();
+    try {
+      const { slug } = this.$route.params;
+      const type = FILTER.toLocaleLowerCase();
 
-    await this.$accessor.category.fetchCategory({
-      type,
-      slug,
-      params: {
-        limit: PAGINATION.limit
-      }
-    });
+      await this.$accessor.category.fetchCategory({
+        type,
+        slug,
+        params: {
+          limit: PAGINATION.limit
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   head() {

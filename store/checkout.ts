@@ -3,7 +3,7 @@ import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 import type { CheckoutStep, DailyIterval, Interval, IntervalResponse } from '~/@types/api/checkout';
 import type { OrderResponse } from '~/@types/api/order';
 
-import { AB_TESTING_COOKIE, AC_TESTING_COOKIE, CHECKOUT_STEPS, EMPTY_CART_MAP, GIFT_CARD_POLICY_ID } from '~/constants';
+import { CHECKOUT_STEPS, EMPTY_CART_MAP, GIFT_CARD_POLICY_ID } from '~/constants';
 
 const GET_INTERVALS_IRI = '/v1/intervals/get-delivery-intervals-for-date/';
 const checkIntervalsForDisable = (intervals: IntervalResponse<DailyIterval>['data']['intervals']) =>
@@ -79,9 +79,9 @@ export const actions = actionTree(
       }
     },
 
-    async createOrder({ commit }) {
+    async createOrder({ commit }, payload) {
       try {
-        const { data } = await this.app.$http.$post<OrderResponse>(`/v1/order/`);
+        const { data } = await this.app.$http.$post<OrderResponse>(`/v1/order/`, payload);
 
         commit('SET_CHECKOUT', data);
         commit('SET_SELF_RECIPIENT', data?.self_recipient ?? false);
@@ -133,14 +133,7 @@ export const actions = actionTree(
     async fetchIntervals({ commit }) {
       try {
         const { data } = await this.app.$http.$get<IntervalResponse<DailyIterval[]>>(
-          '/v1/intervals/get-delivery-intervals-for-date-range/',
-          {
-            params: {
-              ...((this.app.$cookies.get(AB_TESTING_COOKIE) || this.app.$cookies.get(AC_TESTING_COOKIE)) && {
-                is_4_ab: 1
-              })
-            }
-          }
+          '/v1/intervals/get-delivery-intervals-for-date-range/'
         );
         const mappedIntervals = data?.map((el) => ({ ...el, intervals: checkIntervalsForDisable(el?.intervals) }));
 
@@ -157,10 +150,7 @@ export const actions = actionTree(
       try {
         const { data } = await this.app.$http.$get<IntervalResponse<DailyIterval>>(GET_INTERVALS_IRI, {
           params: {
-            intervals_date: date,
-            ...((this.app.$cookies.get(AB_TESTING_COOKIE) || this.app.$cookies.get(AC_TESTING_COOKIE)) && {
-              is_4_ab: 1
-            })
+            intervals_date: date
           }
         });
 
@@ -206,10 +196,7 @@ export const actions = actionTree(
     setCheckoutInterval(_, interval: { date: Nullable<string>; time: Nullable<string> }) {
       try {
         return this.app.$http.$post<IntervalResponse<DailyIterval>>('/v1/order/interval/', {
-          ...interval,
-          ...((this.app.$cookies.get(AB_TESTING_COOKIE) || this.app.$cookies.get(AC_TESTING_COOKIE)) && {
-            is_4_ab: true
-          })
+          ...interval
         });
       } catch (err) {
         console.error(err);

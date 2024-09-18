@@ -47,7 +47,7 @@ import Vue from 'vue';
 import AppCheckbox from '~/components/shared/AppCheckbox.vue';
 import AppInput from '~/components/shared/AppInput.vue';
 import { BONUS, SUBSCRIBE_VARIANTS } from '~/constants';
-import authManager from '~/mixins/authManager.vue';
+
 import subscribe from '~/mixins/subscribe.vue';
 import { accessorMapper } from '~/store';
 
@@ -61,7 +61,7 @@ export default Vue.extend({
     AppInput
   },
 
-  mixins: [authManager, subscribe],
+  mixins: [subscribe],
 
   EMAIL: email,
   SMS: sms,
@@ -152,7 +152,6 @@ export default Vue.extend({
   display: flex;
   flex-direction: row;
   width: 100%;
-
   font-family: $golos-regular;
   font-size: 14px;
   line-height: 20px;

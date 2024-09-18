@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import AppDrawerNested from '~/components/header/mobile/AppDrawerNested';
-import AppMobileMenu from '~/components/header/mobile/AppMobileMenu';
-import AppMobileSubMenu from '~/components/header/mobile/AppMobileSubMenu';
+import AppDrawerNested from '~/components/header/mobile/AppDrawerNested.vue';
+import AppMobileMenu from '~/components/header/mobile/AppMobileMenu.vue';
+import AppMobileSubMenu from '~/components/header/mobile/AppMobileSubMenu.vue';
 import { mobileNavbar } from '~/data/nav-bar';
 
 export default {

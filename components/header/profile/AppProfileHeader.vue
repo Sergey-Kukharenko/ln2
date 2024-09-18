@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div v-if="char" class="header__char">{{ char }}</div>
-    <div v-if="user.name" class="header__info">{{ user.name }}</div>
+    <div class="header__info">{{ userName }}</div>
   </div>
 </template>
 
@@ -19,6 +19,10 @@ export default {
   computed: {
     char() {
       return this.user?.name?.substring(0, 1);
+    },
+
+    userName() {
+      return this.user.name || 'No name';
     }
   }
 };

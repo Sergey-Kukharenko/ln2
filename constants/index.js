@@ -30,28 +30,7 @@ const AUTH_REG_ERROR_MESSAGES = {
   requiredField: 'Field is required'
 };
 
-const AUTH_TYPES = {
-  email: {
-    name: 'email',
-    type: 'E-mail',
-    codeName: 'code'
-  },
-  phone: {
-    name: 'phone',
-    type: 'phone',
-    codeName: 'SMS',
-    extraCodeName: 'SMS-code'
-  }
-};
-
 const AUTH_REG_TYPES = ['phone', 'email'];
-
-const AUTH_CODE_TIMER = {
-  step: 1000,
-  duration: 40000
-};
-
-const AUTH_CORRECT_CODE = '1234';
 
 const CODE_INPUT_DEFAULT_COUNT = 4;
 
@@ -170,7 +149,9 @@ const RELOAD_ORDER_DELAY = {
 
 const OUR_COOKIE = 'our-cookie';
 const AUTH_WITHOUT_SMS_COOKIE = 'auth-without-sms';
+const AUTH_SMS_COOKIE = 'auth-sms';
 const PAYMENT_METHOD_COOKIE = 'payment-method';
+const BANNER_COOKIE = 'banner';
 
 const MONTH_LIST = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -329,11 +310,8 @@ export {
   FILTER_TYPES,
   AUTH_REG_STEPS,
   AUTH_REG_TYPES,
-  AUTH_CODE_TIMER,
   CODE_INPUT_DEFAULT_COUNT,
-  AUTH_CORRECT_CODE,
   AUTH_REG_ERROR_MESSAGES,
-  AUTH_TYPES,
   CHECKOUT_FORM_KEYS,
   INFO_BUTTONS,
   REVIEW_CARD_SYMBOLS_COUNT,
@@ -351,7 +329,9 @@ export {
   SEARCH_INPUT_PLACEHOLDER,
   RELOAD_ORDER_DELAY,
   OUR_COOKIE,
+  BANNER_COOKIE,
   AUTH_WITHOUT_SMS_COOKIE,
+  AUTH_SMS_COOKIE,
   MONTH_LIST,
   CHECKOUT_INTERVAL_TAB_NAMES,
   SUBSCRIBE_MESSAGES,

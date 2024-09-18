@@ -7,3 +7,11 @@ interface ApiResponse<T> {
   message?: Nullable<string>;
   data: T;
 }
+
+interface ApiErrorResponse {
+  success: boolean;
+  error?: Nullable<{
+    code: string;
+    message: string;
+  }>;
+}

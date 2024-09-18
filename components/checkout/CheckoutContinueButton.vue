@@ -8,7 +8,6 @@
 import Vue from 'vue';
 
 import AppButton from '~/components/shared/AppButton.vue';
-import { AB_TESTING_COOKIE } from '~/constants';
 
 export default Vue.extend({
   name: 'CheckoutContinueButton',
@@ -41,7 +40,7 @@ export default Vue.extend({
 
   methods: {
     onClick() {
-      if (this.$cookies.get(AB_TESTING_COOKIE) && !this.isDeliveryIntervalsExist && !this.isClarified) {
+      if (!this.isDeliveryIntervalsExist && !this.isClarified) {
         this.$nuxt.$emit('set-interval-validation-error');
 
         return;

@@ -25,7 +25,7 @@ export default {
     tel: {
       bind(el) {
         const input = el.querySelector('input');
-        input.setAttribute('pattern', '[0-9]*');
+        // input.setAttribute('pattern', '[0-9]*');
         input.setAttribute('inputmode', 'numeric');
       }
     }

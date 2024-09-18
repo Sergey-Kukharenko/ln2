@@ -65,8 +65,7 @@
         class="form__input"
       />
 
-      <app-phone-input :error="form.phone.errorMsg" @set-phone="onSetPhone" />
-
+      <app-phone-input class="form__input" :error="form.phone.errorMsg" @update:success="onSetNumber" />
       <div v-if="form.errorMsg" class="form__error">{{ form.errorMsg }}</div>
       <basket-button :stretch="true" align="center" class="form__button" :not-clickable="isSubmitClicked" size="medium">
         Continue
@@ -94,12 +93,12 @@
 <script>
 import Vue from 'vue';
 
-import AppPhoneInput from '~/components/AppPhoneInput.vue';
 import BasketButton from '~/components/BasketButton.vue';
 import AppTooltip from '~/components/shared/AppTooltip.vue';
-import { AUTH_CODE_TIMER, AUTH_REG_STEPS, BASKET_TOOLTIP, CODE_INPUT_DEFAULT_COUNT } from '~/constants';
+import AppPhoneInput from '~/components/shared/phone-input/AppPhoneInput.vue';
+import { AUTH_REG_ERROR_MESSAGES, AUTH_REG_STEPS, BASKET_TOOLTIP, CODE_INPUT_DEFAULT_COUNT } from '~/constants';
+import { AUTH_CODE_TIMER, EAuthComponents, VALIDATION_MESSAGES } from '~/constants/auth';
 import { VALIDATE_MESSAGES } from '~/messages';
-import authManager from '~/mixins/authManager.vue';
 import inputPhone from '~/mixins/input-phone.vue';
 import { accessorMapper } from '~/store';
 
@@ -110,15 +109,12 @@ export default Vue.extend({
 
   components: {
     BasketButton,
-    AppPhoneInput,
+    AppTooltip,
     AppInput: () => import('~/components/shared/AppInput.vue'),
-    AppTooltip
-    // Временно скрыт
-    // AppCodeInput: () => import('~/components/shared/AppCodeInput')
-    // AppNumberInput: () => import('~/components/shared/AppNumberInput')
+    AppPhoneInput
   },
 
-  mixins: [authManager, inputPhone],
+  mixins: [inputPhone],
 
   BASKET_TOOLTIP,
 
@@ -204,15 +200,15 @@ export default Vue.extend({
     async onSubmit() {
       this.form.errorMsg = '';
 
-      this.form.name.errorMsg = this.isEmptyField(this.form.name.value);
-      this.form.phone.errorMsg = this.hasPhoneError(this.form.phone.value);
+      this.form.name.errorMsg = !this.form.name.value.length ? AUTH_REG_ERROR_MESSAGES.requiredField : '';
+      this.form.phone.errorMsg = !this.form.phone.value ? VALIDATION_MESSAGES.phone : '';
 
       if (this.isFormInvalid) {
         this.isSubmitClicked = false;
         return;
       }
 
-      await this.onLoginWithoutCode();
+      await this.onLoginWithCode();
       // Временно скрыт
       // const payload = {
       //   name: this.form.name.value,
@@ -238,7 +234,7 @@ export default Vue.extend({
         return;
       }
 
-      const { success, data } = await this.$accessor.auth.sendOtp({ code });
+      const { success, data } = await this.$accessor.auth.checkVerificationCode({ code });
 
       this.codeForm.errorMsg = data?.title ?? '';
 
@@ -250,7 +246,7 @@ export default Vue.extend({
       await this.$router.push({ name: 'checkout' });
     },
 
-    onSetPhone(value) {
+    onSetNumber(value) {
       this.form.phone.errorMsg = '';
       this.form.errorMsg = '';
       this.form.phone.value = value;
@@ -281,6 +277,27 @@ export default Vue.extend({
       this.timerDuration = AUTH_CODE_TIMER.duration;
 
       this.onSubmit();
+    },
+
+    async onLoginWithCode() {
+      try {
+        const phone = this.form.phone.value.replace('+', '').replaceAll(' ', '');
+        const { success } = await this.$accessor.auth.sendVerificationCode({ phone });
+
+        if (!success) {
+          this.form.errorMsg = VALIDATE_MESSAGES.wrong;
+          this.isSubmitClicked = false;
+
+          // Вернул временно, так как пользователь не получит заказ и не сможет ничего оплатить
+          return;
+        }
+
+        this.$accessor.auth.SET_RECEIVER({ phone, name: this.form.name.value });
+        this.$accessor.auth.SET_STEP(EAuthComponents.CODE);
+        this.$router.push({ name: 'auth', query: { from: 'basket' } });
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     async onLoginWithoutCode() {
@@ -604,6 +621,24 @@ export default Vue.extend({
 
   &__button {
     margin-top: 24px;
+  }
+
+  &__error {
+    font-family: $golos-regular;
+    font-size: 12px;
+    line-height: 16px;
+    color: #db1838;
+    padding-left: 18px;
+    margin-top: 4px;
+
+    .error-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    &--gender {
+      padding-left: 0;
+    }
   }
 }
 </style>

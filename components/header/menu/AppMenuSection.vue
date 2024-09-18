@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import AppBadge from '~/components/shared/AppBadge';
+import AppBadge from '~/components/shared/AppBadge.vue';
 import { useClassNameProp } from '~/helpers';
 
 export default {

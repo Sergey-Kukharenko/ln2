@@ -178,13 +178,17 @@ export default Vue.extend({
   PAYMENT_METHODS: paymentMethods,
 
   fetch() {
-    const orderId = this.$route.params.id;
+    try {
+      const orderId = this.$route.params.id;
 
-    if (!orderId) {
-      return;
+      if (!orderId) {
+        return;
+      }
+
+      this.fetchOrder(orderId);
+    } catch (error) {
+      console.error(error);
     }
-
-    this.fetchOrder(orderId);
   },
 
   computed: {
@@ -527,7 +531,9 @@ export default Vue.extend({
 
       try {
         const { success } = await this.$http.$post('/v1/order/google-ads-fire-info', gadsObj);
-        if (!success) console.log('the data was not recorded on the backend');
+        if (!success) {
+          console.log('The data was not recorded on the backend');
+        }
       } catch (err) {
         console.error(err);
       }

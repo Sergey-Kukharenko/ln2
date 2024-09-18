@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import AppProfileHeader from '~/components/header/profile/AppProfileHeader';
-import AppProfileList from '~/components/header/profile/AppProfileList';
+import AppProfileHeader from '~/components/header/profile/AppProfileHeader.vue';
+import AppProfileList from '~/components/header/profile/AppProfileList.vue';
 
 export default {
   name: 'AppProfilePreview',

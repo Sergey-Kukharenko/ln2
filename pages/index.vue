@@ -84,8 +84,6 @@ export default Vue.extend({
   },
   mixins: [gtm],
 
-  middleware: ['testing'],
-
   PROMOTIONS: promotions,
   POPULAR_CATEGORIES: popularCategories,
   RECIPIENT: recipient,
@@ -96,7 +94,11 @@ export default Vue.extend({
   INFO: info,
 
   async fetch() {
-    await this.$accessor.home.fetchMainPageServerSide();
+    try {
+      await this.$accessor.home.fetchMainPageServerSide();
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   head() {

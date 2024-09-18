@@ -73,9 +73,7 @@ export default {
       this.$router.push({ name: 'payment-stripe' });
     },
 
-    paypalPaymentCompleted(_response) {
-      // console.log('Paypal payment has been completed', response);
-    }
+    paypalPaymentCompleted(_response) {}
   }
 };
 </script>

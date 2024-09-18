@@ -1,7 +1,7 @@
 export default {
   dsn: process.env.SENTRY_DSN,
   tracing: {
-    tracesSampleRate: 0.2,
+    tracesSampleRate: 0,
     browserTracing: {},
     vueOptions: {
       tracing: true,

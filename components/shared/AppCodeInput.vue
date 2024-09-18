@@ -189,35 +189,41 @@ export default {
   &__row {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+
+    @include gt-sm {
+      gap: 12px;
+    }
+
+    @include lt-md {
+      gap: 8px;
+    }
   }
   &__item {
     &-input {
       background: #f7f7f7;
-      border-radius: 10px;
       border: 1px solid transparent;
       outline: none;
       box-sizing: border-box;
-
       font-family: $golos-regular;
       text-align: center;
       color: #010810;
 
       @include gt-sm {
-        width: 72px;
-        height: 72px;
-
+        width: 91px;
+        height: 91px;
         font-size: 32px;
         line-height: 40px;
+        border-radius: 16px;
       }
 
       @include lt-md {
         margin: 0;
         width: 48px;
         height: 48px;
-
         font-size: 20px;
         line-height: 24px;
+        border-radius: 10px;
+        letter-spacing: -0.01em;
       }
 
       &.error {

@@ -1,7 +1,8 @@
 <template>
   <div :class="classNames">
+    <app-download-mobile-app v-if="isDownloadMobileBannerVisible" :banner="banner" @hide-banner="onHideBanner" />
     <app-notification v-if="isDefaultRoute" />
-    <app-header-mobile v-if="$device.isMobileOrTablet" />
+    <app-header-mobile v-if="$device.isMobileOrTablet" :class="{ 'top-offset': isDownloadMobileBannerVisible }" />
     <app-header v-else />
     <app-breadcrumbs v-if="isDefaultRoute" />
     <Nuxt />
@@ -23,13 +24,14 @@ import Vue from 'vue';
 import AppNotification from '~/components/header/AppNotification.vue';
 import AppBreadcrumbs from '~/components/shared/AppBreadcrumbs.vue';
 import AppButtonScrollToTop from '~/components/ui/AppButtonScrollToTop.vue';
-import { MIN_SCROLL_TO_UP_BUTTON, OUR_COOKIE } from '~/constants';
+import { BANNER_COOKIE, MIN_SCROLL_TO_UP_BUTTON, OUR_COOKIE } from '~/constants';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'DefaultLayout',
 
   components: {
+    AppDownloadMobileApp: () => import('~/components/header/AppDownloadMobileApp.vue'),
     AppCookies: () => import('@/components/shared/AppCookies.vue'),
     AppHeader: () => import('@/components/header/AppHeader.vue'),
     AppHeaderMobile: () => import('~/components/header/mobile/AppHeaderMobile.vue'),
@@ -40,18 +42,20 @@ export default Vue.extend({
     AppButtonScrollToTop
   },
 
-  middleware: ['cookie'],
+  middleware: ['cookie', 'testing'],
 
   data() {
     return {
       routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount'],
       handleDebouncedScroll: null,
-      isVisibleButtonScrollToTop: false
+      isVisibleButtonScrollToTop: false,
+      isBannerMounted: false
     };
   },
 
   computed: {
-    ...accessorMapper('cookie', ['getCookie']),
+    ...accessorMapper('home', ['banner']),
+    ...accessorMapper('cookie', ['getCookie', 'getBannerCookie']),
 
     getRouteName() {
       return this.$route.name;
@@ -65,8 +69,16 @@ export default Vue.extend({
       return !this.routeNames.includes(this.getRouteName);
     },
 
+    isMainPage() {
+      return this.$route.name === 'index';
+    },
+
     classNames() {
       return this.isDefaultRoute ? 'default-layout' : [`${this.getRouteName}-layout`];
+    },
+
+    isDownloadMobileBannerVisible() {
+      return !!(this.$device.isMobileOrTablet && !this.getBannerCookie && this.isMainPage && this.isBannerMounted);
     }
   },
 
@@ -77,6 +89,8 @@ export default Vue.extend({
 
     const payload = !this.$cookies.get(OUR_COOKIE);
     payload && this.addCookie(payload);
+    // Временно скрыт
+    // this.initializeMobileBanner();
   },
 
   mounted() {
@@ -90,14 +104,33 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('cookie', ['addCookie']),
+    ...accessorMapper('cookie', ['addCookie', 'addBannerCookie', 'SET_BANNER_COOKIE']),
 
     onSetCookie() {
       this.addCookie(false);
     },
 
+    onHideBanner() {
+      this.addBannerCookie(true);
+    },
+
     setDisplayButtonScrollToTop() {
       this.isVisibleButtonScrollToTop = window.scrollY > MIN_SCROLL_TO_UP_BUTTON;
+    },
+
+    async initializeMobileBanner() {
+      try {
+        if (this.$cookies.get(BANNER_COOKIE)) {
+          this.SET_BANNER_COOKIE(true);
+          return;
+        }
+
+        await this.$accessor.home.fetchDownloadAppBanner();
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.isBannerMounted = true;
+      }
     }
   }
 });
@@ -147,6 +180,11 @@ export default Vue.extend({
 
 .scrolling-enter-active {
   animation: scroll-in 0.3s;
+}
+
+.top-offset {
+  top: 56px;
+  margin-top: 56px;
 }
 
 @keyframes scroll-in {

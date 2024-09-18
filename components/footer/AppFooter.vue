@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import AppFooterBottom from '@/components/footer/AppFooterBottom';
-import AppFooterContainer from '@/components/footer/AppFooterContainer';
+import AppFooterBottom from '@/components/footer/AppFooterBottom.vue';
+import AppFooterContainer from '@/components/footer/AppFooterContainer.vue';
 
 export default {
   name: 'AppFooter',

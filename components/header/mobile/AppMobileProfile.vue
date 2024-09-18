@@ -5,31 +5,45 @@
         <app-profile-button :user="userData" />
       </template>
       <template #dropdown>
-        <app-profile-preview :user="userData" />
+        <app-profile-preview v-if="isAuthorized" :user="userData" />
       </template>
     </app-dropdown>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import Vue from 'vue';
 
 import AppProfileButton from '~/components/header/profile/AppProfileButton.vue';
-import AppProfilePreview from '~/components/header/profile/AppProfilePreview.vue';
 import AppDropdown from '~/components/shared/AppDropdown.vue';
 
-export default {
+export default Vue.extend({
   name: 'AppMobileProfile',
-
-  components: { AppProfilePreview, AppProfileButton, AppDropdown },
+  components: {
+    AppProfilePreview: () => import('~/components/header/profile/AppProfilePreview.vue'),
+    AppProfileButton,
+    AppDropdown
+  },
 
   computed: {
-    ...mapGetters({
-      userData: 'user/getUserData',
-      currStep: 'auth/currStep'
-    })
+    userData() {
+      return this.$accessor.user.getUserData;
+    },
+
+    isAuthorized() {
+      return this.$accessor.auth.isAuthorized;
+    }
   }
-};
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile {
+  display: flex;
+  width: 100%;
+  padding: 24px 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 24px;
+}
+</style>

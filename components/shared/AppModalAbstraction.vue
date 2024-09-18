@@ -165,6 +165,15 @@ export default {
     }
   }
 
+  &--full-width {
+    & .modal__content {
+      width: 100vw;
+      margin: 0;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgb(0 0 0 / 4%);
+    }
+  }
+
   &--regular {
     .button {
       display: none;

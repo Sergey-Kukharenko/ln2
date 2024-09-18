@@ -4,7 +4,7 @@ const STRIPE_PAYMENT_METHOD = {
   icon: 'credit-card-bold',
   iconSelect: 'credit-card-small',
   name: 'stripe',
-  label: 'Debit/Credit card',
+  label: 'Debit/Credit card (Apple/Google pay)',
   variantIcons: [
     {
       name: 'mastercard',

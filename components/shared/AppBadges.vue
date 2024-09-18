@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AppBadge from '~/components/shared/AppBadge';
+import AppBadge from '~/components/shared/AppBadge.vue';
 
 export default {
   name: 'AppBadges',

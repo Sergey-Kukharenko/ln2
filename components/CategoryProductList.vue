@@ -115,14 +115,16 @@ export default Vue.extend({
       await this.$accessor.category.fetchCategory(payload);
 
       this.loading = false;
-
+      this.$router.push({
+        query: { page }
+      });
       if (paginationButton) {
         this.scrollToTop();
       }
     },
 
     scrollToTop() {
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
     gtmItemListEvent() {

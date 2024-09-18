@@ -19,16 +19,21 @@ export default Vue.extend({
   },
 
   async fetch() {
-    const { slug } = this.$route.params;
-    const type = CATEGORY.toLocaleLowerCase();
-
-    await this.$accessor.category.fetchCategory({
-      type,
-      slug,
-      params: {
-        limit: PAGINATION.limit
-      }
-    });
+    try {
+      const { slug } = this.$route.params;
+      const { page } = this.$route.query;
+      const type = CATEGORY.toLocaleLowerCase();
+      await this.$accessor.category.fetchCategory({
+        type,
+        slug,
+        params: {
+          limit: PAGINATION.limit,
+          page
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   head() {
@@ -39,6 +44,11 @@ export default Vue.extend({
           hid: 'description',
           name: 'description',
           content: this.categorySeo?.description ?? ''
+        },
+        {
+          hid: 'rel',
+          name: 'rel',
+          content: 'canonical'
         }
       ]
     };

@@ -7,7 +7,7 @@ import SEARCH_HISTORY_MOCK from '~/mocks/search';
 
 export const state = () => ({
   searchHistory: SEARCH_HISTORY_MOCK as SearchHistory[],
-  user: null as UserResponse['user'] | null,
+  user: { name: '', phone: '123', email: 'chupapi@gmail.com' } as UserResponse['user'] | null,
   recipient: null as Recipient | null
 });
 
@@ -66,6 +66,26 @@ export const actions = actionTree(
 
     unsubscribeFromSMS(_, payload: { userId: string }) {
       return this.app.$http.$post<ApiResponse<null>>(`/v1/subscriptions/sms/unsubscribe/`, payload);
+    },
+
+    async setUserPersonalData(_, payload) {
+      try {
+        const { success, message } = await this.app.$http.$post<ApiResponse<null>>('/v1/user/personal-data/', payload);
+        return { success, message: message || '' };
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+    },
+
+    async setUserSubscriptions(_, payload) {
+      try {
+        const { success } = await this.app.$http.$put<ApiResponse<null>>('/v1/subscriptions/', payload);
+        return { success };
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
     }
   }
 );

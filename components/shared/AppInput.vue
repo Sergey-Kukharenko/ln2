@@ -46,7 +46,7 @@ export default {
     },
     pattern: {
       type: String,
-      default: ''
+      default: '[^]*'
     },
     inputmode: {
       type: String,

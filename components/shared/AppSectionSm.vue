@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import AppCardSm from '~/components/shared/AppCardSm';
-import AppSectionGridSm from '~/components/shared/AppSectionGridSm';
+import AppCardSm from '~/components/shared/AppCardSm.vue';
+import AppSectionGridSm from '~/components/shared/AppSectionGridSm.vue';
 import { useClassNameProp } from '~/helpers';
 
 export default {

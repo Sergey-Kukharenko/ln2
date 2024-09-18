@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import AppInfoCard from '~/components/info/AppInfoCard';
-import AppInfoSocialList from '~/components/info/AppInfoSocialList';
+import AppInfoCard from '~/components/info/AppInfoCard.vue';
+import AppInfoSocialList from '~/components/info/AppInfoSocialList.vue';
 
 export default {
   name: 'AppInfoSomething',

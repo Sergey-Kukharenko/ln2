@@ -39,7 +39,7 @@ import Vue from 'vue';
 
 // import AppRadio from '~/components/shared/AppRadio';
 import AppInput from '~/components/shared/AppInput.vue';
-import authManager from '~/mixins/authManager.vue';
+
 import inputPhone from '~/mixins/input-phone.vue';
 import { accessorMapper } from '~/store';
 
@@ -53,7 +53,7 @@ export default Vue.extend({
     // AppRadio,
   },
 
-  mixins: [authManager, inputPhone],
+  mixins: [inputPhone],
 
   data() {
     return {

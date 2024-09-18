@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import AppNavigation from '@/components/header/AppNavigation';
-import AppMultiplyNavigation from '~/components/header/AppMultiplyNavigation';
-import AppNavBar from '~/components/header/AppNavBar';
+import AppNavigation from '@/components/header/AppNavigation.vue';
+import AppMultiplyNavigation from '~/components/header/AppMultiplyNavigation.vue';
+import AppNavBar from '~/components/header/AppNavBar.vue';
 
 export default {
   name: 'AppHeader',

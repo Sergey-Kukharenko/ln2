@@ -1,7 +1,7 @@
 import { actionTree, createMapper, getAccessorType, getterTree, mutationTree } from 'typed-vuex';
 import Vue from 'vue';
 
-import { AUTH_WITHOUT_SMS_COOKIE } from '~/constants';
+import { AUTH_SMS_COOKIE } from '~/constants';
 import * as auth from '~/store/auth';
 import * as cart from '~/store/cart';
 import * as category from '~/store/category';
@@ -31,20 +31,18 @@ export const actions = actionTree(
   {
     async nuxtServerInit({ commit }, { app: { $accessor } }) {
       try {
-        await $accessor.auth.fetchToken();
-
+        await $accessor.auth.fetchSessionToken();
         await Promise.allSettled([
           $accessor.cart.fetchCart(),
           $accessor.favorites.fetchFavorites(),
           $accessor.layout.fetchLayout()
         ]);
 
-        const authWithoutSmsResponse = this.app.$cookies.get(AUTH_WITHOUT_SMS_COOKIE);
+        const isAuthorized = this.app.$cookies.get(AUTH_SMS_COOKIE);
 
-        if (authWithoutSmsResponse) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        if (isAuthorized) {
           commit('auth/SET_AUTH_STATUS', true);
+          $accessor.user.fetchUser();
         }
       } catch (e) {
         console.error(e);

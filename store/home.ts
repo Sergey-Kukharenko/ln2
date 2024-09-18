@@ -1,6 +1,7 @@
 import { actionTree, mutationTree } from 'typed-vuex';
 
 import { CategoryResponse } from '~/@types/api/category';
+import { DownloadAppBannerResponse } from '~/@types/api/home';
 import { MAIN_PAGE_LIMIT } from '~/constants';
 
 export const state = () => ({
@@ -10,7 +11,8 @@ export const state = () => ({
   baseRoses: {} as CategoryResponse,
   newBouquets: {} as CategoryResponse,
   letterboxBouquets: {} as CategoryResponse,
-  trendyBouquets: {} as CategoryResponse
+  trendyBouquets: {} as CategoryResponse,
+  banner: {} as DownloadAppBannerResponse['data']
 });
 
 export const mutations = mutationTree(state, {
@@ -40,6 +42,10 @@ export const mutations = mutationTree(state, {
 
   SET_TRENDY_BOUQUETS(state, payload: CategoryResponse) {
     state.trendyBouquets = payload;
+  },
+
+  SET_DOWNLOAD_APP_BANNER(state, payload: DownloadAppBannerResponse['data']) {
+    state.banner = payload;
   }
 });
 
@@ -70,6 +76,16 @@ export const actions = actionTree(
     // fetchMainPageClientSide() {
     // Возможно запросы с клиента еще будут
     // },
+
+    async fetchDownloadAppBanner({ commit }) {
+      try {
+        const { data } = await this.app.$http.$get<DownloadAppBannerResponse>('/v1/app-download/');
+
+        commit('SET_DOWNLOAD_APP_BANNER', data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
 
     async fetchConstructorBouquets({ commit }) {
       try {

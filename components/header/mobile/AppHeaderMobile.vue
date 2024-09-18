@@ -4,7 +4,7 @@
       <div :class="classNames">
         <div class="content__layout content__layout--md">
           <div class="content__row nested-group">
-            <app-mobile-profile v-if="isUserData" @close="close" />
+            <app-mobile-profile @close="close" />
             <!--Временно скрыт-->
             <!--<nuxt-link to="/search" class="search">-->
             <!--  <svg-icon name="search" class="search__icon" />-->
@@ -78,7 +78,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...accessorMapper('user', ['isUserData']),
+    ...accessorMapper('auth', ['isAuthorized']),
 
     classNames() {
       return useToggleClassName(this.isVisible, 'content', 'active');

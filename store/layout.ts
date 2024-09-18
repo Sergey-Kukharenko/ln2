@@ -29,12 +29,6 @@ export const actions = actionTree(
         this.app.$accessor.category.fetchCategories(),
         this.app.$accessor.layout.fetchFooter()
       ]);
-      // Временно скрыл
-      // await Promise.all([
-      //   dispatch('fetchNavigation'),
-      //   dispatch('category/fetchCategories', null, { root: true }),
-      //   dispatch('fetchFooter')
-      // ]);
     },
 
     async fetchNavigation({ commit }) {

@@ -11,4 +11,4 @@ dist
 .eslintcache
 .DS_Store
 sw.*
-
+pm2.config.js

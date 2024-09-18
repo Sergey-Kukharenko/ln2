@@ -45,7 +45,6 @@ import Vue from 'vue';
 
 import CheckoutCurrentIntervals from '~/components/checkout/CheckoutCurrentIntervals.vue';
 import CheckoutIntervalsGroup from '~/components/checkout/CheckoutIntervalsGroup.vue';
-import { AB_TESTING_COOKIE, AC_TESTING_COOKIE } from '~/constants';
 import { useFormattedDateForBackend, useGetDateByTimeZone } from '~/helpers';
 import { INTERVAL_VALIDATE_MESSAGES } from '~/messages/index';
 import { accessorMapper } from '~/store';
@@ -106,7 +105,7 @@ export default Vue.extend({
     },
 
     timeIntervalLabel() {
-      if (this.isABTesting && !this.checkoutIntervalData?.time) {
+      if (!this.checkoutIntervalData?.time) {
         return '';
       }
 
@@ -122,7 +121,7 @@ export default Vue.extend({
     },
 
     dateIntervalLabel() {
-      if (this.isABTesting && !this.checkoutIntervalData?.date) {
+      if (!this.checkoutIntervalData?.date) {
         return '';
       }
 
@@ -169,10 +168,6 @@ export default Vue.extend({
           error: this.errors.time
         }
       ];
-    },
-
-    isABTesting() {
-      return this.$cookies.get(AB_TESTING_COOKIE) && !this.$cookies.get(AC_TESTING_COOKIE);
     }
   },
 
@@ -180,37 +175,38 @@ export default Vue.extend({
     isClarified(val) {
       if (!val) {
         const time = this.checkoutIntervalData?.time ?? this.firstAvalibleIterval?.label;
-        !this.isABTesting && this.setInterval({ date: null, time });
+        this.setInterval({ date: null, time });
 
         return;
       }
 
-      !this.isABTesting && this.setInterval({ date: null, time: null });
+      this.setInterval({ date: null, time: null });
     }
   },
 
-  async mounted() {
+  mounted() {
     this.$nuxt.$on('set-intervals', this.initSelectedIntervals);
     this.$nuxt.$on('set-interval-validation-error', this.setIntervalValidationError);
 
-    if (this.isABTesting) {
-      return;
-    }
+    // Перенос данных ab, временно комментируем старый функционал
+    // if (this.isABTesting) {
+    //   return;
+    // }
 
-    await this.$nextTick();
+    // await this.$nextTick();
 
-    if (this.checkoutIntervalData?.time) {
-      this.interval.time = this.checkoutIntervalData?.time;
+    // if (this.checkoutIntervalData?.time) {
+    //   this.interval.time = this.checkoutIntervalData?.time;
 
-      return;
-    }
+    //   return;
+    // }
 
-    const payload = {
-      date: null,
-      time: this.firstAvalibleIterval?.label
-    };
+    // const payload = {
+    //   date: null,
+    //   time: this.firstAvalibleIterval?.label
+    // };
 
-    this.setInterval(payload);
+    // this.setInterval(payload);
   },
 
   beforeDestroy() {
@@ -238,7 +234,7 @@ export default Vue.extend({
     },
 
     onIntervalsModalToggle() {
-      if (this.isABTesting && !this.checkoutIntervalData.date) {
+      if (!this.checkoutIntervalData.date) {
         this.errors.date = INTERVAL_VALIDATE_MESSAGES.date;
 
         return;
@@ -264,7 +260,7 @@ export default Vue.extend({
     async initSelectedIntervals() {
       const intervals = await this.$accessor.checkout.fetchIntervals();
 
-      if (this.isABTesting && !this.dateIntervalLabel) {
+      if (!this.dateIntervalLabel) {
         return;
       }
 
@@ -296,10 +292,9 @@ export default Vue.extend({
 
     async setInterval({ date = null, time = null }) {
       try {
-        const isDateNotExistInRegularMode = !date && !this.isABTesting;
-        const isDateNotExistABTestMode = !date && this.checkoutIntervalDate && this.isABTesting;
+        const isDateNotExist = !date && this.checkoutIntervalDate;
 
-        if (isDateNotExistInRegularMode || isDateNotExistABTestMode) {
+        if (isDateNotExist) {
           date = useFormattedDateForBackend(this.checkoutIntervalDate);
         }
 
@@ -310,10 +305,8 @@ export default Vue.extend({
         await this.$accessor.checkout.setCheckoutInterval({ date, time });
         this.$accessor.checkout.fetchCheckout();
 
-        if (this.isABTesting) {
-          this.errors.date = '';
-          this.errors.time = '';
-        }
+        this.errors.date = '';
+        this.errors.time = '';
       } catch (err) {
         console.error(err);
       }

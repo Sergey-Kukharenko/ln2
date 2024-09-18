@@ -37,7 +37,6 @@ export default {
   methods: {
     onClickArrowRight() {
       this.translateX -= 712;
-      console.log(this.translateX);
     }
   }
 };

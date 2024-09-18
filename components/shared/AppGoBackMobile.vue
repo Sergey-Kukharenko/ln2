@@ -1,6 +1,6 @@
 <template>
-  <div class="back">
-    <svg-icon class="back__icon" name="arrow-green" @click="goBack" />
+  <div class="back" @click="goBack">
+    <svg-icon class="back__icon" name="arrow-green" />
   </div>
 </template>
 
@@ -8,8 +8,20 @@
 export default {
   name: 'AppGoBackMobile',
 
+  props: {
+    hasStep: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   methods: {
     goBack() {
+      if (this.hasStep) {
+        this.$emit('change-step');
+        return;
+      }
+
       this.$router.go(-1);
     }
   }

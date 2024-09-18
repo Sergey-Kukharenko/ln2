@@ -8,7 +8,7 @@
       <app-cart />
     </div>
     <!-- Временно скрываем блок когда не авторизован  -->
-    <div v-if="isUserData" class="navigation-user__item">
+    <div class="navigation-user__item">
       <app-profile />
     </div>
   </nav>
@@ -17,7 +17,6 @@
 <script>
 import Vue from 'vue';
 
-// import AppFavorite from '@/components/header/AppFavorite';
 import AppCart from '@/components/header/AppCart.vue';
 import AppProfile from '@/components/header/profile/AppProfile.vue';
 import { accessorMapper } from '~/store';
@@ -26,7 +25,6 @@ export default Vue.extend({
   name: 'AppNavigationUser',
 
   components: {
-    // AppFavorite,
     AppCart,
     AppProfile
   },

@@ -1,12 +1,15 @@
 <template>
-  <div :class="classNames" v-on="$listeners">
-    <div class="profile-button__figure">
-      <template v-if="isAuth">
+  <div :class="classNames" v-on="$listeners" @click="goToPath">
+    <template v-if="isAuth">
+      <div v-if="user.name" class="profile-button__figure">
         {{ char }}
-      </template>
-      <svg-icon v-else name="profile" class="profile-button__icon" />
+      </div>
+      <svg-icon v-else name="profile-default-avatar" class="profile-button__icon--default" />
+    </template>
+    <div v-else class="profile-button__figure">
+      <svg-icon name="profile" class="profile-button__icon" />
     </div>
-    <div class="profile-button__figcaption" @click="goToPath">{{ getInfo }}</div>
+    <div class="profile-button__figcaption">{{ userName }}</div>
   </div>
 </template>
 
@@ -34,8 +37,12 @@ export default Vue.extend({
       return this.user?.name?.substring(0, 1);
     },
 
-    getInfo() {
-      return this.isAuth ? this.user?.name : 'Log in / Register';
+    userName() {
+      if (!this.isAuth) {
+        return 'Log in/Register';
+      }
+
+      return this.user.name || 'No name';
     },
 
     classNames() {
@@ -45,12 +52,17 @@ export default Vue.extend({
 
   methods: {
     goToPath() {
-      if (this.$device.isMobileOrTablet) {
+      if (this.isAuth) {
         return;
       }
 
-      // this.$router.push({ name: 'signin' });
-      this.$emit('close');
+      this.$router.push({ name: 'auth' });
+      // if (this.$device.isMobileOrTablet) {
+      //   return;
+      // }
+
+      // // this.$router.push({ name: 'signin' });
+      // this.$emit('close');
     }
   }
 });
@@ -62,6 +74,13 @@ export default Vue.extend({
 
   &:hover {
     opacity: 0.6;
+  }
+
+  @include gt-sm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   @include lt-md {
@@ -100,6 +119,12 @@ export default Vue.extend({
     @include lt-md {
       width: 12px;
       height: 12px;
+    }
+
+    &--default {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
     }
   }
 

@@ -32,7 +32,7 @@ const httpPlugin: Plugin = ({ store, app: { $axios }, $cookies }, inject) => {
         return new Promise((resolve) => {
           isRetryUpdateTokenProcess = true;
           store
-            .dispatch('auth/fetchToken')
+            .dispatch('auth/fetchSessionToken')
             .then(() => {
               resolve(($axios[method] as $ReplaceItType)(...args));
             })
