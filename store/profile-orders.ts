@@ -19,26 +19,27 @@ export const actions = actionTree(
   {
     fetchOrders({ commit }) {
       try {
-        // const orders = await this.app.$http.$get<ProfileOrdersResponse>('/v1/mobile-api/user/history');
+        // const {data} = await this.app.$http.$get<ProfileOrdersResponse>('/v1/mobile-api/user/history');
+        // const orders = data.current;
 
         const orders = {
           current: [
             {
-              order_id: 1,
+              id: 1,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: null,
               status: 'PACKED',
               date: null
             },
             {
-              order_id: 2,
+              id: 2,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: 2,
               status: 'DELIVERED',
               date: '10 june!'
             },
             {
-              order_id: 3,
+              id: 3,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: 2,
               status: 'DELIVERED',

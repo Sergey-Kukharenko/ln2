@@ -21,7 +21,7 @@ export const actions = actionTree(
   {
     fetchFavorites({ commit }) {
       try {
-        // const favorites = await this.app.$http.$get<FavoritesResponse>('/v1/favorites/');
+        // const favorites = await this.app.$http.$get<FavoritesResponse>('/v1/mobile-api/favorites/');
         // commit('SET_FAVORITES', favorites);
         const favorites = profile.pages.favorites;
         commit('SET_FAVORITES', favorites);

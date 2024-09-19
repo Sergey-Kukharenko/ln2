@@ -112,7 +112,9 @@ export default Vue.extend({
 
   @include lt-md {
     gap: 8px;
-    margin: 37px 0 12px;
+    margin-top: 9px;
+    padding: 20px 0 12px;
+    border-top: 1px solid #eaeaea;
   }
 }
 

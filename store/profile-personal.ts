@@ -24,7 +24,6 @@ export const actions = actionTree(
         const personal = {
           auth: true,
           real_id: 186352,
-          id: 1,
           user: {
             id: 'Dy6pLbl0RZobWPl1',
             name: 'John',
@@ -40,7 +39,12 @@ export const actions = actionTree(
               amount_prod: null,
               status: 'PACKED',
               date: null
-            }
+            },
+            bonus_amount: 0,
+            bonus_level: '',
+            orders_sum_amount: '0',
+            cashback: 0,
+            left_for_next_level: 0
           }
         };
 

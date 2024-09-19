@@ -1,14 +1,14 @@
 interface Order {
   order_id: number;
-  img: string;
-  amount_prod: number | null;
   status: string;
-  date: string | null;
-  statusText?: string;
+  img: string;
+  amount_prod: number;
+  date: Date | null;
 }
 
 interface Data {
   current: Order[];
+  archive: Order[];
 }
 
 interface Response {
