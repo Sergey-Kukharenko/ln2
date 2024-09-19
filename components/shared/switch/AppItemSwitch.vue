@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AppSwitch from '~/components/shared/switch/app-switch.vue';
+import AppSwitch from '~/components/shared/switch/AppSwitch.vue';
 
 export default {
   name: 'AppItemSwitch',

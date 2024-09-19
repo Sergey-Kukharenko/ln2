@@ -21,8 +21,8 @@
 import Vue from 'vue';
 
 import ProfileSection from '~/components/profile/ProfileSection.vue';
-import AppItemSwitch from '~/components/shared/switch/app-item-switch.vue';
-import AppListSwitch from '~/components/shared/switch/app-list-switch.vue';
+import AppItemSwitch from '~/components/shared/switch/AppItemSwitch.vue';
+import AppListSwitch from '~/components/shared/switch/AppListSwitch.vue';
 import profile from '~/data/profile';
 import { accessorMapper } from '~/store';
 
