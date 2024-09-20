@@ -1,7 +1,7 @@
 <template>
   <div class="personal-data">
     <profile-personal-section title="Personal data">
-      <app-input v-model="user.name" placeholder="Name" pattern="[a-zA-Z]*" size="x-large" />
+      <app-input v-model="user.name" placeholder="Name" pattern="[a-zA-Z]+" size="x-large" @keydown="lettersOnly" />
       <profile-button-list :selected="user.gender" :list="gender" @set-item="onSetGender" />
     </profile-personal-section>
     <profile-personal-section title="Date of birth">
@@ -70,6 +70,15 @@ export default Vue.extend({
   methods: {
     ...accessorMapper('profile-personal', ['fetchPersonal', 'updatePersonal']),
 
+    lettersOnly(event) {
+      const key = event.keyCode;
+      const isNumber = !((key >= 65 && key <= 90) || key === 8);
+
+      if (isNumber) {
+        event.preventDefault();
+      }
+    },
+
     onSetGender(gender) {
       this.user.gender = gender;
     },
@@ -81,7 +90,10 @@ export default Vue.extend({
         user: { ...this.user }
       };
 
-      this.updatePersonal(payload);
+      console.log('=======');
+      console.log(payload);
+      console.log('=======');
+      // this.updatePersonal(payload);
     }
   }
 });

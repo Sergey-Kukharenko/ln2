@@ -77,6 +77,35 @@ export default Vue.extend({
 
   fetch() {
     this.fetchOrder();
+
+    const ds = {
+      offer_id: 'O9apoVGyLz5qNX4K',
+      offer_real_id: 5,
+      offer_title: 'Moment',
+      title: 'Small',
+      slug: 'small',
+      price: '66.90',
+      external_keys: {
+        stripe: null
+      },
+      image: {
+        ord: 1,
+        alt_text: 'Moment - featured image',
+        filename: '1.webp',
+        bouquetHeight: null
+      },
+      is_paid: false,
+      payment_id: null,
+      base_category_name: 'Spray roses',
+      is_bouquet: true,
+      quantity: 1,
+      height: null,
+      package: null,
+      policy_id: 1,
+      gift_card_text: 'ssa',
+      old_price: null,
+      discount: null
+    };
   },
 
   computed: {
