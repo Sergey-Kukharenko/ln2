@@ -19,13 +19,13 @@ export const actions = actionTree(
   {
     fetchPersonal({ commit }) {
       try {
-        // const personal = await this.app.$http.$get<PersonalResponse>('/v1/mobile-api/user');
+        // const {user} = await this.app.$http.$get<PersonalResponse>('/v1/user');
 
         const personal = {
           auth: true,
           real_id: 186352,
           user: {
-            id: 'Dy6pLbl0RZobWPl1',
+            order_id: 'Dy6pLbl0RZobWPl1',
             name: 'John',
             phone: '79935653841',
             email: 'john@gmail.com',
@@ -34,7 +34,7 @@ export const actions = actionTree(
             unfinished_orders_count: 1,
             favorites_count: 0,
             order: {
-              id: 1,
+              order_id: 1,
               img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
               amount_prod: null,
               status: 'PACKED',

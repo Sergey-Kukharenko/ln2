@@ -19,7 +19,7 @@ export const actions = actionTree(
   {
     fetchNotifications({ commit }) {
       try {
-        // const notifications = await this.app.$http.$get<NotificationsResponse>('/v1/mobile-api/subscriptions/');
+        // const {data} = await this.app.$http.$get<NotificationsResponse>('/v1/mobile-api/subscriptions/');
 
         const notifications = {
           success: true,

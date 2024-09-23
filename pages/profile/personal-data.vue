@@ -1,7 +1,14 @@
 <template>
   <div class="personal-data">
     <profile-personal-section title="Personal data">
-      <app-input v-model="user.name" placeholder="Name" pattern="[a-zA-Z]+" size="x-large" @keydown="lettersOnly" />
+      <app-input
+        v-model="user.name"
+        :error="errors.name"
+        placeholder="Name"
+        pattern="[a-zA-Z]+"
+        size="x-large"
+        @keydown="lettersOnly"
+      />
       <profile-button-list :selected="user.gender" :list="gender" @set-item="onSetGender" />
     </profile-personal-section>
     <profile-personal-section title="Date of birth">
@@ -13,9 +20,9 @@
           <svg-icon name="profile-pencil" />
         </template>
       </app-input>
-      <app-input v-model="user.email" placeholder="Email" size="x-large" />
+      <app-input v-model="user.email" :error="errors.email" placeholder="Email" size="x-large" />
       <div class="form group">
-        <app-button :disabled="fieldsNotFilled" @click="onSubmit">Save</app-button>
+        <app-button :disabled="errors.fieldsNotFilled" @click="onSubmit">Save</app-button>
         <profile-delete-account />
       </div>
       <div class="text">
@@ -33,7 +40,9 @@ import ProfileDeleteAccount from '~/components/profile/ProfileDeleteAccount.vue'
 import ProfilePersonalSection from '~/components/profile/ProfilePersonalSection.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
+import { SUBSCRIBE_INVALID_EMAIL, SUBSCRIBE_MESSAGES } from '~/constants';
 import profile from '~/data/profile';
+import { isEmailValid } from '~/helpers/validators';
 import { accessorMapper } from '~/store';
 
 const { gender } = profile;
@@ -48,12 +57,18 @@ export default Vue.extend({
       gender,
       user: {
         name: '',
+        nameError: '',
+        email: '',
+        emailError: '',
         phone: '',
         birth: '',
-        email: '',
         gender: ''
       },
-      fieldsNotFilled: false
+      errors: {
+        name: '',
+        email: '',
+        fieldsNotFilled: false
+      }
     };
   },
 
@@ -83,17 +98,39 @@ export default Vue.extend({
       this.user.gender = gender;
     },
 
+    onValidateName() {
+      if (this.user.name === '') {
+        this.errors.name = 'Enter your name';
+      } else {
+        this.errors.name = '';
+      }
+    },
+
+    onValidateEmail() {
+      if (this.user.email === '') {
+        this.errors.email = SUBSCRIBE_MESSAGES.error.empty;
+      } else if (!isEmailValid(this.user.email)) {
+        this.errors.email = SUBSCRIBE_INVALID_EMAIL;
+      } else {
+        this.errors.email = '';
+      }
+    },
+
     onSubmit() {
+      this.onValidateName();
+      this.onValidateEmail();
+
+      if (this.errors.name || this.errors.email) {
+        return false;
+      }
+
       const payload = {
         ...this.personal,
         id: this.id,
         user: { ...this.user }
       };
 
-      console.log('=======');
-      console.log(payload);
-      console.log('=======');
-      // this.updatePersonal(payload);
+      this.updatePersonal(payload);
     }
   }
 });
