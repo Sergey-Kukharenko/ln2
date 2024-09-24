@@ -7,7 +7,7 @@
         <img
           :src="
             useSizedImage({
-              realId: item.product_id,
+              realId: item.offer_real_id,
               sizeName: $options.IMG_SIZES_MAP.min,
               imgName: item.image.filename
             })
@@ -16,7 +16,7 @@
           :alt="item.image.alt_text"
         />
       </div>
-      <div class="item__text">{{ item.name }}</div>
+      <div class="item__text">{{ item.offer_title }}</div>
     </div>
   </div>
 </template>

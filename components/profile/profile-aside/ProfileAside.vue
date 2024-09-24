@@ -1,15 +1,15 @@
 <template>
   <div class="profile-aside">
     <div class="title">Order details</div>
-    <profile-aside-steps :status="order.status" />
+    <profile-aside-steps :status="orderDetails.status" />
     <profile-aside-order-contents>
-      <profile-aside-order-list :contents="order.contents" />
-      <profile-aside-order-row :item="order.sale" color="green" />
-      <profile-aside-order-row :item="order.delivery" />
+      <profile-aside-order-list :contents="contents" />
+      <profile-aside-order-row :item="sale" color="green" />
+      <profile-aside-order-row :item="delivery" />
     </profile-aside-order-contents>
-    <profile-aside-order-row :item="order.total" size="large" />
+    <profile-aside-order-row :item="total" size="large" />
 
-    <profile-buttons-group :status="order.status" />
+    <profile-buttons-group :status="status" />
   </div>
 </template>
 
@@ -19,9 +19,7 @@ import ProfileAsideOrderContents from '~/components/profile/profile-aside/Profil
 import ProfileAsideOrderList from '~/components/profile/profile-aside/ProfileAsideOrderList.vue';
 import ProfileAsideOrderRow from '~/components/profile/profile-aside/ProfileAsideOrderRow.vue';
 import ProfileAsideSteps from '~/components/profile/profile-aside/ProfileAsideSteps.vue';
-import profile from '~/data/profile';
 
-const { products, totalCost, status } = profile.pages.order;
 export default {
   name: 'ProfileAside',
 
@@ -33,28 +31,41 @@ export default {
     ProfileAsideSteps
   },
 
-  data() {
-    return {
-      order: {
-        contents: {
-          list: products,
-          price: '£ 94'
-        },
-        sale: {
-          label: 'Sale',
-          value: '- £ 8'
-        },
-        delivery: {
-          label: 'Delivery',
-          value: 'Free'
-        },
-        total: {
-          label: 'Total',
-          value: '£ ' + totalCost
-        },
-        status
-      }
-    };
+  props: {
+    orderDetails: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+
+  computed: {
+    contents() {
+      return {
+        list: this.orderDetails.positions,
+        price: '£ 94'
+      };
+    },
+
+    delivery() {
+      return {
+        label: 'Delivery',
+        value: +this?.orderDetails.deliveryAmount ? `£ ${this?.orderDetails.deliveryAmount}` : 'Free'
+      };
+    },
+
+    sale() {
+      return {
+        label: 'Sale',
+        value: `£ ${this.orderDetails.sale}`
+      };
+    },
+
+    total() {
+      return {
+        label: 'Total',
+        value: '£ ' + this.orderDetails.totalCost
+      };
+    }
   }
 };
 </script>

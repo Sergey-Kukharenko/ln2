@@ -300,12 +300,12 @@ export default {
 
       self_recipient: false,
 
-      totalCost: '86',
-      deliveryAmount: '11.00',
+      total_cost: '86',
+      delivery_amount: '11.00',
       positions_cost: '128.60',
       cashback: '0.00',
       currency: 'GBP',
-      shippingAddress: {
+      shipping_address: {
         full_address: 'London, 15 Westferry Road, E14 8FQ',
         id: null,
         address1: 'London',
@@ -348,54 +348,118 @@ export default {
       payment_methods: {
         payment_type_id: 'card'
       },
-      products: [
+      positions: [
         {
-          product_id: 254,
-          name: 'Sparkle Bouquet',
-          quantity: 1,
-          price: '47.90',
+          offer_id: 'O9apoVGyLz5qNX4K',
+          offer_real_id: 254,
+          offer_title: 'Sparkle Bouquet',
+          title: 'Small',
+          slug: 'small',
+          price: '66.90',
           image: {
             ord: 1,
             alt_text: 'Sparkle Bouquet - featured image',
             filename: '1.webp',
             bouquetHeight: null
-          }
+          },
+          external_keys: {
+            stripe: null
+          },
+          is_paid: false,
+          payment_id: null,
+          base_category_name: 'Spray roses',
+          is_bouquet: true,
+          quantity: 1,
+          height: null,
+          package: null,
+          policy_id: 1,
+          gift_card_text: 'ssa',
+          old_price: null,
+          discount: null
         },
         {
-          product_id: 210,
-          name: 'Dairy Box Milk 162g',
-          quantity: 1,
+          offer_id: 'O9apoVGyLz5qNX41K',
+          offer_real_id: 210,
+          offer_title: 'Dairy Box Milk 162g',
+          title: 'Small',
+          slug: 'small',
           price: '9.90',
           image: {
             ord: 1,
             alt_text: 'Dairy Box Milk 162g - featured image',
             filename: '1.webp',
             bouquetHeight: null
-          }
+          },
+          external_keys: {
+            stripe: null
+          },
+          is_paid: false,
+          payment_id: null,
+          base_category_name: 'Spray roses',
+          is_bouquet: true,
+          quantity: 1,
+          height: null,
+          package: null,
+          policy_id: 1,
+          gift_card_text: 'ssa',
+          old_price: null,
+          discount: null
         },
         {
-          product_id: 144,
-          name: 'Lindt Chocolate',
-          quantity: 1,
+          offer_id: 'O9apoVGdyLz5qNX41K',
+          offer_real_id: 144,
+          offer_title: 'Lindt Chocolate',
+          title: 'Small',
+          slug: 'small',
           price: '14.90',
           image: {
             ord: 1,
             alt_text: 'Lindt Chocolate - featured image',
             filename: '1.webp',
             bouquetHeight: null
-          }
+          },
+          external_keys: {
+            stripe: null
+          },
+          is_paid: false,
+          payment_id: null,
+          base_category_name: 'Spray roses',
+          is_bouquet: true,
+          quantity: 1,
+          height: null,
+          package: null,
+          policy_id: 1,
+          gift_card_text: 'ssa',
+          old_price: null,
+          discount: null
         },
         {
-          product_id: 354,
-          name: '40 Pink Tulips',
-          quantity: 1,
+          offer_id: 'O9aposVGdyLz5qNX41K',
+          offer_real_id: 354,
+          offer_title: '40 Pink Tulips',
+          title: 'Small',
+          slug: 'small',
           price: '55.90',
           image: {
             ord: 1,
             alt_text: '40 Pink Tulips - featured image',
             filename: '1.webp',
             bouquetHeight: null
-          }
+          },
+          external_keys: {
+            stripe: null
+          },
+          is_paid: false,
+          payment_id: null,
+          base_category_name: 'Spray roses',
+          is_bouquet: true,
+          quantity: 1,
+          height: null,
+          package: null,
+          policy_id: 1,
+          gift_card_text: 'ssa',
+          old_price: null,
+          discount: null
         }
       ]
     }

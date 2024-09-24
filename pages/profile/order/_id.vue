@@ -38,7 +38,7 @@
           <profile-buttons-group />
         </div>
       </div>
-      <profile-aside v-if="$device.isDesktopOrTablet" />
+      <profile-aside v-if="$device.isDesktopOrTablet" :order-details="orderDetails" />
     </div>
   </div>
 </template>
@@ -77,35 +77,6 @@ export default Vue.extend({
 
   fetch() {
     this.fetchOrder();
-
-    const ds = {
-      offer_id: 'O9apoVGyLz5qNX4K',
-      offer_real_id: 5,
-      offer_title: 'Moment',
-      title: 'Small',
-      slug: 'small',
-      price: '66.90',
-      external_keys: {
-        stripe: null
-      },
-      image: {
-        ord: 1,
-        alt_text: 'Moment - featured image',
-        filename: '1.webp',
-        bouquetHeight: null
-      },
-      is_paid: false,
-      payment_id: null,
-      base_category_name: 'Spray roses',
-      is_bouquet: true,
-      quantity: 1,
-      height: null,
-      package: null,
-      policy_id: 1,
-      gift_card_text: 'ssa',
-      old_price: null,
-      discount: null
-    };
   },
 
   computed: {
@@ -116,7 +87,7 @@ export default Vue.extend({
     },
 
     shippingAddress() {
-      return this.order.shippingAddress;
+      return this.order.shipping_address;
     },
 
     interval() {
@@ -124,15 +95,19 @@ export default Vue.extend({
     },
 
     deliveryAmount() {
-      return this.order.deliveryAmount;
+      return this.order.delivery_amount;
     },
 
     status() {
       return this.order.status;
     },
 
-    products() {
-      return this.order.products;
+    positions() {
+      return this.order.positions;
+    },
+
+    sale() {
+      return this.order.sale;
     },
 
     id() {
@@ -144,7 +119,7 @@ export default Vue.extend({
     },
 
     totalCost() {
-      return this.order.totalCost;
+      return this.order.total_cost;
     },
 
     total() {
@@ -209,11 +184,21 @@ export default Vue.extend({
     },
 
     orderItems() {
-      return this?.products || [];
+      return this?.positions || [];
     },
 
     orderSplitedItems() {
       return this.orderItems.flatMap((e) => Array(e.quantity).fill({ ...e, quantity: 1 }));
+    },
+
+    orderDetails() {
+      return {
+        positions: this?.positions,
+        deliveryAmount: this.deliveryAmount,
+        sale: this.sale,
+        totalCost: this.totalCost,
+        status: this.status
+      };
     }
   },
 
