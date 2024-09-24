@@ -165,12 +165,20 @@ export default {
     }
   }
 
-  &--full-width {
+  &--bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
     & .modal__content {
-      width: 100vw;
+      position: relative;
+      bottom: 0;
       margin: 0;
-      border-radius: 20px;
-      box-shadow: 0 4px 8px rgb(0 0 0 / 4%);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      @include lt-md {
+        width: 100%;
+      }
     }
   }
 

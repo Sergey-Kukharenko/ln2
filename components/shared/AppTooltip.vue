@@ -172,7 +172,6 @@ export default {
 
   &--sm {
     & .tooltip__content {
-      box-sizing: border-box;
       font-size: 14px;
       line-height: 20px;
 

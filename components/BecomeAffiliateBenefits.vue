@@ -88,7 +88,6 @@ export default {
       height: 183px;
       background: #f7f7f7;
       border-radius: 24px;
-      box-sizing: border-box;
       padding: 16px;
 
       &__icon {

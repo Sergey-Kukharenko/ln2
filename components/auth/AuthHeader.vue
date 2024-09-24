@@ -105,12 +105,14 @@ export default Vue.extend({
 
     @include lt-lg {
       font-family: $golos-regular;
-      ont-weight: 400;
+      font-weight: 400;
       font-size: 12px;
       line-height: 15.6px;
       text-align: right;
       width: 111px;
       padding-right: 12px;
+      white-space: nowrap;
+      margin-right: 12px;
     }
   }
 }

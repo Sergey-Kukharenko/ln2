@@ -9,7 +9,8 @@ module.exports = [
   },
   {
     UserAgent: '*',
-    Disallow: '',
-    Sitemap: `${process.env.DOMAIN_NAME}/sitemap.xml`
+    Disallow: '/filter*',
+    Allow: ['/.png', '/.jpg'],
+    Sitemap: 'https://myflowers.co.uk/sitemap.xml'
   }
 ];

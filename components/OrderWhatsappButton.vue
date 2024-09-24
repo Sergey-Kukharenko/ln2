@@ -26,7 +26,7 @@ export default Vue.extend({
   @include lt-md {
     display: flex;
     align-items: center;
-    box-sizing: border-box;
+
     height: 36px;
     border: 1px solid $color-dark-green;
     border-radius: 8px;

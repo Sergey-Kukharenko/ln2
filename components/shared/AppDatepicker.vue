@@ -7,6 +7,8 @@
         :color="color"
         :min-date="availableDates.minDate"
         :max-date="availableDates.maxDate"
+        :fullscreen-mobile="$device.isMobileOrTablet"
+        name="Choose date"
         @onChange="onDatepickerChange"
       >
         <template #activator>

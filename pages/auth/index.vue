@@ -26,8 +26,8 @@ export default Vue.extend({
 
   middleware: [
     function ({ redirect, route, app: { $accessor } }) {
-      if (!$accessor.auth.receiver?.phone && route.query?.from === 'basket') {
-        return redirect(301, { name: 'basket' });
+      if (!$accessor.auth.receiver?.phone && route.query?.from === 'cart') {
+        return redirect(301, { name: 'cart' });
       }
     }
   ],

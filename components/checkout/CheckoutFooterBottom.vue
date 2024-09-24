@@ -42,7 +42,7 @@ export default Vue.extend({
 .footer-bottom {
   display: flex;
   align-items: center;
-  box-sizing: border-box;
+
   background: $bg-grey;
 
   @include gt-sm {

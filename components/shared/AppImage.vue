@@ -10,6 +10,7 @@
       :style="styles"
       :width="width"
       :height="height"
+      :alt="alt"
       @load="onLoad"
       @error="onError"
     />

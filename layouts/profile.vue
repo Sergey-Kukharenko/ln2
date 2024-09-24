@@ -131,7 +131,7 @@ export default Vue.extend({
   display: flex;
 
   @include gt-sm {
-    max-width: 1070px;
+    max-width: 1130px;
     align-items: flex-start;
     gap: 32px;
     width: 100%;

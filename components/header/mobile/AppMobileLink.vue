@@ -28,7 +28,7 @@ export default {
   padding: 12px 16px;
   background: $bg-grey;
   border-radius: 10px;
-  box-sizing: border-box;
+
   color: $color-dark-green;
 
   &__text {

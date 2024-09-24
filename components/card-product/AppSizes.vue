@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import AppBadge from '@/components/shared/AppBadge';
+import AppBadge from '@/components/shared/AppBadge.vue';
 
 export default {
   name: 'AppSizes',
@@ -74,7 +74,7 @@ export default {
   justify-content: space-between;
   border: 1px solid #eaeaea;
   border-radius: 10px;
-  box-sizing: border-box;
+
   transition: border 0.2s ease-out 0s;
   cursor: pointer;
   user-select: none;
@@ -123,7 +123,7 @@ export default {
   height: 20px;
   border-radius: 50%;
   border: 1px solid #eaeaea;
-  box-sizing: border-box;
+
   transition: border 0.2s ease-out 0s;
 
   &__shape {

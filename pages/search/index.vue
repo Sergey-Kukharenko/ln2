@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import AppSearchBox from '~/components/header/search/AppSearchBox';
+import AppSearchBox from '~/components/header/search/AppSearchBox.vue';
 
 export default {
   name: 'IndexPage',

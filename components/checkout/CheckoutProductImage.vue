@@ -24,7 +24,7 @@ export default {
 <style lang="scss" scoped>
 .image {
   flex-shrink: 0;
-  box-sizing: border-box;
+
   width: 80px;
   height: 80px;
   border-radius: 12px;

@@ -45,7 +45,7 @@ export default Vue.extend({
   mixins: [gtm, addGtag],
 
   beforeRouteLeave(to, _from, next) {
-    const isStepChange = to.name === 'basket' && this.currCheckoutStep === 2;
+    const isStepChange = to.name === 'cart' && this.currCheckoutStep === 2;
 
     if (isStepChange) {
       next(false);
@@ -62,7 +62,8 @@ export default Vue.extend({
   data() {
     return {
       tab: false,
-      availablePaymentMethods: Object.values(this.$options.PAYMENT_METHODS)
+      availablePaymentMethods: Object.values(this.$options.PAYMENT_METHODS),
+      finalEventSent: false
     };
   },
 
@@ -105,6 +106,17 @@ export default Vue.extend({
     }
   },
 
+  watch: {
+    isFinalStep(value) {
+      if (this.finalEventSent || !value) {
+        return;
+      }
+
+      this.gtmCheckoutFinalDetailsEvent();
+      this.finalEventSent = true;
+    }
+  },
+
   created() {
     this.$accessor.gifts.fetchGiftCards();
   },
@@ -117,6 +129,7 @@ export default Vue.extend({
   },
 
   beforeDestroy() {
+    this.setDefaultPaymentMethod();
     this.$accessor.checkout.SET_STEP(1);
   },
 
@@ -143,6 +156,25 @@ export default Vue.extend({
 
       this.$gtm.push({
         event: GTM_EVENTS_MAP.beginCheckout,
+        ecommerce: {
+          items
+        }
+      });
+    },
+
+    gtmCheckoutFinalDetailsEvent() {
+      const items = this.getCart.map((item) => ({
+        item_name: item.offer_title,
+        item_id: item.offer_real_id,
+        price: item.price,
+        item_brand: 'myflowers',
+        item_category: item.category_name,
+        item_variant: item.title,
+        quantity: item.quantity
+      }));
+
+      this.$gtm.push({
+        event: GTM_EVENTS_MAP.checkout2,
         ecommerce: {
           items
         }

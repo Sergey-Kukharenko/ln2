@@ -229,7 +229,7 @@ const CONSTRUCTOR_PACKAGE_COOKIE = 'constructor-package';
 const BONUS = 'bonus-receive';
 const EMAIL_DELAY = 2000;
 
-const BASKET_TOOLTIP = {
+const CART_TOOLTIP = {
   icon: 'dark-circle-question-mark',
   content: [
     {
@@ -350,7 +350,7 @@ export {
   SUBSCRIBE_VARIANTS,
   BONUS,
   EMAIL_DELAY,
-  BASKET_TOOLTIP,
+  CART_TOOLTIP,
   CONSTRUCTOR_BLOCK_TITLE,
   STRIPE_MOBILE_STATUS_DELAY,
   CHECKOUT_STEPS,

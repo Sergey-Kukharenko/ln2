@@ -2,6 +2,7 @@ import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
 import { CategoriesResponse } from '~/@types/api/categories';
 import { CategoryResponse } from '~/@types/api/category';
+import { useCategoriesMapper } from '~/helpers/useCategoriesMapper';
 
 export const state = () => ({
   category: {} as CategoryResponse,
@@ -53,7 +54,7 @@ export const actions = actionTree(
           field: 'categories',
           url: '/v1/categories/'
         });
-        commit('SET_CATEGORY_LIST', categories);
+        commit('SET_CATEGORY_LIST', useCategoriesMapper(categories));
       } catch (err) {
         console.error(err);
       }
@@ -63,5 +64,6 @@ export const actions = actionTree(
 
 export const getters = getterTree(state, {
   getCategory: (state) => state.category,
-  getCategories: (state) => state.categories
+  getCategories: (state) => state.categories,
+  getMenuCategories: (state) => state.categories.filter((category) => category.in_menu)
 });

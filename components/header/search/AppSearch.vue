@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import AppSearchBox from '~/components/header/search/AppSearchBox';
+import AppSearchBox from '~/components/header/search/AppSearchBox.vue';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 
 export default {

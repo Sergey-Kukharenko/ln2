@@ -28,7 +28,6 @@ export default {
     align-items: flex-start;
     padding: 7px 19.33px;
     margin: 0 -14px;
-    box-sizing: border-box;
   }
 
   &__icon {

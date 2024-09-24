@@ -155,7 +155,6 @@ export default {
   &__row {
     display: flex;
     background-color: #f7f7f7;
-    box-sizing: border-box;
 
     @include gt-sm {
       gap: 69px;
@@ -181,7 +180,6 @@ export default {
       &__top {
         display: flex;
         align-items: center;
-        box-sizing: border-box;
 
         @include gt-sm {
           height: 40px;

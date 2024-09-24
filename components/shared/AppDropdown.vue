@@ -52,7 +52,7 @@ export default {
     background: #fff;
     margin-top: 10px;
     border-radius: 0.5rem;
-    box-sizing: border-box;
+
     box-shadow: 0 0 10px 1px #d5d5d5;
   }
 }

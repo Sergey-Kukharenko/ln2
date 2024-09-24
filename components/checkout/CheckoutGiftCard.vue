@@ -6,7 +6,7 @@
       name="checkbox_1"
       initial-icon-name="checkbox-on-v2"
       align="center"
-      @change="handeCheckbox"
+      @change="handleCheckbox"
       ><span class="gift__checkbox-text"
         >Аdd a gift card <span class="gift__checkbox-price">(+2.99)</span></span
       ></app-checkbox
@@ -91,12 +91,13 @@ export default Vue.extend({
       }
 
       this.form.checkbox = 'checkbox_1';
-      this.handeCheckbox('checkbox_1');
+      this.handleCheckbox('checkbox_1');
     },
 
-    handeCheckbox: debounce(function (value) {
+    handleCheckbox: debounce(function (value) {
       const action = value ? 'addToCart' : 'removeFromCart';
       try {
+        this.$accessor.checkout.SET_PENDING_STATUS(true);
         this.onSubmit(action);
       } catch (err) {
         console.error(err);
@@ -112,14 +113,14 @@ export default Vue.extend({
     },
 
     onInput() {
+      this.$accessor.checkout.SET_PENDING_STATUS(true);
       if (this.form.message && !this.form.checkbox) {
         this.form.checkbox = 'checkbox_1';
-        this.handeCheckbox('checkbox_1');
+        this.handleCheckbox('checkbox_1');
       }
     },
 
     async onSubmit(action = 'addToCart') {
-      this.$accessor.checkout.SET_PENDING_STATUS(true);
       this.$cookies.remove(GIFT_CARD_COOKIE);
       await this.$accessor.cart[action]({ giftText: this.form.message, ...this.giftCardPayload });
       await this.$accessor.checkout.updateCheckout();
@@ -134,7 +135,7 @@ export default Vue.extend({
   flex-direction: column;
   background: $bg-green;
   border-radius: 12px;
-  box-sizing: border-box;
+
   gap: 12px;
 
   @include gt-sm {

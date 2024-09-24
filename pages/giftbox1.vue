@@ -1,15 +1,21 @@
 <template>
-  <div class="gift-box-page">
-    <app-gift-box :title="title" :text="text" />
+  <div class="gift-box-page-wrapper">
+    <div class="gift-box-page">
+      <app-gift-box :title="title" :text="text" />
+    </div>
+    <app-benefits :benefits="$options.BENEFITS" />
   </div>
 </template>
 
 <script>
+import AppBenefits from '~/components/AppBenefits.vue';
 import AppGiftBox from '~/components/AppGiftBox.vue';
+import benefits from '~/mocks/benefits';
 
 export default {
   name: 'GiftBoxPage1',
-  components: { AppGiftBox },
+  components: { AppBenefits, AppGiftBox },
+  BENEFITS: benefits,
   data() {
     return {
       title: "OOPS, IT'S EMPTY HERE...",

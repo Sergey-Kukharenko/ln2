@@ -1,8 +1,8 @@
 <template>
   <div>
-    <app-mobile-menu :list="$options.MENU" class="nested-group" @selectItem="onSelectItem" />
+    <app-mobile-menu class="nested-group" @selectItem="onSelectItem" />
     <app-drawer-nested :visible="isVisible" :title="title" @close="close">
-      <app-mobile-sub-menu v-bind="{ title }" @close="close" />
+      <app-mobile-sub-menu v-bind="{ currentItem }" @close="close" />
     </app-drawer-nested>
   </div>
 </template>
@@ -11,7 +11,6 @@
 import AppDrawerNested from '~/components/header/mobile/AppDrawerNested.vue';
 import AppMobileMenu from '~/components/header/mobile/AppMobileMenu.vue';
 import AppMobileSubMenu from '~/components/header/mobile/AppMobileSubMenu.vue';
-import { mobileNavbar } from '~/data/nav-bar';
 
 export default {
   name: 'AppHeaderMobileMenu',
@@ -31,11 +30,9 @@ export default {
     };
   },
 
-  MENU: mobileNavbar,
-
   computed: {
     currentItem() {
-      return mobileNavbar[this.selected];
+      return this.$accessor.category.getMenuCategories[this.selected];
     },
 
     isSubLevel() {
@@ -44,10 +41,6 @@ export default {
 
     title() {
       return this.currentItem.title;
-    },
-
-    list() {
-      return this.currentItem.list;
     }
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <basket-button size="large" :stretch="true" :class="{ disabled }" @click="$emit('submit')">
+  <cart-button size="large" :stretch="true" :class="{ disabled }" @click="$emit('submit')">
     <div class="checkout__submit-template">
       <div v-if="disabled" class="checkout__submit-loading">
         <span>Loading </span>
@@ -10,7 +10,7 @@
         £ {{ price.totalSum }} <span>• {{ price.deliveryAmount }} delivery</span>
       </div>
     </div>
-  </basket-button>
+  </cart-button>
 </template>
 
 <script>

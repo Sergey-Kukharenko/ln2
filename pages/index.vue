@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="main-page" :class="mainPageModifiers">
     <!--Временно скрыт-->
     <!--<app-trustbox v-if="$device.isMobileOrTablet" class="trustbox" />-->
     <app-promotions :promotions="$options.PROMOTIONS" />
@@ -47,6 +47,7 @@
 <script>
 import Vue from 'vue';
 
+import AppSectionSm from '@/components/shared/AppSectionSm.vue';
 import AppBenefits from '~/components/AppBenefits.vue';
 import AppFaq from '~/components/AppFaq.vue';
 import AppInfo from '~/components/AppInfo.vue';
@@ -77,10 +78,10 @@ export default Vue.extend({
     AppPopularCategories,
     AppPromotions,
     AppSeo,
+    AppSectionSm,
     // AppTrustbox: () => import('~/components/ui/AppTrustbox.vue'),
     AppNotice: () => import('@/components/shared/AppNotice.vue'),
-    AppSection: () => import('@/components/shared/AppSection.vue'),
-    AppSectionSm: () => import('@/components/shared/AppSectionSm.vue')
+    AppSection: () => import('@/components/shared/AppSection.vue')
   },
   mixins: [gtm],
 
@@ -159,17 +160,29 @@ export default Vue.extend({
 
     seoDescription() {
       return info.seo?.description;
+    },
+
+    mainPageModifiers() {
+      const { query } = this.$route;
+      const selectors = [];
+
+      if (query.sort === 'regions') {
+        selectors.push('main-page--regions-sort');
+      } else {
+        selectors.push('main-page--default-sort');
+      }
+
+      return selectors;
     }
   },
 
   methods: {
-    getDataByDevice(obj, limit = null) {
+    getDataByDevice(obj, limit = 7) {
       const copyObj = useDeepCopyObject(obj);
-      const PAGE_LIMIT = limit || 7;
       const list = copyObj?.list || [];
-      const isAvalible = this.$device.isMobileOrTablet && list.length === PAGE_LIMIT;
+      const isAvailable = this.$device.isMobileOrTablet && list.length === limit;
 
-      if (isAvalible) {
+      if (isAvailable) {
         list.pop();
       }
 
@@ -183,71 +196,105 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-main {
-  @include lt-md {
-    display: flex;
-    flex-direction: column;
+.main-page {
+  display: flex;
+  flex-direction: column;
 
-    .trustbox {
-      margin: 12px auto;
-    }
+  > * {
+    width: 100%;
+  }
 
-    .promotion {
-      order: 0;
-    }
+  &--default-sort {
+    @include lt-md {
+      $selectors: (
+        promotion,
+        constructor,
+        under-pounds,
+        shop-by-price,
+        letterbox-bouquets,
+        special-offers,
+        popular-categories,
+        base-roses,
+        new-bouquets,
+        trendy-bouquets,
+        recipient,
+        benefits,
+        pick-bouquet,
+        faq,
+        info,
+        seo
+      );
 
-    .constructor {
-      order: 1;
-    }
-
-    .special-offers {
-      order: 2;
-    }
-
-    .shop-by-price {
-      order: 3;
-    }
-    .base-roses {
-      order: 4;
-    }
-
-    .under-pounds {
-      order: 5;
-    }
-    .popular-categories {
-      order: 6;
-    }
-
-    .new-bouquets {
-      order: 7;
-    }
-
-    .letterbox-bouquets {
-      order: 8;
-    }
-
-    .trendy-bouquets {
-      order: 9;
-    }
-
-    .recipient,
-    .reviews,
-    .autumn-collection,
-    .benefits,
-    .pick-bouquet,
-    .discount,
-    .faq,
-    .info,
-    .seo {
-      order: 10;
+      @each $selector in $selectors {
+        $i: index($selectors, $selector);
+        .#{$selector} {
+          order: $i;
+        }
+      }
     }
   }
 
-  > section,
-  > .layout {
+  &--regions-sort {
+    @include gt-sm {
+      $selectors: (
+        promotion,
+        popular-categories,
+        constructor,
+        under-pounds,
+        shop-by-price,
+        letterbox-bouquets,
+        special-offers,
+        recipient,
+        base-roses,
+        new-bouquets,
+        trendy-bouquets,
+        benefits,
+        pick-bouquet,
+        faq,
+        info,
+        seo
+      );
+
+      @each $selector in $selectors {
+        $i: index($selectors, $selector);
+        .#{$selector} {
+          order: $i;
+        }
+      }
+    }
+
     @include lt-md {
-      width: 100%;
-      box-sizing: border-box;
+      $selectors: (
+        promotion,
+        constructor,
+        under-pounds,
+        shop-by-price,
+        letterbox-bouquets,
+        special-offers,
+        popular-categories,
+        recipient,
+        base-roses,
+        new-bouquets,
+        trendy-bouquets,
+        benefits,
+        pick-bouquet,
+        faq,
+        info,
+        seo
+      );
+
+      @each $selector in $selectors {
+        $i: index($selectors, $selector);
+        .#{$selector} {
+          order: $i;
+        }
+      }
+    }
+  }
+
+  @include lt-md {
+    .trustbox {
+      margin: 12px auto;
     }
   }
 }

@@ -1,13 +1,13 @@
 <template>
   <div :class="classNames">
-    <div v-for="(section, index) in sections" :key="index" class="item">
+    <div v-for="(section, title) in sections" :key="title" class="item">
       <div class="section__header header">
         <div class="header__title">
-          {{ section.title }}
+          {{ title }}
         </div>
       </div>
       <div class="section__list list">
-        <div v-for="(item, idx) in section.list" :key="idx" class="list__item" @click="$emit('open-menu-item', item)">
+        <div v-for="(item, idx) in section" :key="idx" class="list__item" @click="$emit('open-menu-item', item)">
           <span>
             {{ item.title }}
           </span>
@@ -26,8 +26,8 @@ export default {
 
   props: {
     sections: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => {}
     }
   },
 

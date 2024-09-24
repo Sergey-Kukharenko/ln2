@@ -19,7 +19,7 @@
         <div class="header">
           <!--Временно скрыт-->
           <!-- <app-badge theme="red" size="xs" class="header__badge"> - 30% </app-badge> -->
-          <app-like-icon :like="like" class="header__like" @click="toggleLike" />
+          <!-- <app-like-icon :like="like" class="header__like" @click="toggleLike" />-->
         </div>
         <app-card-link :slug="getProductSlug" :is-product-page="isProductPage">
           <app-image
@@ -85,7 +85,6 @@ import AppCardLink from './AppCardLink.vue';
 import AppCardTag from '~/components/shared/AppCardTag.vue';
 import AppCardTags from '~/components/shared/AppCardTags.vue';
 import AppImage from '~/components/shared/AppImage.vue';
-import AppLikeIcon from '~/components/shared/AppLikeIcon.vue';
 import { PRODUCT_CARD_IMAGE_SIZE } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
@@ -97,7 +96,6 @@ export default Vue.extend({
   name: 'AppCard',
 
   components: {
-    AppLikeIcon,
     AppCardTag,
     AppCardTags,
     AppCardColorsList: () => import('~/components/shared/AppCardColorsList.vue'),
@@ -368,7 +366,6 @@ export default Vue.extend({
     justify-content: space-between;
     position: relative;
     border-radius: 12px;
-    box-sizing: border-box;
 
     @include gt-sm {
       height: 254px;
@@ -422,7 +419,6 @@ export default Vue.extend({
     & .rating {
       min-height: 20px;
       padding: 2px 6px 2px 8px;
-      box-sizing: border-box;
 
       &__text {
         font-size: 10px;
@@ -576,7 +572,7 @@ export default Vue.extend({
 
   @include gt-sm {
     min-height: 22px;
-    box-sizing: border-box;
+
     padding: 3px 10px 3px 12px;
   }
 
@@ -640,7 +636,7 @@ export default Vue.extend({
     right: -17px;
     clip: rect(11px, 10px, auto, auto);
     border: 3px solid #fff;
-    box-sizing: border-box;
+
     border-radius: 50%;
 
     @include gt-sm {

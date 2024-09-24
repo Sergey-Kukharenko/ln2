@@ -8,6 +8,7 @@ module.exports = {
   parserOptions: {
     parser: '@typescript-eslint/parser'
   },
+  ignorePatterns: ['**/static/**/*.js'],
   extends: [
     '@nuxtjs/eslint-config-typescript',
     '@nuxtjs',

@@ -57,7 +57,7 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   padding: 24px;
-  box-sizing: border-box;
+
   border-radius: 24px;
 
   flex: 1;

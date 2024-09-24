@@ -41,7 +41,6 @@ export default {
 
 <style lang="scss" scoped>
 .checkout-pane {
-  box-sizing: border-box;
   width: 100%;
   font-family: $golos-regular;
   font-size: 14px;

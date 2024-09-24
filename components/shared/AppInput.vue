@@ -170,7 +170,7 @@ export default {
     line-height: inherit;
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
+
     padding: 0;
 
     @include placeholder {
@@ -193,7 +193,6 @@ export default {
     gap: 16px;
     align-items: center;
 
-    box-sizing: border-box;
     background: $bg-grey;
     color: $color-white-grey;
     border-radius: 12px;

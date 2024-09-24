@@ -50,7 +50,6 @@ export default Vue.extend({
 
   @include lt-lg {
     padding: 0 8px 16px;
-    box-sizing: border-box;
   }
 }
 </style>

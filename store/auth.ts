@@ -122,6 +122,9 @@ export const actions = actionTree(
           '/v1/auth/check-verification-code/',
           payload
         );
+        // вернуть
+        // const { token, is_new_user: isNewUser } = data;
+
         // Надо убрать
         data.is_new_user = true;
         const { token, is_new_user: isNewUser } = data;
@@ -153,8 +156,8 @@ export const actions = actionTree(
       try {
         this.app.$http.$get('/v1/user/logout/');
         this.app.$cookies.remove(AUTH_SMS_COOKIE);
-        commit('auth/SET_AUTH_TOKEN', false);
-        commit('auth/SET_AUTH_STATUS', false);
+        commit('SET_AUTH_TOKEN', false);
+        commit('SET_AUTH_STATUS', false);
       } catch (err) {
         console.error(err);
       }

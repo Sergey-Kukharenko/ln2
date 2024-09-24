@@ -37,7 +37,6 @@ export default {
   border-radius: 10px;
   height: 48px;
   padding: 0 18px;
-  box-sizing: border-box;
 
   &.is_gray {
     background: #f7f7f7;

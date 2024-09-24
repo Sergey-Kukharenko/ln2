@@ -37,7 +37,7 @@ export default {
   },
 
   babel: {
-    presets(env, [preset, options]) {
+    presets(_env, [_preset, options]) {
       return [['@babel/preset-env', options]];
     }
   }

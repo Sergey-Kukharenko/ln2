@@ -101,7 +101,6 @@ export default {
   align-items: center;
   gap: 4px;
 
-  box-sizing: border-box;
   border: none;
   outline: none;
 
@@ -163,7 +162,6 @@ export default {
   &--size-small {
     min-width: 102px;
     padding: 0 8px;
-    box-sizing: border-box;
 
     font-size: 14px;
     line-height: 20px;

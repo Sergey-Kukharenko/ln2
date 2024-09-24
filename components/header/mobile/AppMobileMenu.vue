@@ -28,10 +28,9 @@ export default {
 
   inject: ['closeMenu'],
 
-  props: {
-    list: {
-      type: Array,
-      default: () => []
+  computed: {
+    list() {
+      return this.$accessor.category.getMenuCategories ?? [];
     }
   },
 

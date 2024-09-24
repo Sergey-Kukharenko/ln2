@@ -88,7 +88,6 @@ export default {
   @include gt-sm {
     width: 500px;
     padding-top: 18px;
-    box-sizing: border-box;
   }
 
   &__layout {

@@ -65,7 +65,6 @@ export default {
       bottom: 0;
       margin: auto;
       border-radius: 50%;
-      box-sizing: border-box;
     }
 
     &:before {

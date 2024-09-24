@@ -89,6 +89,12 @@ export default {
             i.parentNode.insertBefore(n, i);
         })(window, document, 'script', '//bat.bing.com/bat.js', 'uetq');
      `
+    },
+    {
+      type: 'text/javascript',
+      src: '/script/smart-script.js'
+      // hid: 'smart-script',
+      // src: resolve(__dirname, '../assets/script/smart-script.js')
     }
   ],
 

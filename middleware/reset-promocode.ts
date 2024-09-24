@@ -1,7 +1,7 @@
 import { Middleware } from '@nuxt/types';
 
 const resetPromocodeMiddleware: Middleware = async ({ app: { $accessor }, route }) => {
-  const unusedRoutes = ['basket', 'checkout', 'order-id'];
+  const unusedRoutes = ['cart', 'checkout', 'order-id'];
 
   if (route?.name && unusedRoutes.includes(route.name)) {
     return;

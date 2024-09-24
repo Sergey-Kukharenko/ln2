@@ -1,7 +1,7 @@
 <template>
   <div>
-    <app-mobile-list v-if="isList" :list="currSection" @open-menu-item="handleClick" />
-    <app-mobile-section v-else :sections="currSection" @open-menu-item="handleClick" />
+    <app-mobile-list v-if="isList" :list="currentItem.list[0]" @open-menu-item="handleClick" />
+    <app-mobile-section v-else :sections="currentItem.list" @open-menu-item="handleClick" />
   </div>
 </template>
 
@@ -22,23 +22,15 @@ export default Vue.extend({
   inject: ['closeMenu'],
 
   props: {
-    title: {
-      type: String,
-      default: ''
+    currentItem: {
+      type: Object,
+      default: () => ({})
     }
   },
 
   computed: {
     isList() {
-      return !this.currSection?.some((el) => el.list);
-    },
-
-    sectionName() {
-      return this.title.toLowerCase().split(' ').join('-');
-    },
-
-    currSection() {
-      return this.$accessor.category.getCategories?.[this.sectionName];
+      return Array.isArray(this.currentItem?.list);
     }
   },
 

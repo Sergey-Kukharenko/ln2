@@ -50,11 +50,8 @@
             </li>
           </ul>
         </div>
-        <div v-if="isManualModeLinkVisible" class="delivery-details__address-mode" @click="onManualModeClick">
-          {{ $options.ADDRESS_MANUALLY_TEXT }}
-        </div>
-        <div v-if="manualMode" class="delivery-details__address-mode" @click="onSearchModeClick">
-          {{ $options.ADDRESS_SEARCH_TEXT }}
+        <div v-if="isAddressTextVisible" class="delivery-details__address-mode" @click="addressSearchText.event">
+          {{ addressSearchText.label }}
         </div>
         <transition>
           <div v-if="isFullAddressFormVisible" class="delivery-details__extra-fields">
@@ -176,8 +173,8 @@ export default Vue.extend({
         error: ''
       },
 
+      isManualMode: true,
       isManualBtnVisible: false,
-      manualMode: false,
 
       suggestions: [],
       hadSuggestions: false,
@@ -201,31 +198,38 @@ export default Vue.extend({
     },
 
     isFullAddressFormVisible() {
-      return this.manualMode || this.addressForm.postalCode;
+      return this.isManualMode || this.addressForm.postalCode;
     },
 
     isSuggestionsExist() {
-      return this.suggestions.length && !this.manualMode;
+      return this.suggestions.length && !this.isManualMode;
     },
 
     isSearchCloseIconVisible() {
       return this.addressForm.address1 && this.isSearchInputFocused && this.$device.isMobileOrTablet;
     },
 
-    isManualModeLinkVisible() {
-      return !this.manualMode;
+    addressSearchText() {
+      return this.isManualMode
+        ? { label: ADDRESS_SEARCH_TEXT, event: () => this.onSearchModeClick() }
+        : { label: ADDRESS_MANUALLY_TEXT, event: () => this.onManualModeClick() };
     },
 
     searchInputPlaceholder() {
-      return this.manualMode ? SEARCH_INPUT_PLACEHOLDER.manual : SEARCH_INPUT_PLACEHOLDER.search;
+      return this.isManualMode ? SEARCH_INPUT_PLACEHOLDER.manual : SEARCH_INPUT_PLACEHOLDER.search;
     },
 
     isSearchIconVisible() {
-      return !this.addressForm.address1 && !this.manualMode;
+      return !this.addressForm.address1 && !this.isManualMode;
     },
 
     existAddressOrPostalCode() {
       return this.addressForm.address1 || this.addressForm.postalCode;
+    },
+
+    isAddressTextVisible() {
+      // TODO: Временно, позже успешного прохождения АБ теста будет замена на реальный признак
+      return false;
     }
   },
 
@@ -273,13 +277,13 @@ export default Vue.extend({
 
     onSearchModeClick() {
       this.isManualBtnVisible = true;
-      this.manualMode = false;
+      this.isManualMode = false;
       this.addressForm.address1 = '';
     },
 
     onManualModeClick() {
       this.isManualBtnVisible = false;
-      this.manualMode = true;
+      this.isManualMode = true;
       this.addressForm.address1 = '';
       this.addressForm.address2 = '';
       this.addressForm.postalCode = '';
@@ -324,7 +328,7 @@ export default Vue.extend({
     onTypingAddress: debounce(async function (value) {
       this.addressForm.address1 = value;
 
-      if (this.manualMode) {
+      if (this.isManualMode) {
         this.prepareManualForm();
 
         return;
@@ -438,7 +442,7 @@ export default Vue.extend({
         this.addressForm[field] = value;
       }
 
-      if (this.manualMode) {
+      if (this.isManualMode) {
         this.addressForm.longitude = null;
         this.addressForm.latitude = null;
       }
@@ -524,7 +528,6 @@ export default Vue.extend({
     border: 1px solid #f7f7f7;
     border-top: none;
     border-radius: 0 0 10px 10px;
-    box-sizing: border-box;
 
     @include lt-md {
       max-height: 220px;

@@ -65,7 +65,6 @@ export default {
   border-radius: 10px;
   font-family: $golos-bold;
   padding: 6px 10px;
-  box-sizing: border-box;
 
   &__icon {
     width: 13.33px;

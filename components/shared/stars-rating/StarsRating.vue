@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import StarIcon from './StarIcon';
+import StarIcon from './StarIcon.vue';
 
 export default {
   name: 'StarsRating',

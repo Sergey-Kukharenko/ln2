@@ -67,7 +67,6 @@ export default {
     background: $bg-grey;
     border-radius: 10px;
     padding: 11px 2px;
-    box-sizing: border-box;
   }
 
   &--outline {

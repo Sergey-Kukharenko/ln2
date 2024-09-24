@@ -26,7 +26,7 @@ export default {
   margin: auto;
   background: rgba(1, 8, 16, 0.3);
   backdrop-filter: blur(4px);
-  box-sizing: border-box;
+
   border-radius: 36px;
 
   &__icon {

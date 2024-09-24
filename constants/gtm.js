@@ -5,6 +5,7 @@ const GTM_EVENTS_MAP = Object.freeze({
   addToCart: 'add_to_cart',
   removeFromCart: 'remove_from_cart',
   beginCheckout: 'begin_checkout',
+  checkout2: 'checkout2',
   purchase: 'purchase',
   userData: 'user_data'
 });

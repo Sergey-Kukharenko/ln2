@@ -1,8 +1,11 @@
+import { format } from 'date-fns';
+
 import { IMG_SIZES_MAP } from '../constants/image-sizes';
 import { useSizedImage } from '../helpers';
 
 import env from './env';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
 
 const getHttpEndpoint = async (path) => {
@@ -35,7 +38,7 @@ const getProducts = (link, token, limit = 999) =>
   });
 
 const exclude = [
-  '/basket',
+  '/cart',
   '/not-found',
   '/checkout',
   '/signin/**',
@@ -65,7 +68,7 @@ export default {
           return;
         }
 
-        acc.push({ url: `${env.domainName}/${item.prefix}/${item.slug}` });
+        acc.push({ url: `/${item.prefix}/${item.slug}` });
       };
 
       const groupByList = (list) => {
@@ -105,11 +108,13 @@ export default {
       .map((link) => getProducts(link, token));
 
     const products = await Promise.all(actions);
-    const productLinks = products.flat().map((p) => ({ ...p, url: `${env.domainName}/product/${p.slug}` }));
+    const productLinks = products.flat().map((p) => ({ ...p, url: `/product/${p.slug}` }));
 
     return Array.from(new Set([].concat(productLinks, topRouteLinks))).map((p) => {
       const item = {
         url: p.url,
+        lastmod: format(new Date(), 'yyyy-MM-dd'),
+        changefreq: 'weekly',
         priority: 0.6
       };
 
@@ -128,12 +133,14 @@ export default {
 
   filter({ routes }) {
     return routes.map((route) => {
-      return route.priority
-        ? route
-        : {
-            url: route.url,
-            priority: route.url === '/' ? 1 : 0.6
-          };
+      const fields = {
+        url: route.url,
+        lastmod: format(new Date(), 'yyyy-MM-dd'),
+        changefreq: 'weekly',
+        priority: route.url === '/' ? 1 : 0.6
+      };
+
+      return route.priority ? route : fields;
     });
   }
 };

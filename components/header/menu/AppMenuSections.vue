@@ -1,7 +1,7 @@
 <template>
   <div class="sections">
-    <div v-for="(item, idx) in section" :key="idx" class="sections__item">
-      <slot v-bind="{ ...item }"></slot>
+    <div v-for="(list, title) in section" :key="title" class="sections__item">
+      <slot v-bind="{ list, title }"></slot>
     </div>
   </div>
 </template>
@@ -12,8 +12,8 @@ export default {
 
   props: {
     section: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => ({})
     }
   }
 };

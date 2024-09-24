@@ -62,7 +62,6 @@ export default {
   }
 
   @include lt-md {
-    box-sizing: border-box;
     position: absolute;
     z-index: 4;
     width: 100%;

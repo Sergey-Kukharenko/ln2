@@ -38,7 +38,6 @@ export default {
   justify-content: space-between;
   height: 56px;
   width: 100vw;
-  box-sizing: border-box;
   padding: 10px 5px;
   top: 0px;
   position: fixed;

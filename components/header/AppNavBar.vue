@@ -3,7 +3,7 @@
     <div class="layout layout--horizontal-dt">
       <div class="navbar-list">
         <div class="navbar-list__item">
-          <app-menu :list="$options.NAVBAR" />
+          <app-menu />
         </div>
         <div class="navbar-list__item content">
           <!--Временно скрыт-->
@@ -28,7 +28,6 @@
 import AppCall from '@/components/header/AppCall.vue';
 import AppCart from '@/components/header/AppCart.vue';
 import AppMenu from '~/components/header/menu/AppMenu.vue';
-import { desktopNavbar } from '~/data/nav-bar';
 // import AppSearch from '~/components/header/search/AppSearch.vue';
 
 export default {
@@ -39,9 +38,7 @@ export default {
     // AppSearch,
     AppCart,
     AppCall
-  },
-
-  NAVBAR: desktopNavbar
+  }
 };
 </script>
 

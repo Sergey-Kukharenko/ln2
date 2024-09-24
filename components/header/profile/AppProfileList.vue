@@ -67,7 +67,7 @@ export default Vue.extend({
   methods: {
     async logout() {
       await this.$accessor.auth.logout();
-      location.reload();
+      // location.reload();
     }
   }
 });

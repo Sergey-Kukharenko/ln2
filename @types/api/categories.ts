@@ -1,18 +1,31 @@
-type CategoryName = 'flowers' | 'trending' | 'recipient' | 'occasions' | 'roses' | 'gifts' | 'sales';
+type CategoryName =
+  | 'Flowers'
+  | 'Letterbox flowers'
+  | 'Occasions'
+  | 'Roses'
+  | 'Gifts'
+  | 'Birthday'
+  | 'Trending'
+  | 'Sales';
 
-interface SubCategory {
-  title?: string;
-  prefix?: string;
+type CategoryPart = {
+  prefix: string;
   slug: string;
-  is_best?: boolean;
-  icon?: Nullable<string>;
-}
+};
 
-interface MainCategory {
+type SubCategory = {
   title: string;
-  list: SubCategory[];
-}
+  is_best: boolean;
+  icon: Nullable<string>;
+} & CategoryPart;
 
-type Category = MainCategory[] | SubCategory[] | SubCategory;
+type SubCategoryWithKey = Record<string, SubCategory[]>;
 
-export type CategoriesResponse = Record<CategoryName, Category>;
+type MainCategory = {
+  title: CategoryName;
+  list?: [SubCategory[]] | SubCategoryWithKey;
+  in_menu: boolean;
+} & Omit<SubCategory, 'is_best' | 'title'> &
+  Partial<CategoryPart>;
+
+export type CategoriesResponse = MainCategory[];

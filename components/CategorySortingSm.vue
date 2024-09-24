@@ -67,7 +67,6 @@ export default {
   }
 
   @include lt-lg {
-    box-sizing: border-box;
     padding: 8px 6px 8px 16px;
     position: fixed;
     z-index: 1000;
@@ -83,7 +82,6 @@ export default {
     &__scroll {
       width: 100%;
       overflow: auto;
-      box-sizing: border-box;
       position: fixed;
       left: 0;
       bottom: 0;

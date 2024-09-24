@@ -237,7 +237,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       user-select: none;
-      box-sizing: border-box;
+
       padding: 0 12px;
       height: 32px;
       flex: 1;

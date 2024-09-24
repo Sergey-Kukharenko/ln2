@@ -230,7 +230,6 @@ export default Vue.extend({
   outline: none;
   border: none;
   border-radius: 10px;
-  box-sizing: border-box;
 
   @include gt-sm {
     padding: 0 16px;

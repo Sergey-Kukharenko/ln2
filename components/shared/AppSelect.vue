@@ -128,7 +128,6 @@ export default {
 <style lang="scss" scoped>
 .app-select {
   position: relative;
-  box-sizing: border-box;
 
   &__field {
     display: flex;
@@ -136,7 +135,6 @@ export default {
     align-items: center;
     justify-content: space-between;
 
-    box-sizing: border-box;
     background: $bg-grey;
     color: $color-white-grey;
     border-radius: 12px;
@@ -160,7 +158,6 @@ export default {
     align-items: center;
     justify-content: center;
 
-    box-sizing: border-box;
     min-width: 102px;
     height: 36px;
     padding: 0 8px;
@@ -197,7 +194,7 @@ export default {
     z-index: 1;
     height: fit-content;
     max-height: 228px;
-    box-sizing: border-box;
+
     background-color: #ffffff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
     border-radius: 10px;
@@ -270,7 +267,6 @@ export default {
     overflow: auto;
     max-height: 212px;
     padding-right: 24px;
-    box-sizing: border-box;
 
     @include lt-lg {
       position: fixed;

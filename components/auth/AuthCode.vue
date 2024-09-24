@@ -101,8 +101,8 @@ export default Vue.extend({
       return `Sent to ${receiver}`;
     },
 
-    isFromBasket() {
-      return this.$route.query.from === 'basket';
+    isFromCart() {
+      return this.$route.query.from === 'cart';
     }
   },
 
@@ -173,7 +173,7 @@ export default Vue.extend({
 
         this.code = code;
 
-        if (this.isFromBasket) {
+        if (this.isFromCart) {
           const { phone, name } = this.$accessor.auth.receiver;
 
           await this.$accessor.checkout.createOrder({ phone, name });

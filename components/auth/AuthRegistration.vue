@@ -71,7 +71,7 @@
           </div>
           <user-subscribe />
           <app-button stretch="full" class="form__button" :loading="loading" :disabled="isInvalidForm">
-            <template v-if="loading"><app-loading-dots /></template>
+            <app-loading-dots v-if="loading" />
             <template v-else> Sign up</template>
           </app-button>
         </form>

@@ -29,20 +29,17 @@ export const state = () => ({
 export const actions = actionTree(
   { state },
   {
-    async nuxtServerInit({ commit }, { app: { $accessor } }) {
+    async nuxtServerInit({ commit }, { app: { $accessor }, $cookies }) {
       try {
         await $accessor.auth.fetchSessionToken();
-        await Promise.allSettled([
-          $accessor.cart.fetchCart(),
-          $accessor.favorites.fetchFavorites(),
-          $accessor.layout.fetchLayout()
-        ]);
+        await Promise.allSettled([$accessor.cart.fetchCart(), $accessor.layout.fetchLayout()]);
 
-        const isAuthorized = this.app.$cookies.get(AUTH_SMS_COOKIE);
+        const isAuthorized = $cookies.get(AUTH_SMS_COOKIE);
 
         if (isAuthorized) {
           commit('auth/SET_AUTH_STATUS', true);
           $accessor.user.fetchUser();
+          $accessor.favorites.fetchFavorites();
         }
       } catch (e) {
         console.error(e);

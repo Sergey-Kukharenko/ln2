@@ -70,7 +70,6 @@ export default {
       line-height: 16px;
       padding: 8px 6px;
       margin: 0 auto;
-      box-sizing: border-box;
     }
   }
 

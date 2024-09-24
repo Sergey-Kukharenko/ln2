@@ -31,8 +31,8 @@
   </div>
 </template>
 <script>
-import AppLike from '@/components/shared/AppLike';
-import AppStars from '@/components/shared/AppStars';
+import AppLike from '@/components/shared/AppLike.vue';
+import AppStars from '@/components/shared/AppStars.vue';
 
 export default {
   name: 'AppReviewsList',

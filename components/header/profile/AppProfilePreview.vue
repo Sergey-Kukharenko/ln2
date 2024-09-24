@@ -32,7 +32,6 @@ export default {
   @include lt-md {
     width: 242px;
     padding: 8px 0;
-    box-sizing: border-box;
   }
 }
 </style>

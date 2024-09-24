@@ -82,8 +82,6 @@ export default {
   &__item {
     position: relative;
     background: #fff2d5;
-
-    box-sizing: border-box;
     overflow: hidden;
 
     @include gt-sm {

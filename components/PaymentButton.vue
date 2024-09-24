@@ -179,9 +179,8 @@ export default Vue.extend({
     this.queueAction = '';
 
     this.removePaymentError();
-
-    this.setDefaultPaymentMethod();
     // this.$nuxt.$off('set-email-status', this.setEmailStatus);
+
   },
 
   methods: {

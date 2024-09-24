@@ -31,7 +31,7 @@ export default {
   display: inline-block;
   border-top: 3px solid #26ad4f;
   border-right: 3px solid transparent;
-  box-sizing: border-box;
+
   animation: rotation 1s linear infinite;
 }
 </style>

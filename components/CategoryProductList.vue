@@ -102,13 +102,21 @@ export default Vue.extend({
 
       this.loading = true;
 
+      const { orderBy = '', orderDirection = '' } = this.$route.query;
+
+      const queryParams = {
+        order_by: orderBy,
+        order_direction: orderDirection
+      };
+
       const payload = {
         type: this.type.toLocaleLowerCase(),
         isConcated: isShowMore,
         slug: this.$route.params.slug,
         params: {
           page,
-          limit: PAGINATION.limit
+          limit: PAGINATION.limit,
+          ...queryParams
         }
       };
 
@@ -116,7 +124,7 @@ export default Vue.extend({
 
       this.loading = false;
       this.$router.push({
-        query: { page }
+        query: { page, orderBy, orderDirection }
       });
       if (paginationButton) {
         this.scrollToTop();

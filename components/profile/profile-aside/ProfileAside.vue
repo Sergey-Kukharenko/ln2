@@ -65,6 +65,10 @@ export default {
         label: 'Total',
         value: '£ ' + this.orderDetails.totalCost
       };
+    },
+
+    status() {
+      return this.orderDetails.status;
     }
   }
 };

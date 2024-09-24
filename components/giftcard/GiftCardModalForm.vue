@@ -110,7 +110,6 @@ export default {
 
 <style lang="scss" scoped>
 .giftcard-form {
-  box-sizing: border-box;
   width: 100%;
   position: relative;
 
@@ -178,7 +177,7 @@ export default {
     @include lt-md {
       margin-top: 12px;
       width: 100%;
-      box-sizing: border-box;
+
       padding: 16px 0;
     }
   }

@@ -37,15 +37,20 @@ export const actions = actionTree(
       }
     },
 
-    async addToCart({ state, commit }, { productId, positionSlug, giftText = null }) {
-      const isCartEmpty = !state.cart.positions.length;
+    async addToCart({ state, commit }, { productId, positionSlug, quantity = 1, giftText = null }) {
+      const isCartEmpty = !state.cart.positions?.length;
 
       try {
         if (isCartEmpty) {
           commit('SET_PENDING_STATUS', true);
         }
 
-        const payload = giftText ? { gift_card_text: giftText } : '';
+        const payload: Record<string, unknown> = { quantity };
+
+        if (giftText) {
+          payload.gift_card_text = giftText;
+        }
+
         const { data } = await this.app.$http.$post<CartResponse>(`/v1/basket/${productId}/${positionSlug}`, payload);
         commit('SET_CART', data);
       } catch (e) {
@@ -56,7 +61,7 @@ export const actions = actionTree(
     },
 
     async addToCartConstructor({ state, commit }, payload) {
-      const isCartEmpty = !state.cart.positions.length;
+      const isCartEmpty = !state.cart.positions?.length;
 
       try {
         if (isCartEmpty) {

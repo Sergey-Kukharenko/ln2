@@ -68,7 +68,6 @@ export default {
     text-align: center;
     border: 1px solid #eaeaea;
     border-radius: 10px;
-    box-sizing: border-box;
   }
 }
 

@@ -10,7 +10,7 @@
       </div>
       <div class="payment__variants">
         <div v-for="(variant, index) in $options.DATA_PAYMENT" :key="index" class="payment__variant">
-          <img :src="variant.path" alt="" class="payment__variant-icon" />
+          <img :src="variant.path" alt="payment__variants" class="payment__variant-icon" />
         </div>
       </div>
       <nuxt-link :to="$options.ALL_CATEGORIES_BUTTON.path" class="payment__button">

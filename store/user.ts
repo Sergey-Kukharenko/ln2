@@ -7,7 +7,7 @@ import SEARCH_HISTORY_MOCK from '~/mocks/search';
 
 export const state = () => ({
   searchHistory: SEARCH_HISTORY_MOCK as SearchHistory[],
-  user: { name: '', phone: '123', email: 'chupapi@gmail.com' } as UserResponse['user'] | null,
+  user: { name: '', phone: '', email: '' } as UserResponse['user'] | null,
   recipient: null as Recipient | null
 });
 

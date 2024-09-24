@@ -78,7 +78,6 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);
-  box-sizing: border-box;
 
   display: flex;
   flex-direction: row;
@@ -94,7 +93,7 @@ export default {
     background: #ffffff;
     border-radius: 10px;
     padding: 24px;
-    box-sizing: border-box;
+
     max-height: 80vh;
 
     @include lt-lg {

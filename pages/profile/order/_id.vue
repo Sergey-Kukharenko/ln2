@@ -38,6 +38,7 @@
           <profile-buttons-group />
         </div>
       </div>
+      <pre>{{ orderDetails.status }}</pre>
       <profile-aside v-if="$device.isDesktopOrTablet" :order-details="orderDetails" />
     </div>
   </div>

@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="product__leaves-desktop">
-        <basket-product-leaves v-if="leaves" v-model="leavesSwitch" />
+        <cart-product-leaves v-if="leaves" v-model="leavesSwitch" />
       </div>
       <div class="product__favorite-count">
         <div class="product__price-main">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import BasketProductLeaves from '~/components/BasketProductLeaves.vue';
+import CartProductLeaves from '~/components/CartProductLeaves.vue';
 import CheckoutProductCount from '~/components/checkout/CheckoutProductCount.vue';
 import CheckoutProductImage from '~/components/checkout/CheckoutProductImage.vue';
 import CheckoutProductPrice from '~/components/checkout/CheckoutProductPrice.vue';
@@ -58,7 +58,7 @@ export default {
   components: {
     CheckoutProductPrice,
     CheckoutProductCount,
-    BasketProductLeaves,
+    CartProductLeaves,
     CheckoutProductSize,
     CheckoutProductTitle,
     CheckoutProductImage,

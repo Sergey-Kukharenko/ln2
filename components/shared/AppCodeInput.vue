@@ -203,7 +203,6 @@ export default {
       background: #f7f7f7;
       border: 1px solid transparent;
       outline: none;
-      box-sizing: border-box;
       font-family: $golos-regular;
       text-align: center;
       color: #010810;

@@ -29,7 +29,7 @@ export default {
 <style lang="scss" scoped>
 .giftcard {
   background: #ebfaf0;
-  box-sizing: border-box;
+
   border-radius: 20px;
 
   @include gt-sm {

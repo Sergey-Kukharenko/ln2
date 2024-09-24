@@ -1,46 +1,50 @@
 <template>
-  <div class="layout layout-dt product-page">
-    <div class="product-page__row">
-      <div class="product-page__col">
-        <div v-if="isDiscountAvailable" class="product-page__discount"></div>
+  <div class="product-page-wrapper">
+    <div class="layout layout-dt product-page">
+      <div class="product-page__row">
+        <div class="product-page__col">
+          <div v-if="isDiscountAvailable" class="product-page__discount"></div>
 
-        <app-gallery :slides="sliderImages" :type-name="type_name" />
+          <app-gallery :slides="sliderImages" :type-name="type_name" />
 
-        <div class="additional-group" style="display: none">
-          <div v-if="sale" class="additional-group__item">
-            <app-badge theme="red" size="md"> Sale - 30% </app-badge>
-          </div>
-          <div v-if="rating" class="additional-group__item">
-            <app-badge-rate-reviews :rating="rating" :stars="1" :reviews="reviews" :options="{ theme: 'full' }" />
+          <div class="additional-group" style="display: none">
+            <div v-if="sale" class="additional-group__item">
+              <app-badge theme="red" size="md"> Sale - 30% </app-badge>
+            </div>
+            <div v-if="rating" class="additional-group__item">
+              <app-badge-rate-reviews :rating="rating" :stars="1" :reviews="reviews" :options="{ theme: 'full' }" />
+            </div>
           </div>
         </div>
+        <div class="product-page__col">
+          <h1 class="product-page__title">
+            {{ getProductTitle
+            }}<span v-if="isDiscountAvailable" class="product-page__title-additional"> +FREE chocolates</span>
+          </h1>
+          <app-form-offers v-if="!isListsPage" :product="getProduct" @setProductOffer="onSetProductOffer" />
+          <keep-alive v-else>
+            <app-form-lists :product="cardProductSettings" @update-discount="onUpdateDiscount" />
+          </keep-alive>
+          <app-service :description="getProductDescription" />
+        </div>
       </div>
-      <div class="product-page__col">
-        <h1 class="product-page__title">
-          {{ getProductTitle
-          }}<span v-if="isDiscountAvailable" class="product-page__title-additional"> +FREE chocolates</span>
-        </h1>
-        <app-form-offers v-if="!isListsPage" :product="getProduct" @setProductOffer="onSetProductOffer" />
-        <keep-alive v-else>
-          <app-form-lists :product="cardProductSettings" @update-discount="onUpdateDiscount" />
-        </keep-alive>
-        <app-service :description="getProductDescription" />
-      </div>
-    </div>
 
-    <div class="product-page__section">
-      <app-section v-if="isRecentlyViewed" :section="recentlyViewed" name="recently-viewed" />
+      <div class="product-page__section">
+        <app-section v-if="isRecentlyViewed" :section="recentlyViewed" name="recently-viewed" />
+      </div>
+      <div class="product-page__section">
+        <app-popular-categories-items v-if="isPopularCategoriesItems" :popular="popularCategoriesItems" />
+      </div>
+      <app-seo v-if="seoHtml" :html="seoHtml" :faq="faq" />
     </div>
-    <div class="product-page__section">
-      <app-popular-categories-items v-if="isPopularCategoriesItems" :popular="popularCategoriesItems" />
-    </div>
-    <app-seo v-if="seoHtml" :html="seoHtml" :faq="faq" />
+    <app-benefits :benefits="$options.BENEFITS" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 
+import AppBenefits from '~/components/AppBenefits.vue';
 import AppFormLists from '~/components/card-product/AppFormLists.vue';
 import AppPopularCategoriesItems from '~/components/card-product/AppPopularCategoriesItems.vue';
 import AppFormOffers from '~/components/product/AppFormOffers.vue';
@@ -55,12 +59,14 @@ import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
 import { useObjectNotEmpty, useSizedImage } from '~/helpers';
 import gtm from '~/mixins/gtm.vue';
+import benefits from '~/mocks/benefits';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'IdPage',
 
   components: {
+    AppBenefits,
     AppSeo,
     AppGallery,
     AppService,
@@ -76,6 +82,7 @@ export default Vue.extend({
 
   middleware: ['not-found'],
 
+  BENEFITS: benefits,
   async asyncData({ _req, route, $http, app: { $accessor } }) {
     const path = route.fullPath;
     let data = {
@@ -102,7 +109,7 @@ export default Vue.extend({
         rating: parseFloat(data?.rating ?? 0),
         seoHtml: response.seo.bottom_text
       };
-
+      console.log(data, 'data');
       return data;
     } catch (error) {
       console.error(error);
@@ -174,6 +181,13 @@ export default Vue.extend({
         {
           property: 'product:item_group_id',
           content: this.category_name
+        }
+      ],
+      script: [
+        {
+          type: 'application/ld+json',
+          innerHTML: this.seoScript,
+          body: true
         }
       ]
     };
@@ -263,6 +277,29 @@ export default Vue.extend({
         seoHtml,
         faq
       };
+    },
+    seoScript() {
+      return `
+        {
+          "@context": "http://schema.org",
+          "@type": "Product",
+          "aggregateRating":{ // даем разметку рейтингу на странице, если его нет, то не подгружаем весь данный блок
+            "@type": "AggregateRating",
+             "bestRating": "5",
+             "ratingCount": "${this.reviews}",
+             "ratingValue": "4"
+           },
+          "image": "пппппппппппппп", // картинка товара
+          "name": "${this.title}",
+          "description": "${this.description}",
+          "offers": {
+            "@type": "Offer",
+            "price": "${this.price}",
+            "priceCurrency": "£",
+            "availability": ["http://schema.org/InStock"]
+          },
+        }
+      `;
     }
   },
 
@@ -357,7 +394,6 @@ export default Vue.extend({
 
   &__col {
     position: relative;
-    box-sizing: border-box;
 
     @include gt-sm {
       width: 50%;

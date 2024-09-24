@@ -111,7 +111,6 @@ export default {
         width: 100%;
         top: 8px;
         padding: 0 8px;
-        box-sizing: border-box;
       }
 
       &__nav-item {

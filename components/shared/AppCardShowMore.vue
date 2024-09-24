@@ -55,7 +55,7 @@ export default {
   width: 100%;
   height: 100%;
   background: #ebfaf0;
-  box-sizing: border-box;
+
   color: $color-dark-green;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.24s ease-out 0s;

@@ -41,11 +41,11 @@ export default Vue.extend({
     },
 
     goToCart() {
-      return this.isCartExist ? '/basket' : '';
+      return this.isCartExist ? '/cart' : '';
     },
 
     isTotal() {
-      return this.isCartExist ? this.total : 'Basket';
+      return this.isCartExist ? this.total : 'Cart';
     },
 
     classNames() {

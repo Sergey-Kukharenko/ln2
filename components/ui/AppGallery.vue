@@ -1,7 +1,7 @@
 <template>
   <div>
-    <swiper ref="swiperTop" class="swiper swiper--gallery" :options="swiperOption">
-      <swiper-slide v-for="(slide, idx) in slides" :key="idx">
+    <swiper ref="swiperTop" class="swiper swiper--gallery" :options="swiperOption" @slideChange="setSlideIndex()">
+      <swiper-slide v-for="slide in slides" :key="slide.ord">
         <app-gallery-card :slide="slide" />
         <app-card-tags v-if="typeName" size="large">
           <app-card-tag>{{ typeName }}</app-card-tag>
@@ -15,25 +15,32 @@
 
       <div v-if="swiperOption.pagination" slot="pagination" class="swiper-pagination" />
     </swiper>
-    <swiper
-      ref="swiperThumbs"
-      class="swiper-thumbs"
-      :style="thumbContainerWidth"
-      :options="{ ...swiperOptionThumbs, ...perViews }"
-    >
-      <swiper-slide v-for="(slide, idx) in slides" :key="idx">
-        <div class="thumbs-item">
-          <img
-            :src="
-              useSizedImage({ realId: slide.real_id, sizeName: $options.IMG_SIZES_MAP.size10, imgName: slide.filename })
-            "
-            :alt="slide.alt_text"
-            class="thumbs-item__img"
-          />
-          <div class="thumbs-item__border absolute-grow" />
+    <div class="swiper-container swiper-thumbs swiper-container-initialized swiper-container-horizontal">
+      <div class="swiper-wrapper">
+        <div
+          v-for="(slide, idx) in slides"
+          :key="slide.ord"
+          class="swiper-slide"
+          :class="{ 'swiper-slide-active': idx === currentSlideIndex }"
+        >
+          <div class="thumbs-item" @click="slideTo(idx)">
+            <img
+              :src="
+                useSizedImage({
+                  realId: slide.real_id,
+                  sizeName: $options.IMG_SIZES_MAP.size10,
+                  imgName: slide.filename
+                })
+              "
+              :alt="slide.alt_text"
+              class="thumbs-item__img"
+            />
+            <div class="thumbs-item__border absolute-grow"></div>
+          </div>
         </div>
-      </swiper-slide>
-    </swiper>
+      </div>
+      <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>
   </div>
 </template>
 
@@ -102,7 +109,8 @@ export default {
         slidesPerView: this.slides.length,
         touchRatio: 0.2,
         slideToClickedSlide: true
-      }
+      },
+      currentSlideIndex: 0
     };
   },
 
@@ -119,18 +127,19 @@ export default {
       };
     }
   },
-
-  mounted() {
-    this.$nextTick(() => {
-      const swiperTop = this.$refs.swiperTop.$swiper;
-      const swiperThumbs = this.$refs.swiperThumbs.$swiper;
-      swiperTop.controller.control = swiperThumbs;
-      swiperThumbs.controller.control = swiperTop;
-    });
+  watch: {
+    slides(_value, _prevValue) {
+      this.slideTo(0);
+    }
   },
-
   methods: {
-    useSizedImage
+    useSizedImage,
+    slideTo(index) {
+      this.$refs.swiperTop.$swiper.slideTo(index, 300);
+    },
+    setSlideIndex() {
+      this.currentSlideIndex = this.$refs.swiperTop.$swiper.realIndex;
+    }
   },
 
   IMG_SIZES_MAP
@@ -152,7 +161,7 @@ export default {
   width: 66px;
   height: 66px;
   position: relative;
-  box-sizing: border-box;
+
   cursor: pointer;
 
   &__img {

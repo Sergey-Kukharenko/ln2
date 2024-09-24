@@ -144,8 +144,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  box-sizing: border-box;
   width: 344px;
   flex-shrink: 0;
   margin-top: 64px;

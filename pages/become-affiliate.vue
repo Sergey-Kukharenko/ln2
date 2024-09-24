@@ -8,25 +8,30 @@
     />
     <become-affiliate-benefits />
     <become-affiliate-approval />
+    <app-benefits :benefits="$options.BENEFITS" />
   </div>
 </template>
 
 <script>
+import AppBenefits from '~/components/AppBenefits.vue';
 import BecomeAffiliateApproval from '~/components/BecomeAffiliateApproval.vue';
 import BecomeAffiliateBenefits from '~/components/BecomeAffiliateBenefits.vue';
 import AppInfoBanner from '~/components/info/AppInfoBanner.vue';
 import { BECOME_AFFILIATE } from '~/data/delivery';
+import benefits from '~/mocks/benefits';
 
 export default {
   name: 'BecomeAffiliatePage',
 
   components: {
     AppInfoBanner,
+    AppBenefits,
     BecomeAffiliateBenefits,
     BecomeAffiliateApproval
   },
 
-  BECOME_AFFILIATE
+  BECOME_AFFILIATE,
+  BENEFITS: benefits
 };
 </script>
 

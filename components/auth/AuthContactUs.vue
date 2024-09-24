@@ -23,6 +23,7 @@ import Vue from 'vue';
 
 import AppButton from '~/components/shared/AppButton.vue';
 import AppModal from '~/components/shared/AppModal.vue';
+import { useOwnLink } from '~/helpers';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -53,11 +54,7 @@ export default Vue.extend({
     },
 
     goToWhatsApp() {
-      const link = document.createElement('a');
-      link.target = '_blank';
-      link.href = this.getCall?.whatsapp;
-      link.rel = 'noreferrer noopener nofollow';
-      link.click();
+      useOwnLink({ href: this.getCall?.whatsapp, rel: 'noreferrer noopener nofollow', target: '_blank' });
     }
   }
 });

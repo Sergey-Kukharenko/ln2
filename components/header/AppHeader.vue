@@ -2,7 +2,7 @@
   <div class="header-group">
     <app-navigation />
     <app-multiply-navigation />
-    <app-nav-bar v-if="$route.name !== 'basket'" />
+    <app-nav-bar v-if="$route.name !== 'cart'" />
   </div>
 </template>
 

@@ -1,40 +1,52 @@
 <template>
-  <main class="layout category-page">
-    <div class="category-page__row">
-      <div class="category-page__col filter-panel">
-        <div class="filter-panel__header">
-          <h1 class="filter-panel__header-title">{{ categoryTitle }}</h1>
+  <main class="category-page-wrapper">
+    <div class="layout category-page">
+      <div class="category-page__row">
+        <div class="category-page__col filter-panel">
+          <div class="filter-panel__header">
+            <h1 class="filter-panel__header-title">{{ categoryTitle }}</h1>
+            <span>
+              <app-sort-select :type="pageType" />
+            </span>
+          </div>
+        </div>
+        <div class="category-page__col category-products">
+          <category-product-list
+            :category-title="categoryTitle"
+            :product-list="productList"
+            :pagination="pagination"
+            :type="pageType"
+          />
         </div>
       </div>
-      <div class="category-page__col category-products">
-        <category-product-list
-          :category-title="categoryTitle"
-          :product-list="productList"
-          :pagination="pagination"
-          :type="pageType"
-        />
-      </div>
+      <app-notice v-if="$device.isMobileOrTablet" />
+      <app-seo :html="categorySeoHtml" :faq="categoryFaq" />
     </div>
-    <app-notice v-if="$device.isMobileOrTablet" />
-    <app-seo :html="categorySeoHtml" :faq="categoryFaq" />
+    <app-benefits :benefits="$options.BENEFITS" />
   </main>
 </template>
 
 <script>
 import { hydrateWhenIdle } from 'vue-lazy-hydration';
 
+import AppBenefits from '~/components/AppBenefits.vue';
 import CategoryProductList from '~/components/CategoryProductList.vue';
 import AppSeo from '~/components/seo/AppSeo.vue';
+import AppSortSelect from '~/components/ui/AppSortSelect.vue';
+import benefits from '~/mocks/benefits';
 
 export default {
   name: 'CategoryWrapper',
 
   components: {
-    CategoryProductList,
+    AppBenefits,
+    AppNotice: hydrateWhenIdle(() => import('~/components/shared/AppNotice.vue')),
     AppSeo,
-    AppNotice: hydrateWhenIdle(() => import('~/components/shared/AppNotice.vue'))
+    CategoryProductList,
+    AppSortSelect
   },
 
+  BENEFITS: benefits,
   props: {
     pageType: {
       type: String,
@@ -46,7 +58,6 @@ export default {
       default: () => ({})
     }
   },
-
   computed: {
     categoryTitle() {
       return this.categoryData?.main?.title ?? this.$route.params.slug.split('-').join(' ');
@@ -88,22 +99,28 @@ export default {
     }
 
     .filter-panel {
-      width: 344px;
-      margin-right: 31px;
+      //width: 344px;
       position: relative;
       z-index: 2;
 
       &__header {
         display: flex;
         align-items: flex-end;
+        justify-content: space-between;
+        width: 100%;
         box-sizing: border-box;
 
         @include gt-sm {
           height: 73px;
+          margin-right: 31px;
+          margin-bottom: 24px;
         }
 
         @include lt-md {
           height: 40px;
+          margin-right: 0px;
+          margin-bottom: 16px;
+          align-items: center;
         }
       }
 
@@ -122,7 +139,6 @@ export default {
           font-size: 32px;
           line-height: 40px;
           color: #000000;
-          margin-bottom: 24px;
         }
 
         @include lt-md {
@@ -130,7 +146,6 @@ export default {
           font-size: 20px;
           line-height: 24px;
           color: $color-dark-grey;
-          margin-bottom: 12px;
         }
       }
 
@@ -148,7 +163,6 @@ export default {
 
       &__header {
         height: 73px;
-        box-sizing: border-box;
         display: flex;
         justify-content: space-between;
         align-items: center;

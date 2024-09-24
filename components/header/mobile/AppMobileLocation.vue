@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import AppAddress from '@/components/header/address/AppAddress';
-import AppLocationButton from '@/components/header/location/AppLocationButton';
-import AppDrawerNested from '~/components/header/mobile/AppDrawerNested';
+import AppAddress from '@/components/header/address/AppAddress.vue';
+import AppLocationButton from '@/components/header/location/AppLocationButton.vue';
+import AppDrawerNested from '~/components/header/mobile/AppDrawerNested.vue';
 
 export default {
   name: 'AppMobileLocation',

@@ -86,7 +86,6 @@ export default {
 
       & .figure {
         border: 1px dashed #767676;
-        box-sizing: border-box;
       }
 
       & .figcaption {

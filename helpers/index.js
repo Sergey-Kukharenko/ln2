@@ -201,6 +201,14 @@ const useDeepCopyObject = (obj) => {
   }
 };
 
+const useOwnLink = ({ href = '', rel = '', target = '' }) => {
+  const link = document.createElement('a');
+  link.href = href;
+  link.rel = rel;
+  link.target = target;
+  link.click();
+};
+
 export {
   useClassName,
   useClassNameProp,
@@ -229,5 +237,6 @@ export {
   joinArgs,
   useGetPositionSizeText,
   useDeepCopyObject,
-  useGetDateByTimeZone
+  useGetDateByTimeZone,
+  useOwnLink
 };

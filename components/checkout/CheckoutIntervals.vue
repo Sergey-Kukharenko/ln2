@@ -31,7 +31,7 @@
     </checkout-modal-select>
     <transition>
       <div v-show="!isClarified" class="checkout-intervals__delivery-text delivery-text">
-        <div class="delivery-text__row">Same day delivery from £6</div>
+        <div class="delivery-text__row">Same day delivery from £8</div>
         <div class="delivery-text__row">
           Next day delivery starts from <span class="delivery-text__free">Free</span>
         </div>
@@ -172,15 +172,17 @@ export default Vue.extend({
   },
 
   watch: {
-    isClarified(val) {
-      if (!val) {
-        const time = this.checkoutIntervalData?.time ?? this.firstAvalibleIterval?.label;
-        this.setInterval({ date: null, time });
+    isClarified() {
+      // TODO: Убираем для C версии, если попадет в А версию, удалить этот блок кода
+      // if (!val) {
+      //   const time =
+      //     this.checkoutIntervalData?.time ?? this.firstAvalibleIterval?.label;
+      //   this.setInterval({ date: null, time });
 
-        return;
-      }
+      //   return;
+      // }
 
-      this.setInterval({ date: null, time: null });
+      this.setInterval({ date: null, time: null, clear: true });
     }
   },
 
@@ -278,29 +280,40 @@ export default Vue.extend({
 
     selectDate(date) {
       try {
-        const foundIntervalDay = this.getIntervals.find((day) => day.date === date);
-        const intervalDay = foundIntervalDay || this.firstAvalibleDay;
-        const [firstInterval] = intervalDay?.intervals;
-        const time = firstInterval?.label || this.timeIntervalLabel;
-
+        // Временно скрыт в рамках задачи MFS-1175
+        // const foundIntervalDay = this.getIntervals.find((day) => day.date === date);
+        // const intervalDay = foundIntervalDay || this.firstAvalibleDay;
+        // const [firstInterval] = intervalDay?.intervals;
+        // const time = firstInterval?.label || this.timeIntervalLabel;
         this.closeCalendarModal();
-        this.setInterval({ date, time });
+        this.setInterval({ date });
       } catch (err) {
         console.error(err);
       }
     },
 
-    async setInterval({ date = null, time = null }) {
+    async setInterval({ date = null, time = null, clear = false }) {
       try {
+        if (clear) {
+          this.interval.date = null;
+          this.interval.time = null;
+          this.errors.date = '';
+          this.errors.time = '';
+
+          await this.$accessor.checkout.setCheckoutInterval({
+            date: null,
+            time: null
+          });
+
+          return;
+        }
+
         const isDateNotExist = !date && this.checkoutIntervalDate;
 
         if (isDateNotExist) {
           date = useFormattedDateForBackend(this.checkoutIntervalDate);
         }
-
-        if (time) {
-          this.interval.time = time;
-        }
+        this.interval.time = time;
 
         await this.$accessor.checkout.setCheckoutInterval({ date, time });
         this.$accessor.checkout.fetchCheckout();
@@ -323,6 +336,7 @@ export default Vue.extend({
   overflow: hidden;
   animation: show-in 0.5s;
 }
+
 .v-leave-active {
   overflow: hidden;
   animation: show-in 0.5s reverse;

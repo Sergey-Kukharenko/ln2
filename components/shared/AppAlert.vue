@@ -36,7 +36,7 @@ export default {
   display: flex;
   gap: 10px;
   padding: 10px;
-  box-sizing: border-box;
+
   border-radius: 10px;
 
   &--warning {

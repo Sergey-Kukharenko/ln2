@@ -22,8 +22,7 @@
 
 <script>
 export default {
-  name: 'AuthDownloadMobileApp',
-  components: {}
+  name: 'AuthDownloadMobileApp'
 };
 </script>
 

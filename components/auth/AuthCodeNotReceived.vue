@@ -37,6 +37,7 @@ import Vue from 'vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile.vue';
 import { EAuthComponents, NOT_RECIEVED_DESCRIPTION_TEXT } from '~/constants/auth.ts';
+import { useOwnLink } from '~/helpers';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -85,11 +86,7 @@ export default Vue.extend({
 
   methods: {
     goToWhatsApp() {
-      const link = document.createElement('a');
-      link.target = '_blank';
-      link.href = this.getCall?.whatsapp;
-      link.rel = 'noreferrer noopener nofollow';
-      link.click();
+      useOwnLink({ href: this.getCall?.whatsapp, rel: 'noreferrer noopener nofollow', target: '_blank' });
     },
 
     setNumber(value) {

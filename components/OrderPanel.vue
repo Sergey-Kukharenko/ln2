@@ -77,7 +77,6 @@ export default {
     border: 1.5px solid #eaeaea;
     border-radius: 16px;
     padding: 20px 24px 16px 24px;
-    box-sizing: border-box;
 
     @include lt-md {
       border: none;

@@ -5,7 +5,7 @@ export default {
       id: 1,
       question: 'How do I place an order?',
       answer:
-        'You can place an order on our website <a href="/">myflowers.co.uk</a>. Just select the type of bouquet you want, add it to the shopping basket, and checkout. You can also choose to place an order via phone by contacting one of our managers at <b>+44 20 4577 0088</b>.',
+        'You can place an order on our website <a href="/">myflowers.co.uk</a>. Just select the type of bouquet you want, add it to the shopping cart, and checkout. You can also choose to place an order via phone by contacting one of our managers at <b>+44 20 4577 0088</b>.',
       is_active: false
     },
     {

@@ -66,7 +66,6 @@ export default {
 @include gt-sm {
   .category-sorting {
     position: relative;
-    box-sizing: border-box;
 
     &.active {
       .category-sorting__input-icon {

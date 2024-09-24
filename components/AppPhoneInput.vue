@@ -76,7 +76,6 @@ export default {
   padding: 0 16px;
   margin-top: 8px;
   border-radius: 12px;
-  box-sizing: border-box;
 
   .vue-tel-input {
     width: 100%;
@@ -101,7 +100,6 @@ export default {
       background: $bg-grey;
       border-radius: 12px;
       border: 1px solid #dde0e6;
-      box-sizing: border-box;
 
       @include gt-md {
         width: 294px !important;

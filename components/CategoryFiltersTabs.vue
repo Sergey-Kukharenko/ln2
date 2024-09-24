@@ -75,7 +75,6 @@ export default {
     color: $color-dark-grey;
     cursor: pointer;
     user-select: none;
-    box-sizing: border-box;
 
     @include gt-sm {
       height: 56px;

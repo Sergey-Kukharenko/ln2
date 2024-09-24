@@ -55,12 +55,18 @@ export default {
       validate(value) {
         return ['fix', 'full', 'search'].includes(value);
       }
+    },
+
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
 
   computed: {
     classNames() {
-      return useClassName(this.$props, 'button');
+      const propsPayload = this.loading ? { ...this.$props, loading: 'loading' } : this.$props;
+      return useClassName(propsPayload, 'button');
     }
   }
 };
@@ -94,7 +100,11 @@ export default {
 
   &:disabled {
     background: #ccc;
-    cursor: none;
+  }
+
+  &--loading {
+    pointer-events: none;
+    user-select: none;
   }
 
   &--rounded {
@@ -389,7 +399,6 @@ export default {
       min-height: 32px;
       padding: 2px;
       border-radius: 8px;
-      box-sizing: border-box;
     }
 
     & ::v-deep(svg) {
@@ -465,7 +474,6 @@ export default {
   &--search {
     min-width: 160px;
     border-radius: 12px;
-    box-sizing: border-box;
   }
 }
 </style>

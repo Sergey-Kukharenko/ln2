@@ -1,14 +1,15 @@
 <template>
   <div class="payment">
-    <payment-error-modal :is-visible="!!errorPaymentMessage" @close-modal="closePaymentErrorModal" />
     <div v-if="elementLoading" class="payment__loading">
       <app-spinner-loader />
       Processing...
     </div>
+
     <div class="payment__logo">
       <app-logo />
       <svg-icon name="close" class="payment__logo-close-icon" @click="goBack" />
     </div>
+
     <div class="payment__wrapper">
       <h2 class="payment__title">Card payment</h2>
       <h1 class="payment__price">{{ totalSum }} £</h1>
@@ -18,13 +19,16 @@
           locale="en"
           :pk="publicKey"
           :elements-options="elementsOptions"
-          :hide-postal-code="true"
+          hide-postal-code
           :confirm-params="confirmParams"
-          @element-focus="focusHandler"
-          @element-ready="initializeElement"
-          @error="catchPaymentError"
+          @element-focus="onElementFocus"
+          @element-ready="onElementReady"
+          @element-change="onElementChange"
+          @error="onError"
         />
         <div class="payment__submit" :class="{ disabled: submitLoading }">
+          <div v-if="errorPaymentMessage" class="payment__error">{{ errorPaymentMessage }}</div>
+
           <app-button size="full" theme="green" @click="paymentHandler">
             <span v-if="!submitLoading">Pay</span>
             <app-loading-dots v-else />
@@ -38,17 +42,44 @@
 <script>
 import Vue from 'vue';
 
-import PaymentErrorModal from '~/components/PaymentErrorModal.vue';
 import AppLogo from '~/components/header/AppLogo.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppSpinnerLoader from '~/components/shared/AppSpinnerLoader.vue';
 import { accessorMapper } from '~/store';
 
+const ERROR_CODE_MAP = {
+  cardVelocityExceeded: 'card_velocity_exceeded',
+  processingError: 'processing_error',
+  expiredCard: 'expired_card',
+  stolenCard: 'stolen_card',
+  lostCard: 'lost_card',
+  insufficientFunds: 'insufficient_funds',
+  genericDecline: 'generic_decline',
+  incorrectCvc: 'incorrect_cvc',
+  incorrectNumber: 'incorrect_number',
+  invalidExpiryMonth: 'invalid_expiry_month',
+  invalidExpiryYear: 'invalid_expiry_year',
+  invalidExpiryYearPast: 'invalid_expiry_year_past',
+  invalidNumber: 'invalid_number',
+  invalidCvc: 'invalid_cvc'
+};
+
+const ERROR_MESSAGE_MAP = {
+  1: 'Your card was declined for making too many attempts or exceeding its amount limit.',
+  2: 'An error occurred while processing your card. Try again in a little bit.',
+  3: 'Your card has expired. Please try another card',
+  4: 'Your card was declined. Please try another card',
+  5: 'Your card has insufficient funds.',
+  6: 'Your CVC security code is incorrect. Please, check your card data and try again.',
+  7: 'The card number is incorrect. Please, check your card data and try again.',
+  8: 'The month of expiration dates is incorrect. Please, check your card data and try again.',
+  9: 'The year of expiration dates is incorrect. Please, check your card data and try again.'
+};
+
 export default Vue.extend({
   name: 'StripePage',
 
   components: {
-    PaymentErrorModal,
     StripeElementPayment: () =>
       import('@vue-stripe/vue-stripe').then(({ StripeElementPayment }) => StripeElementPayment),
     AppLoadingDots: () => import('@/components/shared/AppLoadingDots.vue'),
@@ -145,27 +176,58 @@ export default Vue.extend({
   methods: {
     ...accessorMapper('payment', ['fetchStripeClientSecret']),
 
-    closePaymentErrorModal() {
-      this.$router.push({ name: 'order-id', params: { id: this.orderId } });
+    onElementChange() {
+      this.errorPaymentMessage = '';
     },
 
-    catchPaymentError(err) {
+    onError(error) {
+      const { code = '', message = 'Payment error' } = error ?? {};
       this.submitLoading = false;
-      console.error(err);
 
-      this.errorPaymentMessage = err?.message || '';
+      switch (code) {
+        case ERROR_CODE_MAP.cardVelocityExceeded:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[1];
+          break;
+        case ERROR_CODE_MAP.processingError:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[2];
+          break;
+        case ERROR_CODE_MAP.expiredCard:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[3];
+          break;
+        case ERROR_CODE_MAP.stolenCard:
+        case ERROR_CODE_MAP.lostCard:
+        case ERROR_CODE_MAP.genericDecline:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[4];
+          break;
+        case ERROR_CODE_MAP.insufficientFunds:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[5];
+          break;
+        case ERROR_CODE_MAP.incorrectCvc:
+        case ERROR_CODE_MAP.invalid_cvc:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[6];
+          break;
+        case ERROR_CODE_MAP.incorrectNumber:
+        case ERROR_CODE_MAP.invalidNumber:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[7];
+          break;
+        case ERROR_CODE_MAP.invalidExpiryMonth:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[8];
+          break;
+        case ERROR_CODE_MAP.invalidExpiryYear:
+        case ERROR_CODE_MAP.invalidExpiryYearPast:
+          this.errorPaymentMessage = ERROR_MESSAGE_MAP[9];
+          break;
+
+        default:
+          this.errorPaymentMessage = message;
+          break;
+      }
+
+      console.error(error);
     },
 
-    initializeElement() {
+    onElementReady() {
       this.elementLoading = false;
-    },
-
-    redirectToOrder(id) {
-      this.$router.push({
-        name: 'preorder-id',
-        params: { id },
-        query: { payment_intent: this.elementsOptions.clientSecret }
-      });
     },
 
     async generatePaymentIntent() {
@@ -179,7 +241,7 @@ export default Vue.extend({
       }
     },
 
-    focusHandler() {
+    onElementFocus() {
       this.submitLoading = false;
     },
 
@@ -205,6 +267,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss">
+#stripe-payment-element-errors {
+  display: none;
+}
+</style>
 
 <style lang="scss" scoped>
 .payment {
@@ -285,8 +353,15 @@ export default Vue.extend({
     }
   }
 
+  &__error {
+    color: $color-red;
+  }
+
   &__submit {
+    display: flex;
+    flex-direction: column;
     margin-top: 24px;
+    gap: 24px;
 
     &.disabled {
       pointer-events: none;

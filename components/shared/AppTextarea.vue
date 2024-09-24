@@ -1,13 +1,6 @@
 <template>
-  <div :class="classNames" @click="onClick">
-    <textarea
-      ref="textarea"
-      :value="value"
-      :placeholder="placeholder"
-      :maxlength="max"
-      @input="onInput"
-      @blur="$emit('blur')"
-    />
+  <div ref="textarea-wrapper" :class="classNames" @click="onClick">
+    <textarea ref="textarea" :value="value" :placeholder="placeholder" :maxlength="max" @input="onInput" />
     <div v-if="max" class="textarea__limit">
       <span :class="{ textarea__count: isReachedLimit }">{{ value.length }}</span
       >/{{ max }}
@@ -73,6 +66,10 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    document.removeEventListener('click', this.outClick);
+  },
+
   methods: {
     onInput(event) {
       if (this.autoSize) {
@@ -81,10 +78,25 @@ export default {
       }
 
       this.$emit('input', event.target.value);
+      document.removeEventListener('click', this.outClick);
+      document.addEventListener('click', this.outClick);
     },
 
     onClick() {
       this.$refs.textarea.focus();
+    },
+
+    onBlur() {
+      this.$emit('blur');
+    },
+
+    onFocus() {},
+
+    outClick(event) {
+      if (!this.$refs['textarea-wrapper'].contains(event.target)) {
+        document.removeEventListener('click', this.outClick);
+        this.$emit('blur');
+      }
     }
   }
 };
@@ -95,7 +107,7 @@ export default {
   display: flex;
   gap: 16px;
   position: relative;
-  box-sizing: border-box;
+
   background: $bg-grey;
   color: $color-dark-grey;
   border-radius: 10px;

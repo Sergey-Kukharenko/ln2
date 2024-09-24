@@ -3,21 +3,17 @@
     <div v-for="item in list" :key="item.title" class="menu__item" :class="{ 'has-sub-level': item.hasSubLevel }">
       <div class="content" :class="{ 'color-pink': item.color }" @click="openBySlug(item)">
         <div class="content__figure">
-          <svg-icon :name="item.icon" v-bind="item.style" class="content__icon" />
+          <svg-icon v-if="item.icon" :name="item.icon" v-bind="item.style" class="content__icon" />
         </div>
         <div class="content__text">
           {{ item.title }}
         </div>
       </div>
-      <app-menu-dropdown v-if="isSectionHasItems(item.title)">
-        <app-menu-sections
-          v-if="isSectionItemsHasList(item.title)"
-          v-slot="slotProps"
-          :section="getSection(item.title)"
-        >
+      <app-menu-dropdown v-if="isSectionHasItems(item)">
+        <app-menu-sections v-if="isSectionItemsHasList(item)" v-slot="slotProps" :section="getSection(item)">
           <app-menu-section :theme="setColumnSize(item.title)" :section="{ ...slotProps }" />
         </app-menu-sections>
-        <app-menu-section v-else :theme="setColumnSize(item.title)" :section="getSection(item.title)" />
+        <app-menu-section v-else :theme="setColumnSize(item.title)" :section="getSection(item)" />
       </app-menu-dropdown>
     </div>
   </div>
@@ -29,22 +25,16 @@ import Vue from 'vue';
 import AppMenuDropdown from '~/components/header/menu/AppMenuDropdown.vue';
 import AppMenuSection from '~/components/header/menu/AppMenuSection.vue';
 import AppMenuSections from '~/components/header/menu/AppMenuSections.vue';
+import { useObjectNotEmpty } from '~/helpers';
 
 export default Vue.extend({
   name: 'AppMenuNavigation',
 
   components: { AppMenuSection, AppMenuSections, AppMenuDropdown },
 
-  props: {
-    list: {
-      type: Array,
-      default: () => []
-    }
-  },
-
   computed: {
-    categories() {
-      return this.$accessor.category.getCategories;
+    list() {
+      return this.$accessor.category.getMenuCategories ?? [];
     }
   },
 
@@ -72,18 +62,16 @@ export default Vue.extend({
       this.$router.push({ name: `${item.prefix}-slug`, params: { slug: item.slug } });
     },
 
-    getSection(title) {
-      const name = title.toLowerCase().split(' ').join('-');
-
-      return this.$accessor.category.getCategories?.[name] ?? [];
+    getSection(item) {
+      return item.list ?? [];
     },
 
-    isSectionHasItems(title) {
-      return this.getSection(title)?.length;
+    isSectionHasItems(item) {
+      return this.getSection(item).length || Object.values(this.getSection(item)).length;
     },
 
-    isSectionItemsHasList(title) {
-      return this.getSection(title).some((el) => el.list);
+    isSectionItemsHasList(item) {
+      return useObjectNotEmpty(this.getSection(item));
     }
   }
 });

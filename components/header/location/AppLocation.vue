@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import AppAddress from '~/components/header/address/AppAddress';
-import AppLocationButton from '~/components/header/location/AppLocationButton';
+import AppAddress from '~/components/header/address/AppAddress.vue';
+import AppLocationButton from '~/components/header/location/AppLocationButton.vue';
 import AppModal from '~/components/shared/AppModal.vue';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 
@@ -69,7 +69,7 @@ export default {
     background: $bg-grey;
     padding: 7px 17px;
     border-radius: 12px;
-    box-sizing: border-box;
+
     cursor: pointer;
   }
 

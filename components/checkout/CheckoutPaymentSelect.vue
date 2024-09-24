@@ -95,12 +95,11 @@ export default {
     letter-spacing: -0.02em;
     color: $color-white-grey;
     margin-bottom: 2px;
-    box-sizing: border-box;
   }
 
   &__label {
     padding: 0 16px 10px 16px;
-    box-sizing: border-box;
+
     width: 100%;
   }
 

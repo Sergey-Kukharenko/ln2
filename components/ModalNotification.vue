@@ -52,7 +52,6 @@ export default {
   align-items: center;
   row-gap: 24px;
   position: relative;
-  box-sizing: border-box;
 
   @include gt-sm {
     width: 392px;

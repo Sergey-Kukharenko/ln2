@@ -24,12 +24,18 @@ export default Vue.extend({
     try {
       const { slug } = this.$route.params;
       const type = FILTER.toLocaleLowerCase();
-
+      const { page = 1, orderBy = '', orderDirection = '' } = this.$route.query;
+      const queryParams = {
+        order_by: orderBy,
+        order_direction: orderDirection
+      };
       await this.$accessor.category.fetchCategory({
         type,
         slug,
         params: {
-          limit: PAGINATION.limit
+          limit: PAGINATION.limit,
+          page,
+          ...queryParams
         }
       });
     } catch (error) {

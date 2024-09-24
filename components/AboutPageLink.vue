@@ -61,7 +61,6 @@ export default {
   width: 344px;
   height: 80px;
   padding-left: 24px;
-  box-sizing: border-box;
   background: #f7f7f7;
   border-radius: 24px;
 

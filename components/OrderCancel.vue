@@ -41,7 +41,6 @@ export default {
 .container {
   @include gt-sm {
     width: 392px;
-    box-sizing: border-box;
   }
 
   &__layout {

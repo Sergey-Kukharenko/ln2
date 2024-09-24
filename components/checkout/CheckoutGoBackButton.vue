@@ -30,7 +30,7 @@ export default Vue.extend({
         return;
       }
 
-      this.$router.push({ name: 'basket' });
+      this.$router.push({ name: 'cart' });
     }
   }
 });

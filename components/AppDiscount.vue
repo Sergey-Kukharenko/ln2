@@ -83,7 +83,7 @@ export default {
         &__input {
           border: none;
           outline: none;
-          box-sizing: border-box;
+
           background: #fff;
           color: $color-dark-grey;
           border-radius: 10px;

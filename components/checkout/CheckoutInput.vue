@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="basket-input" :class="classes" :style="styles">
+    <div class="cart-input" :class="classes" :style="styles">
       <input :type="type" :min="min" :placeholder="placeholder" :value="value" readonly @input="onInput" />
     </div>
-    <div v-for="error in errors" :key="error" class="basket-input__error">
+    <div v-for="error in errors" :key="error" class="cart-input__error">
       {{ error }}
     </div>
   </div>
@@ -92,11 +92,11 @@ export default {
   computed: {
     classes() {
       return {
-        [`basket-input--size-${this.size}`]: true,
-        [`basket-input--theme-${this.theme}`]: true,
-        [`basket-input--advanced-theme-${this.advancedStylesTheme}`]: this.advancedStylesTheme,
-        [`basket-input--align-${this.align}`]: true,
-        'basket-input--error': !!this.errors.length
+        [`cart-input--size-${this.size}`]: true,
+        [`cart-input--theme-${this.theme}`]: true,
+        [`cart-input--advanced-theme-${this.advancedStylesTheme}`]: this.advancedStylesTheme,
+        [`cart-input--align-${this.align}`]: true,
+        'cart-input--error': !!this.errors.length
       };
     },
 
@@ -139,12 +139,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.basket-input {
+.cart-input {
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  box-sizing: border-box;
   background: $bg-grey;
   color: $color-dark-grey;
   border-radius: 10px;

@@ -8,9 +8,9 @@
     class="promo-code"
   >
     <template #right>
-      <basket-button size="small" theme="green" :disabled="isDisabled" align="center" not-change @click="submitHandler">
+      <cart-button size="small" theme="green" :disabled="isDisabled" align="center" not-change @click="submitHandler">
         Apply
-      </basket-button>
+      </cart-button>
     </template>
   </app-input>
 </template>
@@ -18,7 +18,7 @@
 <script>
 import Vue from 'vue';
 
-import BasketButton from '~/components/BasketButton.vue';
+import CartButton from '~/components/CartButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
 import { TOO_MANY_PROMOCODE_ATTEMPTS_MSG } from '~/constants';
 import { accessorMapper } from '~/store';
@@ -26,7 +26,7 @@ import { accessorMapper } from '~/store';
 export default Vue.extend({
   name: 'AppPromoCode',
 
-  components: { BasketButton, AppInput },
+  components: { CartButton, AppInput },
 
   data() {
     return {
@@ -108,13 +108,13 @@ export default Vue.extend({
     }
   }
 
-  & .basket-button {
+  & .cart-button {
     letter-spacing: -0.14px;
     margin-right: -8px;
     border-radius: 12px;
   }
 
-  & .basket-button.basket-button--disabled {
+  & .cart-button.cart-button--disabled {
     background: #cccccc;
   }
 

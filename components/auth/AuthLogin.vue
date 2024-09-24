@@ -37,8 +37,8 @@ import AppPersonalDataTerms from '~/components/auth/AuthLoginPersonalDataTerms.v
 import AppButton from '~/components/shared/AppButton.vue';
 import AppErrorModal from '~/components/shared/AppErrorModal.vue';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile.vue';
-import AppPhoneInput from '~/components/shared/phone-input/AppPhoneInput.vue';
-import { EAuthComponents, VALIDATION_MESSAGES } from '~/constants/auth.ts';
+import AppPhoneInput from '~/components/shared/AppPhoneInput.vue';
+import { EAuthComponents, MIN_PHONE_LENGTH, VALIDATION_MESSAGES } from '~/constants/auth.ts';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -83,6 +83,10 @@ export default Vue.extend({
     }
   },
 
+  beforeDestroy() {
+    this.$accessor.auth.SET_LOADING(false);
+  },
+
   methods: {
     onSetNumber(value) {
       if (this.input.errorMsg) {
@@ -93,9 +97,7 @@ export default Vue.extend({
     },
 
     onValidate() {
-      // this.input.errorMsg = this.isPhoneFormType && this.hasPhoneError(this.input.isValid);
-
-      if (this.input.value.length < 7) {
+      if (this.input.value.length < MIN_PHONE_LENGTH) {
         this.input.errorMsg = VALIDATION_MESSAGES.phone;
         return;
       }

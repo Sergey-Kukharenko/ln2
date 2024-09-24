@@ -31,7 +31,6 @@ export default {
   align-items: center;
   background: #ffffff;
   padding: 60px 0 100px 0;
-  box-sizing: border-box;
 
   @include lt-md {
     padding: 24px;

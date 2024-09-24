@@ -163,7 +163,6 @@ export default {
           gap: 8.67px;
           background: #ffffff;
           border-radius: 12px;
-          box-sizing: border-box;
           padding: 8px 16px;
           font-family: $golos-regular;
           font-size: 14px;

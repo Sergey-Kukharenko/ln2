@@ -264,7 +264,6 @@ export default {
         border-radius: 10px;
         background-color: $bg-grey;
         padding: 10px 16px 6px 16px;
-        box-sizing: border-box;
 
         .title {
           font-family: $golos-regular;

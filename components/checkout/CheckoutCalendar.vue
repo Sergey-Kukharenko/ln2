@@ -200,7 +200,6 @@ export default {
 <style lang="scss" scoped>
 .calendar {
   &__wrapper {
-    box-sizing: border-box;
     padding: 0 12px;
 
     @include lt-lg {
@@ -321,7 +320,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        box-sizing: border-box;
+
         padding: 0 4px;
         width: fit-content;
         height: 16px;

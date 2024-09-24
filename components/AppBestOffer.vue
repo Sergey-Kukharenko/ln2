@@ -21,7 +21,7 @@
           @input="onInput"
         >
           <template #right>
-            <basket-button
+            <cart-button
               size="small"
               theme="green"
               align="center"
@@ -30,7 +30,7 @@
               @click="handleSubscribe"
             >
               Use
-            </basket-button>
+            </cart-button>
           </template>
         </app-input>
       </div>
@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import BasketButton from '~/components/BasketButton.vue';
+import CartButton from '~/components/CartButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
 import subscribe from '~/mixins/subscribe.vue';
 
 export default {
   name: 'AppBestOffer',
-  components: { BasketButton, AppInput },
+  components: { CartButton, AppInput },
 
   mixins: [subscribe],
 

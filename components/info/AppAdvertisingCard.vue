@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AppButton from '@/components/shared/AppButton';
+import AppButton from '@/components/shared/AppButton.vue';
 import { ALL_CATEGORIES_BUTTON } from '~/constants';
 
 export default {
@@ -57,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 .card {
   position: relative;
-  box-sizing: border-box;
+
   border-radius: 24px;
   background-blend-mode: darken;
 

@@ -61,7 +61,7 @@ export default {
   display: flex;
   flex-direction: column;
   background: #f7f7f7;
-  box-sizing: border-box;
+
   border-radius: 12px;
   user-select: none;
   position: relative;

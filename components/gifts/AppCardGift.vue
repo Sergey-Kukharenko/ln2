@@ -13,7 +13,7 @@
     </div>
     <div class="card-gift__content">
       <div class="card-gift__price">£ {{ gift.price }}</div>
-      <basket-product-count
+      <cart-product-count
         v-if="isQty"
         :is-loading="isLoading"
         :count.sync="count"
@@ -30,7 +30,7 @@
 <script>
 import Vue from 'vue';
 
-import BasketProductCount from '~/components/BasketProductCount.vue';
+import CartProductCount from '~/components/CartProductCount.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import AppImage from '~/components/shared/AppImage.vue';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
@@ -40,7 +40,7 @@ import { accessorMapper } from '~/store';
 export default Vue.extend({
   name: 'AppCardGift',
 
-  components: { AppImage, AppButton, BasketProductCount },
+  components: { AppImage, AppButton, CartProductCount },
 
   props: {
     gift: {
@@ -55,7 +55,7 @@ export default Vue.extend({
     },
 
     isQty() {
-      return this.gift.count_in_basket > 0;
+      return this.count > 0;
     },
 
     count: {
@@ -63,20 +63,21 @@ export default Vue.extend({
         return this.gift.count_in_basket;
       },
 
-      async set(newVal) {
+      async set(quantity) {
         const payload = {
           productId: this.gift.id,
-          positionSlug: this.gift.position_name
+          positionSlug: this.gift.position_name,
+          quantity
         };
 
-        const action = newVal > this.count ? 'addToCart' : 'removeFromCart';
+        const action = quantity > 0 ? 'addToCart' : 'removeFromCart';
         await this[action](payload);
         await this.fetchGifts();
       }
     },
 
     isLoading() {
-      return this.$accessor.isLoadingHttp(`/basket/${this.gift.id}/${this.gift.position_name}`);
+      return this.$accessor.isLoadingHttp(`/v1/basket/${this.gift.id}/${this.gift.position_name}`);
     },
 
     imgSize() {

@@ -1,121 +1,125 @@
 <template>
-  <main class="order">
-    <section class="order__wrapper">
-      <div class="order__main">
-        <order-title
-          :is-paid="isPaid"
-          :is-failed="isFailed"
-          :is-canceled="isCanceled"
-          :in-process="isPaymentInProcess"
-          :real-order-id="orderDetails?.real_id"
-        />
-        <order-panel
-          title="Order Details"
-          :icon="detailsIcon"
-          has-toggle
-          :toggle-status="isDetailVisible"
-          @toggle="toggleDetail"
-        />
-        <template v-if="isDetailVisible">
-          <order-panel title="Customer" icon="user-outline">
-            <order-panel-body v-if="isCustomerData" name="customer" :pairs="customerDetails" />
-          </order-panel>
-          <order-panel title="Recipient" icon="user-outline">
-            <template #top>
-              <div v-show="isChangeButtonVisible" class="change-recipient" @click="changeRecipient">Change</div>
-            </template>
-            <template v-if="isRecipientEdit" #full>
-              <order-recipient
-                :recipient-name="recipientData.name || ''"
-                :recipient-phone="recipientData.phone || ''"
-                @submit-form="submitRecipientForm"
-              />
-            </template>
-            <template v-else #default>
-              <order-panel-body name="recipient" :pairs="recipientDetails" />
-            </template>
-          </order-panel>
-          <order-panel title="Delivery" icon="place-outline">
-            <order-panel-body v-if="isDeliveryData" name="recipient-delivery" :pairs="deliveryDetails" />
-          </order-panel>
+  <main class="order-page-wrapper">
+    <div class="order">
+      <section class="order__wrapper">
+        <div class="order__main">
+          <order-title
+            :is-paid="isPaid"
+            :is-failed="isFailed"
+            :is-canceled="isCanceled"
+            :in-process="isPaymentInProcess"
+            :real-order-id="orderDetails?.real_id"
+          />
           <order-panel
-            v-if="orderSplittedItems.length"
-            class="order-composition"
-            title="Order composition"
-            icon="flower-box"
-          >
-            <order-items :list="orderSplittedItems" />
+            title="Order Details"
+            :icon="detailsIcon"
+            has-toggle
+            :toggle-status="isDetailVisible"
+            @toggle="toggleDetail"
+          />
+          <template v-if="isDetailVisible">
+            <order-panel title="Customer" icon="user-outline">
+              <order-panel-body v-if="isCustomerData" name="customer" :pairs="customerDetails" />
+            </order-panel>
+            <order-panel title="Recipient" icon="user-outline">
+              <template #top>
+                <div v-show="isChangeButtonVisible" class="change-recipient" @click="changeRecipient">Change</div>
+              </template>
+              <template v-if="isRecipientEdit" #full>
+                <order-recipient
+                  :recipient-name="recipientData.name || ''"
+                  :recipient-phone="recipientData.phone || ''"
+                  @submit-form="submitRecipientForm"
+                />
+              </template>
+              <template v-else #default>
+                <order-panel-body name="recipient" :pairs="recipientDetails" />
+              </template>
+            </order-panel>
+            <order-panel title="Delivery" icon="place-outline">
+              <order-panel-body v-if="isDeliveryData" name="recipient-delivery" :pairs="deliveryDetails" />
+            </order-panel>
+            <order-panel
+              v-if="orderSplittedItems.length"
+              class="order-composition"
+              title="Order composition"
+              icon="flower-box"
+            >
+              <order-items :list="orderSplittedItems" />
+            </order-panel>
+            <div v-if="isWhatsappButtonVisible" class="order-whatsapp">
+              <order-whatsapp-button />
+            </div>
+            <div class="order-total">
+              <div class="order-total__item">Total</div>
+              <div id="order-total" class="order-total__item">£ {{ totalSum }}</div>
+            </div>
+          </template>
+          <order-panel v-if="isPaymentElementsVisible" title="Payment" icon="money-circle-outline" class="payment">
+            <template #top>
+              <div class="change-payment" @click="openPaymentSelect">Change</div>
+            </template>
+            <template #full>
+              <div class="select-payment">
+                <!--              <svg-icon :name="paymentMethod.logo" class="select-payment__icon" />-->
+                <app-select
+                  ref="payment-select"
+                  size="x-large"
+                  placeholder="Payment methods"
+                  :list="filteredAvailablePaymentMethods"
+                  pinned
+                  :hide-field="$device.isMobileOrTablet"
+                >
+                  <template #label>
+                    <div class="payment__select-label">
+                      <div>{{ availablePaymentMethods[selectIndex].label }}</div>
+                    </div>
+                  </template>
+                  <template #default="{ item, index, close }">
+                    <div v-if="item?.label" @click="onClickPaymentSystem(index, close)">
+                      <app-radio :value="selectIndex" :name="index" :has-icon="hasRadioIcon">
+                        <payment-item :item="item" />
+                      </app-radio>
+                    </div>
+                  </template>
+                </app-select>
+              </div>
+              <div class="select-payment--mobile">
+                {{ availablePaymentMethods[selectIndex].label }}
+              </div>
+            </template>
           </order-panel>
-          <div v-if="isWhatsappButtonVisible" class="order-whatsapp">
-            <order-whatsapp-button />
-          </div>
-          <div class="order-total">
-            <div class="order-total__item">Total</div>
-            <div id="order-total" class="order-total__item">£ {{ totalSum }}</div>
-          </div>
-        </template>
-        <order-panel v-if="isPaymentElementsVisible" title="Payment" icon="money-circle-outline" class="payment">
-          <template #top>
-            <div class="change-payment" @click="openPaymentSelect">Change</div>
-          </template>
-          <template #full>
-            <div class="select-payment">
-              <!--              <svg-icon :name="paymentMethod.logo" class="select-payment__icon" />-->
-              <app-select
-                ref="payment-select"
-                size="x-large"
-                placeholder="Payment methods"
-                :list="filteredAvailablePaymentMethods"
-                pinned
-                :hide-field="$device.isMobileOrTablet"
-              >
-                <template #label>
-                  <div class="payment__select-label">
-                    <div>{{ availablePaymentMethods[selectIndex].label }}</div>
-                  </div>
-                </template>
-                <template #default="{ item, index, close }">
-                  <div v-if="item?.label" @click="onClickPaymentSystem(index, close)">
-                    <app-radio :value="selectIndex" :name="index" :has-icon="hasRadioIcon">
-                      <payment-item :item="item" />
-                    </app-radio>
-                  </div>
-                </template>
-              </app-select>
-            </div>
-            <div class="select-payment--mobile">
-              {{ availablePaymentMethods[selectIndex].label }}
-            </div>
-          </template>
-        </order-panel>
 
-        <payment-button
-          v-if="isPaymentElementsVisible"
-          :payment-method="getPaymentMethod"
-          :order-id="orderId"
-          :total-cost="orderDetails?.total_cost"
-          @clear-time-id="clearTimeId"
-          @addPayment="onAddPayment"
-        />
-        <order-panel v-else title="Payment" icon="money-circle-outline">
-          <p>{{ getPaymentMethodLabel }}</p>
-        </order-panel>
-      </div>
-      <order-details :order-details="orderDetails" @cancel="openModal" />
-    </section>
-    <!-- <div v-if="isPaid" class="payment__promo--mobile">
-      <order-promo />
-    </div> -->
-    <!-- <div class="order-cancel" @click="openModal('OrderCancel')">Cancel the order</div> -->
-    <app-modal :visible="isModalVisible" theme="centered" @close="closeModal">
-      <component :is="currModal" @close="closeModal" @cancel-order="cancelOrder" />
-    </app-modal>
+          <payment-button
+            v-if="isPaymentElementsVisible"
+            :payment-method="getPaymentMethod"
+            :order-id="orderId"
+            :total-cost="orderDetails?.total_cost"
+            @clear-time-id="clearTimeId"
+            @addPayment="onAddPayment"
+          />
+          <order-panel v-else title="Payment" icon="money-circle-outline">
+            <p>{{ getPaymentMethodLabel }}</p>
+          </order-panel>
+        </div>
+        <order-details :order-details="orderDetails" @cancel="openModal" />
+      </section>
+      <!-- <div v-if="isPaid" class="payment__promo--mobile">
+        <order-promo />
+      </div> -->
+      <!-- <div class="order-cancel" @click="openModal('OrderCancel')">Cancel the order</div> -->
+      <app-modal :visible="isModalVisible" theme="centered" @close="closeModal">
+        <component :is="currModal" @close="closeModal" @cancel-order="cancelOrder" />
+      </app-modal>
+    </div>
+    <app-benefits :benefits="$options.BENEFITS" />
   </main>
 </template>
 
 <script>
 import Vue from 'vue';
 
+import AppBenefits from '~/components/AppBenefits.vue';
 import OrderDetails from '~/components/OrderDetails.vue';
 import OrderItems from '~/components/OrderItems.vue';
 import OrderPanelBody from '~/components/OrderPanelBody.vue';
@@ -131,12 +135,14 @@ import * as paymentMethods from '~/data/payment-methods';
 import { useObjectNotEmpty, useSizedImage } from '~/helpers';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 import gtm from '~/mixins/gtm.vue';
+import benefits from '~/mocks/benefits';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'OrderPage',
 
   components: {
+    AppBenefits,
     PaymentItem,
     OrderItems,
     OrderPanelBody,
@@ -152,6 +158,8 @@ export default Vue.extend({
   },
 
   mixins: [gtm],
+
+  BENEFITS: benefits,
 
   validate({ redirect, route }) {
     return Boolean(route.params.id) || redirect({ name: 'index' });
@@ -392,9 +400,6 @@ export default Vue.extend({
       this.$cookies.remove(AUTH_WITHOUT_SMS_COOKIE);
     }
 
-    this.$cookies.remove(PAYMENT_METHOD_COOKIE);
-    this.setDefaultPaymentMethod();
-
     this.clearTimeId();
   },
 
@@ -402,7 +407,7 @@ export default Vue.extend({
     useSizedImage,
 
     ...accessorMapper('order', ['fetchOrder']),
-    ...accessorMapper('payment', ['getClientIdPayPal', 'SET_PAYMENT_METHOD', 'setDefaultPaymentMethod']),
+    ...accessorMapper('payment', ['getClientIdPayPal', 'SET_PAYMENT_METHOD']),
 
     async executeScriptEvents() {
       this.$cookies.remove(GIFT_CARD_COOKIE);
@@ -771,7 +776,6 @@ export default Vue.extend({
         margin-top: 13px;
         background: $bg-grey;
         border-radius: 10px;
-        box-sizing: border-box;
       }
 
       &__icon {
@@ -798,7 +802,6 @@ export default Vue.extend({
         letter-spacing: -0.01em;
         color: $color-white-grey;
 
-        box-sizing: border-box;
         padding-left: 48px;
       }
     }

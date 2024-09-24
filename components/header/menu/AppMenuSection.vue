@@ -31,7 +31,7 @@ export default {
   props: {
     section: {
       type: [Object, Array],
-      default: () => ({})
+      default: () => []
     },
 
     theme: {
@@ -42,7 +42,7 @@ export default {
 
   computed: {
     isTitle() {
-      return this.section.title && this.section.list?.length;
+      return !Array.isArray(this.section) && this.section.title;
     },
 
     classNames() {
@@ -54,7 +54,7 @@ export default {
     },
 
     list() {
-      return this.section.list ? this.section.list : this.section;
+      return Array.isArray(this.section) ? this.section[0] : this.section.list;
     }
   }
 };

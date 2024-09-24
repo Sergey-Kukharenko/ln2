@@ -130,7 +130,6 @@ export default {
   position: relative;
   z-index: 1;
   border-radius: 12px;
-  box-sizing: border-box;
 
   @include gt-sm {
     cursor: pointer;

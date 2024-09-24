@@ -82,7 +82,6 @@ export default {
 
 <style lang="scss" scoped>
 .filters {
-  box-sizing: border-box;
   width: 100%;
 
   &__items {

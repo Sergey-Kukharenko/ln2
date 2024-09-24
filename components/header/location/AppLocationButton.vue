@@ -47,7 +47,7 @@ export default {
   justify-content: space-between;
   background-color: $bg-grey;
   border-radius: 12px;
-  box-sizing: border-box;
+
   cursor: pointer;
   transition: background-color 0.25s ease 0s;
 

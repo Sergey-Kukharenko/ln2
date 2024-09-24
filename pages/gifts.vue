@@ -1,39 +1,46 @@
 <template>
-  <div class="layout gifts">
-    <div class="gifts__container">
-      <div class="gifts__container-header">
-        <h2 class="gifts__container-title">{{ title }}</h2>
-        <nuxt-link v-if="$device.isMobileOrTablet" to="/basket" class="gifts__container-close">
-          {{ changeableText }}
-        </nuxt-link>
-      </div>
+  <div class="gifts-page-wrapper">
+    <div class="layout gifts">
+      <div class="gifts__container">
+        <div class="gifts__container-header">
+          <h2 class="gifts__container-title">{{ title }}</h2>
+          <nuxt-link v-if="$device.isMobileOrTablet" to="/cart" class="gifts__container-close">
+            {{ changeableText }}
+          </nuxt-link>
+        </div>
 
-      <app-list-gifts v-slot="slotProps" :list="list">
-        <app-card-gift :gift="{ ...slotProps }" />
-      </app-list-gifts>
+        <app-list-gifts v-slot="slotProps" :list="list">
+          <app-card-gift :gift="{ ...slotProps }" />
+        </app-list-gifts>
+      </div>
+      <nuxt-link to="/cart">
+        <app-button theme="green" class="gifts__button">{{ changeableText }}</app-button>
+      </nuxt-link>
     </div>
-    <nuxt-link to="/basket">
-      <app-button theme="green" class="gifts__button">{{ changeableText }}</app-button>
-    </nuxt-link>
+    <app-benefits :benefits="$options.BENEFITS" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
 
+import AppBenefits from '~/components/AppBenefits.vue';
 import AppCardGift from '~/components/gifts/AppCardGift.vue';
 import AppListGifts from '~/components/gifts/AppListGifts.vue';
 import AppButton from '~/components/shared/AppButton.vue';
+import benefits from '~/mocks/benefits';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'GiftsPage',
 
   components: {
+    AppBenefits,
     AppListGifts,
     AppCardGift,
     AppButton
   },
+  BENEFITS: benefits,
 
   layout: (ctx) => (ctx.$device.isMobileOrTablet ? 'empty' : 'default'),
 

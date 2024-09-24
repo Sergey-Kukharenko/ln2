@@ -121,8 +121,6 @@ export default {
       }
 
       .card__figcaption {
-        box-sizing: border-box;
-
         @include gt-xs {
           max-width: 261px;
           font-size: 38px;
@@ -190,7 +188,6 @@ export default {
     position: relative;
     padding: $gap-mb;
     margin: 0;
-    box-sizing: border-box;
   }
 
   @include xs {

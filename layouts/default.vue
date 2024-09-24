@@ -6,7 +6,7 @@
     <app-header v-else />
     <app-breadcrumbs v-if="isDefaultRoute" />
     <Nuxt />
-    <app-footer v-if="!isBasket" />
+    <app-footer v-if="!isCart" />
     <app-footer-bottom v-else />
     <transition v-if="isDefaultRoute" name="slide-fade">
       <app-cookies v-if="getCookie" @setCookie="onSetCookie" />
@@ -42,11 +42,11 @@ export default Vue.extend({
     AppButtonScrollToTop
   },
 
-  middleware: ['cookie', 'testing'],
+  middleware: ['cookie', 'testing', 'reset-payment-cookie'],
 
   data() {
     return {
-      routeNames: ['basket', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount'],
+      routeNames: ['cart', 'preorder-id', 'order-id', 'become-affiliate', 'youthdiscount', 'seniordiscount'],
       handleDebouncedScroll: null,
       isVisibleButtonScrollToTop: false,
       isBannerMounted: false
@@ -61,8 +61,8 @@ export default Vue.extend({
       return this.$route.name;
     },
 
-    isBasket() {
-      return this.getRouteName === 'basket';
+    isCart() {
+      return this.getRouteName === 'cart';
     },
 
     isDefaultRoute() {
@@ -161,7 +161,7 @@ export default Vue.extend({
   }
 }
 
-.basket-layout {
+.cart-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;

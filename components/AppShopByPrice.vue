@@ -68,7 +68,6 @@ export default {
   color: inherit;
   text-align: center;
   background: #f7f7f7;
-  box-sizing: border-box;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: box-shadow 0.24s ease-out 0.03s;
@@ -103,7 +102,6 @@ export default {
     line-height: 16px;
     border: 1px solid #393939;
     border-radius: 32px;
-    box-sizing: border-box;
 
     @include gt-sm {
       font-size: 16px;

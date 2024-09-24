@@ -24,6 +24,9 @@
             <app-header-mobile-nav />
           </div>
         </div>
+        <div class="content__layout">
+          <app-header-banner @close="close" />
+        </div>
       </div>
     </app-drawer>
 
@@ -44,6 +47,7 @@ import AppCall from '~/components/header/AppCall.vue';
 import AppCart from '~/components/header/AppCart.vue';
 import AppLogo from '~/components/header/AppLogo.vue';
 // import AppMobileLocation from '~/components/header/mobile/AppMobileLocation';
+import AppHeaderBanner from '~/components/header/mobile/AppHeaderBanner.vue';
 import AppHeaderMobileMenu from '~/components/header/mobile/AppHeaderMobileMenu.vue';
 import AppHeaderMobileNav from '~/components/header/mobile/AppHeaderMobileNav.vue';
 import AppMobileProfile from '~/components/header/mobile/AppMobileProfile.vue';
@@ -55,6 +59,7 @@ export default Vue.extend({
   name: 'AppHeaderMobile',
 
   components: {
+    AppHeaderBanner,
     AppHeaderMobileNav,
     AppHeaderMobileMenu,
     // AppMobileLocation,
@@ -116,7 +121,7 @@ header {
     height: 50px;
     padding: 0 16px;
     background: #fff;
-    box-sizing: border-box;
+
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
   }
 }
@@ -126,7 +131,7 @@ header {
   width: 100%;
   height: 100%;
   padding: 12px 0;
-  box-sizing: border-box;
+
   overflow: hidden;
 
   &__row {
@@ -137,7 +142,6 @@ header {
 
   &__layout {
     padding: 0 24px;
-    box-sizing: border-box;
 
     &--md {
       padding: 0 16px;
