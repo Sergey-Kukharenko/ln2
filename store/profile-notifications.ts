@@ -42,7 +42,7 @@ export const actions = actionTree(
     updateNotifications({ commit }, payload) {
       try {
         // const notifications = await this.app.$http.$put<NotificationsResponse>(
-        //   `/v1/mobile-api/subscriptions/${payload}`
+        //   `/v1/subscriptions/${payload}`
         // );
         commit('SET_NOTIFICATIONS', payload);
       } catch (e) {

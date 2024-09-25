@@ -19,7 +19,7 @@
         <div class="header">
           <!--Временно скрыт-->
           <!-- <app-badge theme="red" size="xs" class="header__badge"> - 30% </app-badge> -->
-          <!-- <app-like-icon :like="like" class="header__like" @click="toggleLike" />-->
+          <app-like-icon :like="like" class="header__like" @click="toggleLike" />
         </div>
         <app-card-link :slug="getProductSlug" :is-product-page="isProductPage">
           <app-image
@@ -85,6 +85,7 @@ import AppCardLink from './AppCardLink.vue';
 import AppCardTag from '~/components/shared/AppCardTag.vue';
 import AppCardTags from '~/components/shared/AppCardTags.vue';
 import AppImage from '~/components/shared/AppImage.vue';
+import AppLikeIcon from '~/components/shared/AppLikeIcon.vue';
 import { PRODUCT_CARD_IMAGE_SIZE } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import { IMG_SIZES_MAP } from '~/constants/image-sizes';
@@ -96,6 +97,7 @@ export default Vue.extend({
   name: 'AppCard',
 
   components: {
+    AppLikeIcon,
     AppCardTag,
     AppCardTags,
     AppCardColorsList: () => import('~/components/shared/AppCardColorsList.vue'),
@@ -236,7 +238,7 @@ export default Vue.extend({
 
   methods: {
     ...accessorMapper('cart', ['addToCart']),
-    ...accessorMapper('favorites', ['addToFavorites', 'removeFromFavorites']),
+    ...accessorMapper('profile-favorites', ['addToFavorites', 'removeFromFavorites']),
 
     useSizedImage,
 

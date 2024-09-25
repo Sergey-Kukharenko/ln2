@@ -36,7 +36,9 @@ export const actions = actionTree(
       try {
         const userData = await this.app.$http.$get<UserResponse>('/v1/user/');
         const { auth: isAuth = false, ...userProps } = userData;
-
+        console.log('===========');
+        console.log(userData);
+        console.log('===========');
         if (isAuth) {
           commit('SET_USER', userProps.user);
           commit('auth/SET_AUTH_STATUS', isAuth, { root: true });

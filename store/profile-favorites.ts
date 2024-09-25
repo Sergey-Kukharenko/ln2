@@ -2,7 +2,7 @@ import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
 import type { FavoritesResponse } from '~/@types/api/favorites';
 
-import profile from '~/data/profile';
+// import profile from '~/data/profile';
 
 export const state = () => ({
   favorites: {} as FavoritesResponse
@@ -19,11 +19,9 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state },
   {
-    fetchFavorites({ commit }) {
+    async fetchFavorites({ commit }) {
       try {
-        // const favorites = await this.app.$http.$get<FavoritesResponse>('/v1/favorites/');
-        // commit('SET_FAVORITES', favorites);
-        const favorites = profile.pages.favorites;
+        const favorites = await this.app.$http.$get<FavoritesResponse>('/v1/favorites/');
         commit('SET_FAVORITES', favorites);
       } catch (e) {
         console.error(e);
@@ -41,6 +39,9 @@ export const actions = actionTree(
 
     async removeFromFavorites({ commit }, productId: string | number) {
       try {
+        console.log('====removeFromFavorites====');
+        console.log(productId);
+        console.log('========');
         const favorites = await this.app.$http.$delete<FavoritesResponse>(`/v1/favorite/${productId}`);
         commit('SET_FAVORITES', favorites);
       } catch (e) {

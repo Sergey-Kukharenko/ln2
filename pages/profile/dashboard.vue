@@ -49,33 +49,10 @@ export default Vue.extend({
     };
   },
 
-  fetch() {
-    this.fetchPersonal();
-    this.fetchFavorites();
-
-    const some = {
-      id: 'aVbqKPzWy2pj0JZg',
-      real_id: 6,
-      title: 'Beautiful Bouquet',
-      img: '1.webp',
-      slug: 'beautiful-bouquet',
-      rating: '5.00',
-      reviews: 0,
-      like: true,
-      price: '84.90',
-      position_name: 'small',
-      is_new: true,
-      category_name: 'Spray roses',
-      type_name: 'Hand-tied',
-      old_price: null,
-      discount: null
-    };
-    console.log(some);
-  },
-
   computed: {
     ...accessorMapper('profile-personal', ['personalOrder']),
     ...accessorMapper('profile-favorites', ['favorites']),
+    ...accessorMapper('profile-orders', ['orders']),
 
     isOrder() {
       return useObjectNotEmpty(this.personalOrder);
@@ -85,14 +62,13 @@ export default Vue.extend({
       return useArrayNotEmpty(this.favorites?.list);
     },
 
-    isDataExists() {
-      return this.isOrder && this.isFavorites;
-    }
-  },
+    isOrders() {
+      return useArrayNotEmpty(this.orders?.current);
+    },
 
-  methods: {
-    ...accessorMapper('profile-personal', ['fetchPersonal']),
-    ...accessorMapper('profile-favorites', ['fetchFavorites'])
+    isDataExists() {
+      return this.isOrder || this.isFavorites || this.isOrders;
+    }
   }
 });
 </script>

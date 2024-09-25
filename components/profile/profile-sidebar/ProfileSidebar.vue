@@ -1,6 +1,6 @@
 <template>
   <div class="profile-sidebar">
-    <profile-sidebar-user :name="name" />
+    <profile-sidebar-user :name="getPersonalName" />
     <profile-bonus-card />
     <profile-orders-item v-if="$device.isMobile" class="order" :item="foundCollectedOrder" background="white" />
     <profile-sidebar-nav :list="transformedNav" />
@@ -17,15 +17,15 @@ import ProfileOrdersItem from '~/components/profile/profile-orders/ProfileOrders
 import ProfileSidebarNav from '~/components/profile/profile-sidebar/ProfileSidebarNav.vue';
 import ProfileSidebarUser from '~/components/profile/profile-sidebar/ProfileSidebarUser.vue';
 import profile from '~/data/profile';
-// import { accessorMapper } from '~/store';
+import { accessorMapper } from '~/store';
 
 const { name, nav } = profile.sidebar;
-const { favorites, orders } = profile.pages;
+const { orders } = profile.pages;
 
-const MAP_NAV = {
-  favorites: favorites?.list.length,
-  orders: 2
-};
+// const MAP_NAV = {
+//   favorites: favoritesLocal?.list.length,
+//   orders: 2
+// };
 
 export default Vue.extend({
   name: 'ProfileSidebar',
@@ -39,16 +39,28 @@ export default Vue.extend({
   },
 
   computed: {
-    // ...accessorMapper('favorites', ['favorites']),
+    ...accessorMapper('profile-personal', ['personalUser']),
+    ...accessorMapper('profile-favorites', ['favorites']),
+
+    getPersonalName() {
+      return this.personalUser?.name;
+    },
 
     filteredNav() {
       return this.$device.isMobile ? this.nav.filter((item) => item.type !== 'dashboard') : this.nav;
     },
 
+    navigationModel() {
+      return {
+        favorites: this.favorites?.list.length,
+        orders: 2
+      };
+    },
+
     transformedNav() {
       return this.filteredNav.map((item) => ({
         ...item,
-        count: MAP_NAV[item.type]
+        count: this.navigationModel[item.type]
       }));
     },
 

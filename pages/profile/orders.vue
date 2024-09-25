@@ -30,20 +30,12 @@ export default Vue.extend({
     };
   },
 
-  fetch() {
-    this.fetchOrders();
-  },
-
   computed: {
     ...accessorMapper('profile-orders', ['orders']),
 
     isOrders() {
       return useArrayNotEmpty(this.orders?.current);
     }
-  },
-
-  methods: {
-    ...accessorMapper('profile-orders', ['fetchOrders', 'deleteOrder'])
   }
 });
 </script>

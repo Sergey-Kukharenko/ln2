@@ -1,5 +1,6 @@
 <template>
   <div class="personal-data">
+    <pre>{{ user }}</pre>
     <profile-personal-section title="Personal data">
       <app-input
         v-model="user.name"
@@ -72,14 +73,13 @@ export default Vue.extend({
     };
   },
 
-  fetch() {
-    this.fetchPersonal();
-
-    this.user = { ...this.personal.user };
+  computed: {
+    ...accessorMapper('profile-personal', ['personal']),
+    ...accessorMapper('profile-personal', ['personalUser'])
   },
 
-  computed: {
-    ...accessorMapper('profile-personal', ['personal'])
+  mounted() {
+    this.user = { ...this.personal.user };
   },
 
   methods: {
@@ -124,13 +124,13 @@ export default Vue.extend({
         return false;
       }
 
-      const payload = {
-        ...this.personal,
-        id: this.id,
-        user: { ...this.user }
-      };
+      // const payload = {
+      //   ...this.personal,
+      //   id: this.id,
+      //   user: { ...this.user }
+      // };
 
-      this.updatePersonal(payload);
+      this.updatePersonal(this.user);
     }
   }
 });

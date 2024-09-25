@@ -57,7 +57,7 @@ export const actions = actionTree(
           clarify_address: false,
           promo_code: {
             code: '',
-            discount: '0.00'
+            discount: '1.30'
           },
           is_paid: false,
           payment_id: null,
@@ -75,9 +75,7 @@ export const actions = actionTree(
             delivery_date: '2024-08-08',
             delivery_time: '12:00 pm - 3:00 pm'
           },
-          payment_methods: {
-            payment_type_id: 'card'
-          },
+          payment_methods: 'card',
           positions: [
             {
               offer_id: 'O9apoVGyLz5qNX4K',
@@ -191,8 +189,7 @@ export const actions = actionTree(
               old_price: null,
               discount: null
             }
-          ],
-          sale: '- 8'
+          ]
         };
 
         commit('SET_ORDER', data);

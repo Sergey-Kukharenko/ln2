@@ -123,10 +123,7 @@ export const actions = actionTree(
           payload
         );
         // вернуть
-        // const { token, is_new_user: isNewUser } = data;
-
-        // Надо убрать
-        data.is_new_user = true;
+        data.is_new_user = true; // удалить после завершения
         const { token, is_new_user: isNewUser } = data;
 
         // Сохраняем токен в куки, если он есть. Инициализируем статус авторизации

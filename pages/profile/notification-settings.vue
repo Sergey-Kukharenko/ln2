@@ -40,10 +40,6 @@ export default Vue.extend({
     };
   },
 
-  fetch() {
-    this.fetchNotifications();
-  },
-
   computed: {
     ...accessorMapper('profile-notifications', ['notifications']),
 
@@ -55,8 +51,6 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('profile-notifications', ['fetchNotifications', 'updateNotifications']),
-
     onChange(item) {
       // console.log(item.name, item.value);
       const payload = {

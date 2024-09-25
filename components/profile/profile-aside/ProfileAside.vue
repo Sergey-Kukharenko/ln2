@@ -4,7 +4,7 @@
     <profile-aside-steps :status="orderDetails.status" />
     <profile-aside-order-contents>
       <profile-aside-order-list :contents="contents" />
-      <profile-aside-order-row :item="sale" color="green" />
+      <profile-aside-order-row v-if="isSale" :item="sale" color="green" />
       <profile-aside-order-row :item="delivery" />
     </profile-aside-order-contents>
     <profile-aside-order-row :item="total" size="large" />
@@ -51,6 +51,10 @@ export default {
         label: 'Delivery',
         value: +this?.orderDetails.deliveryAmount ? `£ ${this?.orderDetails.deliveryAmount}` : 'Free'
       };
+    },
+
+    isSale() {
+      return Number(this.orderDetails.sale) > 0;
     },
 
     sale() {

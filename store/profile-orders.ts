@@ -19,7 +19,7 @@ export const actions = actionTree(
   {
     fetchOrders({ commit }) {
       try {
-        // const {data} = await this.app.$http.$get<ProfileOrdersResponse>('/v1/user/history');
+        // const { data } = await this.app.$http.$get<ProfileOrdersResponse>('/v1/user/history');
         // const orders = data.current;
 
         const data = {
@@ -55,10 +55,29 @@ export const actions = actionTree(
       }
     },
 
-    async deleteOrder({ commit }, payload) {
+    // async deleteOrder({ commit }, payload) {
+    //   try {
+    //     const orders = await this.app.$http.$delete<ProfileOrdersResponse>(`/v1/order/${payload}`);
+    //     commit('SET_ORDERS', orders);
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // }
+
+    // удалить
+    deleteOrder({ state, commit }, orderId) {
       try {
-        const orders = await this.app.$http.$put<ProfileOrdersResponse>(`/v1/mobile-api/order/${payload}`);
-        commit('SET_ORDERS', orders);
+        // const orders = await this.app.$http.$delete<ProfileOrdersResponse>(`/v1/order/${payload}`);
+        // commit('SET_ORDERS', orders);
+
+        const arr = state.orders.current;
+        const filtered = arr.filter((item) => item.order_id !== orderId);
+
+        const newOrders = {
+          current: filtered
+        };
+
+        commit('SET_ORDERS', newOrders);
       } catch (e) {
         console.error(e);
       }

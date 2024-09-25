@@ -38,7 +38,6 @@
           <profile-buttons-group />
         </div>
       </div>
-      <pre>{{ orderDetails.status }}</pre>
       <profile-aside v-if="$device.isDesktopOrTablet" :order-details="orderDetails" />
     </div>
   </div>
@@ -108,7 +107,7 @@ export default Vue.extend({
     },
 
     sale() {
-      return this.order.sale;
+      return this.order.promo_code?.discount;
     },
 
     id() {
@@ -136,7 +135,7 @@ export default Vue.extend({
         paypal: 'By PayPal account'
       };
 
-      return MAP_PAYMENTS[this.payment_methods.payment_type_id];
+      return MAP_PAYMENTS[this.payment_methods];
     },
 
     getStatusText() {

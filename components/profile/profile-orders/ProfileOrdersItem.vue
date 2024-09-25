@@ -11,7 +11,7 @@
       <span>{{ getStatusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
-    <div v-if="$device.isDesktopOrTablet && item.date" class="button">
+    <div v-if="$device.isDesktopOrTablet && item.date" class="button" @click="onDeleteOrder(item.order_id)">
       <svg-icon name="profile-basket" class="basket-icon" />
     </div>
   </div>
@@ -22,6 +22,7 @@ import Vue from 'vue';
 
 import AppCounter from '~/components/shared/AppCounter.vue';
 import { MAP_PROFILE_STATUSES } from '~/constants';
+import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'ProfileOrdersItem',
@@ -58,6 +59,14 @@ export default Vue.extend({
 
     pathToOrder() {
       return this.item.status === 'PACKED' ? 'order/' + this.item.order_id : '';
+    }
+  },
+
+  methods: {
+    ...accessorMapper('profile-orders', ['deleteOrder']),
+
+    onDeleteOrder(id) {
+      this.deleteOrder(id);
     }
   }
 });
