@@ -63,7 +63,7 @@ export const actions = actionTree(
         console.log('==========');
         console.log(payload);
         console.log('==========');
-        const personal = await this.app.$http.$post<PersonalResponse>(`/v1/user/personal-data/${payload}`);
+        const personal = await this.app.$http.$post<PersonalResponse>(`/v1/user/personal-data/`, payload);
         commit('SET_PERSONAL', personal);
 
         commit('SET_PERSONAL', payload);

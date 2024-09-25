@@ -6,7 +6,7 @@
       <template #description> {{ modal.description }}</template>
       <template #buttons>
         <app-button behavior="custom">{{ modal.buttons.delete }}</app-button>
-        <app-button theme="text-only" class="red-color" color="" behavior="custom"
+        <app-button theme="text-only" class="red-color" color="" behavior="custom" @click="close"
           >{{ modal.buttons.cancel }}
         </app-button>
       </template>
@@ -48,6 +48,11 @@ export default {
     close() {
       this.isVisible = false;
       enableScroll();
+    },
+
+    async logout() {
+      this.close();
+      await this.$accessor.auth.logout();
     }
   }
 };
