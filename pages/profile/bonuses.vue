@@ -1,7 +1,7 @@
 <template>
   <div class="bonuses-page">
-    <profile-title :title="title" />
-    <profile-bonus-history :list="list" />
+    <profile-title :title="getTitle" />
+    <profile-bonus-history :list="getList" />
   </div>
 </template>
 
@@ -10,9 +10,7 @@ import Vue from 'vue';
 
 import ProfileTitle from '~/components/profile/ProfileTitle.vue';
 import ProfileBonusHistory from '~/components/profile/profile-bonus/ProfileBonusHistory.vue';
-import profile from '~/data/profile';
-
-const { title, list } = profile.pages.bonuses;
+import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'BonusesPage',
@@ -21,11 +19,16 @@ export default Vue.extend({
 
   layout: 'profile',
 
-  data() {
-    return {
-      title,
-      list
-    };
+  computed: {
+    ...accessorMapper('profile-loyalty', ['loyalty']),
+
+    getTitle() {
+      return this.loyalty?.title;
+    },
+
+    getList() {
+      return this.loyalty?.list;
+    }
   }
 });
 </script>

@@ -39,9 +39,6 @@ export const actions = actionTree(
 
     async removeFromFavorites({ commit }, productId: string | number) {
       try {
-        console.log('====removeFromFavorites====');
-        console.log(productId);
-        console.log('========');
         const favorites = await this.app.$http.$delete<FavoritesResponse>(`/v1/favorite/${productId}`);
         commit('SET_FAVORITES', favorites);
       } catch (e) {
