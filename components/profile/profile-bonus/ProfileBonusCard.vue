@@ -1,20 +1,20 @@
 <template>
-  <div class="profile-bonus-card" :class="type">
+  <div class="profile-bonus-card" :class="getLowerCaseType">
     <svg-icon :name="getIconStyles.path" :style="getIconStyles.size" />
     <div class="header">
       <div class="col">
-        <div class="title">Cashback 5%</div>
-        <profile-bonus-button @click="onMoveToPage('/profile/bonuses')">{{ type }}</profile-bonus-button>
+        <div class="title">Cashback {{ getCashback }}</div>
+        <profile-bonus-button @click="onMoveToPage('/profile/bonuses')">{{ getLowerCaseType }}</profile-bonus-button>
       </div>
       <div class="col">
-        <div class="title">£ {{ price }}</div>
+        <div class="title">£ {{ getPrice }}</div>
         <div class="text">Your balance</div>
       </div>
     </div>
     <div class="container">
-      <div class="text">{{ level }}</div>
-      <profile-bonus-slider :type="type" />
-      <div class="text description">{{ description }}</div>
+      <div class="text">{{ getLevel }}</div>
+      <profile-bonus-slider :type="getLowerCaseType" />
+      <div class="text description">{{ getDescription }}</div>
     </div>
   </div>
 </template>
@@ -24,31 +24,46 @@ import Vue from 'vue';
 
 import ProfileBonusButton from '~/components/profile/profile-bonus/ProfileBonusButton.vue';
 import ProfileBonusSlider from '~/components/profile/profile-bonus/ProfileBonusSlider.vue';
-import profile from '~/data/profile';
 import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
+import { accessorMapper } from '~/store';
 
-const { cashback, price, type, level, description } = profile.pages.bonuses;
 export default Vue.extend({
   name: 'ProfileBonusCard',
   components: { ProfileBonusSlider, ProfileBonusButton },
 
   mixins: [profileMoveToPage],
 
-  data() {
-    return {
-      cashback,
-      price,
-      type,
-      level,
-      description
-    };
-  },
-
   computed: {
+    ...accessorMapper('profile-loyalty', ['loyalty']),
+
+    getCashback() {
+      return this.loyalty?.cashback;
+    },
+
+    getPrice() {
+      return this.loyalty?.price;
+    },
+
+    getLevel() {
+      return this.loyalty?.level;
+    },
+
+    getDescription() {
+      return this.loyalty?.description;
+    },
+
+    getType() {
+      return this.loyalty?.type;
+    },
+
+    getLowerCaseType() {
+      return this.getType.toLowerCase();
+    },
+
     getIconStyles() {
       const MAP_ICONS = {
-        based: {
-          path: 'profile-based',
+        silver: {
+          path: 'profile-silver',
           size: {
             width: 207,
             height: 181
@@ -77,7 +92,7 @@ export default Vue.extend({
         }
       };
 
-      return MAP_ICONS[this.type];
+      return MAP_ICONS[this.getLowerCaseType];
     }
   }
 });
@@ -99,7 +114,7 @@ export default Vue.extend({
   margin: 24px 0;
   overflow: hidden;
 
-  &.based {
+  &.silver {
     background: #5f88f1;
   }
 

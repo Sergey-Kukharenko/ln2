@@ -18,9 +18,9 @@ export default Vue.extend({
   props: {
     type: {
       type: String,
-      default: 'based',
+      default: 'silver',
       validate(value) {
-        return ['based', 'gold', 'platinum', 'vip'].includes(value);
+        return ['silver', 'gold', 'platinum', 'vip'].includes(value);
       }
     }
   },
@@ -28,9 +28,9 @@ export default Vue.extend({
   computed: {
     getPercentX() {
       const MAP_X_VALUES = {
-        based: 50,
-        gold: 60,
-        platinum: 70,
+        silver: 25,
+        gold: 50,
+        platinum: 75,
         vip: 100
       };
 

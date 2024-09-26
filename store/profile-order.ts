@@ -19,7 +19,10 @@ export const actions = actionTree(
   {
     fetchOrder({ commit }) {
       try {
-        // const {data} = await this.app.$http.$get<ProfileOrderResponse>('/v1/order');
+        // const res = await this.app.$http.$get<ProfileOrderResponse>('/v1/order');
+        // console.log('=========');
+        // console.log(res);
+        // console.log('=========');
         // const {order} = user;
 
         const data = {

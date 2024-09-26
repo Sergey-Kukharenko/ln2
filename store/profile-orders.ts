@@ -19,10 +19,10 @@ export const actions = actionTree(
   {
     fetchOrders({ commit }) {
       try {
-        // const { data } = await this.app.$http.$get<ProfileOrdersResponse>('/v1/user/history');
-        // const orders = data.current;
+        // const res = await this.app.$http.$get<ProfileOrdersResponse>('/v1/user/history');
+        // const orders = res.data;
 
-        const data = {
+        const orders = {
           current: [
             {
               order_id: 1,
@@ -49,7 +49,7 @@ export const actions = actionTree(
           ]
         };
 
-        commit('SET_ORDERS', data);
+        commit('SET_ORDERS', orders);
       } catch (e) {
         console.error(e);
       }

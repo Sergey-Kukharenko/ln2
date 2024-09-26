@@ -1,6 +1,5 @@
 <template>
   <div class="personal-data">
-    <pre>{{ user }}</pre>
     <profile-personal-section title="Personal data">
       <app-input
         v-model="user.name"
@@ -123,12 +122,6 @@ export default Vue.extend({
       if (this.errors.name || this.errors.email) {
         return false;
       }
-
-      // const payload = {
-      //   ...this.personal,
-      //   id: this.id,
-      //   user: { ...this.user }
-      // };
 
       this.updatePersonal(this.user);
     }

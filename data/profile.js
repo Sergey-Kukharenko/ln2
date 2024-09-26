@@ -45,16 +45,16 @@ export default {
   gender: [
     {
       icon: '/icons/genders/female.png',
-      value: 'female',
+      value: 'FEMALE',
       label: 'Female'
     },
     {
       icon: '/icons/genders/male.png',
-      value: 'male',
+      value: 'MALE',
       label: 'Male'
     },
     {
-      value: 'prefer_not_say',
+      value: 'DO_NOT_SPECIFY',
       label: 'Prefer not to say'
     }
   ],
@@ -62,10 +62,11 @@ export default {
     bonuses: {
       cashback: '5%',
       price: '15',
-      type: 'based',
+      type: 'SILVER',
       level: '£ 10 / 29.9 pounds left to the next level',
       description: 'Make a collective purchase of £ 29.9 and upgrade your package to “Gold”.',
       title: 'Bonus account history',
+
       list: [
         {
           title: 'Receiving a sweet gift',

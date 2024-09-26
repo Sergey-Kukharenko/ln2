@@ -52,9 +52,9 @@ export default Vue.extend({
   props: {
     type: {
       type: String,
-      default: 'based',
+      default: 'silver',
       validate(value) {
-        return ['based', 'gold', 'platinum', 'vip'].includes(value);
+        return ['silver', 'gold', 'platinum', 'vip'].includes(value);
       }
     },
 
@@ -67,7 +67,7 @@ export default Vue.extend({
   computed: {
     fill() {
       const MAP_THEME = {
-        based: {
+        silver: {
           in: '#5F88F1',
           out: '#BDCFFF'
         },

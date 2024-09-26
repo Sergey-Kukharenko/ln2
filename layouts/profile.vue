@@ -57,6 +57,7 @@ export default Vue.extend({
       await this.fetchFavorites();
       await this.fetchOrders();
       await this.fetchNotifications();
+      await this.fetchLoyalty();
     } catch (err) {
       console.error(err);
     }
@@ -90,7 +91,8 @@ export default Vue.extend({
     ...accessorMapper('profile-personal', ['fetchPersonal']),
     ...accessorMapper('profile-favorites', ['fetchFavorites']),
     ...accessorMapper('profile-orders', ['fetchOrders']),
-    ...accessorMapper('profile-notifications', ['fetchNotifications', 'updateNotifications']),
+    ...accessorMapper('profile-notifications', ['fetchNotifications']),
+    ...accessorMapper('profile-loyalty', ['fetchLoyalty']),
 
     moveToPage(payload) {
       this.move = payload;

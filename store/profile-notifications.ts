@@ -17,21 +17,26 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state },
   {
-    fetchNotifications({ commit }) {
+    async fetchNotifications({ commit }) {
       try {
-        // const {data} = await this.app.$http.$get<NotificationsResponse>('/v1/subscriptions/');
+        const res = await this.app.$http.$get<NotificationsResponse>('/v1/subscriptions/');
+        const { data } = await this.app.$http.$get<NotificationsResponse>('/v1/subscriptions/');
 
-        const notifications = {
-          success: true,
-          data: {
-            email: null,
-            email_subscription: false,
-            sms_subscription: true,
-            push_subscription: true
-          }
-        };
+        // const notifications = {
+        //   success: true,
+        //   data: {
+        //     email: null,
+        //     email_subscription: false,
+        //     sms_subscription: true,
+        //     push_subscription: true
+        //   }
+        // };
+        //
+        // const { data } = notifications;
 
-        const { data } = notifications;
+        console.log('=============');
+        console.log(res);
+        console.log('=============');
 
         commit('SET_NOTIFICATIONS', data);
       } catch (e) {
@@ -39,11 +44,15 @@ export const actions = actionTree(
       }
     },
 
-    updateNotifications({ commit }, payload) {
+    async updateNotifications({ commit }, payload) {
       try {
-        // const notifications = await this.app.$http.$put<NotificationsResponse>(
-        //   `/v1/subscriptions/${payload}`
-        // );
+        const data = await this.app.$http.$put<NotificationsResponse>(`/v1/subscriptions/`, payload);
+
+        console.log(data);
+        console.log('=============');
+        console.log(data);
+        console.log('=============');
+
         commit('SET_NOTIFICATIONS', payload);
       } catch (e) {
         console.error(e);

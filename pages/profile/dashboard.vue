@@ -24,7 +24,7 @@ import ProfileEmpty from '~/components/profile/ProfileEmpty.vue';
 import ProfileSection from '~/components/profile/ProfileSection.vue';
 import ProfileOrdersList from '~/components/profile/profile-orders/ProfileOrdersList.vue';
 import profile from '~/data/profile';
-import { useArrayNotEmpty, useObjectNotEmpty } from '~/helpers';
+import { useArrayNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';
 // import { accessorMapper } from '~/store';
 
@@ -55,7 +55,7 @@ export default Vue.extend({
     ...accessorMapper('profile-orders', ['orders']),
 
     isOrder() {
-      return useObjectNotEmpty(this.personalOrder);
+      return this.personalOrder?.order_id;
     },
 
     isFavorites() {

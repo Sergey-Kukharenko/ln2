@@ -20,12 +20,6 @@ import profile from '~/data/profile';
 import { accessorMapper } from '~/store';
 
 const { name, nav } = profile.sidebar;
-const { orders } = profile.pages;
-
-// const MAP_NAV = {
-//   favorites: favoritesLocal?.list.length,
-//   orders: 2
-// };
 
 export default Vue.extend({
   name: 'ProfileSidebar',
@@ -41,6 +35,7 @@ export default Vue.extend({
   computed: {
     ...accessorMapper('profile-personal', ['personalUser']),
     ...accessorMapper('profile-favorites', ['favorites']),
+    ...accessorMapper('profile-orders', ['orders']),
 
     getPersonalName() {
       return this.personalUser?.name;
@@ -53,7 +48,7 @@ export default Vue.extend({
     navigationModel() {
       return {
         favorites: this.favorites?.list.length,
-        orders: 2
+        orders: this.orders?.current.length
       };
     },
 
@@ -65,7 +60,7 @@ export default Vue.extend({
     },
 
     foundCollectedOrder() {
-      return orders.list.find((item) => !item.date);
+      return this.orders?.current.find((item) => !item.date);
     }
   }
 });

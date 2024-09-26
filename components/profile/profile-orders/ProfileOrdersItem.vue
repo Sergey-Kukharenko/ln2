@@ -57,8 +57,13 @@ export default Vue.extend({
       return MAP_PROFILE_STATUSES[this.item.status];
     },
 
+    isAvailableStatuses() {
+      const statuses = ['PAYMENT', 'PAID', 'FAIL_PAID', 'CONFIRMED', 'PACKED', 'COURIER_ASSIGNED'];
+      return statuses.includes(this.item.status);
+    },
+
     pathToOrder() {
-      return this.item.status === 'PACKED' ? 'order/' + this.item.order_id : '';
+      return this.isAvailableStatuses ? 'order/' + this.item.order_id : '';
     }
   },
 
