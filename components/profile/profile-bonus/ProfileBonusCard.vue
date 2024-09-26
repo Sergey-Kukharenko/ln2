@@ -4,7 +4,7 @@
     <div class="header">
       <div class="col">
         <div class="title">Cashback {{ getCashback }}</div>
-        <profile-bonus-button @click="onMoveToPage('/profile/bonuses')">{{ getLowerCaseType }}</profile-bonus-button>
+        <profile-bonus-button @click="onMoveToPage('/profile/bonuses')">{{ getButtonType }}</profile-bonus-button>
       </div>
       <div class="col">
         <div class="title">£ {{ getPrice }}</div>
@@ -58,6 +58,10 @@ export default Vue.extend({
 
     getLowerCaseType() {
       return this.getType.toLowerCase();
+    },
+
+    getButtonType() {
+      return this.getLowerCaseType === 'silver' ? 'based' : this.getLowerCaseType;
     },
 
     getIconStyles() {
