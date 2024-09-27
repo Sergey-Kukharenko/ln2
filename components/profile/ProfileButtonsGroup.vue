@@ -22,11 +22,24 @@ import ProfileModal from '~/components/profile/ProfileModal.vue';
 import ProfileModalProcessing from '~/components/profile/ProfileModalProcessing.vue';
 import AppButton from '~/components/shared/AppButton.vue';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
+import { accessorMapper } from '~/store';
 
 export default {
   name: 'ProfileButtonsGroup',
 
-  components: { ProfileModalProcessing, ProfileModal, AppButton, AppLinkButton },
+  components: {
+    ProfileModalProcessing,
+    ProfileModal,
+    AppButton,
+    AppLinkButton
+  },
+
+  props: {
+    id: {
+      type: String,
+      default: ''
+    }
+  },
 
   data() {
     return {
@@ -62,6 +75,8 @@ export default {
   },
 
   methods: {
+    ...accessorMapper('profile-order', ['cancelOrder']),
+
     open() {
       this.isVisible = true;
       disableScroll();
@@ -74,8 +89,25 @@ export default {
 
     onCancel() {
       this.close();
-      // go to backend
       this.isCancellationProcess = true;
+
+      setTimeout(() => {
+        this.status = '';
+      }, 1000);
+
+      setTimeout(() => {
+        // this.isCancellationProcess = false;
+        this.$router.push({ name: 'profile-dashboard' });
+      }, 2000);
+
+      // try {
+      //   const { success } = await this.cancelOrder(this.id);
+      //   if (!success) {
+      //     console.log('The data was not recorded on the backend');
+      //   }
+      // } catch (e) {
+      //   console.error(e);
+      // }
     }
   }
 };

@@ -11,7 +11,7 @@
       <span>{{ getStatusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
-    <div v-if="$device.isDesktopOrTablet && item.date" class="button" @click="onDeleteOrder(item.order_id)">
+    <div v-if="isStatusesDeleting" class="button" @click="onDeleteOrder(item.id)">
       <svg-icon name="profile-basket" class="basket-icon" />
     </div>
   </div>
@@ -59,6 +59,11 @@ export default Vue.extend({
 
     isAvailableStatuses() {
       const statuses = ['PAYMENT', 'PAID', 'FAIL_PAID', 'CONFIRMED', 'PACKED', 'COURIER_ASSIGNED'];
+      return statuses.includes(this.item.status);
+    },
+
+    isStatusesDeleting() {
+      const statuses = ['CANCELED', 'CLIENT_REFUSAL', 'CLIENT_NOT_IN_PLACE', 'DELIVERED'];
       return statuses.includes(this.item.status);
     },
 

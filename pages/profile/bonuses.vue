@@ -1,6 +1,7 @@
 <template>
   <div class="bonuses-page">
-    <profile-title :title="getTitle" />
+    <profile-title :title="getTitle" large />
+    <div class="title">Get points</div>
     <profile-bonus-history :list="getList" />
   </div>
 </template>
@@ -23,7 +24,7 @@ export default Vue.extend({
     ...accessorMapper('profile-loyalty', ['loyalty']),
 
     getTitle() {
-      return this.loyalty?.title;
+      return this.$device.isDesktopOrTablet ? this.loyalty?.title : 'Score history';
     },
 
     getList() {
@@ -38,5 +39,12 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.title {
+  font-family: $golos-medium;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
 }
 </style>

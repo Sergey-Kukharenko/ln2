@@ -1,18 +1,11 @@
 <template>
   <div class="personal-data">
     <profile-personal-section title="Personal data">
-      <app-input
-        v-model="user.name"
-        :error="errors.name"
-        placeholder="Name"
-        pattern="[a-zA-Z]+"
-        size="x-large"
-        @keydown="lettersOnly"
-      />
+      <app-input v-model="user.name" :error="errors.name" placeholder="Name" size="x-large" @keydown="onLettersOnly" />
       <profile-button-list :selected="user.gender" :list="gender" @set-item="onSetGender" />
     </profile-personal-section>
     <profile-personal-section title="Date of birth">
-      <app-input v-model="user.birth" placeholder="Select" size="x-large" />
+      <app-input v-model.number="user.birth" placeholder="Select" size="x-large" max="10" @keydown="onDateFormat" />
     </profile-personal-section>
     <profile-personal-section title="Contacts">
       <app-input v-model="user.phone" placeholder="+7 (995) 905-48-02" size="x-large">
@@ -84,12 +77,31 @@ export default Vue.extend({
   methods: {
     ...accessorMapper('profile-personal', ['fetchPersonal', 'updatePersonal']),
 
-    lettersOnly(event) {
+    onLettersOnly(event) {
       const key = event.keyCode;
-      const isNumber = !((key >= 65 && key <= 90) || key === 8);
+      console.log(key);
+      const isNumber = !((key >= 65 && key <= 90) || key === 8 || key === 32);
 
       if (isNumber) {
         event.preventDefault();
+      }
+    },
+
+    onDateFormat(e) {
+      const key = e.keyCode;
+
+      if ((key <= 47 || key >= 57) && key !== 8) {
+        e.preventDefault();
+      }
+
+      const len = e.target.value.length;
+
+      if ((len !== 1 || len !== 3) && key === 47) {
+        e.preventDefault();
+      }
+
+      if (key !== 8 && (len === 2 || len === 5)) {
+        e.target.value += '.';
       }
     },
 

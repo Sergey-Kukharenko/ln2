@@ -20,6 +20,7 @@ export const actions = actionTree(
     fetchPersonal({ commit }) {
       try {
         // const personal = await this.app.$http.$get<PersonalResponse>('/v1/user');
+        // commit('SET_PERSONAL', personal);
 
         const personal = {
           auth: true,
@@ -31,6 +32,7 @@ export const actions = actionTree(
             email: 'john@gmail.com',
             gender: '',
             birth: '22.02.1980',
+            // birth: '',
             unfinished_orders_count: 1,
             favorites_count: 0,
             order: {

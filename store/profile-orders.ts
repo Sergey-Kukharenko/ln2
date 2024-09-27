@@ -19,10 +19,14 @@ export const actions = actionTree(
   {
     fetchOrders({ commit }) {
       try {
-        // const res = await this.app.$http.$get<ProfileOrdersResponse>('/v1/user/history');
-        // const orders = res.data;
+        // const { data } = await this.app.$http.$get<ProfileOrdersResponse>('/v1/user/history');
+        // console.log('===fetchOrders======');
+        // console.log(res);
+        // console.log('=========');
+        // console.log(res);
+        // commit('SET_ORDERS', data);
 
-        const orders = {
+        const data = {
           current: [
             {
               order_id: 1,
@@ -49,38 +53,42 @@ export const actions = actionTree(
           ]
         };
 
-        commit('SET_ORDERS', orders);
+        commit('SET_ORDERS', data);
       } catch (e) {
         console.error(e);
       }
     },
 
-    // async deleteOrder({ commit }, payload) {
-    //   try {
-    //     const orders = await this.app.$http.$delete<ProfileOrdersResponse>(`/v1/order/${payload}`);
-    //     commit('SET_ORDERS', orders);
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
-    // }
-
-    // удалить
-    deleteOrder({ state, commit }, orderId) {
+    async deleteOrder(_, id) {
       try {
-        // const orders = await this.app.$http.$delete<ProfileOrdersResponse>(`/v1/order/${payload}`);
+        console.log(id);
+        const res = await this.app.$http.$delete<ProfileOrdersResponse>(`/v1/order/delete/${id}`);
+        console.log('====deleteOrder===');
+        console.log(res);
+        console.log('=======');
         // commit('SET_ORDERS', orders);
-
-        const arr = state.orders.current;
-        const filtered = arr.filter((item) => item.order_id !== orderId);
-
-        const newOrders = {
-          current: filtered
-        };
-
-        commit('SET_ORDERS', newOrders);
       } catch (e) {
         console.error(e);
       }
     }
+
+    // удалить
+    // deleteOrder({ state, commit }, orderId) {
+    //   try {
+    //     // const orders = await this.app.$http.$delete<ProfileOrdersResponse>(`/v1/order/${payload}`);
+    //     // commit('SET_ORDERS', orders);
+    //
+    //     const arr = state.orders.current;
+    //     const filtered = arr.filter((item) => item.order_id !== orderId);
+    //
+    //     const newOrders = {
+    //       current: filtered
+    //     };
+    //
+    //     commit('SET_ORDERS', newOrders);
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // }
   }
 );

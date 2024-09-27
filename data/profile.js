@@ -11,7 +11,7 @@ export default {
         arrow: 'profile-arrow'
       },
       {
-        label: 'My orders',
+        label: 'Orders',
         type: 'orders',
         to: '/profile/orders',
         icon: 'profile-orders',
@@ -61,7 +61,7 @@ export default {
   pages: {
     orders: {
       head: {
-        title: 'My orders',
+        title: 'Orders',
         view: {
           to: '/profile/orders',
           label: 'View all'
@@ -78,7 +78,7 @@ export default {
     },
     favorites: {
       head: {
-        title: 'My favorites',
+        title: 'Favorites',
         view: {
           to: '/profile/favorites',
           label: 'View all'

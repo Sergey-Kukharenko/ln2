@@ -19,10 +19,11 @@ export const actions = actionTree(
   {
     fetchOrder({ commit }) {
       try {
-        // const res = await this.app.$http.$get<ProfileOrderResponse>('/v1/order');
+        // const { data } = await this.app.$http.$get<ProfileOrderResponse>('/v1/order');
         // console.log('===fetchOrder======');
-        // console.log(res);
+        // console.log(data);
         // console.log('=========');
+        // commit('SET_ORDER', data);
 
         const data = {
           object: 'Order',
@@ -195,6 +196,14 @@ export const actions = actionTree(
         };
 
         commit('SET_ORDER', data);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+
+    cancelOrder(_, id) {
+      try {
+        return this.app.$http.$patch<ProfileOrderResponse>(`/v1/order/cancel/${id}`);
       } catch (e) {
         console.error(e);
       }

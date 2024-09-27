@@ -128,7 +128,14 @@ export default Vue.extend({
   font-family: $sf-pro-medium;
   font-size: 14px;
   color: $color-dark-grey;
-  background: #eaeaea;
   border-radius: 50%;
+
+  @include gt-sm {
+    background: #eaeaea;
+  }
+
+  @include lt-md {
+    background: #fff;
+  }
 }
 </style>

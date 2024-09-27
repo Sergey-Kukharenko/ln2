@@ -35,7 +35,7 @@
         </div>
         <div v-if="$device.isMobile" class="section">
           <profile-aside-order-row :item="total" size="large" apply-to-all />
-          <profile-buttons-group />
+          <profile-buttons-group :id="id" />
         </div>
       </div>
       <profile-aside v-if="$device.isDesktopOrTablet" :order-details="orderDetails" />

@@ -19,24 +19,7 @@ export const actions = actionTree(
   {
     async fetchNotifications({ commit }) {
       try {
-        const res = await this.app.$http.$get<NotificationsResponse>('/v1/subscriptions/');
         const { data } = await this.app.$http.$get<NotificationsResponse>('/v1/subscriptions/');
-
-        // const notifications = {
-        //   success: true,
-        //   data: {
-        //     email: null,
-        //     email_subscription: false,
-        //     sms_subscription: true,
-        //     push_subscription: true
-        //   }
-        // };
-        //
-        // const { data } = notifications;
-
-        console.log('=============');
-        console.log(res);
-        console.log('=============');
 
         commit('SET_NOTIFICATIONS', data);
       } catch (e) {
@@ -46,14 +29,9 @@ export const actions = actionTree(
 
     async updateNotifications({ commit }, payload) {
       try {
-        const data = await this.app.$http.$put<NotificationsResponse>(`/v1/subscriptions/`, payload);
+        const { data } = await this.app.$http.$put<NotificationsResponse>(`/v1/subscriptions/`, payload);
 
-        console.log(data);
-        console.log('=============');
-        console.log(data);
-        console.log('=============');
-
-        commit('SET_NOTIFICATIONS', payload);
+        commit('SET_NOTIFICATIONS', data);
       } catch (e) {
         console.error(e);
       }

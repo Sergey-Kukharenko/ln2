@@ -15,7 +15,7 @@
       </template>
     </div>
 
-    <!--    <app-footer-bottom class="footer" />-->
+    <!--    <app-footer-bottom v-if="$device.isDesktopOrTablet" class="footer" />-->
   </div>
 </template>
 <script>
@@ -119,7 +119,8 @@ export default Vue.extend({
     .profile-page {
       @include lt-md {
         width: 100%;
-        height: 100vh;
+        height: calc(100vh - 50px);
+        overflow-y: auto;
         position: absolute;
         top: 0;
         left: 100%;
