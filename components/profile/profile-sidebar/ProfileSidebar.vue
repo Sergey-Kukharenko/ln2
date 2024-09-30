@@ -2,7 +2,7 @@
   <div class="profile-sidebar">
     <profile-sidebar-user :name="getPersonalName" />
     <profile-bonus-card v-if="isLoyalty" />
-    <profile-orders-item v-if="$device.isMobile" class="order" :item="foundCollectedOrder" background="white" />
+    <profile-orders-item v-if="$device.isMobile && isOrder" class="order" :item="personalOrder" background="white" />
     <profile-sidebar-nav :list="transformedNav" />
     <profile-log-out />
   </div>
@@ -33,19 +33,8 @@ export default Vue.extend({
     };
   },
 
-  async fetch() {
-    try {
-      await this.fetchPersonal();
-      await this.fetchFavorites();
-      await this.fetchOrders();
-      await this.fetchNotifications();
-      await this.fetchLoyalty();
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
   computed: {
+    ...accessorMapper('profile-personal', ['personalOrder']),
     ...accessorMapper('profile-personal', ['personalUser']),
     ...accessorMapper('favorites', ['favorites']),
     ...accessorMapper('profile-orders', ['orders']),
@@ -70,6 +59,10 @@ export default Vue.extend({
       };
     },
 
+    isOrder() {
+      return this.personalOrder?.order_id;
+    },
+
     isOrders() {
       return this.orders?.current?.length;
     },
@@ -79,19 +72,7 @@ export default Vue.extend({
         ...item,
         count: this.navigationModel[item.type]
       }));
-    },
-
-    foundCollectedOrder() {
-      return this.orders?.current.find((item) => !item.date);
     }
-  },
-
-  methods: {
-    ...accessorMapper('profile-personal', ['fetchPersonal']),
-    ...accessorMapper('favorites', ['fetchFavorites']),
-    ...accessorMapper('profile-orders', ['fetchOrders']),
-    ...accessorMapper('profile-notifications', ['fetchNotifications']),
-    ...accessorMapper('profile-loyalty', ['fetchLoyalty'])
   }
 });
 </script>

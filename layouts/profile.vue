@@ -25,6 +25,7 @@ import AppFooterBottom from '~/components/footer/AppFooterBottom.vue';
 import AppHeader from '~/components/header/AppHeader.vue';
 import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile.vue';
 import ProfileSidebar from '~/components/profile/profile-sidebar/ProfileSidebar.vue';
+import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'ProfileLayout',
@@ -48,6 +49,19 @@ export default Vue.extend({
       notSmooth: false,
       timerId: null
     };
+  },
+
+  async fetch() {
+    try {
+      await this.fetchPersonal();
+      await this.fetchFavorites();
+      await this.fetchOrders();
+      await this.fetchNotifications();
+      await this.fetchLoyalty();
+      await this.fetchOrder();
+    } catch (err) {
+      console.error(err);
+    }
   },
 
   computed: {
@@ -75,6 +89,13 @@ export default Vue.extend({
   },
 
   methods: {
+    ...accessorMapper('profile-personal', ['fetchPersonal']),
+    ...accessorMapper('favorites', ['fetchFavorites']),
+    ...accessorMapper('profile-orders', ['fetchOrders']),
+    ...accessorMapper('profile-notifications', ['fetchNotifications']),
+    ...accessorMapper('profile-loyalty', ['fetchLoyalty']),
+    ...accessorMapper('profile-order', ['fetchOrder']),
+
     moveToPage(payload) {
       this.move = payload;
     }

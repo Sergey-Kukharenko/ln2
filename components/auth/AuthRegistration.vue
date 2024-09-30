@@ -2,7 +2,10 @@
   <div class="container">
     <div class="container__header">
       <div class="container__layout">
-        <div class="container__title"><app-go-back-mobile has-step @change-step="goToLogin" />Sign up</div>
+        <div class="container__title">
+          <app-go-back-mobile has-step @change-step="goToLogin" />
+          Sign up
+        </div>
       </div>
     </div>
     <div class="container__body">
@@ -211,7 +214,7 @@ export default Vue.extend({
         };
 
         const { success, message } = await this.$accessor.user.setUserPersonalData(payload);
-
+        this.$router.push({ name: 'profile-dashboard', query: { reg: true } });
         if (!success) {
           this.onOpenErrorModal(message);
 
@@ -223,7 +226,6 @@ export default Vue.extend({
           email: this.form.email.value,
           phone: this.form.phone.value
         });
-
         // Здесь осуществляется редирект на страницу ЛК после успешной регистрации
         this.$router.push({ name: 'profile-dashboard', query: { reg: true } });
 

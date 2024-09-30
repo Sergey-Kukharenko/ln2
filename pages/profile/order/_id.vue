@@ -75,10 +75,6 @@ export default Vue.extend({
 
   MAP_PROFILE_STATUSES,
 
-  async fetch() {
-    await this.fetchOrder();
-  },
-
   computed: {
     ...accessorMapper('profile-order', ['order']),
 
@@ -200,10 +196,6 @@ export default Vue.extend({
         status: this.status
       };
     }
-  },
-
-  methods: {
-    ...accessorMapper('profile-order', ['fetchOrder'])
   }
 });
 </script>
