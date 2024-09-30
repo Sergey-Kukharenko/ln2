@@ -32,6 +32,11 @@ const AUTH_REG_ERROR_MESSAGES = {
 
 const AUTH_REG_TYPES = ['phone', 'email'];
 
+const AUTH_CODE_TIMER = {
+  step: 1000,
+  duration: 40000
+};
+
 const CODE_INPUT_DEFAULT_COUNT = 4;
 
 const CHECKOUT_FORM_KEYS = {
@@ -239,10 +244,10 @@ const CART_TOOLTIP = {
   ]
 };
 
-const CHECKOUT_STEPS = [
-  { id: 1, title: 'Delivery details' },
-  { id: 2, title: 'Final details' }
-];
+const CHECKOUT_STEPS = {
+  delivery: { id: 1, title: 'Delivery details', page: 'checkout-delivery-details' },
+  final: { id: 2, title: 'Final details', page: 'checkout-final-details' }
+};
 
 const CHECKOUT_STEP_COOKIE = 'checkout-step';
 
@@ -310,6 +315,7 @@ export {
   FILTER_TYPES,
   AUTH_REG_STEPS,
   AUTH_REG_TYPES,
+  AUTH_CODE_TIMER,
   CODE_INPUT_DEFAULT_COUNT,
   AUTH_REG_ERROR_MESSAGES,
   CHECKOUT_FORM_KEYS,

@@ -1,26 +1,27 @@
 <template>
   <div class="profile-buttons-group">
     <app-link-button :link="link">{{ link.label }}</app-link-button>
-    <app-button v-if="isOrderProcessing" theme="text-only" stretch="full" behavior="custom" @click="open"
-      >{{ button.label }}
-    </app-button>
+    <!--    Временно скрыт-->
+    <!--    <app-button v-if="isOrderProcessing" theme="text-only" stretch="full" behavior="custom" @click="open"-->
+    <!--      >{{ button.label }}-->
+    <!--    </app-button>-->
 
-    <profile-modal :is-visible="isVisible" @close-modal="close">
-      <template #title>{{ modal.title }}</template>
-      <template #buttons>
-        <app-button behavior="custom" @click="onCancel">{{ modal.buttons.exit }}</app-button>
-        <app-button theme="transparent" behavior="custom" @click="close">{{ modal.buttons.cancel }}</app-button>
-      </template>
-    </profile-modal>
-    <profile-modal-processing :is-show="isCancellationProcess" :status="status" />
+    <!--    <profile-modal :is-visible="isVisible" @close-modal="close">-->
+    <!--      <template #title>{{ modal.title }}</template>-->
+    <!--      <template #buttons>-->
+    <!--        <app-button behavior="custom" @click="onCancel">{{ modal.buttons.exit }}</app-button>-->
+    <!--        <app-button theme="transparent" behavior="custom" @click="close">{{ modal.buttons.cancel }}</app-button>-->
+    <!--      </template>-->
+    <!--    </profile-modal>-->
+    <!--    <profile-modal-processing :is-show="isCancellationProcess" :status="status" />-->
   </div>
 </template>
 
 <script>
 import AppLinkButton from '~/components/AppLinkButton.vue';
-import ProfileModal from '~/components/profile/ProfileModal.vue';
-import ProfileModalProcessing from '~/components/profile/ProfileModalProcessing.vue';
-import AppButton from '~/components/shared/AppButton.vue';
+// import ProfileModal from '~/components/profile/ProfileModal.vue';
+// import ProfileModalProcessing from '~/components/profile/ProfileModalProcessing.vue';
+// import AppButton from '~/components/shared/AppButton.vue';
 import { disableScroll, enableScroll } from '~/helpers/scrollLock';
 import { accessorMapper } from '~/store';
 
@@ -28,9 +29,9 @@ export default {
   name: 'ProfileButtonsGroup',
 
   components: {
-    ProfileModalProcessing,
-    ProfileModal,
-    AppButton,
+    // ProfileModalProcessing,
+    // ProfileModal,
+    // AppButton,
     AppLinkButton
   },
 
@@ -87,27 +88,20 @@ export default {
       enableScroll();
     },
 
-    onCancel() {
+    async onCancel() {
       this.close();
       this.isCancellationProcess = true;
+      this.status = '';
 
-      setTimeout(() => {
-        this.status = '';
-      }, 1000);
-
-      setTimeout(() => {
-        // this.isCancellationProcess = false;
-        this.$router.push({ name: 'profile-dashboard' });
-      }, 2000);
-
-      // try {
-      //   const { success } = await this.cancelOrder(this.id);
-      //   if (!success) {
-      //     console.log('The data was not recorded on the backend');
-      //   }
-      // } catch (e) {
-      //   console.error(e);
-      // }
+      try {
+        const { success } = await this.cancelOrder(this.id);
+        if (!success) {
+          console.log('The data was not recorded on the backend');
+        }
+        await this.$router.push({ name: 'profile-dashboard' });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 };

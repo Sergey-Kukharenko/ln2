@@ -25,7 +25,7 @@ export default Vue.extend({
   methods: {
     goBack() {
       if (this.currCheckoutStep > 1) {
-        this.$accessor.checkout.SET_STEP(this.currCheckoutStep - 1);
+        this.$router.push({ name: 'checkout-delivery-details' });
 
         return;
       }

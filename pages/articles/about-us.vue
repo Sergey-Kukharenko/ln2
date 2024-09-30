@@ -51,7 +51,19 @@ export default {
   PROMO,
   TEXT_INFO,
   HERO_ITEMS,
-  BENEFITS: benefits
+  BENEFITS: benefits,
+  head() {
+    return {
+      title: 'About MyFlowers - Flower Shop MyFlowers',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'About MyFlowers - all useful information about the online flower shop in London (UK) MyFlowers'
+        }
+      ]
+    };
+  }
 };
 </script>
 

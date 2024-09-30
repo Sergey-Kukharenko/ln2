@@ -484,7 +484,20 @@
 export default {
   name: 'PrivacyPolicy',
 
-  layout: 'empty'
+  layout: 'empty',
+
+  head() {
+    return {
+      title: 'Privacy policy - Flower Shop MyFlowers',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Privacy policy - all useful information about the online flower shop in London (UK) MyFlowers'
+        }
+      ]
+    };
+  }
 };
 </script>
 

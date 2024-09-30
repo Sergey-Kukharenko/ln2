@@ -1,8 +1,8 @@
 <template>
-  <h2 :class="classNames">
+  <div class="h2-title" :class="classNames">
     <span class="title__text">{{ headerProps.title }}</span>
     <span v-if="headerProps.total && theme" class="title__number">{{ headerProps.total }}</span>
-  </h2>
+  </div>
 </template>
 
 <script>

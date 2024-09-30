@@ -5,7 +5,7 @@
       :key="item.id"
       class="checkout-steps__item"
       :class="{ 'checkout-steps__item--active': getActiveTab(item.id) }"
-      @click="changeStep(item.id)"
+      @click="changeStep(item.page)"
     ></div>
   </div>
 </template>
@@ -33,8 +33,8 @@ export default Vue.extend({
       return id <= this.step;
     },
 
-    changeStep(id) {
-      this.$accessor.checkout.SET_STEP(id);
+    changeStep(page) {
+      this.$router.push({ name: page });
     }
   }
 });

@@ -11,7 +11,7 @@
     <checkout-intervals v-if="todayDate" :is-clarified="isClarified" />
 
     <div class="checkout-details__button">
-      <checkout-continue-button :is-clarified="isClarified" :curr-checkout-step="currCheckoutStep" />
+      <checkout-continue-button :is-clarified="isClarified" />
     </div>
   </div>
 </template>
@@ -42,11 +42,6 @@ export default {
     todayDate: {
       type: String,
       default: ''
-    },
-
-    currCheckoutStep: {
-      type: Number,
-      default: 1
     }
   }
 };

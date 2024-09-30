@@ -2,7 +2,7 @@
   <div :class="classNames">
     <section :class="classNamesSection">
       <div class="header">
-        <h2 class="title">{{ section.title }}</h2>
+        <div class="h2-title title">{{ section.title }}</div>
         <p v-if="section.subTitle" class="subtitle">{{ section.subTitle }}</p>
       </div>
 

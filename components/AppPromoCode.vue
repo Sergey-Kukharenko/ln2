@@ -71,8 +71,9 @@ export default Vue.extend({
       this.error = '';
     },
 
-    async setAndUpdate() {
+    async setAndUpdate(gift) {
       this.setSuccess();
+      this.$emit('toggleGift', gift);
       await this.fetchCheckout();
     },
 
@@ -83,11 +84,16 @@ export default Vue.extend({
         }
 
         const payload = { promo_code: this.promoCode };
-        const { success, message } = await this.setPromoCode(payload);
+        const {
+          success,
+          message,
+          data: { gift }
+        } = await this.setPromoCode(payload);
 
-        success ? await this.setAndUpdate() : this.setError(message);
+        success ? await this.setAndUpdate(gift) : this.setError(message);
       } catch (error) {
         this.setError(TOO_MANY_PROMOCODE_ATTEMPTS_MSG);
+        this.$emit('hideGift');
       }
     }
   }

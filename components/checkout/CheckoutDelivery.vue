@@ -50,7 +50,7 @@
             </li>
           </ul>
         </div>
-        <div v-if="isAddressTextVisible" class="delivery-details__address-mode" @click="addressSearchText.event">
+        <div class="delivery-details__address-mode" @click="addressSearchText.event">
           {{ addressSearchText.label }}
         </div>
         <transition>
@@ -173,7 +173,7 @@ export default Vue.extend({
         error: ''
       },
 
-      isManualMode: true,
+      isManualMode: false,
       isManualBtnVisible: false,
 
       suggestions: [],

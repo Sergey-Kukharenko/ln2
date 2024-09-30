@@ -50,12 +50,9 @@ export default Vue.extend({
   color: $color-dark-grey;
   cursor: pointer;
 
-  &.active {
-    color: $color-dark-green;
-  }
-
   @include gt-sm {
-    &:hover {
+    &:hover,
+    &.active {
       color: $color-dark-green;
     }
   }

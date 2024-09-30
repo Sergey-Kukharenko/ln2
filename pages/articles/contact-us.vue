@@ -47,7 +47,19 @@ export default {
   PROMO,
   TEXT_INFO,
   SOMETHING_IMPORTANT,
-  BENEFITS: benefits
+  BENEFITS: benefits,
+  head() {
+    return {
+      title: 'Contact US - Flower Shop MyFlowers',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Contact US - all useful information about the online flower shop in London (UK) MyFlowers'
+        }
+      ]
+    };
+  }
 };
 </script>
 

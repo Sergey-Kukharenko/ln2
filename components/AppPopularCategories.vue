@@ -1,6 +1,6 @@
 <template>
   <section class="layout popular-categories">
-    <h2 class="popular-title">New way to show love</h2>
+    <div class="h2-title popular-title">New way to show love</div>
     <div class="popular-list">
       <nuxt-link
         v-for="item in popularCategories"

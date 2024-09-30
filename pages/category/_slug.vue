@@ -1,5 +1,12 @@
 <template>
-  <category-wrapper :page-type="$options.CATEGORY" :category-data="getCategory" />
+  <div class="container">
+    <category-wrapper
+      v-if="isCategoryWrapperVisible"
+      :key="getCategory.main.title || $route.path"
+      :page-type="$options.CATEGORY"
+      :category-data="getCategory"
+    />
+  </div>
 </template>
 
 <script>
@@ -18,16 +25,22 @@ export default Vue.extend({
     CategoryWrapper
   },
 
+  data() {
+    return {
+      showContent: false
+    };
+  },
+
   async fetch() {
-    try {
-      const { slug } = this.$route.params;
-      const type = CATEGORY.toLocaleLowerCase();
-      const { page = 1, orderBy = '', orderDirection = '' } = this.$route.query;
-      const queryParams = {
-        order_by: orderBy,
-        order_direction: orderDirection
-      };
-      await this.$accessor.category.fetchCategory({
+    const { slug } = this.$route.params;
+    const type = CATEGORY.toLocaleLowerCase();
+    const { page = 1, orderBy = '', orderDirection = '' } = this.$route.query;
+    const queryParams = {
+      order_by: orderBy,
+      order_direction: orderDirection
+    };
+    await this.$accessor.category
+      .fetchCategory({
         type,
         slug,
         params: {
@@ -35,10 +48,10 @@ export default Vue.extend({
           page,
           ...queryParams
         }
+      })
+      .then(() => {
+        this.showContent = true;
       });
-    } catch (error) {
-      console.error(error);
-    }
   },
 
   head() {
@@ -66,7 +79,17 @@ export default Vue.extend({
 
     categorySeo() {
       return this.getCategory?.seo;
+    },
+
+    isCategoryWrapperVisible() {
+      return this.showContent && this.getCategory;
     }
   }
 });
 </script>
+
+<style scoped>
+.container {
+  min-height: 50vh;
+}
+</style>

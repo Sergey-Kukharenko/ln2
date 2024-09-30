@@ -5,7 +5,7 @@
       <profile-button-list :selected="user.gender" :list="gender" @set-item="onSetGender" />
     </profile-personal-section>
     <profile-personal-section title="Date of birth">
-      <app-input v-model.number="user.birth" placeholder="Select" size="x-large" max="10" @keydown="onDateFormat" />
+      <app-input v-model="user.birth" placeholder="Select" size="x-large" max="10" @keydown="onDateFormat" />
     </profile-personal-section>
     <profile-personal-section title="Contacts">
       <app-input v-model="user.phone" placeholder="+7 (995) 905-48-02" size="x-large">
@@ -66,8 +66,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...accessorMapper('profile-personal', ['personal']),
-    ...accessorMapper('profile-personal', ['personalUser'])
+    ...accessorMapper('profile-personal', ['personal'])
   },
 
   mounted() {
@@ -79,7 +78,7 @@ export default Vue.extend({
 
     onLettersOnly(event) {
       const key = event.keyCode;
-      console.log(key);
+
       const isNumber = !((key >= 65 && key <= 90) || key === 8 || key === 32);
 
       if (isNumber) {
@@ -87,6 +86,7 @@ export default Vue.extend({
       }
     },
 
+    // Временно отключен
     onDateFormat(e) {
       const key = e.keyCode;
 
@@ -100,8 +100,8 @@ export default Vue.extend({
         e.preventDefault();
       }
 
-      if (key !== 8 && (len === 2 || len === 5)) {
-        e.target.value += '.';
+      if (key !== 8 && (len === 4 || len === 7)) {
+        e.target.value += '-';
       }
     },
 

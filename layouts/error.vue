@@ -1,5 +1,5 @@
 <template>
-  <div class="error-layout">
+  <div v-if="!isNotFoundPage" class="error-layout">
     <div>
       <app-not-found v-if="isNetworkError" :error="error" />
       <app-something-went-wrong v-else />
@@ -8,6 +8,9 @@
         <app-button theme="full">To the main page</app-button>
       </nuxt-link>
     </div>
+  </div>
+  <div v-else>
+    <app-not-found-page></app-not-found-page>
   </div>
 </template>
 
@@ -20,6 +23,7 @@ export default {
   components: {
     AppSomethingWentWrong: () => import('~/components/AppSomethingWentWrong.vue'),
     AppNotFound: () => import('~/components/AppNotFound.vue'),
+    AppNotFoundPage: () => import('~/components/AppNotFoundPage.vue'),
     AppButton
   },
 
@@ -35,6 +39,9 @@ export default {
   computed: {
     isNetworkError() {
       return this.error.statusCode >= 400 && this.error.statusCode < 500;
+    },
+    isNotFoundPage() {
+      return this.error.statusCode === 404;
     }
   }
 };

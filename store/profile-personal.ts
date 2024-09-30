@@ -17,39 +17,9 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state },
   {
-    fetchPersonal({ commit }) {
+    async fetchPersonal({ commit }) {
       try {
-        // const personal = await this.app.$http.$get<PersonalResponse>('/v1/user');
-        // commit('SET_PERSONAL', personal);
-
-        const personal = {
-          auth: true,
-          real_id: 186352,
-          user: {
-            order_id: 'Dy6pLbl0RZobWPl1',
-            name: 'John',
-            phone: '79935653841',
-            email: 'john@gmail.com',
-            gender: '',
-            birth: '22.02.1980',
-            // birth: '',
-            unfinished_orders_count: 1,
-            favorites_count: 0,
-            order: {
-              order_id: 1,
-              img: 'https://d4-api.myfdev.work/media/images/offers/id10006/size50/long-1.webp',
-              amount_prod: null,
-              status: 'PAID',
-              date: null
-            },
-            bonus_amount: 0,
-            bonus_level: '',
-            orders_sum_amount: '0',
-            cashback: 0,
-            left_for_next_level: 0
-          }
-        };
-
+        const personal = await this.app.$http.$get<PersonalResponse>('/v1/user');
         commit('SET_PERSONAL', personal);
       } catch (e) {
         console.error(e);
@@ -58,7 +28,7 @@ export const actions = actionTree(
 
     async updatePersonal({ commit }, payload) {
       try {
-        const personal = await this.app.$http.$post<PersonalResponse>(`/v1/user/personal-data/`, payload);
+        const personal = await this.app.$http.$post<PersonalResponse>('/v1/user/personal-data/', payload);
         commit('SET_PERSONAL', personal);
       } catch (e) {
         console.error(e);

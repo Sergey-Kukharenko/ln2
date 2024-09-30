@@ -17,11 +17,6 @@ export default Vue.extend({
   },
 
   props: {
-    currCheckoutStep: {
-      type: Number,
-      default: 1
-    },
-
     isClarified: {
       type: Boolean,
       default: false
@@ -46,11 +41,7 @@ export default Vue.extend({
         return;
       }
 
-      if (this.currCheckoutStep >= 2) {
-        return;
-      }
-
-      this.$accessor.checkout.SET_STEP(this.currCheckoutStep + 1);
+      this.$router.push({ name: 'checkout-final-details' });
     }
   }
 });

@@ -2,8 +2,6 @@ import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
 import type { FavoritesResponse } from '~/@types/api/favorites';
 
-// import profile from '~/data/profile';
-
 export const state = () => ({
   favorites: {} as FavoritesResponse
 });

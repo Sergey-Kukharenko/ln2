@@ -51,7 +51,7 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('profile-notifications', ['updateNotifications']),
+    ...accessorMapper('profile-notifications', ['fetchNotifications', 'updateNotifications']),
 
     onChange(item) {
       // console.log(item.name, item.value);

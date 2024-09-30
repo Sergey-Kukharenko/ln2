@@ -181,3 +181,20 @@ animate
   transform: translateY(40%);
   opacity: 0;
 }
+
+.h2-title {
+  @include gt-sm {
+    font-size: 28px;
+    line-height: 32px;
+    margin: 0 0 32px 0;
+  }
+
+  @include lt-md {
+    font-size: 20px;
+    line-height: 24px;
+    margin: 0 0 16px 0;
+  }
+
+  font-family: "Literata", serif;
+  font-weight: 700;
+}

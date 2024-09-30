@@ -86,7 +86,7 @@ export default {
       return (
         !this.$cookies.get(GIFT_CARD_COOKIE) &&
         this.isGiftCardListExist &&
-        this.$accessor.checkout.currCheckoutStep === 2
+        this.$route.name === 'checkout-final-details'
       );
     }
   },

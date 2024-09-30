@@ -126,12 +126,14 @@ export default Vue.extend({
 
   head() {
     return {
-      title: this.seo.title,
+      title: this.seo.title || `${this.getProductTitle} - Flower Shop MyFlowers`,
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.seo.description
+          content:
+            this.seo.description ||
+            `Buy ${this.getProductTitle} in the best online flower shop in London (UK). Free delivery. 5 day guarantee for the bouquets. Make your order now!`
         },
 
         {

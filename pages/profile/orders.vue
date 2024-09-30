@@ -36,6 +36,10 @@ export default Vue.extend({
     isOrders() {
       return useArrayNotEmpty(this.orders?.current);
     }
+  },
+
+  methods: {
+    ...accessorMapper('profile-orders', ['fetchOrders'])
   }
 });
 </script>

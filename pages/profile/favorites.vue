@@ -37,12 +37,8 @@ export default Vue.extend({
     };
   },
 
-  fetch() {
-    this.fetchFavorites();
-  },
-
   computed: {
-    ...accessorMapper('profile-favorites', ['favorites']),
+    ...accessorMapper('favorites', ['favorites']),
 
     isFavorites() {
       return useArrayNotEmpty(this.favorites?.list);
@@ -50,7 +46,7 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('profile-favorites', ['fetchFavorites'])
+    ...accessorMapper('favorites', ['fetchFavorites'])
   }
 });
 </script>

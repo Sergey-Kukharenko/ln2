@@ -1,17 +1,10 @@
 <template>
   <main class="checkout">
     <div class="checkout__title">
-      <checkout-title :title="currStep.title" />
+      <checkout-title :title="$options.CHECKOUT_STEPS.final.title" />
     </div>
     <div class="checkout__container">
-      <checkout-delivery-details
-        v-show="isDetailsStep"
-        :is-clarified="isClarified"
-        :today-date="todayDate"
-        :curr-checkout-step="currCheckoutStep"
-      />
       <checkout-final-details
-        v-show="isFinalStep"
         :available-payment-methods="filteredAvailablePaymentMethods"
         :payment-method="getPaymentMethod"
         :order-id="checkout?.id"
@@ -26,11 +19,10 @@
 import Vue from 'vue';
 
 import CheckoutTitle from '~/components/checkout/CheckoutTitle.vue';
-import { EMPTY_CART_MAP } from '~/constants';
+import { CHECKOUT_STEPS, EMPTY_CART_MAP } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import * as paymentMethods from '~/data/payment-methods';
-import addGtag from '~/mixins/addGtag.vue';
-import gtm from '~/mixins/gtm.vue';
+import authManager from '~/mixins/authManager.vue';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -38,26 +30,14 @@ export default Vue.extend({
 
   components: {
     CheckoutTitle,
-    CheckoutDeliveryDetails: () => import('~/components/checkout/CheckoutDeliveryDetails.vue'),
     CheckoutFinalDetails: () => import('~/components/checkout/CheckoutFinalDetails.vue')
   },
 
-  mixins: [gtm, addGtag],
+  CHECKOUT_STEPS,
 
-  beforeRouteLeave(to, _from, next) {
-    const isStepChange = to.name === 'cart' && this.currCheckoutStep === 2;
+  mixins: [authManager],
 
-    if (isStepChange) {
-      next(false);
-      this.$accessor.checkout.SET_STEP(1);
-
-      return;
-    }
-
-    next();
-  },
-
-  layout: 'auth',
+  layout: 'checkout',
 
   data() {
     return {
@@ -69,40 +49,12 @@ export default Vue.extend({
 
   PAYMENT_METHODS: paymentMethods,
 
-  async fetch({ app: { $accessor } }) {
-    try {
-      await $accessor.checkout.fetchCheckout();
-      await $accessor.checkout.fetchIntervals();
-      await $accessor.payment.getClientIdPayPal();
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
   computed: {
-    ...accessorMapper('checkout', [
-      'checkoutSteps',
-      'currCheckoutStep',
-      'isClarified',
-      'isDetailsStep',
-      'isFinalStep',
-      'checkoutCost',
-      'checkout',
-      'todayDate'
-    ]),
-    ...accessorMapper('cart', ['getCart']),
+    ...accessorMapper('checkout', ['checkoutCost', 'checkout']),
     ...accessorMapper('payment', ['getPaymentMethod']),
-
-    isStatusPayment() {
-      return this.checkout?.status === 'PAYMENT';
-    },
 
     filteredAvailablePaymentMethods() {
       return this.availablePaymentMethods.filter((p) => p.available);
-    },
-
-    currStep() {
-      return this.checkoutSteps?.find((s) => s.id === this.currCheckoutStep);
     }
   },
 
@@ -122,20 +74,11 @@ export default Vue.extend({
   },
 
   mounted() {
-    this.gtmClearItemEvent();
-    this.dataLayerSetOriginalUrl();
-    this.gtmBeginCheckoutEvent();
-    this.onAddGtagScript();
-  },
-
-  beforeDestroy() {
-    this.setDefaultPaymentMethod();
-    this.$accessor.checkout.SET_STEP(1);
+    // this.rewriteHistory();
   },
 
   methods: {
     ...accessorMapper('checkout', ['setCheckoutToPay']),
-    ...accessorMapper('payment', ['setDefaultPaymentMethod']),
 
     async submitCheckout() {
       await this.setCheckoutToPay();
@@ -188,6 +131,12 @@ export default Vue.extend({
         return;
       }
       this.availablePaymentMethods[paymentMethodIndex].available = true;
+    },
+
+    rewriteHistory() {
+      ['/', '/basket', '/checkout/delivery-details', '/checkout/final-details'].forEach((uri) => {
+        history.pushState(null, null, uri);
+      });
     }
   }
 });

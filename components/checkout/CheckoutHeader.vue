@@ -26,6 +26,7 @@ import CheckoutDetailsButton from '~/components/checkout/CheckoutDetailsButton.v
 import CheckoutGoBackButton from '~/components/checkout/CheckoutGoBackButton.vue';
 import CheckoutTotal from '~/components/checkout/CheckoutTotal.vue';
 import AppLogo from '~/components/header/AppLogo.vue';
+import { CHECKOUT_STEPS } from '~/constants';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -46,7 +47,15 @@ export default Vue.extend({
   },
 
   computed: {
-    ...accessorMapper('checkout', ['currCheckoutStep', 'checkoutSteps', 'checkoutCost'])
+    ...accessorMapper('checkout', ['checkoutCost']),
+
+    checkoutSteps() {
+      return Object.values(CHECKOUT_STEPS);
+    },
+
+    currCheckoutStep() {
+      return this.checkoutSteps.find((step) => step.page === this.$route.name).id || 1;
+    }
   }
 });
 </script>

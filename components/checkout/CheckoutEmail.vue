@@ -17,10 +17,9 @@
           @change="onChange($event, $options.BONUS)"
         >
           <span class="checkbox-text">
-            Text me with <span class="checkbox-text__bold">discount up to 50%</span><br />
-            Alternatively, you can tell us
+            I want to receive order status updates and special news.
             <a href="#" class="checkbox-text__link" @click.stop.prevent="toggleSubscribeList">
-              how you would like to hear from us
+              Choose method of contact
             </a>
           </span>
         </app-checkbox>
@@ -32,9 +31,6 @@
             Email
           </app-checkbox>
           <app-checkbox v-model="options.sms_subscription" :name="$options.SMS" @change="onChange"> SMS </app-checkbox>
-          <app-checkbox v-model="options.push_subscription" :name="$options.PUSH" @change="onChange">
-            App push
-          </app-checkbox>
         </div>
       </div>
     </div>
@@ -71,11 +67,10 @@ export default Vue.extend({
   data() {
     return {
       isSubscribeListVisible: false,
-      agreeEmailReceive: '',
+      agreeEmailReceive: BONUS,
       options: {
-        email_subscription: '',
-        sms_subscription: '',
-        push_subscription: ''
+        email_subscription: email,
+        sms_subscription: sms
       }
     };
   },
@@ -129,8 +124,7 @@ export default Vue.extend({
         } else {
           this.options = {
             email_subscription: this.email ? email : '',
-            sms_subscription: sms,
-            push_subscription: push
+            sms_subscription: sms
           };
 
           this.handleSubscribe();

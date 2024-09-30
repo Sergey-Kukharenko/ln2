@@ -1,5 +1,5 @@
 <template>
-  <div class="checkout-layout">
+  <div v-if="!loading" class="checkout-layout">
     <div class="checkout-layout__group" :class="{ 'checkout-layout__group--shadow': !isDetailsVisible }">
       <checkout-header :is-details-visible="isDetailsVisible" />
       <checkout-details v-show="isDetailsVisible" />
@@ -18,6 +18,10 @@ import Vue from 'vue';
 import CheckoutDetails from '~/components/checkout/CheckoutDetails.vue';
 import CheckoutFooterBottom from '~/components/checkout/CheckoutFooterBottom.vue';
 import CheckoutHeader from '~/components/checkout/CheckoutHeader.vue';
+import { GTM_EVENTS_MAP } from '~/constants/gtm';
+import addGtag from '~/mixins/addGtag.vue';
+import authManager from '~/mixins/authManager.vue';
+import gtm from '~/mixins/gtm.vue';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -29,10 +33,75 @@ export default Vue.extend({
     CheckoutHeader
   },
 
+  mixins: [authManager, gtm, addGtag],
+
   middleware: ['auth'],
 
+  data() {
+    return {
+      loading: true
+    };
+  },
+
   computed: {
-    ...accessorMapper('checkout', ['isDetailsVisible'])
+    ...accessorMapper('checkout', ['isDetailsVisible']),
+    ...accessorMapper('cart', ['getCart'])
+  },
+
+  created() {
+    if (process.server) {
+      return;
+    }
+
+    this.initializeCheckout();
+  },
+
+  mounted() {
+    this.gtmClearItemEvent();
+    this.dataLayerSetOriginalUrl();
+    this.gtmBeginCheckoutEvent();
+    this.onAddGtagScript();
+  },
+
+  beforeDestroy() {
+    this.setDefaultPaymentMethod();
+  },
+
+  methods: {
+    ...accessorMapper('payment', ['setDefaultPaymentMethod']),
+
+    async initializeCheckout() {
+      try {
+        await Promise.allSettled([
+          this.$accessor.checkout.fetchCheckout(),
+          this.$accessor.checkout.fetchIntervals(),
+          this.$accessor.payment.getClientIdPayPal()
+        ]);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    gtmBeginCheckoutEvent() {
+      const items = this.getCart.map((item) => ({
+        item_name: item.offer_title,
+        item_id: item.offer_real_id,
+        price: item.price,
+        item_brand: 'myflowers',
+        item_category: item.category_name,
+        item_variant: item.title,
+        quantity: item.quantity
+      }));
+
+      this.$gtm.push({
+        event: GTM_EVENTS_MAP.beginCheckout,
+        ecommerce: {
+          items
+        }
+      });
+    }
   }
 });
 </script>

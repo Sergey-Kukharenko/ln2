@@ -38,7 +38,7 @@
           <profile-buttons-group :id="id" />
         </div>
       </div>
-      <profile-aside v-if="$device.isDesktopOrTablet" :order-details="orderDetails" />
+      <profile-aside v-if="$device.isDesktopOrTablet && id" :order-details="orderDetails" />
     </div>
   </div>
 </template>
@@ -75,51 +75,51 @@ export default Vue.extend({
 
   MAP_PROFILE_STATUSES,
 
-  fetch() {
-    this.fetchOrder();
+  async fetch() {
+    await this.fetchOrder();
   },
 
   computed: {
     ...accessorMapper('profile-order', ['order']),
 
     recipient() {
-      return this.order.recipient;
+      return this.order?.recipient;
     },
 
     shippingAddress() {
-      return this.order.shipping_address;
+      return this.order?.shipping_address;
     },
 
     interval() {
-      return this.order.interval;
+      return this.order?.interval;
     },
 
     deliveryAmount() {
-      return this.order.delivery_amount;
+      return this.order?.delivery_amount;
     },
 
     status() {
-      return this.order.status;
+      return this.order?.status;
     },
 
     positions() {
-      return this.order.positions;
+      return this.order?.positions;
     },
 
     sale() {
-      return this.order.promo_code?.discount;
+      return this.order?.promo_code?.discount;
     },
 
     id() {
-      return this.order.id;
+      return this.order?.id;
     },
 
     payment_methods() {
-      return this.order.payment_methods;
+      return this.order?.payment_methods;
     },
 
     totalCost() {
-      return this.order.total_cost;
+      return this.order?.total_cost;
     },
 
     total() {
@@ -162,8 +162,8 @@ export default Vue.extend({
     },
 
     getAddressText() {
-      const address1 = this.shippingAddress.address1 || '';
-      const address2 = this.shippingAddress.address2 || '';
+      const address1 = this.shippingAddress?.address1 || '';
+      const address2 = this.shippingAddress?.address2 || '';
       const splitter = address1 && address2 ? ', ' : '';
 
       return address1 + splitter + address2;

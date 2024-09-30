@@ -7,13 +7,18 @@
     </div>
     <div class="content" :class="{ grey: item.date }">
       Order
-      <nuxt-link :to="pathToOrder" :class="{ active: !item.date }">No. {{ item.order_id }}</nuxt-link>
+      <nuxt-link
+        :to="item.order_id === getOrderRealId ? 'order/' + item.order_id : ''"
+        :class="{ active: item.order_id === getOrderRealId }"
+        >No. {{ item.order_id }}
+      </nuxt-link>
       <span>{{ getStatusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
-    <div v-if="isStatusesDeleting" class="button" @click="onDeleteOrder(item.id)">
-      <svg-icon name="profile-basket" class="basket-icon" />
-    </div>
+    <!--    Временно скрыт-->
+    <!--    <div v-if="isStatusesDeleting" class="button" @click="onDeleteOrder(item.id)">-->
+    <!--      <svg-icon name="profile-basket" class="basket-icon" />-->
+    <!--    </div>-->
   </div>
 </template>
 
@@ -47,6 +52,12 @@ export default Vue.extend({
   MAP_PROFILE_STATUSES,
 
   computed: {
+    ...accessorMapper('profile-personal', ['personal']),
+
+    getOrderRealId() {
+      return this.personal?.user?.order?.order_id;
+    },
+
     classes() {
       return {
         [`background-${this.background}`]: this.background
@@ -58,7 +69,7 @@ export default Vue.extend({
     },
 
     isAvailableStatuses() {
-      const statuses = ['PAYMENT', 'PAID', 'FAIL_PAID', 'CONFIRMED', 'PACKED', 'COURIER_ASSIGNED'];
+      const statuses = ['PAYMENT', 'PAID', 'FAIL_PAID', 'CONFIRMED', 'PACKED', 'COURIER_ASSIGNED', 'ORDER'];
       return statuses.includes(this.item.status);
     },
 
@@ -68,7 +79,7 @@ export default Vue.extend({
     },
 
     pathToOrder() {
-      return this.isAvailableStatuses ? 'order/' + this.item.order_id : '';
+      return this.isAvailableStatuses ? 'order/' + this.item.order_id : '/profile/orders';
     }
   },
 

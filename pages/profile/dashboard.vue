@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-page">
+    <profile-alert v-if="isRegistrationQuery" />
     <profile-content v-if="isDataExists">
       <profile-section v-if="isOrder" :head="ordersHead" preview>
         <profile-orders-list :list="[personalOrder]" preview />
@@ -9,7 +10,6 @@
       </profile-section>
     </profile-content>
     <template v-else>
-      <profile-alert />
       <profile-empty />
     </template>
   </div>
@@ -26,7 +26,6 @@ import ProfileOrdersList from '~/components/profile/profile-orders/ProfileOrders
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';
-// import { accessorMapper } from '~/store';
 
 const { orders, favorites } = profile.pages;
 export default Vue.extend({
@@ -51,8 +50,12 @@ export default Vue.extend({
 
   computed: {
     ...accessorMapper('profile-personal', ['personalOrder']),
-    ...accessorMapper('profile-favorites', ['favorites']),
+    ...accessorMapper('favorites', ['favorites']),
     ...accessorMapper('profile-orders', ['orders']),
+
+    isRegistrationQuery() {
+      return this.$route.query.reg;
+    },
 
     isOrder() {
       return this.personalOrder?.order_id;

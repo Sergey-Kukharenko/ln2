@@ -4,7 +4,9 @@
       <div class="category-page__row">
         <div class="category-page__col filter-panel">
           <div class="filter-panel__header">
-            <h1 class="filter-panel__header-title">{{ categoryTitle }}</h1>
+            <h1 class="filter-panel__header-title">
+              {{ categoryTitle }}
+            </h1>
             <span>
               <app-sort-select :type="pageType" />
             </span>

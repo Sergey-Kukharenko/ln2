@@ -52,6 +52,11 @@ export default Vue.extend({
       }
     },
 
+    slug: {
+      type: String,
+      default: null
+    },
+
     categoryTitle: {
       type: String,
       default: ''
@@ -112,7 +117,7 @@ export default Vue.extend({
       const payload = {
         type: this.type.toLocaleLowerCase(),
         isConcated: isShowMore,
-        slug: this.$route.params.slug,
+        slug: this.slug || this.$route.params.slug,
         params: {
           page,
           limit: PAGINATION.limit,

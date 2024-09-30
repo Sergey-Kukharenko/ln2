@@ -1,9 +1,10 @@
 import { actionTree, getterTree, mutationTree } from 'typed-vuex';
 
-import type { CheckoutStep, DailyIterval, Interval, IntervalResponse } from '~/@types/api/checkout';
+import type { DailyIterval, Interval, IntervalResponse } from '~/@types/api/checkout';
 import type { OrderResponse } from '~/@types/api/order';
+import type { Promocode } from '~/@types/api/promocode';
 
-import { CHECKOUT_STEPS, EMPTY_CART_MAP, GIFT_CARD_POLICY_ID } from '~/constants';
+import { EMPTY_CART_MAP, GIFT_CARD_POLICY_ID } from '~/constants';
 
 const GET_INTERVALS_IRI = '/v1/intervals/get-delivery-intervals-for-date/';
 const checkIntervalsForDisable = (intervals: IntervalResponse<DailyIterval>['data']['intervals']) =>
@@ -12,7 +13,7 @@ const getCheckoutCost = (checkout: OrderResponse['data']) => ({
   positionsCost: checkout?.positions_cost || 0,
   deliveryAmount: +checkout?.delivery_amount ? `£ ${checkout?.delivery_amount}` : 'Free',
   deliveryCost: +checkout?.delivery_amount || 0,
-  totalSum: +checkout?.total_cost.replace(',', '') || 0,
+  totalSum: +checkout?.total_cost?.replace(',', '') || 0,
   cashback: +checkout?.cashback || 0,
   sale: +checkout?.promo_code?.discount ? checkout?.promo_code?.discount : 0
 });
@@ -24,18 +25,12 @@ export const state = () => ({
   intervals: null as IntervalResponse<DailyIterval[]>['data'] | null,
   todayDate: null as Nullable<string>,
   isDetailsVisible: false as boolean,
-  currCheckoutStep: 1 as CheckoutStep['id'],
-  checkoutSteps: CHECKOUT_STEPS as CheckoutStep[],
   isPending: false as boolean
 });
 
 type CheckoutState = ReturnType<typeof state>;
 
 export const mutations = mutationTree(state, {
-  SET_STEP(state, payload: CheckoutState['currCheckoutStep']) {
-    state.currCheckoutStep = payload;
-  },
-
   SET_DETAILS_VISIBLE(state, payload: CheckoutState['isDetailsVisible']) {
     state.isDetailsVisible = payload;
   },
@@ -46,6 +41,13 @@ export const mutations = mutationTree(state, {
 
   SET_TODAY_DATE(state, payload: CheckoutState['todayDate']) {
     state.todayDate = payload;
+  },
+
+  SET_RECIPIENT(state, payload: CheckoutState['checkout']['recipient']) {
+    state.checkout = {
+      ...state.checkout,
+      recipient: payload
+    };
   },
 
   SET_SELF_RECIPIENT(state, payload: CheckoutState['selfRecipient']) {
@@ -109,7 +111,7 @@ export const actions = actionTree(
 
     setPromoCode(_, payload: { promo_code: string }) {
       try {
-        return this.app.$http.$post('/v1/order/promocode/', payload);
+        return this.app.$http.$post<ApiResponse<Promocode>>('/v1/order/promocode/', payload);
       } catch (err) {
         console.error(err);
       }
@@ -160,9 +162,10 @@ export const actions = actionTree(
       }
     },
 
-    setCheckoutRecipient(_, payload: OrderResponse['data']['recipient']) {
+    async setCheckoutRecipient({ commit }, payload: OrderResponse['data']['recipient']) {
       try {
-        return this.app.$http.$post<ApiResponse<null>>('/v1/order/recipient/', payload);
+        await this.app.$http.$post<ApiResponse<null>>('/v1/order/recipient/', payload);
+        commit('SET_RECIPIENT', payload);
       } catch (err) {
         console.error(err);
       }
@@ -222,7 +225,5 @@ export const getters = getterTree(state, {
   checkoutShippingAddress: (state) => state.checkout?.shipping_address || {},
   checkoutPositions: (state) => state.checkout?.positions || [],
   checkoutPromocode: (state) => state.checkout?.promo_code?.code || '',
-  isDetailsStep: (state) => state.currCheckoutStep === 1,
-  isFinalStep: (state) => state.currCheckoutStep === 2,
   getGiftCard: (state) => state.checkout?.positions?.find((position) => position?.policy_id === GIFT_CARD_POLICY_ID)
 });

@@ -40,7 +40,7 @@ const getProducts = (link, token, limit = 999) =>
 const exclude = [
   '/cart',
   '/not-found',
-  '/checkout',
+  '/checkout/**',
   '/signin/**',
   '/signup/**',
   '/signin',

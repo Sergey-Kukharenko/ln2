@@ -1,7 +1,13 @@
 import { Middleware } from '@nuxt/types';
 
 const resetPaymentCookie: Middleware = ({ app: { $cookies }, route }) => {
-  const unusedRoutes = ['preorder-id', 'checkout', 'order-id', 'payment-stripe'];
+  const unusedRoutes = [
+    'preorder-id',
+    'checkout-delivery-details',
+    'checkout-final-details',
+    'order-id',
+    'payment-stripe'
+  ];
   const PAYMENT_METHOD_COOKIE = 'payment-method';
 
   if (route?.name && unusedRoutes.includes(route.name)) {

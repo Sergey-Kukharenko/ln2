@@ -1,7 +1,7 @@
 <template>
   <div class="profile-layout" :class="{ static: $device.isMobile && isProfileOrder }">
-    <!--    <app-header-mobile v-if="$device.isMobileOrTablet" />-->
-    <!--    <app-header v-else />-->
+    <app-header-mobile v-if="$device.isMobileOrTablet" />
+    <app-header v-else />
 
     <div class="layout layout-dt profile-container" :class="{ move, 'not-smooth': notSmooth }">
       <template>
@@ -15,25 +15,24 @@
       </template>
     </div>
 
-    <!--    <app-footer-bottom v-if="$device.isDesktopOrTablet" class="footer" />-->
+    <app-footer-bottom v-if="$device.isDesktopOrTablet" class="footer" />
   </div>
 </template>
 <script>
 import Vue from 'vue';
 
-// import AppFooterBottom from '~/components/footer/AppFooterBottom.vue';
-// import AppHeader from '~/components/header/AppHeader.vue';
-// import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile.vue';
+import AppFooterBottom from '~/components/footer/AppFooterBottom.vue';
+import AppHeader from '~/components/header/AppHeader.vue';
+import AppHeaderMobile from '~/components/header/mobile/AppHeaderMobile.vue';
 import ProfileSidebar from '~/components/profile/profile-sidebar/ProfileSidebar.vue';
-import { accessorMapper } from '~/store';
 
 export default Vue.extend({
   name: 'ProfileLayout',
 
   components: {
-    // AppFooterBottom,
-    // AppHeader,
-    // AppHeaderMobile,
+    AppFooterBottom,
+    AppHeader,
+    AppHeaderMobile,
     ProfileSidebar
   },
 
@@ -49,18 +48,6 @@ export default Vue.extend({
       notSmooth: false,
       timerId: null
     };
-  },
-
-  async fetch() {
-    try {
-      await this.fetchPersonal();
-      await this.fetchFavorites();
-      await this.fetchOrders();
-      await this.fetchNotifications();
-      await this.fetchLoyalty();
-    } catch (err) {
-      console.error(err);
-    }
   },
 
   computed: {
@@ -88,12 +75,6 @@ export default Vue.extend({
   },
 
   methods: {
-    ...accessorMapper('profile-personal', ['fetchPersonal']),
-    ...accessorMapper('profile-favorites', ['fetchFavorites']),
-    ...accessorMapper('profile-orders', ['fetchOrders']),
-    ...accessorMapper('profile-notifications', ['fetchNotifications']),
-    ...accessorMapper('profile-loyalty', ['fetchLoyalty']),
-
     moveToPage(payload) {
       this.move = payload;
     }

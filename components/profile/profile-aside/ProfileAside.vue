@@ -42,7 +42,7 @@ export default {
     contents() {
       return {
         list: this.orderDetails.positions,
-        price: '£ 94'
+        price: '£ ' + this.orderDetails.totalCost
       };
     },
 

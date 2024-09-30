@@ -99,7 +99,7 @@ export default Vue.extend({
     ...accessorMapper('gifts', ['giftCards']),
 
     isCheckout() {
-      return this.$route.name === 'checkout';
+      return this.$route.name === 'checkout-final-details';
     },
 
     isNavigationVisible() {

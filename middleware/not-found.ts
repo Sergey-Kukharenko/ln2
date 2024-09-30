@@ -1,9 +1,9 @@
 import { Middleware } from '@nuxt/types';
 
-const notFoundMiddleware: Middleware = ({ $axios, redirect }) => {
-  $axios.onError((error) => {
-    if (!error.response || error.response.status === 404) {
-      redirect('/not-found');
+const notFoundMiddleware: Middleware = ({ $axios, error }) => {
+  $axios.onError((err) => {
+    if (!err.response || err.response.status === 404) {
+      error({ statusCode: 404, message: 'Post not found' });
     }
   });
 };

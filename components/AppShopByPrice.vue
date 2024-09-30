@@ -1,20 +1,20 @@
 <template>
   <section class="layout shop-by-price">
-    <h2 class="shop-by-price__title">
+    <div class="h2-title shop-by-price__title">
       {{ shopByPrice.title }}
-    </h2>
+    </div>
 
     <div class="list">
       <div v-for="(item, idx) in shopByPrice.list" :key="idx" class="list__item">
         <nuxt-link :to="{ name: `${item.prefix}-slug`, params: { slug: item.slug } }" class="card">
           <div class="card__figure">{{ item.type }}</div>
           <div class="card__group">
-            <h2 class="card__title">
+            <div class="h2-title card__title">
               {{ item.title }}
               <span v-if="item.currency" class="currency">
                 {{ item.currency }}
               </span>
-            </h2>
+            </div>
             <div class="card__link">
               {{ item.link }}
             </div>

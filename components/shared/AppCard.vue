@@ -238,7 +238,7 @@ export default Vue.extend({
 
   methods: {
     ...accessorMapper('cart', ['addToCart']),
-    ...accessorMapper('profile-favorites', ['addToFavorites', 'removeFromFavorites']),
+    ...accessorMapper('favorites', ['addToFavorites', 'removeFromFavorites']),
 
     useSizedImage,
 

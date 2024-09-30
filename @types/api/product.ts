@@ -1,4 +1,4 @@
-interface FeaturedImage {
+export interface FeaturedImage {
   ord: number;
   alt_text: string;
   filename: string;

@@ -174,15 +174,13 @@ export default Vue.extend({
   watch: {
     isClarified() {
       // TODO: Убираем для C версии, если попадет в А версию, удалить этот блок кода
-      // if (!val) {
-      //   const time =
-      //     this.checkoutIntervalData?.time ?? this.firstAvalibleIterval?.label;
-      //   this.setInterval({ date: null, time });
+      if (!this.checkoutIntervalData?.date) {
+        this.setInterval({ date: null, time: null, clear: true });
 
-      //   return;
-      // }
+        return;
+      }
 
-      this.setInterval({ date: null, time: null, clear: true });
+      this.setInterval({ date: null, time: null });
     }
   },
 

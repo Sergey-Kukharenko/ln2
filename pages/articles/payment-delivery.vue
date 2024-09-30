@@ -48,7 +48,19 @@ export default {
   TEXT_INFO,
   HERO_ITEMS,
   SOMETHING_IMPORTANT,
-  BENEFITS: benefits
+  BENEFITS: benefits,
+  head() {
+    return {
+      title: 'Payment & delivery - Flower Shop MyFlowers',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Payment & delivery - all useful information about the online flower shop in London (UK) MyFlowers'
+        }
+      ]
+    };
+  }
 };
 </script>
 

@@ -1,6 +1,3 @@
-type StepId = 1 | 2;
-type StepTitle = 'Delivery details' | 'Final details';
-
 export interface Interval {
   id: number;
   label: string;
@@ -15,7 +12,3 @@ export interface DailyIterval {
 }
 
 export interface IntervalResponse<T> extends ApiResponse<T> {}
-export interface CheckoutStep {
-  id: StepId;
-  title: StepTitle;
-}

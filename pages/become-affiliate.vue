@@ -31,7 +31,19 @@ export default {
   },
 
   BECOME_AFFILIATE,
-  BENEFITS: benefits
+  BENEFITS: benefits,
+  head() {
+    return {
+      title: 'Become & Affiliate - Flower Shop MyFlowers',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Become & Affiliate - all useful information about the online flower shop in London (UK) MyFlowers'
+        }
+      ]
+    };
+  }
 };
 </script>
 

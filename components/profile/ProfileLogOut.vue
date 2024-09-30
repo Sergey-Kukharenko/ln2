@@ -7,7 +7,7 @@
     <profile-modal :is-visible="isVisible" @close-modal="close">
       <template #title>{{ modal.title }}</template>
       <template #buttons>
-        <app-button behavior="custom" @click="logout">{{ modal.buttons.exit }}</app-button>
+        <app-button behavior="custom" @click="onLogout">{{ modal.buttons.exit }}</app-button>
         <app-button theme="transparent" behavior="custom" @click="close">{{ modal.buttons.cancel }}</app-button>
       </template>
     </profile-modal>
@@ -49,9 +49,10 @@ export default {
       enableScroll();
     },
 
-    async logout() {
+    async onLogout() {
       this.close();
       await this.$accessor.auth.logout();
+      this.$router.push({ name: 'index' });
     }
   }
 };

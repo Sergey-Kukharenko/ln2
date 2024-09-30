@@ -5,7 +5,7 @@
       <template #title> {{ modal.title }}</template>
       <template #description> {{ modal.description }}</template>
       <template #buttons>
-        <app-button behavior="custom">{{ modal.buttons.delete }}</app-button>
+        <app-button behavior="custom" @click="onLogout">{{ modal.buttons.delete }}</app-button>
         <app-button theme="text-only" class="red-color" color="" behavior="custom" @click="close"
           >{{ modal.buttons.cancel }}
         </app-button>
@@ -50,9 +50,10 @@ export default {
       enableScroll();
     },
 
-    async logout() {
+    async onLogout() {
       this.close();
       await this.$accessor.auth.logout();
+      this.$router.push({ name: 'index' });
     }
   }
 };

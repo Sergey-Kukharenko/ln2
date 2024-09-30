@@ -8,7 +8,7 @@
       align="center"
       @change="handleCheckbox"
       ><span class="gift__checkbox-text"
-        >Аdd a gift card <span class="gift__checkbox-price">(+2.99)</span></span
+        >Аdd a gift card <span class="gift__checkbox-price">(+3.49)</span></span
       ></app-checkbox
     >
     <app-textarea

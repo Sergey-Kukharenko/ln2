@@ -7,7 +7,7 @@
       <div class="giftcard__col giftcard__content">
         <div class="giftcard__text">Add your favourite gift card</div>
         <div class="giftcard__bottom">
-          <span class="giftcard__price">£2.99</span>
+          <span class="giftcard__price">£3.49</span>
           <div class="giftcard__button--mobile">
             <button @click="$emit('open-modal')">Add</button>
           </div>

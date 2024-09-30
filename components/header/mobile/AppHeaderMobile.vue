@@ -90,7 +90,7 @@ export default Vue.extend({
     },
 
     isCheckout() {
-      return this.$route.name === 'checkout';
+      return ['checkout-delivery-details', 'checkout-final-details'].includes(this.$route.name);
     }
   },
 

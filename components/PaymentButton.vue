@@ -122,7 +122,7 @@ export default Vue.extend({
     },
 
     isCheckout() {
-      return this.$route.name === 'checkout';
+      return this.$route.name === 'checkout-final-details';
     },
 
     isOrderId() {
@@ -180,7 +180,6 @@ export default Vue.extend({
 
     this.removePaymentError();
     // this.$nuxt.$off('set-email-status', this.setEmailStatus);
-
   },
 
   methods: {
