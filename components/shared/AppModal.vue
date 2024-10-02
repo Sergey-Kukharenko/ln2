@@ -1,5 +1,12 @@
 <template>
-  <AppModalAbstraction v-if="visible" :theme="theme" :center="center" :inside="inside" @close="close">
+  <AppModalAbstraction
+    v-if="visible"
+    :theme="theme"
+    :center="center"
+    :align-items="alignItems"
+    :inside="inside"
+    @close="close"
+  >
     <slot />
   </AppModalAbstraction>
 </template>
@@ -28,6 +35,14 @@ export default {
     center: {
       type: Boolean,
       default: false
+    },
+
+    alignItems: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['', 'end'].includes(value);
+      }
     },
 
     inside: {

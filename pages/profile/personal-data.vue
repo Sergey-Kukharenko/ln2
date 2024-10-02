@@ -41,9 +41,12 @@ import { accessorMapper } from '~/store';
 const { gender } = profile;
 export default Vue.extend({
   name: 'PersonalDataPage',
+
   components: { ProfileDeleteAccount, AppButton, ProfilePersonalSection, ProfileButtonList, AppInput },
 
   layout: 'profile',
+
+  middleware: 'auth',
 
   data() {
     return {

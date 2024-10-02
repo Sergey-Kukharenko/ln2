@@ -7,9 +7,7 @@
     </div>
     <div class="content" :class="{ grey: item.date }">
       Order
-      <nuxt-link :to="pathToOrder" :class="{ active: item.order_id === getOrderRealId }"
-        >No. {{ item.order_id }}
-      </nuxt-link>
+      <nuxt-link :to="pathToOrder" :class="activeClassName">No. {{ item.order_id }}</nuxt-link>
       <span>{{ getStatusText }}</span>
       <span v-if="item.date">{{ item.date }}</span>
     </div>
@@ -78,6 +76,12 @@ export default Vue.extend({
 
     pathToOrder() {
       return this.item.order_id === this.getOrderRealId ? 'order/' + this.item.order_id : '';
+    },
+
+    activeClassName() {
+      return {
+        active: this.item.order_id === this.getOrderRealId
+      };
     }
   },
 

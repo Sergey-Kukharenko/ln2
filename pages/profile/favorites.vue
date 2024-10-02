@@ -31,6 +31,8 @@ export default Vue.extend({
 
   layout: 'profile',
 
+  middleware: 'auth',
+
   data() {
     return {
       head

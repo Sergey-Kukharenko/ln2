@@ -10,6 +10,6 @@ export default Vue.extend({
 
   layout: 'profile',
 
-  middleware: 'profile-redirect'
+  middleware: ['auth', 'profile-redirect']
 });
 </script>

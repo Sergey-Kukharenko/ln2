@@ -32,13 +32,21 @@ export default {
       type: String,
       default: '',
       validate(value) {
-        return ['full'].includes(value);
+        return ['full', 'mobile'].includes(value);
       }
     },
 
     center: {
       type: Boolean,
       default: false
+    },
+
+    alignItems: {
+      type: String,
+      default: '',
+      validate(value) {
+        return ['', 'end'].includes(value);
+      }
     },
 
     inside: {
@@ -52,6 +60,7 @@ export default {
       return {
         [`modal--${this.theme}`]: this.theme,
         'modal--center': this.center,
+        [`modal--align-items-${this.alignItems}`]: this.alignItems,
         'modal--inside': this.inside
       };
     }
@@ -170,6 +179,7 @@ export default {
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
+
     & .modal__content {
       position: relative;
       bottom: 0;
@@ -227,6 +237,10 @@ export default {
     justify-content: center;
   }
 
+  &--align-items-end {
+    align-items: end;
+  }
+
   &--inside {
     & .modal__content {
       border-radius: 16px;
@@ -237,6 +251,27 @@ export default {
       padding: 16px 18px;
       background: none;
       border-radius: 0;
+
+      &__icon {
+        height: 16px;
+        width: 16px;
+        color: #000;
+      }
+    }
+  }
+
+  &--mobile {
+    & .modal__content {
+      border-radius: 16px 16px 0 0;
+      margin: 0;
+    }
+
+    & .button {
+      right: 0;
+      padding: 16px 18px;
+      border-radius: 0;
+      background: #cccccc;
+
       &__icon {
         height: 16px;
         width: 16px;

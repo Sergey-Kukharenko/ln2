@@ -180,7 +180,6 @@ export default {
     font-family: $golos-medium;
     font-size: 16px;
     color: #000;
-    min-height: 48px;
     background: $bg-grey;
 
     @include gt-sm {

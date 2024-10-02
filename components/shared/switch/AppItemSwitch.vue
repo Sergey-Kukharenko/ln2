@@ -2,6 +2,7 @@
   <div class="item-switch" :class="classes">
     <app-switch :value="value" @change="onChange" />
     <div>{{ label }}</div>
+    <slot />
   </div>
 </template>
 
