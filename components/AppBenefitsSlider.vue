@@ -30,7 +30,7 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
-import pathToImage from '~/mixins/pathToImage.vue';
+import pathToImage from '~/mixins/path-to-image.vue';
 
 export default {
   name: 'AppBenefitsSlider',
@@ -127,6 +127,7 @@ export default {
         &.swipe {
           padding: 4px;
         }
+
         .swipe__icon {
           width: 16px;
           height: 12px;

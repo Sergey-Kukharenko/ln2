@@ -1,6 +1,7 @@
 <template>
   <div class="profile-personal-section">
     <div class="column">
+      <profile-button-back />
       <div class="title">{{ title }}</div>
     </div>
     <div class="column">
@@ -14,8 +15,11 @@
 <script>
 import Vue from 'vue';
 
+import ProfileButtonBack from '~/components/profile/ProfileButtonBack.vue';
+
 export default Vue.extend({
   name: 'ProfilePersonalSection',
+  components: { ProfileButtonBack },
 
   props: {
     title: {

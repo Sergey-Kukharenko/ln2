@@ -299,6 +299,8 @@ const GIFT_CARD_COOKIE = 'gift_card_from_basket';
 const GIFT_CARD_POLICY_ID = 3;
 
 const MAP_PROFILE_STATUSES = {
+  BASKET: 'was created',
+  ORDER: 'was created',
   PAYMENT: 'was created',
   PAID: 'was created',
   FAIL_PAID: 'was created',
@@ -308,6 +310,12 @@ const MAP_PROFILE_STATUSES = {
   DELIVERING: 'delivered to the courier',
   DELIVERED: 'was delivered',
   CANCELED: 'was canceled'
+};
+
+const BONUSES = {
+  ERRORS: {
+    ONLY_BONUSES: "You can't use a promo code and bonuses together. Only one offer can be applied per order."
+  }
 };
 
 export {
@@ -378,5 +386,6 @@ export {
   PRODUCT_SIZE,
   GIFT_CARD_COOKIE,
   GIFT_CARD_POLICY_ID,
-  MAP_PROFILE_STATUSES
+  MAP_PROFILE_STATUSES,
+  BONUSES
 };

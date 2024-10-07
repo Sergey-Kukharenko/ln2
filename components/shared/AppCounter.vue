@@ -28,6 +28,11 @@ export default {
       validate(value) {
         return ['flat'].includes(value);
       }
+    },
+
+    resetPosition: {
+      type: Boolean,
+      required: false
     }
   },
 
@@ -35,7 +40,8 @@ export default {
     classes() {
       return {
         [`counter--size-${this.size}`]: true,
-        [`counter--theme-${this.theme}`]: true
+        [`counter--theme-${this.theme}`]: true,
+        [`counter--reset-position`]: this.resetPosition
       };
     }
   }
@@ -55,6 +61,15 @@ export default {
   border: 2px solid #fff;
   border-radius: 50%;
   box-sizing: border-box;
+  right: -11px;
+  top: -4px;
+
+  &--reset-position {
+    right: inherit;
+    top: inherit;
+    left: inherit;
+    bottom: inherit;
+  }
 
   &__number {
     color: #ffffff;

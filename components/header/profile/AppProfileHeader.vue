@@ -1,13 +1,17 @@
 <template>
-  <div class="header">
+  <div class="header" @click="onGoToProfile">
     <div v-if="char" class="header__char">{{ char }}</div>
     <div class="header__info">{{ userName }}</div>
   </div>
 </template>
 
 <script>
+import pathToProfile from '~/mixins/path-to-profile.vue';
+
 export default {
   name: 'AppProfileHeader',
+
+  mixins: [pathToProfile],
 
   props: {
     user: {
@@ -24,22 +28,26 @@ export default {
     userName() {
       return this.user.name || 'No name';
     }
+  },
+
+  methods: {
+    onGoToProfile() {
+      this.$router.push({ name: this.pathName });
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .header {
-  @include gt-sm {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 18px 20px;
-    border-bottom: 1px solid #dde0e6;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #dde0e6;
 
-  @include lt-md {
-    display: none;
+  @include gt-sm {
+    cursor: pointer;
   }
 
   &__char {
@@ -55,6 +63,12 @@ export default {
     color: #fff;
     background: #e8929d;
     border-radius: 50%;
+
+    @include lt-md {
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+    }
   }
 
   &__info {

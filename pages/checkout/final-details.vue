@@ -22,7 +22,6 @@ import CheckoutTitle from '~/components/checkout/CheckoutTitle.vue';
 import { CHECKOUT_STEPS, EMPTY_CART_MAP } from '~/constants';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import * as paymentMethods from '~/data/payment-methods';
-import authManager from '~/mixins/authManager.vue';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -34,8 +33,6 @@ export default Vue.extend({
   },
 
   CHECKOUT_STEPS,
-
-  mixins: [authManager],
 
   layout: 'checkout',
 

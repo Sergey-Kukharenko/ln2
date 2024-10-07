@@ -6,6 +6,8 @@
 
     <checkout-promo-code />
 
+    <bonuses-switcher v-if="isAvailableBonuses" />
+
     <checkout-email />
 
     <div class="final-details__submit">
@@ -20,6 +22,7 @@
 </template>
 
 <script>
+import BonusesSwitcher from '~/components/Bonuses-Switcher.vue';
 import PaymentButton from '~/components/PaymentButton.vue';
 import CheckoutEmail from '~/components/checkout/CheckoutEmail.vue';
 import CheckoutPaymentMethods from '~/components/checkout/CheckoutPaymentMethods.vue';
@@ -31,6 +34,7 @@ export default {
   name: 'CheckoutFinalDetails',
 
   components: {
+    BonusesSwitcher,
     CheckoutPaymentMethods,
     CheckoutGiftCard: () => import('~/components/checkout/CheckoutGiftCard.vue'),
     CheckoutPromoCode,
@@ -66,6 +70,10 @@ export default {
   },
 
   computed: {
+    isAvailableBonuses() {
+      return this.$accessor.checkout.isAvailableBonuses;
+    },
+
     giftCards() {
       return this.$accessor.gifts.getGiftCards;
     },

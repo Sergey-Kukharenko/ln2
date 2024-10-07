@@ -3,6 +3,7 @@ import Vue from 'vue';
 
 import { AUTH_SMS_COOKIE } from '~/constants';
 import * as auth from '~/store/auth';
+import * as bonuses from '~/store/bonuses-local';
 import * as cart from '~/store/cart';
 import * as category from '~/store/category';
 import * as checkout from '~/store/checkout';
@@ -92,8 +93,9 @@ export const accessorType = getAccessorType({
     notifications,
     orders,
     personal,
+    profileOrder,
     loyalty,
-    profileOrder
+    bonuses
   }
 });
 

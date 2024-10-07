@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import pathToImage from '~/mixins/pathToImage.vue';
+import pathToImage from '~/mixins/path-to-image.vue';
 
 const IMAGE_INITIAL_SIZES = {
   desktop: {
@@ -197,6 +197,7 @@ export default {
           &:first-child {
             transform: rotate(180deg);
           }
+
           &.active {
             background: #ffffff;
             opacity: 1;

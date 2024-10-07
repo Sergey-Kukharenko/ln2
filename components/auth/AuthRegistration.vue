@@ -2,7 +2,10 @@
   <div class="container">
     <div class="container__header">
       <div class="container__layout">
-        <div class="container__title"><app-go-back-mobile has-step @change-step="goToLogin" />Sign up</div>
+        <div class="container__title">
+          <app-go-back-mobile has-step @change-step="goToLogin" />
+          Sign up
+        </div>
       </div>
     </div>
     <div class="container__body">
@@ -95,6 +98,7 @@ import AppErrorModal from '~/components/shared/AppErrorModal.vue';
 import AppGoBackMobile from '~/components/shared/AppGoBackMobile.vue';
 import { EAuthComponents, GENDERS_OPTIONS, VALIDATION_MESSAGES } from '~/constants/auth.ts';
 import { isEmailValid } from '~/helpers/validators';
+import pathToProfile from '~/mixins/path-to-profile.vue';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -110,6 +114,8 @@ export default Vue.extend({
     UserSubscribe,
     AppErrorModal
   },
+
+  mixins: [pathToProfile],
 
   data() {
     return {
@@ -212,7 +218,7 @@ export default Vue.extend({
 
         const { success, message } = await this.$accessor.user.setUserPersonalData(payload);
 
-        if (!success) {
+        if (success === false) {
           this.onOpenErrorModal(message);
 
           return;

@@ -12,7 +12,9 @@
       :loading="loading"
       @click="submitOrder"
     >
-      <template v-if="loading"> <app-loading-dots /></template>
+      <template v-if="loading">
+        <app-loading-dots />
+      </template>
       <template v-else>Go to payment</template>
     </app-button>
 
@@ -104,6 +106,7 @@ export default Vue.extend({
 
   computed: {
     ...accessorMapper('payment', ['paypalClientId']),
+    ...accessorMapper('bonuses-local', ['isDeductedBonuses']),
 
     isStripeRedirectPayment() {
       return this.paymentMethod === STRIPE_PAYMENT_METHOD.name;
@@ -143,6 +146,10 @@ export default Vue.extend({
 
     isOrderLoading() {
       return this.$accessor.checkout.isPending;
+    },
+
+    bonuses() {
+      return { use_bonuses: this.isDeductedBonuses };
     }
   },
 
@@ -220,7 +227,9 @@ export default Vue.extend({
 
         this.loading = true;
 
-        const { success, data } = await this.setCheckoutToPay();
+        const { success, data } = await this.setCheckoutToPay(this.bonuses);
+
+        console.log(success, data);
 
         if (!success) {
           const { title } = data;
@@ -277,7 +286,7 @@ export default Vue.extend({
           // Order is created on the server and the order id is returned
           createOrder: async () => {
             try {
-              const { success: status, data: statusData } = await this.setCheckoutToPay();
+              const { success: status, data: statusData } = await this.setCheckoutToPay(this.bonuses);
 
               if (!status) {
                 const { title } = statusData;
@@ -390,7 +399,7 @@ export default Vue.extend({
         this.paymentRequest.on('paymentmethod', async (ev) => {
           // Confirm the PaymentIntent without handling potential next actions (yet).
 
-          const { success: status, data: statusData } = await this.setCheckoutToPay();
+          const { success: status, data: statusData } = await this.setCheckoutToPay(this.bonuses);
 
           if (!status) {
             const { title } = statusData;

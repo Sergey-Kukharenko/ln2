@@ -239,13 +239,7 @@ export default Vue.extend({
           }
 
           @include lt-md {
-            margin-top: 16px;
-            position: absolute;
-            bottom: 24px;
-            right: 50%;
-            transform: translate(50%, -50%);
-            width: 288px;
-            max-width: 288px;
+            margin: 16px auto 24px;
           }
         }
       }

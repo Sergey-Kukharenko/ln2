@@ -73,6 +73,11 @@ export const actions = actionTree(
         commit('SET_CHECKOUT', data);
         commit('SET_SELF_RECIPIENT', data?.self_recipient ?? false);
 
+        const isPromoCode = data?.promo_code?.code;
+        if (isPromoCode) {
+          commit('bonuses-local/SET_PROMO_CODE', true, { root: true });
+        }
+
         return data;
       } catch (err) {
         console.error(err);
@@ -171,11 +176,11 @@ export const actions = actionTree(
       }
     },
 
-    async setCheckoutToPay({ commit }) {
+    async setCheckoutToPay({ commit }, bonuses) {
       try {
         commit('cart/SET_CART', EMPTY_CART_MAP, { root: true });
 
-        const res = await this.app.$http.$post<ApiResponse<null>>('/v1/order/to-pay/');
+        const res = await this.app.$http.$post<ApiResponse<null>>('/v1/order/to-pay/', bonuses);
         return res;
       } catch (err) {
         console.error(err);
@@ -225,5 +230,7 @@ export const getters = getterTree(state, {
   checkoutShippingAddress: (state) => state.checkout?.shipping_address || {},
   checkoutPositions: (state) => state.checkout?.positions || [],
   checkoutPromocode: (state) => state.checkout?.promo_code?.code || '',
-  getGiftCard: (state) => state.checkout?.positions?.find((position) => position?.policy_id === GIFT_CARD_POLICY_ID)
+  getGiftCard: (state) => state.checkout?.positions?.find((position) => position?.policy_id === GIFT_CARD_POLICY_ID),
+  getAvailableBonuses: (state) => state.checkout?.available_bonuses,
+  isAvailableBonuses: (state) => state.checkout?.available_bonuses > 0
 });

@@ -1,7 +1,7 @@
 <template>
-  <div class="switch" :class="classes" @click="onClick">
-    <div class="switch__pointer" />
-  </div>
+  <button class="switch" :class="classes" :disabled="disabled" @click="onClick">
+    <span class="switch__pointer" />
+  </button>
 </template>
 
 <script>
@@ -15,6 +15,11 @@ export default {
 
   props: {
     value: {
+      type: Boolean,
+      default: false
+    },
+
+    disabled: {
       type: Boolean,
       default: false
     },
@@ -52,10 +57,13 @@ export default {
   height: 24px;
   border-radius: 12px;
   background-color: #dde0e6;
-  cursor: pointer;
   border: 1px solid #dde0e6;
   box-sizing: border-box;
   transition: all 150ms ease-in-out;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 
   &__pointer {
     position: absolute;

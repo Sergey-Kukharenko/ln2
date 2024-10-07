@@ -5,11 +5,11 @@
 
     <div class="layout layout-dt profile-container" :class="{ move, 'not-smooth': notSmooth }">
       <template>
-        <profile-sidebar v-if="!isProfileOrder" />
+        <profile-sidebar v-if="$device.isDesktopOrTablet" />
         <div class="profile-page">
-          <div v-if="!isProfileOrder && $device.isMobile" class="button" @click="move = false">
-            <svg-icon name="profile-back" class="icon" />
-          </div>
+          <!--          <div v-if="!isProfileOrder && $device.isMobile" class="button" @click="move = false">-->
+          <!--            <svg-icon name="profile-back" class="icon" />-->
+          <!--          </div>-->
           <Nuxt />
         </div>
       </template>
@@ -121,11 +121,11 @@ export default Vue.extend({
     .profile-page {
       @include lt-md {
         width: 100%;
-        height: calc(100vh - 50px);
+        height: calc(100dvh - 50px);
         overflow-y: auto;
-        position: absolute;
-        top: 0;
-        left: 100%;
+        //position: absolute;
+        //top: 0;
+        //left: 100%;
         padding: 16px;
         box-sizing: border-box;
       }
@@ -167,7 +167,7 @@ export default Vue.extend({
 
   &.move {
     @include lt-md {
-      transform: translateX(-100%);
+      //transform: translateX(-100%);
     }
   }
 
@@ -186,15 +186,15 @@ export default Vue.extend({
   }
 }
 
-.button {
-  position: absolute;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  color: $color-dark-green;
-}
+//.button {
+//  position: absolute;
+//}
+//
+//.icon {
+//  width: 24px;
+//  height: 24px;
+//  color: $color-dark-green;
+//}
 
 .footer {
   margin-top: auto;

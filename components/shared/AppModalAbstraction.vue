@@ -7,7 +7,7 @@
           <div class="modal__layout">
             <slot />
             <button type="button" class="button" @click="close">
-              <svg-icon name="close" class="button__icon" />
+              <svg-icon :name="icon" class="button__icon" />
             </button>
           </div>
         </div>
@@ -41,17 +41,19 @@ export default {
       default: false
     },
 
-    alignItems: {
-      type: String,
-      default: '',
-      validate(value) {
-        return ['', 'end'].includes(value);
-      }
+    bottom: {
+      type: Boolean,
+      default: false
     },
 
     inside: {
       type: Boolean,
       default: false
+    },
+
+    icon: {
+      type: String,
+      default: 'close'
     }
   },
 
@@ -60,7 +62,7 @@ export default {
       return {
         [`modal--${this.theme}`]: this.theme,
         'modal--center': this.center,
-        [`modal--align-items-${this.alignItems}`]: this.alignItems,
+        'modal--bottom': this.bottom,
         'modal--inside': this.inside
       };
     }
@@ -237,7 +239,7 @@ export default {
     justify-content: center;
   }
 
-  &--align-items-end {
+  &--bottom {
     align-items: end;
   }
 
@@ -267,15 +269,18 @@ export default {
     }
 
     & .button {
-      right: 0;
-      padding: 16px 18px;
-      border-radius: 0;
-      background: #cccccc;
+      @include lt-md {
+        top: 16px;
+        right: 16px;
+        padding: 0;
+        background: none;
+      }
 
       &__icon {
-        height: 16px;
-        width: 16px;
-        color: #000;
+        @include lt-md {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
   }

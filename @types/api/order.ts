@@ -90,7 +90,9 @@ interface Data {
   gift: Nullable<string>;
   delivery_type: string;
   has_google_ads_fired: boolean;
+  available_bonuses: number;
 }
 
 export type OrderId = number | string;
+
 export interface OrderResponse extends ApiResponse<Data> {}

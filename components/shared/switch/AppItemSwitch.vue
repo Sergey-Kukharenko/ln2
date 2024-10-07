@@ -1,6 +1,6 @@
 <template>
   <div class="item-switch" :class="classes">
-    <app-switch :value="value" @change="onChange" />
+    <app-switch :value="value" :disabled="disabled" @change="onChange" />
     <div>{{ label }}</div>
     <slot />
   </div>
@@ -21,6 +21,11 @@ export default {
 
   props: {
     value: {
+      type: Boolean,
+      default: false
+    },
+
+    disabled: {
       type: Boolean,
       default: false
     },

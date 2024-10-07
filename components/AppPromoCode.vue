@@ -4,8 +4,9 @@
     size="xx-large"
     placeholder="Promotion code"
     :success="success"
-    :error="error"
+    :error="outSideError || error"
     class="promo-code"
+    :disabled="isDeductedBonuses"
   >
     <template #right>
       <cart-button size="small" theme="green" :disabled="isDisabled" align="center" not-change @click="submitHandler">
@@ -20,7 +21,7 @@ import Vue from 'vue';
 
 import CartButton from '~/components/CartButton.vue';
 import AppInput from '~/components/shared/AppInput.vue';
-import { TOO_MANY_PROMOCODE_ATTEMPTS_MSG } from '~/constants';
+import { BONUSES, TOO_MANY_PROMOCODE_ATTEMPTS_MSG } from '~/constants';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({
@@ -37,9 +38,17 @@ export default Vue.extend({
     };
   },
 
+  BONUSES,
+
   computed: {
+    ...accessorMapper('bonuses-local', ['isDeductedBonuses']),
+
     isDisabled() {
       return this.promoCode?.length < this.limit;
+    },
+
+    outSideError() {
+      return this.isDeductedBonuses ? BONUSES.ERRORS.ONLY_BONUSES : '';
     }
   },
 
@@ -51,6 +60,7 @@ export default Vue.extend({
 
   methods: {
     ...accessorMapper('checkout', ['setPromoCode', 'fetchCheckout']),
+    ...accessorMapper('bonuses-local', ['addPromoCode']),
 
     getPromoCode() {
       return this.$accessor.checkout.checkoutPromocode;
@@ -90,11 +100,17 @@ export default Vue.extend({
           data: { gift }
         } = await this.setPromoCode(payload);
 
-        success ? await this.setAndUpdate(gift) : this.setError(message);
+        if (success) {
+          this.addPromoCode(true);
+          await this.setAndUpdate(gift);
+        } else {
+          this.setError(message);
+        }
       } catch (error) {
         this.setError(TOO_MANY_PROMOCODE_ATTEMPTS_MSG);
         this.$emit('hideGift');
       }
+      console.log(TOO_MANY_PROMOCODE_ATTEMPTS_MSG);
     }
   }
 });

@@ -3,8 +3,9 @@
     v-if="visible"
     :theme="theme"
     :center="center"
-    :align-items="alignItems"
+    :bottom="bottom"
     :inside="inside"
+    :icon="icon"
     @close="close"
   >
     <slot />
@@ -37,17 +38,19 @@ export default {
       default: false
     },
 
-    alignItems: {
-      type: String,
-      default: '',
-      validate(value) {
-        return ['', 'end'].includes(value);
-      }
+    bottom: {
+      type: Boolean,
+      default: false
     },
 
     inside: {
       type: Boolean,
       default: false
+    },
+
+    icon: {
+      type: String,
+      default: ''
     }
   },
 

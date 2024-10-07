@@ -24,7 +24,7 @@
 <script>
 import Vue from 'vue';
 
-import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
+import profileMoveToPage from '~/mixins/profile-move-to-page.vue';
 
 export default Vue.extend({
   name: 'ProfileSidebarNav',

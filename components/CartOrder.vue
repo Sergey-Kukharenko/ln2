@@ -53,9 +53,10 @@
     <!--        <svg-icon v-if="step === $options.CODE" class="back__icon" name="arrow-green" @click="goToForm" />-->
     <!--        {{ authTitle }}-->
     <!--      </div>-->
-    <div class="order__title">Your details</div>
+    <div v-if="!isAuthorized" class="order__title">Your details</div>
     <form class="form" autocomplete="off" novalidate @submit.prevent="onSubmit">
       <app-input
+        v-if="!isAuthorized"
         v-model="form.name.value"
         size="x-large"
         placeholder="Your First Name"
@@ -65,8 +66,12 @@
         class="form__input"
       />
 
-      <app-phone-input :error="form.phone.errorMsg" @set-phone="onSetPhone" />
-
+      <app-phone-input
+        v-if="!isAuthorized"
+        class="form__input"
+        :error="form.phone.errorMsg"
+        @update:success="onSetNumber"
+      />
       <div v-if="form.errorMsg" class="form__error">{{ form.errorMsg }}</div>
       <cart-button :stretch="true" align="center" class="form__button" :not-clickable="isSubmitClicked" size="medium">
         Continue
@@ -95,12 +100,12 @@
 <script>
 import Vue from 'vue';
 
-import AppPhoneInput from '~/components/AppPhoneInput.vue';
 import CartButton from '~/components/CartButton.vue';
+import AppPhoneInput from '~/components/shared/AppPhoneInput.vue';
 import AppTooltip from '~/components/shared/AppTooltip.vue';
-import { AUTH_CODE_TIMER, AUTH_REG_STEPS, CART_TOOLTIP, CODE_INPUT_DEFAULT_COUNT } from '~/constants';
+import { AUTH_REG_ERROR_MESSAGES, AUTH_REG_STEPS, CART_TOOLTIP, CODE_INPUT_DEFAULT_COUNT } from '~/constants';
+import { AUTH_CODE_TIMER, EAuthComponents, VALIDATION_MESSAGES } from '~/constants/auth';
 import { VALIDATE_MESSAGES } from '~/messages';
-import authManager from '~/mixins/authManager.vue';
 import inputPhone from '~/mixins/input-phone.vue';
 import { accessorMapper } from '~/store';
 
@@ -112,14 +117,11 @@ export default Vue.extend({
   components: {
     CartButton,
     AppPhoneInput,
-    AppInput: () => import('~/components/shared/AppInput.vue'),
-    AppTooltip
-    // Временно скрыт
-    // AppCodeInput: () => import('~/components/shared/AppCodeInput')
-    // AppNumberInput: () => import('~/components/shared/AppNumberInput')
+    AppTooltip,
+    AppInput: () => import('~/components/shared/AppInput.vue')
   },
 
-  mixins: [authManager, inputPhone],
+  mixins: [inputPhone],
 
   CART_TOOLTIP,
 
@@ -203,10 +205,20 @@ export default Vue.extend({
     },
 
     async onSubmit() {
+      if (this.isAuthorized) {
+        await this.$accessor.checkout.createOrder({
+          phone: this.$accessor.user.user?.phone,
+          name: this.$accessor.user.user?.name
+        });
+        this.$router.push({ name: 'checkout-delivery-details' });
+
+        return;
+      }
+
       this.form.errorMsg = '';
 
-      this.form.name.errorMsg = this.isEmptyField(this.form.name.value);
-      this.form.phone.errorMsg = this.hasPhoneError(this.form.phone.value);
+      this.form.name.errorMsg = !this.form.name.value.length ? AUTH_REG_ERROR_MESSAGES.requiredField : '';
+      this.form.phone.errorMsg = !this.form.phone.value ? VALIDATION_MESSAGES.phone : '';
 
       if (this.isFormInvalid) {
         this.isSubmitClicked = false;
@@ -239,7 +251,7 @@ export default Vue.extend({
         return;
       }
 
-      const { success, data } = await this.$accessor.auth.sendVerificationCode({ code });
+      const { success, data } = await this.$accessor.auth.checkVerificationCode({ code });
 
       this.codeForm.errorMsg = data?.title ?? '';
 
@@ -251,7 +263,7 @@ export default Vue.extend({
       await this.$router.push({ name: 'checkout-delivery-details' });
     },
 
-    onSetPhone(value) {
+    onSetNumber(value) {
       this.form.phone.errorMsg = '';
       this.form.errorMsg = '';
       this.form.phone.value = value;
@@ -287,14 +299,9 @@ export default Vue.extend({
     async onLoginWithCode() {
       try {
         const phone = this.form.phone.value.replace('+', '').replaceAll(' ', '');
-        const payload = {
-          phone,
-          code: '1111'
-        };
+        const { success } = await this.$accessor.auth.sendVerificationCode({ phone });
 
-        const status = await this.$accessor.auth.sendVerificationCode(payload);
-
-        if (!status) {
+        if (!success) {
           this.form.errorMsg = VALIDATE_MESSAGES.wrong;
           this.isSubmitClicked = false;
 
@@ -302,8 +309,9 @@ export default Vue.extend({
           return;
         }
 
-        await this.$accessor.checkout.createOrder({ phone, name: this.form.name.value });
-        await this.$router.push({ name: 'checkout-delivery-details' });
+        this.$accessor.auth.SET_RECEIVER({ phone, name: this.form.name.value });
+        this.$accessor.auth.SET_STEP(EAuthComponents.CODE);
+        this.$router.push({ name: 'auth', query: { from: 'cart' } });
       } catch (error) {
         console.error(error);
       }
@@ -629,6 +637,24 @@ export default Vue.extend({
 
   &__button {
     margin-top: 24px;
+  }
+
+  &__error {
+    font-family: $golos-regular;
+    font-size: 12px;
+    line-height: 16px;
+    color: #db1838;
+    padding-left: 18px;
+    margin-top: 4px;
+
+    .error-list {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    &--gender {
+      padding-left: 0;
+    }
   }
 }
 </style>

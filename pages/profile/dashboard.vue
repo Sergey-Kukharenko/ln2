@@ -1,17 +1,20 @@
 <template>
-  <div class="dashboard-page">
-    <profile-alert v-if="isRegistrationQuery" />
-    <profile-content v-if="isDataExists">
-      <profile-section v-if="isOrder" :head="ordersHead" preview>
-        <profile-orders-list :list="[personalOrder]" preview />
-      </profile-section>
-      <profile-section v-if="isFavorites" :head="favoritesHead" preview>
-        <app-section show-list-only stretch size="medium" :section="favorites" name="favorites" preview />
-      </profile-section>
-    </profile-content>
-    <template v-else>
-      <profile-empty />
-    </template>
+  <div>
+    <profile-sidebar v-if="$device.isMobile" />
+    <div v-else class="dashboard-page">
+      <profile-alert v-if="isRegistrationQuery" />
+      <profile-content v-if="isDataExists">
+        <profile-section v-if="isOrder" :head="ordersHead" preview>
+          <profile-orders-list :list="[personalOrder]" preview />
+        </profile-section>
+        <profile-section v-if="isFavorites" :head="favoritesHead" preview>
+          <app-section show-list-only stretch size="medium" :section="favorites" name="favorites" preview />
+        </profile-section>
+      </profile-content>
+      <template v-else>
+        <profile-empty />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -23,6 +26,7 @@ import ProfileContent from '~/components/profile/ProfileContent.vue';
 import ProfileEmpty from '~/components/profile/ProfileEmpty.vue';
 import ProfileSection from '~/components/profile/ProfileSection.vue';
 import ProfileOrdersList from '~/components/profile/profile-orders/ProfileOrdersList.vue';
+import ProfileSidebar from '~/components/profile/profile-sidebar/ProfileSidebar.vue';
 import profile from '~/data/profile';
 import { useArrayNotEmpty } from '~/helpers';
 import { accessorMapper } from '~/store';
@@ -31,6 +35,7 @@ const { orders, favorites } = profile.pages;
 export default Vue.extend({
   name: 'DashboardPage',
   components: {
+    ProfileSidebar,
     ProfileAlert,
     ProfileEmpty,
     ProfileContent,

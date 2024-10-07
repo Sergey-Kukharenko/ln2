@@ -20,7 +20,6 @@ import CheckoutFooterBottom from '~/components/checkout/CheckoutFooterBottom.vue
 import CheckoutHeader from '~/components/checkout/CheckoutHeader.vue';
 import { GTM_EVENTS_MAP } from '~/constants/gtm';
 import addGtag from '~/mixins/addGtag.vue';
-import authManager from '~/mixins/authManager.vue';
 import gtm from '~/mixins/gtm.vue';
 import { accessorMapper } from '~/store';
 
@@ -33,7 +32,7 @@ export default Vue.extend({
     CheckoutHeader
   },
 
-  mixins: [authManager, gtm, addGtag],
+  mixins: [gtm, addGtag],
 
   middleware: ['auth'],
 

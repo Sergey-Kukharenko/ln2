@@ -24,7 +24,7 @@ import Vue from 'vue';
 
 import ProfileBonusButton from '~/components/profile/profile-bonus/ProfileBonusButton.vue';
 import ProfileBonusSlider from '~/components/profile/profile-bonus/ProfileBonusSlider.vue';
-import profileMoveToPage from '~/mixins/profileMoveToPage.vue';
+import profileMoveToPage from '~/mixins/profile-move-to-page.vue';
 import { accessorMapper } from '~/store';
 
 export default Vue.extend({

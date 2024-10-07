@@ -19,7 +19,9 @@ import AppBadge from '~/components/shared/AppBadge.vue';
 
 export default Vue.extend({
   name: 'AppProfileList',
+
   components: { AppBadge },
+
   props: {
     user: {
       type: Object,
@@ -65,9 +67,16 @@ export default Vue.extend({
   },
 
   methods: {
-    async logout() {
-      await this.$accessor.auth.logout();
-      // location.reload();
+    logout() {
+      this.$accessor.auth.logout();
+
+      if (this.$route.name.includes('profile')) {
+        this.$router.push({ name: 'index' });
+      }
+
+      if (this.$device.isMobileOrTablet) {
+        location.reload();
+      }
     }
   }
 });

@@ -2,7 +2,7 @@
   <div class="profile-orders-item" :class="classes">
     <div class="figure">
       <img :src="item.img" :alt="item.title" />
-      <app-counter v-if="item.amount_prod" :count="item.amount_prod" theme="flat" class="counter" />
+      <app-counter v-if="item.amount_prod" :count="item.amount_prod" reset-position theme="flat" class="counter" />
       <svg-icon v-if="$device.isMobile && !item.date" name="profile-collected" class="collected-icon" />
     </div>
     <div class="content" :class="{ grey: item.date }">

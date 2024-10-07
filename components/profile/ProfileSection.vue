@@ -1,6 +1,7 @@
 <template>
   <div class="profile-section">
     <div class="head">
+      <profile-button-back />
       <profile-title :title="head.title" :large="!preview" />
       <nuxt-link v-if="preview" :to="head.view.to" class="link">{{ head.view.label }}</nuxt-link>
     </div>
@@ -13,11 +14,12 @@
 <script>
 import Vue from 'vue';
 
+import ProfileButtonBack from '~/components/profile/ProfileButtonBack.vue';
 import ProfileTitle from '~/components/profile/ProfileTitle.vue';
 
 export default Vue.extend({
   name: 'ProfileSection',
-  components: { ProfileTitle },
+  components: { ProfileButtonBack, ProfileTitle },
 
   props: {
     head: {

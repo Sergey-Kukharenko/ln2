@@ -177,13 +177,15 @@ export default Vue.extend({
           const { phone, name } = this.$accessor.auth.receiver;
 
           await this.$accessor.checkout.createOrder({ phone, name });
-          await this.$router.push({ name: 'checkout' });
+          await this.$router.push({ name: 'checkout-delivery-details' });
+          this.$accessor.user.fetchUser();
 
           return;
         }
 
         if (isNewUser === false) {
           this.$router.push({ name: 'index', query: { from: 'auth' } });
+          this.$accessor.user.fetchUser();
         } else {
           this.$emit('change-step', EAuthComponents.REGISTRATION);
         }
